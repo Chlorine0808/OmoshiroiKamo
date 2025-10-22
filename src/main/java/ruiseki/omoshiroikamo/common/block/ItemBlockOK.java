@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockOK extends ItemBlock {
 
     private final Block field_150939_b;
-    private static final String __OBFID = "CL_00001769";
 
     public ItemBlockOK(Block blockA, Block blockB) {
         super(blockA);
