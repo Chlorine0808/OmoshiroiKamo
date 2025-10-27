@@ -15,9 +15,9 @@ import codechicken.nei.PositionedStack;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
-import ruiseki.omoshiroikamo.common.block.multiblock.voidMiner.lens.BlockLaserLens;
+import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.lens.BlockLaserLens;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.recipe.voidMiner.VoidMinerRecipes;
+import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.nei.PositionedStackAdv;
 import ruiseki.omoshiroikamo.plugin.nei.RecipeHandlerBase;
@@ -31,7 +31,7 @@ public class VoidOreRecipeHandler extends RecipeHandlerBase {
 
     @Override
     public String getRecipeID() {
-        return ModObject.blockVoidOreMiner.getRegistryName();
+        return ModObject.blockQuantumOreExtractor.getRegistryName();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class VoidOreRecipeHandler extends RecipeHandlerBase {
     public void loadCraftingRecipes(ItemStack item) {
         super.loadCraftingRecipes(item);
         Set<WeightedStackBase> added = new HashSet<>();
-        IFocusableRegistry registry = VoidMinerRecipes.voidOreMinerRegistry;
+        IFocusableRegistry registry = QuantumExtractorRecipes.quantumOreExtractorRegistry;
 
         for (WeightedStackBase ws : registry.getUnFocusedList()) {
             ItemStack output = ws.getMainStack();
@@ -74,11 +74,11 @@ public class VoidOreRecipeHandler extends RecipeHandlerBase {
     public void loadUsageRecipes(ItemStack ingredient) {
         super.loadUsageRecipes(ingredient);
         Set<WeightedStackBase> added = new HashSet<>();
-        IFocusableRegistry registry = VoidMinerRecipes.voidOreMinerRegistry;
+        IFocusableRegistry registry = QuantumExtractorRecipes.quantumOreExtractorRegistry;
 
         Item item = ingredient.getItem();
         Item lensItem = ModBlocks.LASER_LENS.getItem();
-        Item minerItem = ModBlocks.VOID_ORE_MINER.getItem();
+        Item minerItem = ModBlocks.QUANTUM_ORE_EXTRACTOR.getItem();
 
         boolean isMiner = item == minerItem;
         boolean isLens = item == lensItem;
@@ -130,10 +130,10 @@ public class VoidOreRecipeHandler extends RecipeHandlerBase {
         public CachedVoidOreRecipe(WeightedStackBase recipe, DyeColor color) {
             this.input = new ArrayList<>();
             List<ItemStack> miners = new ArrayList<>();
-            miners.add(ModBlocks.VOID_ORE_MINER.newItemStack(1, 0));
-            miners.add(ModBlocks.VOID_ORE_MINER.newItemStack(1, 1));
-            miners.add(ModBlocks.VOID_ORE_MINER.newItemStack(1, 2));
-            miners.add(ModBlocks.VOID_ORE_MINER.newItemStack(1, 3));
+            miners.add(ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 0));
+            miners.add(ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 1));
+            miners.add(ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 2));
+            miners.add(ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 3));
             this.input.add(new PositionedStack(miners, 25, 16));
 
             this.color = color;

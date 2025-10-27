@@ -57,7 +57,6 @@ public class OKCreativeTab extends CreativeTabs {
         addItem(ModItems.FEEDING_UPGRADE.get());
         addItem(ModItems.BATTERY_UPGRADE.get());
         addItem(ModItems.EVERLASTING_UPGRADE.get());
-        addItem(ModItems.LIGHT_UPGRADE.get());
         addItem(ModItems.STABILIZED_ENDER_PEAR.get());
         addItem(ModItems.PHOTOVOLTAIC_CELL.get());
         addItem(ModItems.ASSEMBLER.get());
@@ -79,9 +78,9 @@ public class OKCreativeTab extends CreativeTabs {
         addBlock(ModBlocks.MODIFIER_PIEZO.get());
         addBlock(ModBlocks.SOLAR_ARRAY.get());
         addBlock(ModBlocks.SOLAR_CELL.get());
-        addBlock(ModBlocks.VOID_ORE_MINER.get());
-        addBlock(ModBlocks.VOID_RES_MINER.get());
-        addBlock(ModBlocks.NANO_BOT_BEACON.get());
+        addBlock(ModBlocks.QUANTUM_ORE_EXTRACTOR.get());
+        addBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get());
+        addBlock(ModBlocks.QUANTUM_BEACON.get());
         addBlock(ModBlocks.LASER_LENS.get());
         addBlock(ModBlocks.LASER_CORE.get());
 

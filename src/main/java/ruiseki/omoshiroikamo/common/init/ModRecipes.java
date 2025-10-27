@@ -16,7 +16,7 @@ import ruiseki.omoshiroikamo.common.recipe.machine.MachineRecipeRegistry;
 import ruiseki.omoshiroikamo.common.recipe.machine.RecipeBuilder;
 import ruiseki.omoshiroikamo.common.recipe.machine.RecipeHandler;
 import ruiseki.omoshiroikamo.common.recipe.ore.CopperRecipes;
-import ruiseki.omoshiroikamo.common.recipe.voidMiner.VoidMinerRecipes;
+import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 
 public class ModRecipes {
 
@@ -29,7 +29,7 @@ public class ModRecipes {
 
         ItemRecipes.init();
         BlockRecipes.init();
-        VoidMinerRecipes.init();
+        QuantumExtractorRecipes.init();
     }
 
     public static void loadAllRecipes() {

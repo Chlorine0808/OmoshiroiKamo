@@ -186,9 +186,7 @@ tile.anvil.name=Anvil
 tile.furnace.name=Furnace
 
 tile.basalt.name=Basalt
-
 tile.alabaster.name=Alabaster
-
 tile.hardenedStone.name=Hardened Stone
 
 tile.mica.name=Mica
@@ -251,20 +249,20 @@ tile.solarArray.tier_2.name=Solar Array Tier 2
 tile.solarArray.tier_3.name=Solar Array Tier 3
 tile.solarArray.tier_4.name=Solar Array Tier 4
 
-tile.voidOreMiner.tier_1.name=Void Ore Miner Tier 1
-tile.voidOreMiner.tier_2.name=Void Ore Miner Tier 2
-tile.voidOreMiner.tier_3.name=Void Ore Miner Tier 3
-tile.voidOreMiner.tier_4.name=Void Ore Miner Tier 4
+tile.quantumOreExtractor.tier_1.name=Quantum Ore Extractor Tier 1
+tile.quantumOreExtractor.tier_2.name=Quantum Ore Extractor Tier 2
+tile.quantumOreExtractor.tier_3.name=Quantum Ore Extractor Tier 3
+tile.quantumOreExtractor.tier_4.name=Quantum Ore Extractor Tier 4
 
-tile.voidResMiner.tier_1.name=Void Resource Miner Tier 1
-tile.voidResMiner.tier_2.name=Void Resource Miner Tier 2
-tile.voidResMiner.tier_3.name=Void Resource Miner Tier 3
-tile.voidResMiner.tier_4.name=Void Resource Miner Tier 4
+tile.quantumResExtractor.tier_1.name=Quantum Resource Extractor Tier 1
+tile.quantumResExtractor.tier_2.name=Quantum Resource Extractor Tier 2
+tile.quantumResExtractor.tier_3.name=Quantum Resource Extractor Tier 3
+tile.quantumResExtractor.tier_4.name=Quantum Resource Extractor Tier 4
 
-tile.nanoBotBeacon.tier_1.name=Nano Bot Beacon Tier 1
-tile.nanoBotBeacon.tier_2.name=Nano Bot Beacon Tier 2
-tile.nanoBotBeacon.tier_3.name=Nano Bot Beacon Tier 3
-tile.nanoBotBeacon.tier_4.name=Nano Bot Beacon Tier 4
+tile.quantumBeacon.tier_1.name=Quantum Beacon Tier 1
+tile.quantumBeacon.tier_2.name=Quantum Beacon Tier 2
+tile.quantumBeacon.tier_3.name=Quantum Beacon Tier 3
+tile.quantumBeacon.tier_4.name=Quantum Beacon Tier 4
 
 #Immersive Engineering
 

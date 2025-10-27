@@ -27,17 +27,33 @@ public class NEICompat {
         sendHandler(ModObject.blockAnvil.getRegistryName(), 64, 6);
         sendCatalyst(ModObject.blockAnvil.getRegistryName());
 
-        sendHandler(ModObject.blockVoidOreMiner.getRegistryName(), 48, 8);
-        sendCatalyst(ModObject.blockVoidOreMiner.getRegistryName(), ModBlocks.VOID_ORE_MINER.newItemStack(1, 0));
-        sendCatalyst(ModObject.blockVoidOreMiner.getRegistryName(), ModBlocks.VOID_ORE_MINER.newItemStack(1, 1));
-        sendCatalyst(ModObject.blockVoidOreMiner.getRegistryName(), ModBlocks.VOID_ORE_MINER.newItemStack(1, 2));
-        sendCatalyst(ModObject.blockVoidOreMiner.getRegistryName(), ModBlocks.VOID_ORE_MINER.newItemStack(1, 3));
+        sendHandler(ModObject.blockQuantumOreExtractor.getRegistryName(), 48, 8);
+        sendCatalyst(
+            ModObject.blockQuantumOreExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 0));
+        sendCatalyst(
+            ModObject.blockQuantumOreExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 1));
+        sendCatalyst(
+            ModObject.blockQuantumOreExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 2));
+        sendCatalyst(
+            ModObject.blockQuantumOreExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 3));
 
-        sendHandler(ModObject.blockVoidResMiner.getRegistryName(), 48, 8);
-        sendCatalyst(ModObject.blockVoidResMiner.getRegistryName(), ModBlocks.VOID_RES_MINER.newItemStack(1, 0));
-        sendCatalyst(ModObject.blockVoidResMiner.getRegistryName(), ModBlocks.VOID_RES_MINER.newItemStack(1, 1));
-        sendCatalyst(ModObject.blockVoidResMiner.getRegistryName(), ModBlocks.VOID_RES_MINER.newItemStack(1, 2));
-        sendCatalyst(ModObject.blockVoidResMiner.getRegistryName(), ModBlocks.VOID_RES_MINER.newItemStack(1, 3));
+        sendHandler(ModObject.blockQuantumResExtractor.getRegistryName(), 48, 8);
+        sendCatalyst(
+            ModObject.blockQuantumResExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 0));
+        sendCatalyst(
+            ModObject.blockQuantumResExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 1));
+        sendCatalyst(
+            ModObject.blockQuantumResExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 2));
+        sendCatalyst(
+            ModObject.blockQuantumResExtractor.getRegistryName(),
+            ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 3));
 
         sendCatalyst("smelting", ModObject.blockFurnace.getRegistryName());
         sendCatalyst("fuel", ModObject.blockFurnace.getRegistryName());

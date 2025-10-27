@@ -1,16 +1,12 @@
 package ruiseki.omoshiroikamo.common.item.backpack;
 
-import static ruiseki.omoshiroikamo.common.item.backpack.BackpackGui.LIGHT_MODE;
-
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
@@ -22,10 +18,8 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.angelica.api.IDynamicLightProducer;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.PowerDisplayUtil;
@@ -35,12 +29,10 @@ import ruiseki.omoshiroikamo.client.render.item.backpack.BackpackRenderer;
 import ruiseki.omoshiroikamo.common.entity.EntityImmortalItem;
 import ruiseki.omoshiroikamo.common.item.ItemBauble;
 import ruiseki.omoshiroikamo.common.item.upgrade.EnergyUpgrade;
-import ruiseki.omoshiroikamo.common.util.ItemNBTHelper;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
-@Optional.Interface(modid = "angelica", iface = "com.gtnewhorizons.angelica.api.IDynamicLightProducer")
 public class ItemBackpack extends ItemBauble
-    implements IEnergyContainerItem, IGuiHolder<PlayerInventoryGuiData>, IBaubleRender, IDynamicLightProducer {
+    implements IEnergyContainerItem, IGuiHolder<PlayerInventoryGuiData>, IBaubleRender {
 
     @SideOnly(Side.CLIENT)
     private static BackpackRenderer model;
@@ -159,33 +151,5 @@ public class ItemBackpack extends ItemBauble
         model.renderModel(stack);
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    @Optional.Method(modid = "angelica")
-    public int getLuminance() {
-        return light;
-    }
-
-    @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        super.onUpdate(stack, world, entity, slot, isSelected);
-        NBTTagCompound tag = ItemNBTHelper.getOrCreateNBT(stack);
-        if (tag.getBoolean(LIGHT_MODE)) {
-            this.light = 14;
-        } else {
-            this.light = 0;
-        }
-    }
-
-    @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase player) {
-        super.onWornTick(stack, player);
-        NBTTagCompound tag = ItemNBTHelper.getOrCreateNBT(stack);
-        if (tag.getBoolean(LIGHT_MODE)) {
-            this.light = 14;
-        } else {
-            this.light = 0;
-        }
     }
 }

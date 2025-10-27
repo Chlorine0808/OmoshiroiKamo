@@ -14,9 +14,9 @@ public enum ModObject {
     blockEnergyInOut,
     blockElectrolyzer,
 
-    blockVoidOreMiner,
-    blockVoidResMiner,
-    blockNanoBotBeacon,
+    blockQuantumOreExtractor,
+    blockQuantumResExtractor,
+    blockQuantumBeacon,
     blockLaserCore,
     blockLaserLens,
     blockSolarArray,

@@ -54,6 +54,10 @@ public class PacketHandler {
             new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, range));
     }
 
+    public static void sendToAllAround(IMessage message, EntityPlayer player) {
+        sendToAllAround(message, player, 64);
+    }
+
     public static void sendTo(IMessage message, EntityPlayerMP player) {
         INSTANCE.sendTo(message, player);
     }

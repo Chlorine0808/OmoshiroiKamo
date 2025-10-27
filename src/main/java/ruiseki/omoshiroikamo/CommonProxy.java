@@ -23,7 +23,6 @@ import ruiseki.omoshiroikamo.api.fluid.FluidRegistry;
 import ruiseki.omoshiroikamo.api.material.MaterialRegistry;
 import ruiseki.omoshiroikamo.api.ore.OreRegistry;
 import ruiseki.omoshiroikamo.client.ResourePackGen;
-import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierAttributes;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModCommands;
 import ruiseki.omoshiroikamo.common.init.ModFluids;
@@ -56,7 +55,6 @@ public class CommonProxy {
         FluidRegistry.init();
         OreRegistry.init();
         MaterialWireType.init();
-        ModifierAttributes.init();
 
         ruiseki.omoshiroikamo.common.init.ModBlocks.init();
         OreRegister.init();

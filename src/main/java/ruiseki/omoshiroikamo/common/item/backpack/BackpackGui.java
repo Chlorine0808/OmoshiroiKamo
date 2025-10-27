@@ -365,7 +365,6 @@ public class BackpackGui extends ModularPanel {
 
         boolean hasBatteryUpgrade = false;
         boolean hasEverlastingUpgrade = false;
-        boolean hasLightUpgrade = false;
 
         for (int slotIndex = 0; slotIndex < upgradeHandler.getSlots(); slotIndex++) {
             ItemStack stack = upgradeHandler.getStackInSlot(slotIndex);
@@ -382,9 +381,6 @@ public class BackpackGui extends ModularPanel {
             if (itemUpgrade instanceof ItemEverlastingUpgrade) {
                 hasEverlastingUpgrade = true;
             }
-            if (itemUpgrade instanceof ItemLightUpgrade) {
-                hasLightUpgrade = true;
-            }
 
             if (!itemUpgrade.hasTab()) {
                 continue;
@@ -395,7 +391,6 @@ public class BackpackGui extends ModularPanel {
 
         batteryUpgradeToItem(hasBatteryUpgrade);
         everlastingToItem(hasEverlastingUpgrade);
-        lightToItem(hasLightUpgrade);
 
         for (TabBinding binding : upgradeTabs) {
             boolean enable = enableMap.getOrDefault(binding.upgradeClass, false);
@@ -841,12 +836,6 @@ public class BackpackGui extends ModularPanel {
         ItemStack stack = getUsedItemStack();
         NBTTagCompound root = stack.getTagCompound();
         root.setBoolean(EVERLASTING_MODE, active);
-    }
-
-    private void lightToItem(boolean active) {
-        ItemStack stack = getUsedItemStack();
-        NBTTagCompound root = stack.getTagCompound();
-        root.setBoolean(LIGHT_MODE, active);
     }
 
     public int getBackpackRow(int meta) {

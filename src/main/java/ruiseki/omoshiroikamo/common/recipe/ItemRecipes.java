@@ -285,22 +285,6 @@ public class ItemRecipes {
                 'U',
                 ModItems.BASE_UPGRADE.get()));
 
-        // Light Upgrade
-        GameRegistry.addRecipe(
-            new ShapedOreRecipe(
-                ModItems.LIGHT_UPGRADE.get(),
-                " S ",
-                "IUI",
-                " T ",
-                'I',
-                "ingotIron",
-                'S',
-                Items.string,
-                'T',
-                Blocks.torch,
-                'U',
-                ModItems.BASE_UPGRADE.get()));
-
         // Everlasting Upgrade
         if (!LibMods.EtFuturum.isLoaded()) {
             GameRegistry.addRecipe(
