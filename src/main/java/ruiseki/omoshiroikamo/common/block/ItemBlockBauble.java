@@ -10,11 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import baubles.api.expanded.BaubleItemHelper;
 import baubles.api.expanded.IBaubleExpanded;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import ruiseki.omoshiroikamo.common.entity.EntityDoppleganger;
 import ruiseki.omoshiroikamo.common.util.ItemNBTHelper;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;

@@ -29,6 +29,7 @@ fluid.empty=Empty
 
 #TOOLTIPS
 
+gui.energy.tooltip=RF: %s / %s
 tooltip.lvs=lvs
 tooltip.effPowered=Efficiency when powered
 

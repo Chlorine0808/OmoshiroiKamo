@@ -56,13 +56,13 @@ public class WailaCompat implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                                     IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                                     IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
 
         EntityPlayer player = accessor.getPlayer();
         MovingObjectPosition pos = accessor.getPosition();
@@ -124,13 +124,13 @@ public class WailaCompat implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                                     IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
-                                     int y, int z) {
+        int y, int z) {
         if (te instanceof IWailaNBTProvider) {
             ((IWailaNBTProvider) te).getData(tag);
         }

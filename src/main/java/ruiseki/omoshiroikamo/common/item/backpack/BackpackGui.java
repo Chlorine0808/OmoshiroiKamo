@@ -85,7 +85,7 @@ public class BackpackGui extends ModularPanel {
     public static final String CRAFTING_INV = "CraftingInv";
     public static final String MAGNET_INV = "MagnetInv";
     public static final String FEEDING_INV = "FeedingInv";
-    private static final int[] panelWidth = { 176, 176, 176, 176, 230, 230 };
+    private static final int[] panelWidth = { 194, 194, 194, 194, 248, 248 };
     private static final int[] panelHeight = { 166, 184, 220, 274, 274, 292 };
     public static int slot = 120;
     public static int upgradeSlot = 7;
@@ -116,10 +116,7 @@ public class BackpackGui extends ModularPanel {
                 if (!player.worldObj.isRemote) {
                     ItemStack usedItem = data.getUsedItemStack();
                     if (usedItem != null) {
-                        NBTTagCompound root = usedItem.getTagCompound();
-                        if (root == null) {
-                            root = new NBTTagCompound();
-                        }
+                        NBTTagCompound root = ItemNBTHelper.getNBT(usedItem);
                         root.setTag(BACKPACK_UPGRADE, this.serializeNBT());
                         usedItem.setTagCompound(root);
                     }
@@ -133,10 +130,7 @@ public class BackpackGui extends ModularPanel {
             protected void onContentsChanged(int slot) {
                 ItemStack usedItem = data.getUsedItemStack();
                 if (usedItem != null) {
-                    NBTTagCompound root = usedItem.getTagCompound();
-                    if (root == null) {
-                        root = new NBTTagCompound();
-                    }
+                    NBTTagCompound root = ItemNBTHelper.getNBT(usedItem);
                     root.setTag(BACKPACK_INV, this.serializeNBT());
                     usedItem.setTagCompound(root);
                 }
@@ -149,10 +143,7 @@ public class BackpackGui extends ModularPanel {
             public void onContentsChanged(int slot) {
                 ItemStack usedItem = data.getUsedItemStack();
                 if (usedItem != null) {
-                    NBTTagCompound root = usedItem.getTagCompound();
-                    if (root == null) {
-                        root = new NBTTagCompound();
-                    }
+                    NBTTagCompound root = ItemNBTHelper.getNBT(usedItem);
                     root.setTag(CRAFTING_INV, this.serializeNBT());
                     usedItem.setTagCompound(root);
                 }
@@ -165,10 +156,7 @@ public class BackpackGui extends ModularPanel {
             public void onContentsChanged(int slot) {
                 ItemStack usedItem = data.getUsedItemStack();
                 if (usedItem != null) {
-                    NBTTagCompound root = usedItem.getTagCompound();
-                    if (root == null) {
-                        root = new NBTTagCompound();
-                    }
+                    NBTTagCompound root = ItemNBTHelper.getNBT(usedItem);
                     root.setTag(MAGNET_INV, this.serializeNBT());
                     root.setTag(MAGNET_FILTER, createFilterList(magnetHandler));
                     usedItem.setTagCompound(root);
@@ -182,10 +170,7 @@ public class BackpackGui extends ModularPanel {
             public void onContentsChanged(int slot) {
                 ItemStack usedItem = data.getUsedItemStack();
                 if (usedItem != null) {
-                    NBTTagCompound root = usedItem.getTagCompound();
-                    if (root == null) {
-                        root = new NBTTagCompound();
-                    }
+                    NBTTagCompound root = ItemNBTHelper.getNBT(usedItem);
                     root.setTag(FEEDING_INV, this.serializeNBT());
                     root.setTag(FEEDING_FILTER, createFilterList(feedingHandler));
                     usedItem.setTagCompound(root);
@@ -254,12 +239,12 @@ public class BackpackGui extends ModularPanel {
                             .alignY(0.99f)))
                 .child(
                     MGuiBuilder.buildPlayerInventorySlotGroup(playerInventory)
-                        .align(Alignment.TopLeft)
+                        .align(Alignment.TopCenter)
                         .marginLeft(invMargin[meta])
                         .marginTop(panelHeight[meta] - 82))
                 .child(
                     MGuiBuilder.buildPlayerHotbarSlotGroup(playerInventory)
-                        .align(Alignment.TopLeft)
+                        .align(Alignment.TopCenter)
                         .marginLeft(invMargin[meta])
                         .marginTop(panelHeight[meta] - 24)));
 

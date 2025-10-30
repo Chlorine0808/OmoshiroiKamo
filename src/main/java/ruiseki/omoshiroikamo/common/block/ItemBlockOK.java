@@ -1,16 +1,17 @@
 package ruiseki.omoshiroikamo.common.block;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemBlockOK extends ItemBlock implements IAdvancedTooltipProvider {
 

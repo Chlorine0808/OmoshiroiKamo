@@ -28,6 +28,7 @@ public class LibResources {
     public static final String OVERLAY_PRIORITY_LEFT = PREFIX_GUI + "icons/priority_right.png";
     public static final String OVERLAY_PRIORITY_DOWN = PREFIX_GUI + "icons/priority_down.png";
     public static final String CYCLE_IOMODE = PREFIX_GUI + "cycle_iomode.png";
+    public static final String PROGRESS_ENERGY = PREFIX_GUI + "progress_energy.png";
     public static final String PROGRESS_BURN = PREFIX_GUI + "progress_burn.png";
 
     public static final String KEY_MANA = "mana";

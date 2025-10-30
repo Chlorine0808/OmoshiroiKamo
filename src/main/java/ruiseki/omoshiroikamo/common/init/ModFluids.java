@@ -31,7 +31,7 @@ public class ModFluids {
     }
 
     public static Fluid registerFluid(String name, String fluidName, String blockName, String texture, int density,
-                                      int viscosity, int temperature, Material material) {
+        int viscosity, int temperature, Material material) {
         // create the new fluid
         Fluid fluid = new Fluid(fluidName).setDensity(density)
             .setViscosity(viscosity)

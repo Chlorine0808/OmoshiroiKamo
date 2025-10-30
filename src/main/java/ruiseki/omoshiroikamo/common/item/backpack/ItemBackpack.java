@@ -156,6 +156,6 @@ public class ItemBackpack extends ItemBauble
 
     @Override
     public String[] getBaubleTypes(ItemStack itemstack) {
-        return new String[]{"body"};
+        return new String[] { "body" };
     }
 }

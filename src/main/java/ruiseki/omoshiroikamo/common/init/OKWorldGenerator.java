@@ -31,7 +31,7 @@ public class OKWorldGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
-                         IChunkProvider chunkProvider) {
+        IChunkProvider chunkProvider) {
         if (world.provider instanceof WorldProviderSurface) {
 
             if (WorldGenConfig.enableHardenedStoneGeneration) {
@@ -73,7 +73,7 @@ public class OKWorldGenerator implements IWorldGenerator {
     }
 
     public void runGeneration(WorldGenerator gen, World world, Random rand, int chunkX, int chunkZ, float chance,
-                              int minY, int maxY) {
+        int minY, int maxY) {
         if (minY < 0 || maxY > 255 || minY >= maxY || chance <= 0) {
             return;
         }
