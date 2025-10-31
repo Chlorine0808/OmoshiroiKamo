@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -136,6 +137,19 @@ public class CommonProxy {
 
     public void callAssembleResourcePack(FMLPreInitializationEvent event) {
         ResourePackGen.assembleResourcePack(event);
+    }
+
+    public EntityPlayer getClientPlayer() {
+        return null;
+    }
+
+    public World getClientWorld() {
+        return null;
+    }
+
+    public World getEntityWorld() {
+        return MinecraftServer.getServer()
+            .getEntityWorld();
     }
 
     protected void onServerTick() {
