@@ -17,8 +17,6 @@ public class PacketHandler {
 
     public static void init() {
         PacketHandler.INSTANCE
-            .registerMessage(PacketBackPackState.class, PacketBackPackState.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE
             .registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
 
         PacketHandler.INSTANCE

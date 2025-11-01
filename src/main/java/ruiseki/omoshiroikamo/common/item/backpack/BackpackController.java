@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -44,11 +43,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
 import ruiseki.omoshiroikamo.common.entity.EntityImmortalItem;
 import ruiseki.omoshiroikamo.common.item.upgrade.EnergyUpgrade;
-import ruiseki.omoshiroikamo.common.network.PacketBackPackState;
 import ruiseki.omoshiroikamo.common.util.ItemNBTHelper;
 import ruiseki.omoshiroikamo.config.item.FeedingConfig;
 import ruiseki.omoshiroikamo.config.item.MagnetConfig;
-import ruiseki.omoshiroikamo.plugin.baubles.BaublesUtil;
 
 @EventBusSubscriber
 public class BackpackController {
@@ -552,58 +549,6 @@ public class BackpackController {
         public ActiveBackPack(ItemStack item, int slot) {
             this.item = item;
             this.slot = slot;
-        }
-    }
-
-    public static void setBackpackActive(EntityPlayerMP player, PacketBackPackState.SlotType type, int slot,
-        boolean isActive) {
-        ItemStack stack = null;
-        IInventory baubles = null;
-        int dropOff = -1;
-        switch (type) {
-            case INVENTORY:
-                stack = player.inventory.getStackInSlot(slot);
-                break;
-            case ARMOR:
-                return;
-            case BAUBLES:
-                baubles = BaublesUtil.instance()
-                    .getBaubles(player);
-                if (baubles != null) {
-                    stack = baubles.getStackInSlot(slot);
-                }
-                break;
-        }
-        if (stack == null || stack.getItem() == null) {
-            return;
-        }
-        if (type == PacketBackPackState.SlotType.BAUBLES && !isActive) {
-            ItemStack[] inv = player.inventory.mainInventory;
-            for (int i = 0; i < inv.length && dropOff < 0; i++) {
-                if (inv[i] == null) {
-                    dropOff = i;
-                }
-            }
-            if (dropOff < 0) {
-                return;
-            }
-        }
-        switch (type) {
-            case INVENTORY:
-                player.inventory.setInventorySlotContents(slot, stack);
-                player.inventory.markDirty();
-                break;
-            case ARMOR:
-                return;
-            case BAUBLES:
-                if (dropOff < 0) {
-                    baubles.setInventorySlotContents(slot, stack);
-                } else {
-                    baubles.setInventorySlotContents(slot, null);
-                    player.inventory.setInventorySlotContents(dropOff, stack);
-                }
-                player.inventory.markDirty();
-                break;
         }
     }
 

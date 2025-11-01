@@ -53,10 +53,7 @@ public class ItemAssembler extends ItemOK {
 
     @Override
     public boolean canHarvestBlock(Block block, ItemStack itemStack) {
-        if (isValidSolarBlock(block)) {
-            return true;
-        }
-        return false;
+        return isValidSolarBlock(block);
     }
 
     @Override

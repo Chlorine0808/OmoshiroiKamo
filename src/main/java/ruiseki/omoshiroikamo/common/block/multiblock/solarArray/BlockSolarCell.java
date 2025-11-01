@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.block.multiblock.solarArray.cell;
+package ruiseki.omoshiroikamo.common.block.multiblock.solarArray;
 
 import java.util.List;
 
@@ -6,19 +6,25 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.client.render.block.solarArray.SolarCellISBRH;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockSolarCell extends BlockOK {
 
+    @SideOnly(Side.CLIENT)
+    IIcon top, side;
+
     protected BlockSolarCell() {
-        super(ModObject.blockSolarCell, TESolarCell.class);
+        super(ModObject.blockSolarCell, null);
     }
 
     public static BlockSolarCell create() {
@@ -31,18 +37,23 @@ public class BlockSolarCell extends BlockOK {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int meta) {
-        return new TESolarCell();
-    }
-
-    @Override
     public int getRenderType() {
-        return -1;
+        return SolarCellISBRH.renderId;
     }
 
     @Override
     public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "solar_cell_top");
+        top = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "solar_cell_top");
+        side = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "basalt");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if (side == 1) {
+            return top;
+        }
+        return this.side;
     }
 
     @Override

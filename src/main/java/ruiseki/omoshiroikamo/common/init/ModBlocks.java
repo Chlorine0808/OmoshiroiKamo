@@ -33,7 +33,7 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.lens.Block
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.BlockQuantumOreExtractor;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res.BlockQuantumResExtractor;
 import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarArray;
-import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.cell.BlockSolarCell;
+import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarCell;
 import ruiseki.omoshiroikamo.common.ore.OreRegister;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
