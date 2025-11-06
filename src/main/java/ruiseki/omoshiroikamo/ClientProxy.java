@@ -148,8 +148,6 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TELaserLens.class, laserLensTESR);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.LASER_LENS.get()), laserLensTESR);
 
-        ModItems.registerItemRenderer();
-
         if (ItemConfig.renderPufferFish) {
             MinecraftForgeClient.registerItemRenderer(Items.fish, new PufferFishRenderer());
         }

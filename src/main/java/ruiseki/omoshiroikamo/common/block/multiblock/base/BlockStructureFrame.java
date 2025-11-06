@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.common.block.multiblock.base;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -21,20 +20,20 @@ import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockStructureFrame extends BlockOK implements IMBBlock {
 
-    public static String[] blocks = new String[] { "basalt_structure_1", "basalt_structure_2", "basalt_structure_3",
+    public static String[] blocks = new String[]{"basalt_structure_1", "basalt_structure_2", "basalt_structure_3",
         "basalt_structure_4", "hardened_stone_structure_1", "hardened_stone_structure_2", "hardened_stone_structure_3",
         "hardened_stone_structure_4", "alabaster_structure_1", "alabaster_structure_2", "alabaster_structure_3",
-        "alabaster_structure_4" };
+        "alabaster_structure_4"};
 
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
 
-    public static BlockStructureFrame create() {
-        return new BlockStructureFrame();
+    protected BlockStructureFrame() {
+        super(ModObject.blockStructureFrame);
     }
 
-    private BlockStructureFrame() {
-        super(ModObject.blockStructureFrame, null, Material.rock);
+    public static BlockStructureFrame create() {
+        return new BlockStructureFrame();
     }
 
     @Override

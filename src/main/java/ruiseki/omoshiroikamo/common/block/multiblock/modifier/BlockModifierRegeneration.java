@@ -14,20 +14,17 @@ public class BlockModifierRegeneration extends BlockModifier {
 
     protected BlockModifierRegeneration() {
         super(ModObject.blockModifierRegeneration, "regen");
+        setTextureName("modifier_regen");
     }
 
     public static BlockModifierRegeneration create() {
         return new BlockModifierRegeneration();
     }
 
+
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_REGEN.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_regen");
     }
 }

@@ -14,6 +14,7 @@ public class BlockModifierSaturation extends BlockModifier {
 
     protected BlockModifierSaturation() {
         super(ModObject.blockModifierSaturation, "saturation");
+        setTextureName("modifier_saturation");
     }
 
     public static BlockModifierSaturation create() {
@@ -24,10 +25,5 @@ public class BlockModifierSaturation extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_SATURATION.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_saturation");
     }
 }

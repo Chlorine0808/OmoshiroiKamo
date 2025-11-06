@@ -14,6 +14,7 @@ public class BlockModifierHaste extends BlockModifier {
 
     protected BlockModifierHaste() {
         super(ModObject.blockModifierHaste, "haste");
+        setTextureName("modifier_haste");
     }
 
     public static BlockModifierHaste create() {
@@ -24,10 +25,5 @@ public class BlockModifierHaste extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_HASTE.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_haste");
     }
 }

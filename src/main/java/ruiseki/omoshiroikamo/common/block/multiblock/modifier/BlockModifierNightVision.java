@@ -14,6 +14,7 @@ public class BlockModifierNightVision extends BlockModifier {
 
     protected BlockModifierNightVision() {
         super(ModObject.blockModifierNightVision, "night_vision");
+        setTextureName("modifier_night_vision");
     }
 
     public static BlockModifierNightVision create() {
@@ -24,10 +25,5 @@ public class BlockModifierNightVision extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_NIGHT_VISION.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_night_vision");
     }
 }

@@ -15,6 +15,7 @@ public class BlockModifierSpeed extends BlockModifier {
 
     protected BlockModifierSpeed() {
         super(ModObject.blockModifierSpeed, "speed");
+        setTextureName("modifier_speed");
     }
 
     public static BlockModifierSpeed create() {
@@ -27,10 +28,5 @@ public class BlockModifierSpeed extends BlockModifier {
         list.add(ModifierAttribute.SPEED.getAttribute());
         list.add(ModifierAttribute.P_SPEED.getAttribute());
         list.add(new AttributeEnergyCostFixed(16));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_speed");
     }
 }

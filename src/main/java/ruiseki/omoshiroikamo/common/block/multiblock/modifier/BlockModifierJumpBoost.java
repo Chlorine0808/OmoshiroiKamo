@@ -14,6 +14,7 @@ public class BlockModifierJumpBoost extends BlockModifier {
 
     protected BlockModifierJumpBoost() {
         super(ModObject.blockModifierJumpBoost, "jump_boost");
+        setTextureName("modifier_jump_boost");
     }
 
     public static BlockModifierJumpBoost create() {
@@ -24,10 +25,5 @@ public class BlockModifierJumpBoost extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_JUMP_BOOST.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_jump_boost");
     }
 }

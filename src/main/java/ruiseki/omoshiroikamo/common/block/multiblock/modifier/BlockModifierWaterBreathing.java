@@ -14,6 +14,7 @@ public class BlockModifierWaterBreathing extends BlockModifier {
 
     protected BlockModifierWaterBreathing() {
         super(ModObject.blockModifierWaterBreathing, "water_breathing");
+        setTextureName("modifier_water_breathing");
     }
 
     public static BlockModifierWaterBreathing create() {
@@ -24,10 +25,5 @@ public class BlockModifierWaterBreathing extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_WATER_BREATHING.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_water_breathing");
     }
 }

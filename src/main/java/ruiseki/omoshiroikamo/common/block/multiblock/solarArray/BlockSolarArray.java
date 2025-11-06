@@ -24,6 +24,7 @@ public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> imple
 
     protected BlockSolarArray() {
         super(ModObject.blockSolarArray, TESolarArray.class);
+        setTextureName("cont_tier");
     }
 
     public static BlockSolarArray create() {
@@ -45,11 +46,6 @@ public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> imple
         list.add(new ItemStack(this, 1, 1));
         list.add(new ItemStack(this, 1, 2));
         list.add(new ItemStack(this, 1, 3));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "cont_tier");
     }
 
     @Override

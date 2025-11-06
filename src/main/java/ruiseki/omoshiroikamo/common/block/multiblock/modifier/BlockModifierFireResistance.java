@@ -14,6 +14,7 @@ public class BlockModifierFireResistance extends BlockModifier {
 
     protected BlockModifierFireResistance() {
         super(ModObject.blockModifierFireResistance, "fire_resistance");
+        setTextureName("modifier_fire_resistance");
     }
 
     public static BlockModifierFireResistance create() {
@@ -24,10 +25,5 @@ public class BlockModifierFireResistance extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_FIRE_RESISTANCE.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_fire_resistance");
     }
 }

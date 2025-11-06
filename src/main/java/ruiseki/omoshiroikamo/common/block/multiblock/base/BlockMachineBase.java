@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.common.block.multiblock.base;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -21,8 +20,8 @@ import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockMachineBase extends BlockOK implements IMBBlock {
 
-    public static String[] blocks = new String[] { "basalt_machine_base", "hardened_stone_machine_base",
-        "alabaster_machine_base" };
+    public static String[] blocks = new String[]{"basalt_machine_base", "hardened_stone_machine_base",
+        "alabaster_machine_base"};
 
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
@@ -31,8 +30,8 @@ public class BlockMachineBase extends BlockOK implements IMBBlock {
         return new BlockMachineBase();
     }
 
-    private BlockMachineBase() {
-        super(ModObject.blockMachineBase, null, Material.rock);
+    protected BlockMachineBase() {
+        super(ModObject.blockMachineBase);
     }
 
     @Override

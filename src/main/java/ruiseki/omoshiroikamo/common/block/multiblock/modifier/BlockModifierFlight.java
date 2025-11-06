@@ -14,6 +14,7 @@ public class BlockModifierFlight extends BlockModifier {
 
     protected BlockModifierFlight() {
         super(ModObject.blockModifierFlight, "flight");
+        setTextureName("modifier_flight");
     }
 
     public static BlockModifierFlight create() {
@@ -24,10 +25,5 @@ public class BlockModifierFlight extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.E_FLIGHT_CREATIVE.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iIconRegister) {
-        blockIcon = iIconRegister.registerIcon(LibResources.PREFIX_MOD + "modifier_flight");
     }
 }

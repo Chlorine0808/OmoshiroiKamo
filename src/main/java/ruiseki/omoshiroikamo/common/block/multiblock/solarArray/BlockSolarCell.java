@@ -24,12 +24,13 @@ public class BlockSolarCell extends BlockOK {
     IIcon top, side;
 
     protected BlockSolarCell() {
-        super(ModObject.blockSolarCell, null);
+        super(ModObject.blockSolarCell);
     }
 
     public static BlockSolarCell create() {
         return new BlockSolarCell();
     }
+
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
