@@ -381,6 +381,19 @@ public class ItemRecipes {
 
         // Analyzer
         GameRegistry.addShapelessRecipe(ModItems.ANALYZER.newItemStack(), Items.egg, Items.compass);
+
+        GameRegistry.addRecipe(
+            new ShapedOreRecipe(
+                ModItems.CHICKEN_CATCHER.newItemStack(),
+                " E ",
+                " S ",
+                " F ",
+                'E',
+                Items.egg,
+                'S',
+                "stickWood",
+                'F',
+                Items.feather));
     }
 
 }

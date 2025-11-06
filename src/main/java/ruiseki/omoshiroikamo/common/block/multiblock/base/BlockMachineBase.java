@@ -20,8 +20,8 @@ import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockMachineBase extends BlockOK implements IMBBlock {
 
-    public static String[] blocks = new String[]{"basalt_machine_base", "hardened_stone_machine_base",
-        "alabaster_machine_base"};
+    public static String[] blocks = new String[] { "basalt_machine_base", "hardened_stone_machine_base",
+        "alabaster_machine_base" };
 
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;

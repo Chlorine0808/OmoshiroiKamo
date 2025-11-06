@@ -17,6 +17,5 @@ public class BlockModifierCore extends BlockModifier {
     }
 
     @Override
-    public void addAttributes(List<IModifierAttribute> list) {
-    }
+    public void addAttributes(List<IModifierAttribute> list) {}
 }

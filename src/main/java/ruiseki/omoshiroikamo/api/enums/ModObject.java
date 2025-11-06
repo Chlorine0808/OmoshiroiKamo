@@ -41,12 +41,13 @@ public enum ModObject {
     blockAlabaster,
     blockHardenedStone,
     blockMica,
-    blockLauncher,
 
     blockBlockMaterial,
     blockConnectable,
     blockAnvil,
     blockFurnace,
+
+    blockRoost,
 
     itemOperationOrb,
     itemBackPack,
@@ -63,6 +64,7 @@ public enum ModObject {
     itemPhotovoltaicCell,
     itemAssembler,
 
+    itemChickenCatcher,
     itemChickenSpawnEgg,
     itemColoredEgg,
     itemLiquidEgg,

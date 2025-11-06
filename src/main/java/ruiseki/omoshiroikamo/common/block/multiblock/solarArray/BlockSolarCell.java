@@ -31,7 +31,6 @@ public class BlockSolarCell extends BlockOK {
         return new BlockSolarCell();
     }
 
-
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         list.add(new ItemStack(this, 1, 0));

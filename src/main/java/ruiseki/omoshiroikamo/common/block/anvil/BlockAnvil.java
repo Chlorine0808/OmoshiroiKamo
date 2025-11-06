@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.common.block.anvil;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -21,7 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.client.render.block.anvil.AnvilISBRH;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockAnvil extends AbstractBlock<TEAnvil> {
 
@@ -57,12 +55,10 @@ public class BlockAnvil extends AbstractBlock<TEAnvil> {
     }
 
     @Override
-    protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {
-    }
+    protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {}
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    }
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {}
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
