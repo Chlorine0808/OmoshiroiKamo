@@ -281,7 +281,7 @@ public class QuantumOreExtractorStructure {
         }};
     // spotless:on
 
-    public static final int[][] TIER_OFFSET = {{3, 0, 3}, {3, 0, 3}, {5, 0, 5}, {5, 0, 5}};
+    public static final int[][] TIER_OFFSET = { { 3, 0, 3 }, { 3, 0, 3 }, { 5, 0, 5 }, { 5, 0, 5 } };
     public static IStructureDefinition<TEQuantumOreExtractorT1> STRUCTURE_DEFINITION_TIER_1;
     public static IStructureDefinition<TEQuantumOreExtractorT2> STRUCTURE_DEFINITION_TIER_2;
     public static IStructureDefinition<TEQuantumOreExtractorT3> STRUCTURE_DEFINITION_TIER_3;
@@ -423,7 +423,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public void construct(ItemStack triggerStack, boolean hintsOnly, TEQuantumOreExtractorT1 ctx,
-                              ExtendedFacing aSide) {
+            ExtendedFacing aSide) {
             int tier = ctx.getTier();
 
             this.structure.buildOrHints(
@@ -443,7 +443,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public int survivalConstruct(ItemStack triggerStack, int elementBudget, ISurvivalBuildEnvironment env,
-                                     TEQuantumOreExtractorT1 ctx, ExtendedFacing aSide) {
+            TEQuantumOreExtractorT1 ctx, ExtendedFacing aSide) {
 
             int built = 0;
             int tier = ctx.getTier();
@@ -482,7 +482,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public void construct(ItemStack triggerStack, boolean hintsOnly, TEQuantumOreExtractorT2 ctx,
-                              ExtendedFacing aSide) {
+            ExtendedFacing aSide) {
             int tier = ctx.getTier();
 
             this.structure.buildOrHints(
@@ -502,7 +502,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public int survivalConstruct(ItemStack triggerStack, int elementBudget, ISurvivalBuildEnvironment env,
-                                     TEQuantumOreExtractorT2 ctx, ExtendedFacing aSide) {
+            TEQuantumOreExtractorT2 ctx, ExtendedFacing aSide) {
 
             int built = 0;
             int tier = ctx.getTier();
@@ -541,7 +541,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public void construct(ItemStack triggerStack, boolean hintsOnly, TEQuantumOreExtractorT3 ctx,
-                              ExtendedFacing aSide) {
+            ExtendedFacing aSide) {
             int tier = ctx.getTier();
 
             this.structure.buildOrHints(
@@ -561,7 +561,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public int survivalConstruct(ItemStack triggerStack, int elementBudget, ISurvivalBuildEnvironment env,
-                                     TEQuantumOreExtractorT3 ctx, ExtendedFacing aSide) {
+            TEQuantumOreExtractorT3 ctx, ExtendedFacing aSide) {
 
             int built = 0;
             int tier = ctx.getTier();
@@ -600,7 +600,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public void construct(ItemStack triggerStack, boolean hintsOnly, TEQuantumOreExtractorT4 ctx,
-                              ExtendedFacing aSide) {
+            ExtendedFacing aSide) {
             int tier = ctx.getTier();
 
             this.structure.buildOrHints(
@@ -620,7 +620,7 @@ public class QuantumOreExtractorStructure {
 
         @Override
         public int survivalConstruct(ItemStack triggerStack, int elementBudget, ISurvivalBuildEnvironment env,
-                                     TEQuantumOreExtractorT4 ctx, ExtendedFacing aSide) {
+            TEQuantumOreExtractorT4 ctx, ExtendedFacing aSide) {
 
             int built = 0;
             int tier = ctx.getTier();

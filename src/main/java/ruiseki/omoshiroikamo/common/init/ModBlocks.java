@@ -30,9 +30,9 @@ import ruiseki.omoshiroikamo.common.block.multiblock.modifier.BlockModifierSpeed
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.BlockModifierStrength;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.BlockModifierWaterBreathing;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumBeacon.BlockQuantumBeacon;
-import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.BlockLens;
-import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.BlockLaserCore;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.BlockColoredLens;
+import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.BlockLaserCore;
+import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.BlockLens;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.BlockQuantumOreExtractor;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res.BlockQuantumResExtractor;
 import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarArray;
@@ -81,8 +81,7 @@ public enum ModBlocks {
 
     ROOST(true, BlockRoost.create()),
     BREEDER(true, BlockBreeder.create()),
-    ROOST_COLLECTOR(true, BlockRoostCollector.create()),
-    ;
+    ROOST_COLLECTOR(true, BlockRoostCollector.create()),;
 
     public static final ModBlocks[] VALUES = values();
 

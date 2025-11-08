@@ -24,8 +24,7 @@ public enum LibMods {
     NotEnoughItems("NotEnoughItems"),
     TConstruct("TConstruct"),
     ThermalFoundation("ThermalFoundation"),
-    Waila("Waila"),
-    ;
+    Waila("Waila"),;
 
     public final String modid;
     private final Supplier<Boolean> supplier;
