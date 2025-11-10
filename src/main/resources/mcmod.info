@@ -13,9 +13,8 @@
         "Ruiseki"
       ],
       "credits": "",
-      "logoFile": "",
+      "logoFile": "assets/${modId}/textures/logo.png",
       "screenshots": [],
-      "solarCell": "",
       "requiredMods": [],
       "dependencies": [],
       "dependants": [],
