@@ -7,6 +7,7 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.TileEntityEnder;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH;
 import ruiseki.omoshiroikamo.common.OKCreativeTab;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
@@ -38,15 +39,13 @@ public class BlockOK extends BlockEnder {
 
     @Override
     public String getTextureName() {
-        return textureName;
+        return textureName == null ? name : textureName;
     }
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        if (getTextureName() != null) {
+        if (!(getRenderType() == JsonModelISBRH.JSON_ISBRH_ID)) {
             blockIcon = reg.registerIcon(LibResources.PREFIX_MOD + getTextureName());
-        } else {
-            blockIcon = reg.registerIcon(LibResources.PREFIX_MOD + name);
         }
     }
 

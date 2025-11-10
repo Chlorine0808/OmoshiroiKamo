@@ -1,36 +1,26 @@
 package ruiseki.omoshiroikamo.common.block.chicken;
 
-import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
+import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import com.enderio.core.common.TileEntityEnder;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaInfoProvider;
 
 public class BlockRoost extends AbstractBlock<TERoost> implements IWailaInfoProvider {
-
-    @SideOnly(Side.CLIENT)
-    public IIcon wood, front, hay_side, hay;
 
     protected BlockRoost() {
         super(ModObject.blockRoost, TERoost.class, Material.wood);
@@ -43,19 +33,6 @@ public class BlockRoost extends AbstractBlock<TERoost> implements IWailaInfoProv
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         return new TERoost();
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        hay_side = reg.registerIcon(LibResources.PREFIX_MOD + "hay_side");
-        hay = reg.registerIcon(LibResources.PREFIX_MOD + "hay_floor");
-        wood = reg.registerIcon(LibResources.PREFIX_MOD + "plain_face");
-        front = reg.registerIcon(LibResources.PREFIX_MOD + "curtain_side");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return wood;
     }
 
     @Override
@@ -74,9 +51,6 @@ public class BlockRoost extends AbstractBlock<TERoost> implements IWailaInfoProv
     public boolean isOpaqueCube() {
         return false;
     }
-
-    @Override
-    protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {}
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {

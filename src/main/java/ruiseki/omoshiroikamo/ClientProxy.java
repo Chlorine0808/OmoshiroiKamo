@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.ResourePackGen;
 import ruiseki.omoshiroikamo.client.handler.DameEvents;
 import ruiseki.omoshiroikamo.client.handler.KeyHandler;
+import ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH;
 import ruiseki.omoshiroikamo.client.render.block.anvil.AnvilTESR;
 import ruiseki.omoshiroikamo.client.render.block.chicken.RoostTESR;
 import ruiseki.omoshiroikamo.client.render.block.nanoBotBeacon.NanoBotBeaconTESR;
@@ -118,6 +119,8 @@ public class ClientProxy extends CommonProxy {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
+
+        RenderingRegistry.registerBlockHandler(new JsonModelISBRH());
     }
 
     @Override
