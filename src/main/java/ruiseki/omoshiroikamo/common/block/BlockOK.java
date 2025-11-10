@@ -1,15 +1,11 @@
 package ruiseki.omoshiroikamo.common.block;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.world.World;
 
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.TileEntityEnder;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH;
 import ruiseki.omoshiroikamo.common.OKCreativeTab;

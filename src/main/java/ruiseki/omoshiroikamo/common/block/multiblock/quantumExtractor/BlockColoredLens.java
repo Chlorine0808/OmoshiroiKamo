@@ -6,11 +6,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import com.enderio.core.common.util.DyeColor;
@@ -21,12 +19,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockColoredLens extends BlockOK {
 
-    public static String[] blocks = new String[]{"black", "red", "green", "brown", "blue", "purple", "cyan",
-        "light_gray", "gray", "pink", "lime", "yellow", "light_blue", "magenta", "orange", "white"};
+    public static String[] blocks = new String[] { "black", "red", "green", "brown", "blue", "purple", "cyan",
+        "light_gray", "gray", "pink", "lime", "yellow", "light_blue", "magenta", "orange", "white" };
 
     protected BlockColoredLens() {
         super(ModObject.blockColoredLens, Material.glass);

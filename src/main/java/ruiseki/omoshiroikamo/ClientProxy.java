@@ -8,8 +8,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -55,15 +53,13 @@ import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModItems;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.item.ItemConfig;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public ClientProxy() {
-    }
+    public ClientProxy() {}
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
