@@ -22,10 +22,10 @@ import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.plugin.waila.IWailaInfoProvider;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockQuantumOreExtractor extends AbstractMultiBlockBlock<TEQuantumExtractor>
-    implements IWailaInfoProvider {
+    implements IWailaBlockInfoProvider {
 
     protected BlockQuantumOreExtractor() {
         super(ModObject.blockQuantumOreExtractor, TEQuantumExtractor.class);

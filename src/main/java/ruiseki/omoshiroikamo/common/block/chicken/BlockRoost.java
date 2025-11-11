@@ -18,9 +18,9 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
-import ruiseki.omoshiroikamo.plugin.waila.IWailaInfoProvider;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockRoost extends AbstractBlock<TERoost> implements IWailaInfoProvider {
+public class BlockRoost extends AbstractBlock<TERoost> implements IWailaBlockInfoProvider {
 
     protected BlockRoost() {
         super(ModObject.blockRoost, TERoost.class, Material.wood);

@@ -21,9 +21,9 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.plugin.waila.IWailaInfoProvider;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> implements IWailaInfoProvider {
+public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> implements IWailaBlockInfoProvider {
 
     protected BlockSolarArray() {
         super(ModObject.blockSolarArray, TESolarArray.class);
