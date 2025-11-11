@@ -33,7 +33,7 @@ import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.OreDictUtils;
 import ruiseki.omoshiroikamo.common.util.handler.ElementalHandler;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.plugin.baubles.BaubleExpandedCompat;
+import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
 import ruiseki.omoshiroikamo.plugin.compat.EtFuturumCompat;
 import ruiseki.omoshiroikamo.plugin.compat.TICCompat;
 import ruiseki.omoshiroikamo.plugin.nei.NEICompat;
@@ -46,7 +46,8 @@ public class CommonProxy {
     protected long clientTickCount = 0;
     protected final TickTimer tickTimer = new TickTimer();
 
-    public CommonProxy() {}
+    public CommonProxy() {
+    }
 
     public void preInit(FMLPreInitializationEvent event) {
         MaterialRegistry.preInit();
@@ -97,7 +98,8 @@ public class CommonProxy {
         ModCommands.init(event);
     }
 
-    public void serverStarted(FMLServerStartedEvent event) {}
+    public void serverStarted(FMLServerStartedEvent event) {
+    }
 
     public void onConstruction(FMLConstructionEvent event) {
         if (LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
@@ -130,7 +132,8 @@ public class CommonProxy {
         ++serverTickCount;
     }
 
-    protected void onClientTick() {}
+    protected void onClientTick() {
+    }
 
     public long getTickCount() {
         return serverTickCount;

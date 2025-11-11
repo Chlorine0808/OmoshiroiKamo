@@ -59,16 +59,6 @@ public class BlockQuantumResExtractor extends AbstractMultiBlockBlock<TEQuantumE
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
     public int getRenderColor(int meta) {
         int rgb;
         switch (meta) {
