@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
@@ -21,8 +22,11 @@ import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.general.ChickenConfigs;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaEntityInfoProvider;
 
-public class EntityChickensChicken extends EntityChicken {
+public class EntityChickensChicken extends EntityChicken implements IWailaEntityInfoProvider {
 
     private static final String TYPE_NBT = "Type";
     private static final String STATS_ANALYZED_NBT = "Analyzed";
@@ -352,5 +356,32 @@ public class EntityChickensChicken extends EntityChicken {
         }
 
         super.setGrowingAge(age);
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, Entity entity) {
+        if (!(entity instanceof EntityChickensChicken chicken)) {
+            return;
+        }
+        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.tier", chicken.getTier()));
+
+        if (chicken.getStatsAnalyzed() || ChickenConfigs.alwaysShowStats) {
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.growth", chicken.getGrowth()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.gain", chicken.getGain()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.strength", chicken.getStrength()));
+        }
+
+        if (!chicken.isChild()) {
+            int layProgress = chicken.getLayProgress();
+            if (layProgress > 0) {
+                int totalSeconds = layProgress / 20;
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+
+                String timeFormatted = String.format("%d:%02d", minutes, seconds);
+
+                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.layProgress", timeFormatted));
+            }
+        }
     }
 }

@@ -44,35 +44,42 @@ public class PositionedFluidTank {
     public float chance;
     private final List<String> tooltip = new ArrayList<>();
 
+    private static FluidTank[] createFluidTanks(Collection<FluidStack> fluids) {
+        FluidTank[] tanks = new FluidTank[fluids.size()];
+        int i = 0;
+        for (FluidStack fs : fluids) {
+            tanks[i++] = new FluidTank(fs.copy(), fs.amount);
+        }
+        return tanks;
+    }
+
     public PositionedFluidTank(FluidTank[] tanks, Rectangle position, String overlayTexture, Point overlayTexturePos) {
-        this.position = position;
         this.tanks = tanks;
-        this.tank = tanks[0];
+        this.tank = tanks.length > 0 ? tanks[0] : null;
+        this.position = position;
         this.overlayTexture = overlayTexture;
         this.overlayTexturePos = overlayTexturePos;
     }
 
-    public PositionedFluidTank(Collection<FluidStack> fluids, int capacity, Rectangle position, String overlayTexture,
+    public PositionedFluidTank(Collection<FluidStack> fluids, Rectangle position, String overlayTexture,
         Point overlayTexturePos) {
-        this(createFluidTanks(capacity, fluids), position, overlayTexture, overlayTexturePos);
+        this(createFluidTanks(fluids), position, overlayTexture, overlayTexturePos);
     }
 
-    public PositionedFluidTank(FluidStack fluid, int capacity, Rectangle position, String overlayTexture,
-        Point overlayTexturePos) {
-        this(createFluidTanks(capacity, Collections.singletonList(fluid)), position, overlayTexture, overlayTexturePos);
+    public PositionedFluidTank(Collection<FluidStack> fluids, Rectangle position) {
+        this(createFluidTanks(fluids), position, null, null);
     }
 
-    public PositionedFluidTank(FluidStack fluid, int capacity, Rectangle position) {
-        this(fluid, capacity, position, null, null);
+    public PositionedFluidTank(FluidStack fluid, Rectangle position, String overlayTexture, Point overlayTexturePos) {
+        this(createFluidTanks(Collections.singletonList(fluid)), position, overlayTexture, overlayTexturePos);
     }
 
-    private static FluidTank[] createFluidTanks(int capacity, Collection<FluidStack> fluidStacks) {
-        FluidTank[] tanks = new FluidTank[fluidStacks.size()];
-        int i = 0;
-        for (FluidStack fluidStack : fluidStacks) {
-            tanks[i++] = new FluidTank(fluidStacks != null ? fluidStack.copy() : null, capacity);
-        }
-        return tanks;
+    public PositionedFluidTank(FluidStack fluid, Rectangle position) {
+        this(fluid, position, null, null);
+    }
+
+    public PositionedFluidTank(FluidStack fluid, int x, int y) {
+        this(fluid, new Rectangle(x + 1, y + 1, 16, 16), null, null);
     }
 
     public List<String> handleTooltip(List<String> currenttip) {

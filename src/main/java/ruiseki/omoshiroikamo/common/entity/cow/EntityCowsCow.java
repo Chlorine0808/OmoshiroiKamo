@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityCow;
@@ -12,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -28,8 +30,11 @@ import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistry;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.api.fluid.SmartTank;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.general.CowsConfigs;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaEntityInfoProvider;
 
-public class EntityCowsCow extends EntityCow {
+public class EntityCowsCow extends EntityCow implements IWailaEntityInfoProvider {
 
     private static final String TYPE_NBT = "Type";
     private static final String STATS_ANALYZED_NBT = "Analyzed";
@@ -415,5 +420,45 @@ public class EntityCowsCow extends EntityCow {
         }
 
         super.setGrowingAge(age);
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, Entity entity) {
+        if (!(entity instanceof EntityCowsCow cow)) {
+            return;
+        }
+        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.tier", cow.getTier()));
+
+        if (cow.getStatsAnalyzed() || CowsConfigs.alwaysShowStats) {
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.growth", cow.getGrowth()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.gain", cow.getGain()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.strength", cow.getStrength()));
+        }
+
+        if (!cow.isChild()) {
+            int milkProgress = cow.getMilkProgress();
+            if (milkProgress > 0) {
+                int totalSeconds = milkProgress / 20;
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+                String timeFormatted = String.format("%d:%02d", minutes, seconds);
+                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.milkProgress", timeFormatted));
+            }
+
+            FluidStack stored = cow.getMilkFluid();
+            if (!(stored == null || stored.getFluid() == null)) {
+                String fluidName = stored.getFluid()
+                    .getLocalizedName(stored);
+                int amount = stored.amount;
+                tooltip.add(
+                    String.format(
+                        "%s%s : %s (%d %s)",
+                        EnumChatFormatting.GRAY,
+                        LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.fluid"),
+                        fluidName,
+                        amount,
+                        LibMisc.LANG.localize("fluid.millibucket.abr")));
+            }
+        }
     }
 }

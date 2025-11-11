@@ -1,6 +1,5 @@
 package ruiseki.omoshiroikamo.plugin.nei.recipe;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -245,8 +244,7 @@ public class ElectrolyzerRecipeHandler extends RecipeHandlerBase {
                     continue;
                 }
                 int x = 15 + i * 18;
-                Rectangle rect = new Rectangle(x + 1, 32 + 1, 16, 16);
-                tanks.add(new PositionedFluidTank(fs.stack, 1000, rect).setChance(fs.chance));
+                tanks.add(new PositionedFluidTank(fs.stack, x, 32).setChance(fs.chance));
             }
             for (int i = 0; i < Math.min(fluidOutputs.size(), 3); i++) {
                 ChanceFluidStack fs = fluidOutputs.get(i);
@@ -254,8 +252,7 @@ public class ElectrolyzerRecipeHandler extends RecipeHandlerBase {
                     continue;
                 }
                 int x = 95 + i * 18;
-                Rectangle rect = new Rectangle(x + 1, 32 + 1, 16, 16);
-                tanks.add(new PositionedFluidTank(fs.stack, 1000, rect).setChance(fs.chance));
+                tanks.add(new PositionedFluidTank(fs.stack, x, 32).setChance(fs.chance));
             }
             return tanks;
         }

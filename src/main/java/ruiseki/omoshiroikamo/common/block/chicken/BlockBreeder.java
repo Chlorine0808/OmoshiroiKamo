@@ -17,9 +17,9 @@ import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
-import ruiseki.omoshiroikamo.plugin.waila.IWailaInfoProvider;
+import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockBreeder extends AbstractBlock<TEBreeder> implements IWailaInfoProvider {
+public class BlockBreeder extends AbstractBlock<TEBreeder> implements IWailaBlockInfoProvider {
 
     protected BlockBreeder() {
         super(ModObject.blockBreeder, TEBreeder.class, Material.wood);
