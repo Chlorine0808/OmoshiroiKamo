@@ -5,21 +5,29 @@ import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBR
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.enderio.core.common.util.DyeColor;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockQuantumBeacon extends AbstractMultiBlockBlock<TEQuantumBeacon> {
+
+    @SideOnly(Side.CLIENT)
+    IIcon cont_tier;
 
     protected BlockQuantumBeacon() {
         super(ModObject.blockQuantumBeacon, TEQuantumBeacon.class);
@@ -50,6 +58,11 @@ public class BlockQuantumBeacon extends AbstractMultiBlockBlock<TEQuantumBeacon>
     @Override
     public int getRenderType() {
         return JSON_ISBRH_ID;
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        cont_tier = reg.registerIcon(LibResources.PREFIX_MOD + "cont_tier");
     }
 
     @Override

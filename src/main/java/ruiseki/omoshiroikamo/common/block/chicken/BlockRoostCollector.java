@@ -4,16 +4,24 @@ import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBR
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockRoostCollector extends AbstractBlock<TERoostCollector> {
+
+    @SideOnly(Side.CLIENT)
+    IIcon side, face;
 
     protected BlockRoostCollector() {
         super(ModObject.blockRoostCollector, TERoostCollector.class, Material.wood);
@@ -26,6 +34,12 @@ public class BlockRoostCollector extends AbstractBlock<TERoostCollector> {
     @Override
     public int getRenderType() {
         return JSON_ISBRH_ID;
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        face = reg.registerIcon(LibResources.PREFIX_MOD + "plain_face");
+        side = reg.registerIcon(LibResources.PREFIX_MOD + "slat_side");
     }
 
     @Override

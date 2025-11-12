@@ -38,14 +38,13 @@ dependencies {
     implementation('curse.maven:cofh-lib-220333:2388748')
     implementation("com.github.GTNewHorizons:StructureLib:1.4.23:dev")
     implementation("com.github.GTNewHorizons:ModularUI2:2.3.4-1.7.10:dev")
-    implementation("com.github.GTNewHorizons:GTNHLib:0.8.2:dev")
+    implementation("com.github.GTNewHorizons:GTNHLib:0.8.4:dev")
     implementation("com.github.GTNewHorizons:EnderCore:0.5.0:dev") { transitive = false }
     implementation('com.github.GTNewHorizons:Baubles-Expanded:2.2.2-GTNH:dev')
 
     devOnlyNonPublishable("com.github.GTNewHorizons:BlockRenderer6343:1.4.2:dev") { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.20-GTNH:dev")
     devOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.5:dev") { transitive = false }
-    devOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta67:dev') { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:Et-Futurum-Requiem:2.6.2.25-GTNH:dev") { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:Botania:1.13.3-GTNH:dev") { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.2:dev")
@@ -56,13 +55,11 @@ dependencies {
     devOnlyNonPublishable("curse.maven:big-reactors-241994:2282591")
     devOnlyNonPublishable("com.github.GTNewHorizons:Draconic-Evolution:1.5.2-GTNH:dev")
     devOnlyNonPublishable("curse.maven:actually-additions-228404:2274681")
-    devOnlyNonPublishable("curse.maven:elemental-cows-224582:2215463")
 
     compileOnly("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
     compileOnly('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
     compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.45:dev')
-    compileOnly files("libs/neverenoughanimations-v1.0.6-1-7-10.8+91c551807b-dirty-dev.jar")
-    compileOnly("curse.maven:environmental-tech-245453:2387220")
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta67:dev') { transitive = false }
 
     runtimeOnlyNonPublishable files("libs/CoFHCore-[1.7.10]3.1.4-329.jar")
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:Hodgepodge:2.6.110:dev") { transitive = false }

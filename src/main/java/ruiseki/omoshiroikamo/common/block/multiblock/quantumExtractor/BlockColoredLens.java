@@ -6,9 +6,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import com.enderio.core.common.util.DyeColor;
@@ -19,8 +21,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockColoredLens extends BlockOK {
+
+    @SideOnly(Side.CLIENT)
+    IIcon lens_colored_top, lens_colored_top_2, lens_colored_side, lens_colored_side_2, glass_colored;
 
     public static String[] blocks = new String[] { "black", "red", "green", "brown", "blue", "purple", "cyan",
         "light_gray", "gray", "pink", "lime", "yellow", "light_blue", "magenta", "orange", "white" };
@@ -56,6 +62,15 @@ public class BlockColoredLens extends BlockOK {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        lens_colored_top = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_top");
+        lens_colored_top_2 = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_top_2");
+        lens_colored_side = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_side");
+        lens_colored_side_2 = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_side_2");
+        glass_colored = reg.registerIcon(LibResources.PREFIX_MOD + "glass_colored");
     }
 
     @Override
