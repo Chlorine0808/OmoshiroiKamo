@@ -157,7 +157,7 @@ public class JsonModelISBRH extends ModelISBRH {
         }
 
         // ...or greatest among neighbors otherwise
-        int lm = block.getMixedBrightnessForBlock(world, x, y, z);;
+        int lm = block.getMixedBrightnessForBlock(world, x, y, z);
         for (int i = 0; i < 6; i++) {
             final var neighbor = DIRECTIONS[i];
             final int lx = x + neighbor.getStepX();

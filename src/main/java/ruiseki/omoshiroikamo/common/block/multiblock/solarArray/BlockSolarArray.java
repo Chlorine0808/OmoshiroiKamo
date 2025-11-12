@@ -5,12 +5,14 @@ import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBR
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -21,9 +23,12 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> implements IWailaBlockInfoProvider {
+
+    IIcon solar_tex;
 
     protected BlockSolarArray() {
         super(ModObject.blockSolarArray, TESolarArray.class);
@@ -48,6 +53,11 @@ public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> imple
         list.add(new ItemStack(this, 1, 1));
         list.add(new ItemStack(this, 1, 2));
         list.add(new ItemStack(this, 1, 3));
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        solar_tex = reg.registerIcon(LibResources.PREFIX_MOD + "solar_tex");
     }
 
     @Override

@@ -6,21 +6,29 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockRoost extends AbstractBlock<TERoost> implements IWailaBlockInfoProvider {
+
+    @SideOnly(Side.CLIENT)
+    public IIcon wood, front, hay_side, hay;
 
     protected BlockRoost() {
         super(ModObject.blockRoost, TERoost.class, Material.wood);
@@ -38,6 +46,14 @@ public class BlockRoost extends AbstractBlock<TERoost> implements IWailaBlockInf
     @Override
     public int getRenderType() {
         return JSON_ISBRH_ID;
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        hay_side = reg.registerIcon(LibResources.PREFIX_MOD + "hay_side");
+        hay = reg.registerIcon(LibResources.PREFIX_MOD + "hay_floor");
+        wood = reg.registerIcon(LibResources.PREFIX_MOD + "plain_face");
+        front = reg.registerIcon(LibResources.PREFIX_MOD + "curtain_side");
     }
 
     @Override

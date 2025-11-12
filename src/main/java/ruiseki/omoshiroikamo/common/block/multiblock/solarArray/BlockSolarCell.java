@@ -4,17 +4,23 @@ import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBR
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockSolarCell extends BlockOK {
+
+    IIcon solar;
 
     protected BlockSolarCell() {
         super(ModObject.blockSolarCell);
@@ -42,6 +48,11 @@ public class BlockSolarCell extends BlockOK {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        solar = reg.registerIcon(LibResources.PREFIX_MOD + "solar");
     }
 
     @Override
