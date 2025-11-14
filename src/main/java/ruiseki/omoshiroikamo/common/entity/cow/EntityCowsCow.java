@@ -157,6 +157,10 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
         increaseStats(child, this, mateChicken, rand);
 
+        if (CowConfig.useTrait) {
+            mutationTrait(child, this, mateChicken, rand);
+        }
+
         if (this.getStatsAnalyzed() || mateChicken.getStatsAnalyzed()) {
             child.setStatsAnalyzed(true);
         }

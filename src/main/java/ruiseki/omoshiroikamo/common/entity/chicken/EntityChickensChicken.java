@@ -146,6 +146,10 @@ public class EntityChickensChicken extends EntityChicken implements IMobStats, I
 
         increaseStats(child, this, mateChicken, rand);
 
+        if (ChickenConfig.useTrait) {
+            mutationTrait(child, this, mateChicken, rand);
+        }
+
         if (this.getStatsAnalyzed() || mateChicken.getStatsAnalyzed()) {
             child.setStatsAnalyzed(true);
         }

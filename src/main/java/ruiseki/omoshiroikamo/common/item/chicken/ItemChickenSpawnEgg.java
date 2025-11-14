@@ -26,6 +26,7 @@ import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 
@@ -127,7 +128,11 @@ public class ItemChickenSpawnEgg extends ItemOK {
 
         entity.setPosition(pos.x + 0.5, pos.y, pos.z + 0.5);
         entity.onSpawnWithEgg(null);
-        entity.addRandomTraits();
+
+        if (ChickenConfig.useTrait) {
+            entity.addRandomTraits();
+        }
+
         entity.setType(stack.getItemDamage());
 
         if (stack.hasTagCompound()) {
