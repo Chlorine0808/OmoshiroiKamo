@@ -61,6 +61,11 @@ public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> imple
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.solar_tex;
+    }
+
+    @Override
     public int getRenderType() {
         return JSON_ISBRH_ID;
     }

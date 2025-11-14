@@ -40,6 +40,11 @@ public class BlockLaserCore extends BlockOK {
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.laser_core;
+    }
+
+    @Override
     public int getRenderType() {
         return JSON_ISBRH_ID;
     }

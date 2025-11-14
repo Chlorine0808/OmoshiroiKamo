@@ -55,6 +55,11 @@ public class BlockSolarCell extends BlockOK {
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.solar;
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         setBlockBounds(0f, 0f, 0f, 1f, 13f / 16f, 1f);
     }

@@ -59,7 +59,9 @@ public class ChickenBreedingRecipeHandler extends RecipeHandlerBase {
         Set<ChickensRegistryItem> added = new HashSet<>();
         for (ChickensRegistryItem chicken : ChickensRegistry.INSTANCE.getItems()) {
             ItemStack egg = ModItems.CHICKEN_SPAWN_EGG.newItemStack(1, chicken.getId());
-            if (egg.isItemEqual(result) && (chicken.getParent1() != null || chicken.getParent2() != null)) {
+            ItemStack item = ModItems.CHICKEN.newItemStack(1, chicken.getId());
+            if ((egg.isItemEqual(result) || item.isItemEqual(result))
+                && (chicken.getParent1() != null || chicken.getParent2() != null)) {
                 if (added.add(chicken)) {
                     arecipes.add(new CachedChickensRecipe(chicken));
                 }
@@ -84,6 +86,14 @@ public class ChickenBreedingRecipeHandler extends RecipeHandlerBase {
             ItemStack egg2 = ModItems.CHICKEN_SPAWN_EGG.newItemStack(1, p2.getId());
 
             if (egg1.isItemEqual(ingredient) || egg2.isItemEqual(ingredient)) {
+                if (added.add(chicken)) {
+                    arecipes.add(new CachedChickensRecipe(chicken));
+                }
+            }
+            ItemStack item1 = ModItems.CHICKEN.newItemStack(1, p1.getId());
+            ItemStack item2 = ModItems.CHICKEN.newItemStack(1, p2.getId());
+
+            if (item1.isItemEqual(ingredient) || item2.isItemEqual(ingredient)) {
                 if (added.add(chicken)) {
                     arecipes.add(new CachedChickensRecipe(chicken));
                 }

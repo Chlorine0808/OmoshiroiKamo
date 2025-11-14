@@ -72,6 +72,11 @@ public class BlockQuantumOreExtractor extends AbstractMultiBlockBlock<TEQuantumE
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.cont_tier;
+    }
+
+    @Override
     public int getRenderColor(int meta) {
         int rgb;
         switch (meta) {

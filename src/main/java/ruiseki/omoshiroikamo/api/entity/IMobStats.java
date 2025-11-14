@@ -132,6 +132,9 @@ public interface IMobStats {
         child.setBaseGrowth(calculateNewStat(p1Strength, p2Strength, p1.getBaseGrowth(), p2.getBaseGrowth(), rand));
         child.setBaseGain(calculateNewStat(p1Strength, p2Strength, p2.getBaseGain(), p2.getBaseGain(), rand));
         child.setBaseStrength(calculateNewStat(p1Strength, p2Strength, p1Strength, p2Strength, rand));
+    }
+
+    default void mutationTrait(IMobStats child, IMobStats p1, IMobStats p2, Random rand) {
 
         List<MobTrait> parentTraits = new ArrayList<>();
         if (p1.getTraits() != null) {
