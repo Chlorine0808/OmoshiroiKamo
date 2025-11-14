@@ -74,6 +74,11 @@ public class BlockColoredLens extends BlockOK {
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.lens_colored_top;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < BlockColoredLens.blocks.length; i++) {

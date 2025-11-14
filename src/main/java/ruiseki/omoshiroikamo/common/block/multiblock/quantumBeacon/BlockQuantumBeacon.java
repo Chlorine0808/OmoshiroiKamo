@@ -66,6 +66,11 @@ public class BlockQuantumBeacon extends AbstractMultiBlockBlock<TEQuantumBeacon>
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.cont_tier;
+    }
+
+    @Override
     public int getRenderColor(int meta) {
         int rgb;
         switch (meta) {

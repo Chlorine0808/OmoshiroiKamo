@@ -57,6 +57,11 @@ public class BlockRoost extends AbstractBlock<TERoost> implements IWailaBlockInf
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.front;
+    }
+
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, player, stack);
         AbstractTE te = (AbstractTE) world.getTileEntity(x, y, z);

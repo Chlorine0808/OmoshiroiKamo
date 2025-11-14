@@ -51,6 +51,11 @@ public class BlockBreeder extends AbstractBlock<TEBreeder> implements IWailaBloc
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.side;
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }

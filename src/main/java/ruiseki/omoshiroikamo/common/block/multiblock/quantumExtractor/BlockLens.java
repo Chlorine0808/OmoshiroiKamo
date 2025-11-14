@@ -54,6 +54,11 @@ public class BlockLens extends BlockOK {
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.lens_top;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         list.add(new ItemStack(this, 1, 0));

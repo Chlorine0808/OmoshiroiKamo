@@ -43,6 +43,11 @@ public class BlockRoostCollector extends AbstractBlock<TERoostCollector> {
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.side;
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, int meta) {
         return new TERoostCollector();
     }
