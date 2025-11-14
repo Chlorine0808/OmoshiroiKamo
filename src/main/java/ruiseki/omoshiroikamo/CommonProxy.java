@@ -41,6 +41,15 @@ public class CommonProxy {
 
     public CommonProxy() {}
 
+    public void onConstruction(FMLConstructionEvent event) {
+        if (LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
+            Logger.info(
+                LibMisc.MOD_ID
+                    + " is in snapshot mode. Disabling update checker... Other features may also be different.");
+        }
+        MCLib.init();
+    }
+
     public void preInit(FMLPreInitializationEvent event) {
 
         ModFluids.preInit();
@@ -56,12 +65,6 @@ public class CommonProxy {
         if (!LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
             MCLibModules.updateCheckAPI.submitModTask(LibMisc.MOD_ID, LibMisc.VERSION, LibMisc.VERSION_URL);
             Logger.info("Submitting update check for " + LibMisc.MOD_ID + " version " + LibMisc.VERSION);
-        } else {
-            Logger.info("Version Checking");
-            Logger.info("SNAPSHOT_BUILD: " + LibMisc.SNAPSHOT_BUILD);
-            Logger.info("DEV_ENVIRONMENT: " + LibMisc.DEV_ENVIRONMENT);
-            Logger.info("VERSION: " + LibMisc.VERSION);
-            Logger.info("VERSION_URL: " + LibMisc.VERSION_URL);
         }
     }
 
@@ -89,19 +92,6 @@ public class CommonProxy {
     }
 
     public void serverStarted(FMLServerStartedEvent event) {}
-
-    public void onConstruction(FMLConstructionEvent event) {
-        if (LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
-            Logger.info(
-                LibMisc.MOD_ID
-                    + " is in snapshot mode. Disabling update checker... Other features may also be different.");
-        } else {
-            Logger.info("SNAPSHOT_BUILD: " + LibMisc.SNAPSHOT_BUILD);
-            Logger.info("DEV_ENVIRONMENT: " + LibMisc.DEV_ENVIRONMENT);
-        }
-
-        MCLib.init();
-    }
 
     public EntityPlayer getClientPlayer() {
         return null;
