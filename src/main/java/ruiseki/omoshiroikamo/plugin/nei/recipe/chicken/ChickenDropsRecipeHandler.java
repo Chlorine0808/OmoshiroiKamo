@@ -69,7 +69,8 @@ public class ChickenDropsRecipeHandler extends RecipeHandlerBase {
         Set<ChickensRegistryItem> added = new HashSet<>();
         for (ChickensRegistryItem chicken : ChickensRegistry.INSTANCE.getItems()) {
             ItemStack egg = ModItems.CHICKEN_SPAWN_EGG.newItemStack(1, chicken.getId());
-            if (egg.isItemEqual(ingredient)) {
+            ItemStack item = ModItems.CHICKEN.newItemStack(1, chicken.getId());
+            if (egg.isItemEqual(ingredient) || item.isItemEqual(ingredient)) {
                 if (added.add(chicken)) {
                     arecipes.add(new CachedChickensRecipe(chicken));
                 }
