@@ -15,7 +15,7 @@ import com.mojang.authlib.GameProfile;
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class AbstractMultiBlockModifierTE extends AbstractTE implements IProgressTile {
+public abstract class AbstractMBModifierTE extends AbstractTE implements IProgressTile {
 
     protected GameProfile player;
     protected boolean isFormed = false;
@@ -128,6 +128,7 @@ public abstract class AbstractMultiBlockModifierTE extends AbstractTE implements
 
     @Override
     public void writeCommon(NBTTagCompound root) {
+        super.writeCommon(root);
         root.setBoolean("processing", this.isProcessing);
         root.setInteger("curr_dur", this.currentDuration);
         root.setInteger("curr_prog", this.currentProgress);
@@ -139,6 +140,7 @@ public abstract class AbstractMultiBlockModifierTE extends AbstractTE implements
 
     @Override
     public void readCommon(NBTTagCompound root) {
+        super.readCommon(root);
         this.isProcessing = root.getBoolean("processing");
         this.currentDuration = root.getInteger("curr_dur");
         this.currentProgress = root.getInteger("curr_prog");

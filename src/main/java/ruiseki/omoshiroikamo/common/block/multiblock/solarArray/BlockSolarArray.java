@@ -21,12 +21,12 @@ import com.enderio.core.common.util.DyeColor;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
-import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBBlock;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockSolarArray extends AbstractMultiBlockBlock<TESolarArray> implements IWailaBlockInfoProvider {
+public class BlockSolarArray extends AbstractMBBlock<TESolarArray> implements IWailaBlockInfoProvider {
 
     IIcon solar_tex;
 

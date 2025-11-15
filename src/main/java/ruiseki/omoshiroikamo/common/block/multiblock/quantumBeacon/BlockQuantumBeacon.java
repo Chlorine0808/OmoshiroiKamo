@@ -21,10 +21,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
-import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBBlock;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class BlockQuantumBeacon extends AbstractMultiBlockBlock<TEQuantumBeacon> {
+public class BlockQuantumBeacon extends AbstractMBBlock<TEQuantumBeacon> {
 
     @SideOnly(Side.CLIENT)
     IIcon cont_tier;

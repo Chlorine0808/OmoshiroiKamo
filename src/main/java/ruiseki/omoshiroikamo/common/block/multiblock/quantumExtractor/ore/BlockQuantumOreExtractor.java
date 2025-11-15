@@ -23,14 +23,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
-import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockBlock;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBBlock;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockQuantumOreExtractor extends AbstractMultiBlockBlock<TEQuantumExtractor>
-    implements IWailaBlockInfoProvider {
+public class BlockQuantumOreExtractor extends AbstractMBBlock<TEQuantumExtractor> implements IWailaBlockInfoProvider {
 
     @SideOnly(Side.CLIENT)
     IIcon cont_tier;

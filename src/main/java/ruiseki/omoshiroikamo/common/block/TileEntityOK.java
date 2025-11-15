@@ -1,21 +1,19 @@
 package ruiseki.omoshiroikamo.common.block;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-import com.enderio.core.common.config.ConfigHandler;
-import com.enderio.core.common.util.BlockCoord;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketProgress;
 
-public abstract class TileEntityEnder extends TileEntity {
+public abstract class TileEntityOK extends TileEntity {
 
     private final int checkOffset = (int) (Math.random() * 20);
     protected final boolean isProgressTile;
@@ -23,7 +21,7 @@ public abstract class TileEntityEnder extends TileEntity {
     protected int lastProgressScaled = -1;
     protected int ticksSinceLastProgressUpdate;
 
-    public TileEntityEnder() {
+    public TileEntityOK() {
         isProgressTile = this instanceof IProgressTile;
     }
 
@@ -40,7 +38,7 @@ public abstract class TileEntityEnder extends TileEntity {
 
     @Override
     public final void updateEntity() {
-        if (ConfigHandler.allowExternalTickSpeedup || worldObj.getTotalWorldTime() != lastUpdate) {
+        if (worldObj.getTotalWorldTime() != lastUpdate) {
             lastUpdate = worldObj.getTotalWorldTime();
             doUpdate();
             if (isProgressTile && !worldObj.isRemote) {
@@ -85,34 +83,34 @@ public abstract class TileEntityEnder extends TileEntity {
     @Override
     public final void readFromNBT(NBTTagCompound root) {
         super.readFromNBT(root);
-        readCustomNBT(root);
+        readCommon(root);
     }
 
     @Override
     public final void writeToNBT(NBTTagCompound root) {
         super.writeToNBT(root);
-        writeCustomNBT(root);
+        writeCommon(root);
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
-        writeCustomNBT(tag);
+        writeCommon(tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        readCustomNBT(pkt.func_148857_g());
+        readCommon(pkt.func_148857_g());
     }
 
     public boolean canPlayerAccess(EntityPlayer player) {
         return !isInvalid() && player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
     }
 
-    protected abstract void writeCustomNBT(NBTTagCompound root);
+    protected abstract void writeCommon(NBTTagCompound root);
 
-    protected abstract void readCustomNBT(NBTTagCompound root);
+    protected abstract void readCommon(NBTTagCompound root);
 
     protected void updateBlock() {
         if (worldObj != null) {
@@ -131,13 +129,14 @@ public abstract class TileEntityEnder extends TileEntity {
      * <p>
      * Note: This will not be called when the TE is loaded from the save. Hook into the nbt methods for that.
      */
-    public void init() {}
+    public void init() {
+    }
 
-    private BlockCoord cachedLocation = null;
+    private BlockPos cachedLocation = null;
 
-    public BlockCoord getLocation() {
+    public BlockPos getLocation() {
         return cachedLocation == null || !cachedLocation.equals(xCoord, yCoord, zCoord)
-            ? (cachedLocation = new BlockCoord(this))
+            ? (cachedLocation = new BlockPos(xCoord, yCoord, zCoord))
             : cachedLocation;
     }
 
@@ -160,13 +159,4 @@ public abstract class TileEntityEnder extends TileEntity {
     protected boolean shouldDoWorkThisTick(int interval, int offset) {
         return (worldObj.getTotalWorldTime() + checkOffset + offset) % interval == 0;
     }
-
-    /**
-     * Called server-side when a GhostSlot is changed. Check that the given slot number really is a ghost slot before
-     * storing the given stack.
-     *
-     * @param slot  The slot number that was given to the ghost slot
-     * @param stack The stack that should be placed, null to clear
-     */
-    public void setGhostSlotContents(int slot, ItemStack stack) {}
 }

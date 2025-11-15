@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
@@ -37,7 +37,7 @@ import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.OKItemIO;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
-import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMultiBlockModifierTE;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.TEQuantumOreExtractorT1;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.TEQuantumOreExtractorT4;
@@ -48,7 +48,7 @@ import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketPowerStorage;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
+public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     implements IEnergyReceiver, IPowerContainer, ISidedInventory, CapabilityProvider {
 
     protected int storedEnergyRF = 0;
@@ -59,8 +59,8 @@ public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
     protected ItemStackHandler output;
     protected final int[] allSlots;
 
-    protected final List<BlockCoord> modifiers = new ArrayList<>();
-    protected BlockCoord lens;
+    protected final List<BlockPos> modifiers = new ArrayList<>();
+    protected BlockPos lens;
     protected ModifierHandler modifierHandler = new ModifierHandler();
 
     protected final List<WeightedStackBase> possibleResults = new ArrayList<>();
@@ -114,7 +114,7 @@ public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = getLocation().getTileEntity(worldObj);
+        TileEntity tileEntity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
         if (tileEntity instanceof TEQuantumOreExtractorT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_VOID_ORE_MINER_T1.get());
         }
@@ -135,17 +135,17 @@ public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
             return false;
         }
 
-        BlockCoord coord = new BlockCoord(x, y, z);
-        if (modifiers.contains(coord)) {
+        BlockPos pos = new BlockPos(x, y, z);
+        if (modifiers.contains(pos)) {
             return false;
         }
 
         if (block == ModBlocks.COLORED_LENS.get() || block == ModBlocks.LENS.get()) {
-            lens = new BlockCoord(x, y, z);
+            lens = new BlockPos(x, y, z);
             return true;
         }
         if (isModifierBlock(block)) {
-            modifiers.add(coord);
+            modifiers.add(pos);
             return true;
         }
 
@@ -283,10 +283,10 @@ public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
         }
 
         List<IModifierBlock> mods = new ArrayList<>();
-        for (BlockCoord coord : this.modifiers) {
-            Block blk = coord.getBlock(worldObj);
-            if (blk instanceof IModifierBlock) {
-                mods.add((IModifierBlock) blk);
+        for (BlockPos pos : this.modifiers) {
+            Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
+            if (block instanceof IModifierBlock) {
+                mods.add((IModifierBlock) block);
             }
         }
 
@@ -296,9 +296,9 @@ public abstract class TEQuantumExtractor extends AbstractMultiBlockModifierTE
 
         if (this.possibleResults.isEmpty()) {
             if (lens != null) {
-                Block block = lens.getBlock(worldObj);
+                Block block = worldObj.getBlock(lens.x, lens.y, lens.z);
                 if (block instanceof BlockColoredLens) {
-                    int meta = lens.getMetadata(worldObj);
+                    int meta = worldObj.getBlockMetadata(lens.x, lens.y, lens.z);
                     this.focusColor = ((BlockColoredLens) block).getFocusColor(meta);
                     this.possibleResults.clear();
                     this.possibleResults.addAll(
