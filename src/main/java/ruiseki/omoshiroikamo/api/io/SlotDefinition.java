@@ -15,8 +15,7 @@ public class SlotDefinition {
     private int minFluidOutputSlot = -1;
     private int maxFluidOutputSlot = -1;
 
-    public SlotDefinition() {
-    }
+    public SlotDefinition() {}
 
     /**
      * Item slots

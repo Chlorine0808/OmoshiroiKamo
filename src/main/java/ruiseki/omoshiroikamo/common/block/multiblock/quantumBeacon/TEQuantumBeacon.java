@@ -57,13 +57,25 @@ public abstract class TEQuantumBeacon extends AbstractMultiBlockModifierTE imple
     }
 
     @Override
-    public void doUpdate() {
-        super.doUpdate();
+    protected boolean processTasks(boolean redstoneCheckPassed) {
+
+        if (redstoneCheckPassed) {
+            EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
+            if (plr != null && !plr.capabilities.isCreativeMode && dealsWithFlight) {
+                plr.capabilities.allowFlying = false;
+                plr.capabilities.isFlying = false;
+                dealsWithFlight = false;
+                plr.sendPlayerAbilities();
+                PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+            }
+        }
+
         boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
         if (powerChanged) {
             lastSyncPowerStored = storedEnergyRF;
             PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
         }
+        return super.processTasks(redstoneCheckPassed);
     }
 
     @Override
