@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.enderio.core.common.util.DyeColor;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
@@ -33,6 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.IPowerContainer;
 import ruiseki.omoshiroikamo.api.energy.PowerHandlerUtils;
+import ruiseki.omoshiroikamo.api.item.EnumDye;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.OKItemIO;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
@@ -66,7 +66,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     protected final List<WeightedStackBase> possibleResults = new ArrayList<>();
     protected final Random rand = new Random();
 
-    protected DyeColor focusColor = DyeColor.WHITE;
+    protected EnumDye focusColor = EnumDye.WHITE;
     protected float focusBoostModifier = 1.0F;
 
     @SideOnly(Side.CLIENT)
