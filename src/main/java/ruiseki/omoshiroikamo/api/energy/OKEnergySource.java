@@ -2,31 +2,20 @@ package ruiseki.omoshiroikamo.api.energy;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import cofh.api.energy.IEnergyProvider;
 
-public class OKEnergySource extends SimpleEnergyIO {
+public class OKEnergySource implements EnergySource {
 
     private final IEnergyProvider provider;
+    private final ForgeDirection side;
 
-    public OKEnergySource(IEnergyProvider provider) {
+    public OKEnergySource(IEnergyProvider provider, ForgeDirection side) {
         this.provider = provider;
+        this.side = side;
     }
 
     @Override
-    protected @NotNull EnergyAccess iterator() {
-        return new EnergyAccess() {
-
-            @Override
-            public int extract(ForgeDirection side, int amount, boolean simulate) {
-                return provider.extractEnergy(side, amount, simulate);
-            }
-
-            @Override
-            public int insert(ForgeDirection side, int amount, boolean simulate) {
-                return 0;
-            }
-        };
+    public int extract(int amount, boolean simulate) {
+        return provider.extractEnergy(side, amount, simulate);
     }
 }

@@ -19,6 +19,7 @@ public class EnergyTransfer {
     protected int totalEnergyTransferred = 0;
     protected int prevEnergyTransferred = 0;
 
+    // --- Set source ---
     public void source(EnergySource source) {
         this.source = source;
     }
@@ -40,7 +41,6 @@ public class EnergyTransfer {
             .getTileEntity(pos.getX(), pos.getY(), pos.getZ());
         TileEntity adjacent = pos.getWorld()
             .getTileEntity(pos.getX() + side.offsetX, pos.getY() + side.offsetY, pos.getZ() + side.offsetZ);
-
         push(self, side, adjacent);
     }
 
@@ -54,7 +54,6 @@ public class EnergyTransfer {
             .getTileEntity(pos.getX(), pos.getY(), pos.getZ());
         TileEntity adjacent = pos.getWorld()
             .getTileEntity(pos.getX() + side.offsetX, pos.getY() + side.offsetY, pos.getZ() + side.offsetZ);
-
         pull(self, side, adjacent);
     }
 
@@ -68,41 +67,26 @@ public class EnergyTransfer {
             return 0;
         }
 
-        source.resetSource();
-        sink.resetSink();
-
-        EnergyAccess sourceAcc = source.sourceAccess();
-        EnergyAccess sinkAcc = sink.sinkAccess();
-
-        if (sourceAcc == null || sinkAcc == null) {
+        // 1. Simulate extraction
+        int toExtract = Math.min(maxEnergyPerTransfer, maxTotalTransferred);
+        int simulatedPull = source.extract(toExtract, true);
+        if (simulatedPull <= 0) {
             return 0;
         }
 
-        int energyTransferred = 0;
-        int remaining = maxTotalTransferred;
-
-        while (remaining > 0) {
-            int extractAmount = Math.min(maxEnergyPerTransfer, remaining);
-
-            int pulled = sourceAcc.extract(ForgeDirection.UNKNOWN, extractAmount, false);
-            if (pulled <= 0) {
-                break;
-            }
-
-            int rejected = sinkAcc.insert(ForgeDirection.UNKNOWN, pulled, false);
-            int accepted = pulled - rejected;
-
-            if (accepted <= 0) {
-                break;
-            }
-
-            energyTransferred += accepted;
-            remaining -= accepted;
+        // 2. Simulate insert
+        int simulatedAccepted = sink.insert(simulatedPull, true);
+        if (simulatedAccepted <= 0) {
+            return 0;
         }
 
-        totalEnergyTransferred += energyTransferred;
-        prevEnergyTransferred = energyTransferred;
+        // 3. Do actual extraction & insertion
+        int pulled = source.extract(simulatedAccepted, false);
+        int accepted = sink.insert(pulled, false);
 
-        return energyTransferred;
+        totalEnergyTransferred += accepted;
+        prevEnergyTransferred = accepted;
+
+        return accepted;
     }
 }

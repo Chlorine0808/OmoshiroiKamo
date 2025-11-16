@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.solarArray;
 
-import static ruiseki.omoshiroikamo.common.util.EnergyUtils.STORED_ENERGY_NBT_KEY;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +19,9 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyProvider;
 import ruiseki.omoshiroikamo.api.energy.EnergySource;
 import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
+import ruiseki.omoshiroikamo.api.energy.IEnergySource;
 import ruiseki.omoshiroikamo.api.energy.OKEnergySource;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -33,12 +31,11 @@ import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergyProvider, CapabilityProvider {
+public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource, CapabilityProvider {
 
     private int lastCollectionValue = -1;
     private static final int CHECK_INTERVAL = 100;
 
-    private int storedEnergyRF = 0;
     private final EnergyStorage energyStorage;
     private ModifierHandler modifierHandler = new ModifierHandler();
     private List<BlockPos> modifiers = new ArrayList<>();
@@ -170,10 +167,9 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     private void transmitEnergy() {
-        EnergyTransfer transfer = new EnergyTransfer();
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-
+            EnergyTransfer transfer = new EnergyTransfer();
             TileEntity adjacent = this.getWorldObj()
                 .getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
             if (adjacent == null) {
@@ -181,7 +177,6 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
             }
             transfer.push(this, side, adjacent);
             transfer.transfer();
-
         }
     }
 
@@ -195,28 +190,22 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
-    }
-
-    @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
     }
 
+    @Override
     public int getEnergyStored() {
-        return storedEnergyRF;
+        return energyStorage.getEnergyStored();
     }
 
+    @Override
     public void setEnergyStored(int storedEnergy) {
-        storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        energyStorage.setEnergyStored(storedEnergyRF);
     }
 
+    @Override
     public int getMaxEnergyStored() {
         return energyStorage.getMaxEnergyStored();
     }
@@ -250,26 +239,19 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        root.setInteger(STORED_ENERGY_NBT_KEY, storedEnergyRF);
+        energyStorage.writeToNBT(root);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        int energy;
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            energy = (int) (storedEnergyMJ * 10);
-        } else {
-            energy = root.getInteger(STORED_ENERGY_NBT_KEY);
-        }
-        setEnergyStored(energy);
+        energyStorage.readFromNBT(root);
     }
 
     @Override
     public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
         if (capability == EnergySource.class) {
-            return capability.cast(new OKEnergySource(this));
+            return capability.cast(new OKEnergySource(this, side));
         }
 
         return null;

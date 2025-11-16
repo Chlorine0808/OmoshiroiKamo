@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumBeacon;
 
-import static ruiseki.omoshiroikamo.common.util.EnergyUtils.STORED_ENERGY_NBT_KEY;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +18,8 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyReceiver;
 import ruiseki.omoshiroikamo.api.energy.EnergySink;
+import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.energy.OKEnergySink;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
@@ -33,9 +31,7 @@ import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketNBBClientFlight;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergyReceiver, CapabilityProvider {
-
-    private int storedEnergyRF = 0;
+public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergySink, CapabilityProvider {
 
     private final EnergyStorage energyStorage;
     private final List<BlockPos> modifiers = new ArrayList<>();
@@ -274,23 +270,14 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        int result = Math.min(getMaxEnergyReceived(), maxReceive);
-        result = Math.min(getMaxEnergyStored() - getEnergyStored(), result);
-        result = Math.max(0, result);
-        if (result > 0 && !simulate) {
-            setEnergyStored(getEnergyStored() + result);
+        int spaceAvailable = getMaxEnergyStored() - getEnergyStored();
+        int energyToReceive = Math.min(spaceAvailable, maxReceive);
+
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() + energyToReceive);
         }
-        return result;
-    }
 
-    @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
+        return energyToReceive;
     }
 
     @Override
@@ -298,26 +285,26 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         return true;
     }
 
+    @Override
     public int getEnergyStored() {
-        return storedEnergyRF;
+        return energyStorage.getEnergyStored();
     }
 
+    @Override
     public void setEnergyStored(int storedEnergy) {
-        storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        energyStorage.setEnergyStored(storedEnergyRF);
     }
 
+    @Override
     public int getMaxEnergyStored() {
         return energyStorage.getMaxEnergyStored();
-    }
-
-    public int getMaxEnergyReceived() {
-        return energyStorage.getMaxReceive();
     }
 
     @Override
     public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
         if (capability == EnergySink.class) {
-            return capability.cast(new OKEnergySink(this));
+            return capability.cast(new OKEnergySink(this, side));
         }
         return null;
     }
@@ -325,20 +312,13 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        int energy;
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            energy = (int) (storedEnergyMJ * 10);
-        } else {
-            energy = root.getInteger(STORED_ENERGY_NBT_KEY);
-        }
-        setEnergyStored(energy);
+        energyStorage.writeToNBT(root);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        this.storedEnergyRF = root.getInteger(STORED_ENERGY_NBT_KEY);
+        energyStorage.readFromNBT(root);
         this.dealsWithFlight = root.getBoolean("dflight");
     }
 

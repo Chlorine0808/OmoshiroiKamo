@@ -60,6 +60,11 @@ public class BlockQuantumBeacon extends AbstractMBBlock<TEQuantumBeacon> {
     }
 
     @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
     public void registerBlockIcons(IIconRegister reg) {
         cont_tier = reg.registerIcon(LibResources.PREFIX_MOD + "cont_tier");
     }

@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor;
 
-import static ruiseki.omoshiroikamo.common.util.EnergyUtils.STORED_ENERGY_NBT_KEY;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,10 +27,10 @@ import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.EnergySink;
+import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.energy.OKEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
@@ -49,9 +47,7 @@ import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
 public abstract class TEQuantumExtractor extends AbstractMBModifierTE
-    implements IEnergyReceiver, ISidedInventory, CapabilityProvider {
-
-    protected int storedEnergyRF = 0;
+    implements IEnergySink, ISidedInventory, CapabilityProvider {
 
     protected EnergyStorage energyStorage;
 
@@ -156,19 +152,14 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        root.setInteger(STORED_ENERGY_NBT_KEY, storedEnergyRF);
+        energyStorage.writeToNBT(root);
         root.setTag("output_inv", this.output.serializeNBT());
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            setEnergyStored((int) (storedEnergyMJ * 10f));
-        } else if (root.hasKey(STORED_ENERGY_NBT_KEY)) {
-            setEnergyStored(root.getInteger(STORED_ENERGY_NBT_KEY));
-        }
+        energyStorage.readFromNBT(root);
         if (root.hasKey("output_inv")) {
             this.output.deserializeNBT(root.getCompoundTag("output_inv"));
         }
@@ -433,7 +424,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
         }
 
         if (capability == EnergySink.class) {
-            return capability.cast(new OKEnergySink(this));
+            return capability.cast(new OKEnergySink(this, side));
         }
         return null;
     }
@@ -451,28 +442,22 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     }
 
     @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
-    }
-
-    @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
     }
 
+    @Override
     public int getEnergyStored() {
-        return storedEnergyRF;
+        return energyStorage.getEnergyStored();
     }
 
+    @Override
     public void setEnergyStored(int storedEnergy) {
-        this.storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        energyStorage.setEnergyStored(storedEnergyRF);
     }
 
+    @Override
     public int getMaxEnergyStored() {
         return energyStorage.getMaxEnergyStored();
     }

@@ -92,11 +92,11 @@ public abstract class AbstractMBModifierTE extends AbstractTE implements IProgre
             } else {
                 this.onProcessComplete();
                 this.currentDuration = this.getCurrentProcessDuration();
-                this.currentProgress = 1;
+                this.currentProgress = 0;
                 this.isProcessing = false;
             }
         } else {
-            this.currentProgress = 1;
+            this.currentProgress = 0;
             this.isProcessing = false;
         }
     }

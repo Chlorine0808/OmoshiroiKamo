@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -60,8 +59,6 @@ public class TEBreeder extends TERoostBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        syncManager
-            .syncValue("progress", new DoubleSyncValue(() -> getProgress(), value -> setProgress((float) value)));
         syncManager.registerSlotGroup("input", 3);
         ModularPanel panel = new ModularPanel("breeder_gui");
         panel.child(

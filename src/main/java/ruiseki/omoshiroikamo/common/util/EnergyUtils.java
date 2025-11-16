@@ -15,7 +15,6 @@ import ruiseki.omoshiroikamo.api.energy.EnergySource;
 import ruiseki.omoshiroikamo.api.energy.OKEnergyIO;
 import ruiseki.omoshiroikamo.api.energy.OKEnergySink;
 import ruiseki.omoshiroikamo.api.energy.OKEnergySource;
-import ruiseki.omoshiroikamo.api.energy.WrappedEnergyIO;
 
 public class EnergyUtils {
 
@@ -41,16 +40,16 @@ public class EnergyUtils {
             return source;
         }
 
-        if (obj instanceof CapabilityProvider capabilityProvider) {
-            EnergySource source = capabilityProvider.getCapability(EnergySource.class, side);
+        if (obj instanceof IEnergyProvider provider) {
+            EnergySource source = new OKEnergySource(provider, side);
 
             if (source != null) {
                 return source;
             }
         }
 
-        if (obj instanceof IEnergyProvider provider) {
-            EnergySource source = new OKEnergySource(provider);
+        if (obj instanceof CapabilityProvider capabilityProvider) {
+            EnergySource source = capabilityProvider.getCapability(EnergySource.class, side);
 
             if (source != null) {
                 return source;
@@ -74,19 +73,19 @@ public class EnergyUtils {
             return sink;
         }
 
+        if (obj instanceof IEnergyReceiver receiver) {
+            EnergySink source = new OKEnergySink(receiver, side);
+
+            if (source != null) {
+                return source;
+            }
+        }
+
         if (obj instanceof CapabilityProvider capabilityProvider) {
             EnergySink sink = capabilityProvider.getCapability(EnergySink.class, side);
 
             if (sink != null) {
                 return sink;
-            }
-        }
-
-        if (obj instanceof IEnergyReceiver receiver) {
-            EnergySink source = new OKEnergySink(receiver);
-
-            if (source != null) {
-                return source;
             }
         }
 
@@ -103,19 +102,19 @@ public class EnergyUtils {
             return energyIO;
         }
 
+        if (obj instanceof IEnergyHandler handler) {
+            EnergyIO source = new OKEnergyIO(handler, side);
+
+            if (source != null) {
+                return source;
+            }
+        }
+
         if (obj instanceof CapabilityProvider capabilityProvider) {
             EnergyIO energyIO = capabilityProvider.getCapability(EnergyIO.class, side);
 
             if (energyIO != null) {
                 return energyIO;
-            }
-        }
-
-        if (obj instanceof IEnergyHandler handler) {
-            EnergyIO source = new OKEnergyIO(handler);
-
-            if (source != null) {
-                return source;
             }
         }
 
@@ -126,6 +125,6 @@ public class EnergyUtils {
             return null;
         }
 
-        return new WrappedEnergyIO(source, sink);
+        return null;
     }
 }
