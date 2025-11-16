@@ -87,18 +87,9 @@ public abstract class AbstractBlock<T extends AbstractTE> extends BlockOK
         world.markBlockForUpdate(x, y, z);
     }
 
-    protected short getFacingForHeading(int heading) {
-        switch (heading) {
-            case 0:
-                return 2;
-            case 1:
-                return 5;
-            case 2:
-                return 3;
-            case 3:
-            default:
-                return 4;
-        }
+    protected int getFacingForHeading(int heading) {
+        int[] map = { 3, 4, 2, 5 };
+        return map[heading & 3];
     }
 
     @Override

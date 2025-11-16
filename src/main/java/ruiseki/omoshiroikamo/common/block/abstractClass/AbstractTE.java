@@ -19,7 +19,7 @@ import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 
 public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosGuiData> {
 
-    public short facing;
+    public int facing;
 
     // Client sync monitoring
     protected boolean forceClientUpdate = true;
@@ -34,11 +34,11 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     public boolean isDirty = false;
 
-    public short getFacing() {
+    public int getFacing() {
         return facing;
     }
 
-    public void setFacing(short facing) {
+    public void setFacing(int facing) {
         this.facing = facing;
     }
 
@@ -124,13 +124,9 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
         }
     }
 
-    public void setForceClientUpdate(boolean forceClientUpdate) {
-        this.forceClientUpdate = forceClientUpdate;
-    }
-
     @Override
     protected void writeCommon(NBTTagCompound root) {
-        root.setShort("facing", facing);
+        root.setInteger("facing", facing);
         root.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
         root.setBoolean("forceClientUpdate", forceClientUpdate);
         forceClientUpdate = false;
@@ -138,13 +134,9 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     @Override
     protected void readCommon(NBTTagCompound root) {
-        setFacing(root.getShort("facing"));
+        setFacing(root.getInteger("facing"));
         redstoneCheckPassed = root.getBoolean("redstoneCheckPassed");
         forceClientUpdate = root.getBoolean("forceClientUpdate");
-    }
-
-    public boolean isServerSide() {
-        return !this.worldObj.isRemote;
     }
 
     public void readFromItemStack(ItemStack stack) {
@@ -163,7 +155,6 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
         }
 
         NBTTagCompound root = stack.stackTagCompound;
-        root.setBoolean("te.abstractMachine", true);
         writeCommon(root);
     }
 

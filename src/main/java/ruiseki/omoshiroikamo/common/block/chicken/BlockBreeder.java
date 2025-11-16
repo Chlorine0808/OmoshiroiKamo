@@ -67,7 +67,7 @@ public class BlockBreeder extends AbstractBlock<TEBreeder> {
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
         int currentMeta = world.getBlockMetadata(x, y, z);
-        int targetMeta = isActive(world, x, y, z) ? 1 : 0; // meta mong muốn
+        int targetMeta = isActive(world, x, y, z) ? 1 : 0;
 
         if (currentMeta != targetMeta) {
             world.setBlockMetadataWithNotify(x, y, z, targetMeta, 2);

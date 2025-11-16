@@ -70,6 +70,7 @@ public abstract class AbstractStorageTE extends AbstractTE implements ISidedInve
 
     @Override
     public void writeCommon(NBTTagCompound root) {
+        super.writeCommon(root);
         root.setTag("item_inv", this.inv.serializeNBT());
 
         NBTTagCompound tanksTag = new NBTTagCompound();
@@ -84,6 +85,7 @@ public abstract class AbstractStorageTE extends AbstractTE implements ISidedInve
 
     @Override
     public void readCommon(NBTTagCompound root) {
+        super.readCommon(root);
         this.inv.deserializeNBT(root.getCompoundTag("item_inv"));
 
         NBTTagCompound tanksTag = root.getCompoundTag("FluidTanks");
