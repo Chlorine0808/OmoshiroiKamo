@@ -22,9 +22,8 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
-import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
-public class BlockBreeder extends AbstractBlock<TEBreeder> implements IWailaBlockInfoProvider {
+public class BlockBreeder extends AbstractBlock<TEBreeder> {
 
     @SideOnly(Side.CLIENT)
     IIcon side, floor, top;
@@ -68,7 +67,7 @@ public class BlockBreeder extends AbstractBlock<TEBreeder> implements IWailaBloc
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
         int currentMeta = world.getBlockMetadata(x, y, z);
-        int targetMeta = isActive(world, x, y, z) ? 1 : 0; // meta mong muốn
+        int targetMeta = isActive(world, x, y, z) ? 1 : 0;
 
         if (currentMeta != targetMeta) {
             world.setBlockMetadataWithNotify(x, y, z, targetMeta, 2);

@@ -5,14 +5,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.enderio.core.common.network.NetworkUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-import ruiseki.omoshiroikamo.OmoshiroiKamo;
+import ruiseki.omoshiroikamo.ClientProxy;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 
 public class PacketFluidTanks implements IMessage, IMessageHandler<PacketFluidTanks, IMessage> {
@@ -23,10 +22,9 @@ public class PacketFluidTanks implements IMessage, IMessageHandler<PacketFluidTa
     public PacketFluidTanks() {}
 
     public PacketFluidTanks(AbstractStorageTE tile) {
-        BlockCoord bc = tile.getLocation();
-        this.x = bc.x;
-        this.y = bc.y;
-        this.z = bc.z;
+        this.x = tile.xCoord;
+        this.y = tile.yCoord;
+        this.z = tile.zCoord;
 
         nbtRoot = new NBTTagCompound();
         NBTTagCompound tanksTag = new NBTTagCompound();
@@ -58,7 +56,7 @@ public class PacketFluidTanks implements IMessage, IMessageHandler<PacketFluidTa
     @Override
     public IMessage onMessage(PacketFluidTanks message, MessageContext ctx) {
         EntityPlayer player = ctx.side == Side.SERVER ? ctx.getServerHandler().playerEntity
-            : OmoshiroiKamo.proxy.getClientPlayer();
+            : ClientProxy.getClientPlayer();
 
         if (player == null) {
             return null;

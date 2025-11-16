@@ -32,14 +32,14 @@ public class RoostTESR extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y, z + 0.5);
 
+            GL11.glRotatef(getRotationAngle(tile.getFacing()), 0F, 1F, 0F);
+
             ResourceLocation CHICKEN_TEXTURE = chicken.getItems()
                 .getTexture();
             RenderUtil.bindTexture(CHICKEN_TEXTURE);
 
             GL11.glTranslatef(0F, 1.30F, 0F);
-            GL11.glRotatef(getRotationAngle(tile.getFacing()), 0F, 1F, 0F);
             GL11.glRotatef(180F, 0F, 0F, 1F);
-            GL11.glRotatef(180F, 0F, 1F, 0F);
 
             modelChicken.isChild = false;
             modelChicken.renderRoost(0.0625F);

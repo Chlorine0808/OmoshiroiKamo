@@ -8,41 +8,42 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.BlockCoord;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-import ruiseki.omoshiroikamo.client.gui.modularui2.MGuis;
+import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 
-public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<PosGuiData> {
+public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosGuiData> {
 
-    public short facing = -1;
-    public boolean redstoneCheckPassed;
-    public boolean redstoneStateDirty = true;
+    public int facing;
+
+    // Client sync monitoring
     protected boolean forceClientUpdate = true;
     protected boolean lastActive;
     protected int ticksSinceActiveChanged = 0;
-    public boolean isDirty = false;
-    protected boolean notifyNeighbours = false;
-    protected int meta;
 
-    public short getFacing() {
+    protected boolean redstoneCheckPassed;
+
+    private boolean redstoneStateDirty = true;
+
+    protected boolean notifyNeighbours = false;
+
+    public boolean isDirty = false;
+
+    public int getFacing() {
         return facing;
     }
 
-    public void setFacing(short facing) {
+    public void setFacing(int facing) {
         this.facing = facing;
     }
 
     public ForgeDirection getFacingDir() {
         return ForgeDirection.getOrientation(facing);
-    }
-
-    public int getMeta() {
-        return meta;
     }
 
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
@@ -54,13 +55,16 @@ public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<P
         redstoneStateDirty = true;
     }
 
-    protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {
         writeToItemStack(stack);
     }
 
     // Special
 
-    public abstract String getMachineName();
+    public String getMachineName() {
+        return this.worldObj.getBlock(xCoord, yCoord, zCoord)
+            .getUnlocalizedName();
+    }
 
     public abstract boolean isActive();
 
@@ -68,21 +72,23 @@ public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<P
 
     @Override
     protected void doUpdate() {
-        if (!isServerSide()) {
+        if (worldObj.isRemote) {
             updateEntityClient();
             return;
         } // else is server, do all logic only on the server
 
         boolean requiresClientSync = forceClientUpdate;
         boolean prevRedCheck = redstoneCheckPassed;
+
         if (redstoneStateDirty) {
-            redstoneCheckPassed = this.worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+            redstoneCheckPassed = isPoweredRedstone();
             redstoneStateDirty = false;
         }
 
         requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
         requiresClientSync |= processTasks(redstoneCheckPassed);
+
         if (requiresClientSync) {
 
             // this will cause 'getPacketDescription()' to be called and its result
@@ -118,33 +124,19 @@ public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<P
         }
     }
 
-    public void setForceClientUpdate(boolean forceClientUpdate) {
-        this.forceClientUpdate = forceClientUpdate;
-    }
-
     @Override
-    protected void writeCustomNBT(NBTTagCompound root) {
-        root.setShort("facing", facing);
+    protected void writeCommon(NBTTagCompound root) {
+        root.setInteger("facing", facing);
         root.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
         root.setBoolean("forceClientUpdate", forceClientUpdate);
         forceClientUpdate = false;
-        writeCommon(root);
     }
 
     @Override
-    protected void readCustomNBT(NBTTagCompound root) {
-        setFacing(root.getShort("facing"));
+    protected void readCommon(NBTTagCompound root) {
+        setFacing(root.getInteger("facing"));
         redstoneCheckPassed = root.getBoolean("redstoneCheckPassed");
         forceClientUpdate = root.getBoolean("forceClientUpdate");
-        readCommon(root);
-    }
-
-    public abstract void writeCommon(NBTTagCompound root);
-
-    public abstract void readCommon(NBTTagCompound root);
-
-    public boolean isServerSide() {
-        return !this.worldObj.isRemote;
     }
 
     public void readFromItemStack(ItemStack stack) {
@@ -163,13 +155,13 @@ public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<P
         }
 
         NBTTagCompound root = stack.stackTagCompound;
-        root.setBoolean("te.abstractMachine", true);
         writeCommon(root);
     }
 
     public void openGui(EntityPlayer player) {
-        if (isServerSide()) {
-            MGuis.open(player, this);
+        if (!worldObj.isRemote) {
+            GuiFactories.tileEntity()
+                .open(player, xCoord, yCoord, zCoord);
         }
     }
 
@@ -179,12 +171,8 @@ public abstract class AbstractTE extends TileEntityEnder implements IGuiHolder<P
     }
 
     @Override
-    public BlockCoord getLocation() {
-        return new BlockCoord(xCoord, yCoord, zCoord);
-    }
-
-    protected void notifyBlockUpdate() {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    public BlockPos getLocation() {
+        return new BlockPos(xCoord, yCoord, zCoord);
     }
 
 }

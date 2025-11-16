@@ -8,20 +8,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandom;
 
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.ItemUtil;
-
+import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.WeightedRandomUtil;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
+import ruiseki.omoshiroikamo.common.util.ItemUtils;
 
 public class FocusableRegistry implements IFocusableRegistry {
 
     private final ArrayList<WeightedStackBase> oreStacks = new ArrayList<WeightedStackBase>();
-    private final HashMap<DyeColor, List<ItemStack>> priorityOres = new HashMap<DyeColor, List<ItemStack>>();
+    private final HashMap<EnumDye, List<ItemStack>> priorityOres = new HashMap<EnumDye, List<ItemStack>>();
 
     public FocusableRegistry() {
-        for (DyeColor color : DyeColor.values()) {
+        for (EnumDye color : EnumDye.values()) {
             this.priorityOres.put(color, new ArrayList<ItemStack>());
         }
     }
@@ -41,7 +40,7 @@ public class FocusableRegistry implements IFocusableRegistry {
     }
 
     @Override
-    public boolean addResource(WeightedStackBase stack, DyeColor prioritized) {
+    public boolean addResource(WeightedStackBase stack, EnumDye prioritized) {
         if (stack == null || stack.getMainStack() == null) {
             return false;
         }
@@ -57,13 +56,13 @@ public class FocusableRegistry implements IFocusableRegistry {
         return false;
     }
 
-    private List<ItemStack> valuesOfFocus(DyeColor focus) {
+    private List<ItemStack> valuesOfFocus(EnumDye focus) {
         List<ItemStack> result = this.priorityOres.get(focus);
         return result == null ? new ArrayList<ItemStack>() : result;
     }
 
     @Override
-    public List<WeightedStackBase> getFocusedList(DyeColor focusColor, float boostMultiplier) {
+    public List<WeightedStackBase> getFocusedList(EnumDye focusColor, float boostMultiplier) {
         ArrayList<WeightedStackBase> weightedCopy = new ArrayList<WeightedStackBase>(this.oreStacks.size());
         WeightedRandomUtil.copyWSList(weightedCopy, this.oreStacks);
 
@@ -91,16 +90,16 @@ public class FocusableRegistry implements IFocusableRegistry {
     }
 
     @Override
-    public DyeColor getPrioritizedLens(ItemStack stack) {
+    public EnumDye getPrioritizedLens(ItemStack stack) {
         if (stack == null) {
             return null;
         }
 
-        for (DyeColor dye : this.priorityOres.keySet()) {
+        for (EnumDye dye : this.priorityOres.keySet()) {
             List<ItemStack> list = this.priorityOres.get(dye);
             if (list != null) {
                 for (ItemStack item : list) {
-                    if (item != null && ItemUtil.areStacksEqual(item, stack)) {
+                    if (item != null && ItemUtils.areStacksEqual(item, stack)) {
                         return dye;
                     }
                 }
