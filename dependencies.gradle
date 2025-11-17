@@ -68,6 +68,7 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.36") { transitive = false }
     annotationProcessor('org.projectlombok:lombok:1.18.30')
+
     shadowImplementation('com.github.makamys:MCLib:0.3.7.7') {
         exclude group: "codechicken"
     }
