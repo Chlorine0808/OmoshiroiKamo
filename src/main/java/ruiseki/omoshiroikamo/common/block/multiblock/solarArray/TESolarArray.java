@@ -164,9 +164,6 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
             EnergyTransfer transfer = new EnergyTransfer();
             TileEntity adjacent = this.getWorldObj()
                 .getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
-            if (adjacent == null) {
-                continue;
-            }
             transfer.push(this, side, adjacent);
             transfer.transfer();
         }

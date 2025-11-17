@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
@@ -275,18 +274,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         if (tileEntity instanceof TEQuantumBeaconT4) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_NANO_BOT_BEACON_T4.get());
         }
-    }
-
-    @Override
-    public void writeCommon(NBTTagCompound root) {
-        super.writeCommon(root);
-        root.setBoolean("dflight", dealsWithFlight);
-    }
-
-    @Override
-    public void readCommon(NBTTagCompound root) {
-        super.readCommon(root);
-        this.dealsWithFlight = root.getBoolean("dflight");
     }
 
     @Override

@@ -224,9 +224,6 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
 
             TileEntity adjacent = this.getWorldObj()
                 .getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
-            if (adjacent == null) {
-                continue;
-            }
             transfer.push(this, side, adjacent);
             transfer.transfer();
 

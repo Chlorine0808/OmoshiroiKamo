@@ -6,18 +6,26 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.gtnhlib.blockpos.IBlockPos;
 import com.gtnewhorizon.gtnhlib.blockpos.IWorldReferent;
 
+import lombok.Getter;
+import lombok.Setter;
 import ruiseki.omoshiroikamo.api.energy.capability.EnergySink;
 import ruiseki.omoshiroikamo.api.energy.capability.EnergySource;
 
 public class EnergyTransfer {
 
+    @Getter
     protected EnergySource source;
+    @Getter
     protected EnergySink sink;
 
+    @Setter
     protected int maxEnergyPerTransfer = Integer.MAX_VALUE;
+    @Setter
     protected int maxTotalTransferred = Integer.MAX_VALUE;
 
+    @Getter
     protected int totalEnergyTransferred = 0;
+    @Getter
     protected int prevEnergyTransferred = 0;
 
     // --- Set source ---
