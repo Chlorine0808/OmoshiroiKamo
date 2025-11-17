@@ -12,10 +12,9 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.mojang.authlib.GameProfile;
 
-import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class AbstractMBModifierTE extends AbstractTE implements IProgressTile {
+public abstract class AbstractMBModifierTE extends AbstractEnergyTE {
 
     protected GameProfile player;
     protected boolean isFormed = false;
@@ -92,11 +91,11 @@ public abstract class AbstractMBModifierTE extends AbstractTE implements IProgre
             } else {
                 this.onProcessComplete();
                 this.currentDuration = this.getCurrentProcessDuration();
-                this.currentProgress = 1;
+                this.currentProgress = 0;
                 this.isProcessing = false;
             }
         } else {
-            this.currentProgress = 1;
+            this.currentProgress = 0;
             this.isProcessing = false;
         }
     }

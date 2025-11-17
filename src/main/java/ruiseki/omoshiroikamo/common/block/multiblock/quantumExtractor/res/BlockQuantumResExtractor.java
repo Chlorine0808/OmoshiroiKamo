@@ -65,6 +65,11 @@ public class BlockQuantumResExtractor extends AbstractMBBlock<TEQuantumExtractor
     }
 
     @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
     public void registerBlockIcons(IIconRegister reg) {
         cont_tier = reg.registerIcon(LibResources.PREFIX_MOD + "cont_tier");
     }
@@ -118,11 +123,11 @@ public class BlockQuantumResExtractor extends AbstractMBBlock<TEQuantumExtractor
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TEQuantumExtractor extractor) {
-            int progress = extractor.getCurrentProgress();
+            int progress = (int) extractor.getProgress();
             int duration = extractor.getCurrentProcessDuration();
 
             if (duration > 0) {
-                float percent = (progress / (float) duration) * 100f;
+                float percent = Math.max(0f, (progress / (float) duration) * 100f);
                 tooltip.add(
                     String.format(
                         "%s: %s%.1f%%%s",

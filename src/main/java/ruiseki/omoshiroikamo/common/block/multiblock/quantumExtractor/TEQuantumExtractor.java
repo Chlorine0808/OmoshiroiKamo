@@ -14,27 +14,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ruiseki.omoshiroikamo.api.energy.IPowerContainer;
-import ruiseki.omoshiroikamo.api.energy.PowerHandlerUtils;
+import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
+import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
-import ruiseki.omoshiroikamo.api.item.OKItemIO;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
@@ -44,17 +34,9 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.TEQuan
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res.TEQuantumResExtractorT4;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.network.PacketHandler;
-import ruiseki.omoshiroikamo.common.network.PacketPowerStorage;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumExtractor extends AbstractMBModifierTE
-    implements IEnergyReceiver, IPowerContainer, ISidedInventory, CapabilityProvider {
-
-    protected int storedEnergyRF = 0;
-    protected float lastSyncPowerStored = -1;
-
-    protected EnergyStorage energyStorage;
+public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements IEnergySink, ISidedInventory {
 
     protected ItemStackHandler output;
     protected final int[] allSlots;
@@ -87,16 +69,6 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     @Override
     public String getMachineName() {
         return "quantumExtractor";
-    }
-
-    @Override
-    protected boolean processTasks(boolean redstoneCheckPassed) {
-        boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-        if (powerChanged) {
-            lastSyncPowerStored = storedEnergyRF;
-            PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
-        }
-        return super.processTasks(redstoneCheckPassed);
     }
 
     @Override
@@ -167,19 +139,14 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        root.setInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY, storedEnergyRF);
+        energyStorage.writeToNBT(root);
         root.setTag("output_inv", this.output.serializeNBT());
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            setEnergyStored((int) (storedEnergyMJ * 10f));
-        } else if (root.hasKey(PowerHandlerUtils.STORED_ENERGY_NBT_KEY)) {
-            setEnergyStored(root.getInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY));
-        }
+        energyStorage.readFromNBT(root);
         if (root.hasKey("output_inv")) {
             this.output.deserializeNBT(root.getCompoundTag("output_inv"));
         }
@@ -257,9 +224,6 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
 
             TileEntity adjacent = this.getWorldObj()
                 .getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
-            if (adjacent == null) {
-                continue;
-            }
             transfer.push(this, side, adjacent);
             transfer.transfer();
 
@@ -438,56 +402,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     }
 
     @Override
-    public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == ItemSource.class || capability == ItemSink.class || capability == ItemIO.class) {
-            return capability.cast(new OKItemIO(this, side));
-        }
-
-        return null;
-    }
-
-    @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        int result = Math.min(getMaxEnergyReceived(), maxReceive);
-        result = Math.min(getMaxEnergyStored() - getEnergyStored(), result);
-        result = Math.max(0, result);
-        if (result > 0 && !simulate) {
-            setEnergyStored(getEnergyStored() + result);
-        }
-        return result;
-    }
-
-    @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
-    }
-
-    @Override
-    public boolean canConnectEnergy(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergyRF;
-    }
-
-    @Override
-    public void setEnergyStored(int storedEnergy) {
-        this.storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return energyStorage.getMaxEnergyStored();
-    }
-
-    public int getMaxEnergyReceived() {
-        return energyStorage.getMaxReceive();
+        return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 }

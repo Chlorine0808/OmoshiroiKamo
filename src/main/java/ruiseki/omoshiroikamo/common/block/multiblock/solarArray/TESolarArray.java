@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -14,30 +13,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyProvider;
-import ruiseki.omoshiroikamo.api.energy.IPowerContainer;
-import ruiseki.omoshiroikamo.api.energy.PowerDistributor;
-import ruiseki.omoshiroikamo.api.energy.PowerHandlerUtils;
+import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
+import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
+import ruiseki.omoshiroikamo.api.energy.IEnergySource;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.network.PacketHandler;
-import ruiseki.omoshiroikamo.common.network.PacketPowerStorage;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergyProvider, IPowerContainer {
+public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource {
 
-    private PowerDistributor powerDis;
     private int lastCollectionValue = -1;
     private static final int CHECK_INTERVAL = 100;
 
-    private int storedEnergyRF = 0;
-    protected float lastSyncPowerStored = -1;
-    private final EnergyStorage energyStorage;
     private ModifierHandler modifierHandler = new ModifierHandler();
     private List<BlockPos> modifiers = new ArrayList<>();
 
@@ -51,20 +42,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block nbid) {
-        super.onNeighborBlockChange(world, x, y, z, nbid);
-        if (powerDis != null) {
-            powerDis.neighboursChanged();
-        }
-    }
-
-    @Override
     protected boolean processTasks(boolean redstoneCheckPassed) {
-        boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-        if (powerChanged) {
-            lastSyncPowerStored = storedEnergyRF;
-            PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
-        }
         transmitEnergy();
         return super.processTasks(redstoneCheckPassed);
     }
@@ -135,20 +113,6 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         }
     }
 
-    private void transmitEnergy() {
-        if (powerDis == null) {
-            powerDis = new PowerDistributor(xCoord, yCoord, zCoord);
-        }
-
-        int canTransmit = Math.min(getEnergyStored(), getMaxEnergyStored());
-        if (canTransmit <= 0) {
-            return;
-        }
-
-        int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
-        setEnergyStored(getEnergyStored() - transmitted);
-    }
-
     float calculateLightRatio() {
         return calculateLightRatio(worldObj, xCoord, yCoord + 1, zCoord);
     }
@@ -194,38 +158,20 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         return lightValue / 15f;
     }
 
+    private void transmitEnergy() {
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            EnergyTransfer transfer = new EnergyTransfer();
+            TileEntity adjacent = this.getWorldObj()
+                .getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY, this.zCoord + side.offsetZ);
+            transfer.push(this, side, adjacent);
+            transfer.transfer();
+        }
+    }
+
     @Override
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
-    }
-
-    @Override
-    public boolean canConnectEnergy(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergyRF;
-    }
-
-    @Override
-    public void setEnergyStored(int storedEnergy) {
-        storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
-    }
-
-    public int getMaxEnergyStored() {
-        return energyStorage.getMaxEnergyStored();
+        return energyStorage.extractEnergy(maxExtract, simulate);
     }
 
     @Override
@@ -253,23 +199,4 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     public abstract int getTier();
-
-    @Override
-    public void writeCommon(NBTTagCompound root) {
-        super.writeCommon(root);
-        root.setInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY, storedEnergyRF);
-    }
-
-    @Override
-    public void readCommon(NBTTagCompound root) {
-        super.readCommon(root);
-        int energy;
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            energy = (int) (storedEnergyMJ * 10);
-        } else {
-            energy = root.getInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY);
-        }
-        setEnergyStored(energy);
-    }
 }

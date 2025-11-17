@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
@@ -13,10 +12,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyReceiver;
-import ruiseki.omoshiroikamo.api.energy.IPowerContainer;
-import ruiseki.omoshiroikamo.api.energy.PowerHandlerUtils;
+import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
+import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
@@ -25,15 +22,10 @@ import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketNBBClientFlight;
-import ruiseki.omoshiroikamo.common.network.PacketPowerStorage;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergyReceiver, IPowerContainer {
+public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergySink {
 
-    private int storedEnergyRF = 0;
-    private float lastSyncPowerStored = -1;
-
-    private final EnergyStorage energyStorage;
     private final List<BlockPos> modifiers = new ArrayList<>();
     protected ModifierHandler modifierHandler = new ModifierHandler();
 
@@ -41,6 +33,11 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
     public TEQuantumBeacon(int eBuffSize) {
         this.energyStorage = new EnergyStorage(eBuffSize);
+    }
+
+    @Override
+    public String getMachineName() {
+        return "nanoBotBeacon";
     }
 
     @Override
@@ -68,12 +65,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
                 plr.sendPlayerAbilities();
                 PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
             }
-        }
-
-        boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-        if (powerChanged) {
-            lastSyncPowerStored = storedEnergyRF;
-            PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
         }
         return super.processTasks(redstoneCheckPassed);
     }
@@ -270,73 +261,8 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     }
 
     @Override
-    public String getMachineName() {
-        return "nanoBotBeacon";
-    }
-
-    @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        int result = Math.min(getMaxEnergyReceived(), maxReceive);
-        result = Math.min(getMaxEnergyStored() - getEnergyStored(), result);
-        result = Math.max(0, result);
-        if (result > 0 && !simulate) {
-            setEnergyStored(getEnergyStored() + result);
-        }
-        return result;
-    }
-
-    @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return getMaxEnergyStored();
-    }
-
-    @Override
-    public boolean canConnectEnergy(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergyRF;
-    }
-
-    @Override
-    public void setEnergyStored(int storedEnergy) {
-        storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return energyStorage.getMaxEnergyStored();
-    }
-
-    public int getMaxEnergyReceived() {
-        return energyStorage.getMaxReceive();
-    }
-
-    @Override
-    public void writeCommon(NBTTagCompound root) {
-        super.writeCommon(root);
-        int energy;
-        if (root.hasKey("storedEnergy")) {
-            float storedEnergyMJ = root.getFloat("storedEnergy");
-            energy = (int) (storedEnergyMJ * 10);
-        } else {
-            energy = root.getInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY);
-        }
-        setEnergyStored(energy);
-    }
-
-    @Override
-    public void readCommon(NBTTagCompound root) {
-        super.readCommon(root);
-        this.storedEnergyRF = root.getInteger(PowerHandlerUtils.STORED_ENERGY_NBT_KEY);
-        this.dealsWithFlight = root.getBoolean("dflight");
+        return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
 }

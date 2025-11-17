@@ -70,6 +70,11 @@ public class BlockSolarArray extends AbstractMBBlock<TESolarArray> implements IW
     }
 
     @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
     public int getRenderColor(int meta) {
         int rgb;
         switch (meta) {

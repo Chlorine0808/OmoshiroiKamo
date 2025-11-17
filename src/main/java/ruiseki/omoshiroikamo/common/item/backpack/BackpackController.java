@@ -27,6 +27,7 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 
@@ -36,13 +37,14 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 import codechicken.lib.vec.Vector3;
-import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
+import ruiseki.omoshiroikamo.api.energy.IEnergyItem;
+import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergyItem;
 import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
 import ruiseki.omoshiroikamo.common.entity.EntityImmortalItem;
-import ruiseki.omoshiroikamo.common.item.upgrade.EnergyUpgrade;
 import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
 import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
@@ -120,7 +122,8 @@ public class BackpackController {
             for (int slot = 0; slot < upgradeHandler.getSlots(); slot++) {
                 ItemStack upgrade = upgradeHandler.getStackInSlot(slot);
                 if (upgrade != null && (upgrade.getItem() instanceof ItemFeedingUpgrade
-                    || upgrade.getItem() instanceof ItemMagnetUpgrade)) {
+                    || upgrade.getItem() instanceof ItemMagnetUpgrade
+                    || upgrade.getItem() instanceof ItemBatteryUpgrade)) {
                     result.add(new ActiveBackPack(stack, slot));
                     break;
                 }
@@ -291,30 +294,17 @@ public class BackpackController {
             return;
         }
 
-        EnergyUpgrade energyUpgrade = EnergyUpgrade.loadFromItem(mag.item);
-        if (energyUpgrade == null) {
-            return;
-        }
-
-        int energyStored = EnergyUpgrade.getEnergyStored(mag.item);
-        if (energyStored <= 0) {
-            return;
-        }
-
-        int energyPerTick = energyUpgrade.getCapacity() / 100;
-        int remainingToDistribute = Math.min(energyStored, energyPerTick);
-
         List<ItemStack> stacks = new ArrayList<>();
 
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (stack == null || stack == mag.item || !(stack.getItem() instanceof IEnergyContainerItem)) {
+            if (stack == null || stack.getItem() instanceof ItemBackpack || !(stack.getItem() instanceof IEnergyItem)) {
                 continue;
             }
             stacks.add(stack);
         }
 
         for (ItemStack stack : player.inventory.armorInventory) {
-            if (stack == null || stack == mag.item || !(stack.getItem() instanceof IEnergyContainerItem)) {
+            if (stack == null || stack.getItem() instanceof ItemBackpack || !(stack.getItem() instanceof IEnergyItem)) {
                 continue;
             }
             stacks.add(stack);
@@ -324,26 +314,20 @@ public class BackpackController {
         if (baubles != null) {
             for (int i = 0; i < baubles.getSizeInventory(); i++) {
                 ItemStack stack = baubles.getStackInSlot(i);
-                if (stack == null || stack == mag.item || !(stack.getItem() instanceof IEnergyContainerItem)) {
+                if (stack == null || stack.getItem() instanceof ItemBackpack
+                    || !(stack.getItem() instanceof IEnergyItem)) {
                     continue;
                 }
                 stacks.add(stack);
             }
         }
-        for (ItemStack stack : stacks) {
-            if (stack.getItem() instanceof IEnergyContainerItem energyItem) {
-                int received = energyItem.receiveEnergy(stack, remainingToDistribute, false);
-                if (received > 0) {
-                    energyUpgrade.extractEnergy(received, false);
-                    remainingToDistribute -= received;
-                    if (remainingToDistribute <= 0) {
-                        break;
-                    }
-                }
-            }
-        }
 
-        energyUpgrade.writeToItem(mag.item);
+        for (ItemStack stack : stacks) {
+            EnergyTransfer transfer = new EnergyTransfer();
+            transfer.source(new OKEnergyItem((IEnergyItem) mag.item.getItem(), mag.item), ForgeDirection.UNKNOWN);
+            transfer.sink(new OKEnergyItem((IEnergyItem) stack.getItem(), stack), ForgeDirection.UNKNOWN);
+            transfer.transfer();
+        }
     }
 
     private static void handleMagnet(EntityPlayer player, ActiveBackPack mag) {

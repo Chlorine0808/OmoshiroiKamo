@@ -8,46 +8,49 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.IPowerContainer;
 import io.netty.buffer.ByteBuf;
-import ruiseki.omoshiroikamo.OmoshiroiKamo;
-import ruiseki.omoshiroikamo.api.energy.IPowerContainer;
+import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
 
-public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
+public class PacketEnergy implements IMessage, IMessageHandler<PacketEnergy, IMessage> {
 
     private int x;
     private int y;
     private int z;
     private int storedEnergy;
 
-    public PacketPowerStorage() {}
+    public PacketEnergy() {}
 
-    public PacketPowerStorage(IPowerContainer ent) {
-        BlockPos bc = ent.getLocation();
-        x = bc.x;
-        y = bc.y;
-        z = bc.z;
-        storedEnergy = ent.getEnergyStored();
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(storedEnergy);
+    public PacketEnergy(IEnergyTile tile) {
+        BlockPos pos = tile.getLocation();
+        x = pos.x;
+        y = pos.y;
+        z = pos.z;
+        storedEnergy = tile.getEnergyStored();
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        buf.writeInt(x);
+        buf.writeInt(y);
+        buf.writeInt(z);
+        buf.writeInt(storedEnergy);
+
+    }
+
+    @Override
+    public void toBytes(ByteBuf buf) {
         x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();
         storedEnergy = buf.readInt();
+
     }
 
     @Override
-    public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
-        EntityPlayer player = OmoshiroiKamo.proxy.getClientPlayer();
+    public IMessage onMessage(PacketEnergy message, MessageContext ctx) {
+        EntityPlayer player = EnderIO.proxy.getClientPlayer();
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
         if (te instanceof IPowerContainer me) {
             me.setEnergyStored(message.storedEnergy);
