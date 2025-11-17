@@ -29,7 +29,8 @@ Can On/Off Backport Mod in Config
 - [ModularUI2 (GTNH)](https://github.com/GTNewHorizons/ModularUI2)
 - [GTNHLib (GTNH)](https://github.com/GTNewHorizons/GTNHLib)
 - [Baubles Expanded (GTNH)](https://github.com/GTNewHorizons/Baubles-Expanded)
-- [EnderCore ](https://github.com/GTNewHorizons/EnderCore)
+- [EnderCore ](https://github.com/GTNewHorizons/EnderCore) (before 1.3.4) — from version 1.3.4 onward, it is not
+  required.
 
 ## Features:
 
