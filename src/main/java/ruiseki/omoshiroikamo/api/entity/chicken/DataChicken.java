@@ -14,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
