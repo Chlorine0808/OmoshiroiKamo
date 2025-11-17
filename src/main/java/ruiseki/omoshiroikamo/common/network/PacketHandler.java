@@ -22,6 +22,8 @@ public class PacketHandler {
         PacketHandler.INSTANCE
             .registerMessage(PacketProgress.class, PacketProgress.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE
+            .registerMessage(PacketEnergy.class, PacketEnergy.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
             .registerMessage(PacketFluidTanks.class, PacketFluidTanks.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE
             .registerMessage(PacketNBBClientFlight.class, PacketNBBClientFlight.class, nextID(), Side.CLIENT);

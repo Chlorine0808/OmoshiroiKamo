@@ -14,27 +14,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
 import cofh.api.energy.EnergyStorage;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
-import ruiseki.omoshiroikamo.api.energy.capability.EnergySink;
-import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
-import ruiseki.omoshiroikamo.api.item.OKItemIO;
 import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
@@ -46,10 +36,7 @@ import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumExtractor extends AbstractMBModifierTE
-    implements IEnergySink, ISidedInventory, CapabilityProvider {
-
-    protected EnergyStorage energyStorage;
+public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements IEnergySink, ISidedInventory {
 
     protected ItemStackHandler output;
     protected final int[] allSlots;
@@ -418,18 +405,6 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
     }
 
     @Override
-    public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == ItemSource.class || capability == ItemSink.class || capability == ItemIO.class) {
-            return capability.cast(new OKItemIO(this, side));
-        }
-
-        if (capability == EnergySink.class) {
-            return capability.cast(new OKEnergySink(this, side));
-        }
-        return null;
-    }
-
-    @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
         int spaceAvailable = getMaxEnergyStored() - getEnergyStored();
         int energyToReceive = Math.min(spaceAvailable, maxReceive);
@@ -439,26 +414,5 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE
         }
 
         return energyToReceive;
-    }
-
-    @Override
-    public boolean canConnectEnergy(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return energyStorage.getEnergyStored();
-    }
-
-    @Override
-    public void setEnergyStored(int storedEnergy) {
-        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
-        energyStorage.setEnergyStored(storedEnergyRF);
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return energyStorage.getMaxEnergyStored();
     }
 }

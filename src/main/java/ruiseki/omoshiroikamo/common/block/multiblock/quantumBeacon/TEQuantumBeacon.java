@@ -11,16 +11,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import cofh.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
-import ruiseki.omoshiroikamo.api.energy.capability.EnergySink;
-import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergySink;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
@@ -31,9 +25,8 @@ import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketNBBClientFlight;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergySink, CapabilityProvider {
+public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergySink {
 
-    private final EnergyStorage energyStorage;
     private final List<BlockPos> modifiers = new ArrayList<>();
     protected ModifierHandler modifierHandler = new ModifierHandler();
 
@@ -41,6 +34,11 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
     public TEQuantumBeacon(int eBuffSize) {
         this.energyStorage = new EnergyStorage(eBuffSize);
+    }
+
+    @Override
+    public String getMachineName() {
+        return "nanoBotBeacon";
     }
 
     @Override
@@ -264,8 +262,15 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     }
 
     @Override
-    public String getMachineName() {
-        return "nanoBotBeacon";
+    public void writeCommon(NBTTagCompound root) {
+        super.writeCommon(root);
+        root.setBoolean("dflight", dealsWithFlight);
+    }
+
+    @Override
+    public void readCommon(NBTTagCompound root) {
+        super.readCommon(root);
+        this.dealsWithFlight = root.getBoolean("dflight");
     }
 
     @Override
@@ -278,48 +283,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
 
         return energyToReceive;
-    }
-
-    @Override
-    public boolean canConnectEnergy(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return energyStorage.getEnergyStored();
-    }
-
-    @Override
-    public void setEnergyStored(int storedEnergy) {
-        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
-        energyStorage.setEnergyStored(storedEnergyRF);
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return energyStorage.getMaxEnergyStored();
-    }
-
-    @Override
-    public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == EnergySink.class) {
-            return capability.cast(new OKEnergySink(this, side));
-        }
-        return null;
-    }
-
-    @Override
-    public void writeCommon(NBTTagCompound root) {
-        super.writeCommon(root);
-        energyStorage.writeToNBT(root);
-    }
-
-    @Override
-    public void readCommon(NBTTagCompound root) {
-        super.readCommon(root);
-        energyStorage.readFromNBT(root);
-        this.dealsWithFlight = root.getBoolean("dflight");
     }
 
 }

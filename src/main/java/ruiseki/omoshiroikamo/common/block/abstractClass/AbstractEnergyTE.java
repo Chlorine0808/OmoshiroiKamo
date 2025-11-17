@@ -1,0 +1,64 @@
+package ruiseki.omoshiroikamo.common.block.abstractClass;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.EnergyStorage;
+import ruiseki.omoshiroikamo.api.client.IProgressTile;
+import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
+import ruiseki.omoshiroikamo.common.network.PacketEnergy;
+import ruiseki.omoshiroikamo.common.network.PacketHandler;
+
+public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile, IProgressTile {
+
+    private int lastSyncPowerStored;
+    protected EnergyStorage energyStorage;
+
+    public AbstractEnergyTE() {
+        energyStorage = new EnergyStorage(100000);
+    }
+
+    @Override
+    protected boolean processTasks(boolean redstoneCheckPassed) {
+        boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
+        if (powerChanged) {
+            lastSyncPowerStored = getEnergyStored();
+            PacketHandler.sendToAllAround(new PacketEnergy(this), this);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return energyStorage.getEnergyStored();
+    }
+
+    @Override
+    public void setEnergyStored(int storedEnergy) {
+        int storedEnergyRF = Math.min(storedEnergy, getMaxEnergyStored());
+        energyStorage.setEnergyStored(storedEnergyRF);
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return energyStorage.getMaxEnergyStored();
+    }
+
+    @Override
+    protected void writeCommon(NBTTagCompound root) {
+        super.writeCommon(root);
+        energyStorage.writeToNBT(root);
+    }
+
+    @Override
+    protected void readCommon(NBTTagCompound root) {
+        super.readCommon(root);
+        energyStorage.readFromNBT(root);
+    }
+}

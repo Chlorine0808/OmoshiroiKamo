@@ -5,24 +5,17 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import cofh.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
 import ruiseki.omoshiroikamo.api.energy.IEnergySource;
-import ruiseki.omoshiroikamo.api.energy.capability.EnergySource;
-import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergySource;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
@@ -31,12 +24,11 @@ import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
-public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource, CapabilityProvider {
+public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource {
 
     private int lastCollectionValue = -1;
     private static final int CHECK_INTERVAL = 100;
 
-    private final EnergyStorage energyStorage;
     private ModifierHandler modifierHandler = new ModifierHandler();
     private List<BlockPos> modifiers = new ArrayList<>();
 
@@ -235,25 +227,4 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     public abstract int getTier();
-
-    @Override
-    public void writeCommon(NBTTagCompound root) {
-        super.writeCommon(root);
-        energyStorage.writeToNBT(root);
-    }
-
-    @Override
-    public void readCommon(NBTTagCompound root) {
-        super.readCommon(root);
-        energyStorage.readFromNBT(root);
-    }
-
-    @Override
-    public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == EnergySource.class) {
-            return capability.cast(new OKEnergySource(this, side));
-        }
-
-        return null;
-    }
 }
