@@ -19,11 +19,8 @@ import ruiseki.omoshiroikamo.api.energy.capability.cofh.CoFHEnergyReceiver;
 import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergyIO;
 import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergySink;
 import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergySource;
-import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
 public class EnergyUtils {
-
-    public static final String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
 
     private static int counter = 0;
     public static final int WRAP_HANDLER = 0b1 << counter++;
@@ -54,8 +51,8 @@ public class EnergyUtils {
             }
         }
 
-        if ((usage & WRAP_COFH) != 0 && obj instanceof IEnergyProvider handler && LibMods.CoFHLib.isLoaded()) {
-            return new CoFHEnergyProvider(handler, side);
+        if ((usage & WRAP_COFH) != 0) {
+            return wrapCoFHEnergy(obj, side);
         }
 
         if (obj instanceof CapabilityProvider capabilityProvider) {
@@ -91,8 +88,8 @@ public class EnergyUtils {
             }
         }
 
-        if ((usage & WRAP_COFH) != 0 && obj instanceof IEnergyReceiver handler && LibMods.CoFHLib.isLoaded()) {
-            return new CoFHEnergyReceiver(handler, side);
+        if ((usage & WRAP_COFH) != 0) {
+            return wrapCoFHEnergy(obj, side);
         }
 
         if (obj instanceof CapabilityProvider capabilityProvider) {
@@ -120,8 +117,8 @@ public class EnergyUtils {
             return new OKEnergyIO(ioHandler, side);
         }
 
-        if ((usage & WRAP_COFH) != 0 && obj instanceof IEnergyHandler handler && LibMods.CoFHLib.isLoaded()) {
-            return new CoFHEnergyHandler(handler, side);
+        if ((usage & WRAP_COFH) != 0) {
+            return wrapCoFHEnergy(obj, side);
         }
 
         if (obj instanceof CapabilityProvider capabilityProvider) {
@@ -141,4 +138,34 @@ public class EnergyUtils {
 
         return new WrappedEnergyIO(source, sink);
     }
+
+    public static EnergyIO wrapCoFHEnergy(Object obj, ForgeDirection side) {
+
+        try {
+            // IEnergyReceiver
+            Class<?> receiverClass = Class.forName("cofh.api.energy.IEnergyReceiver");
+            if (receiverClass.isInstance(obj)) {
+                return new CoFHEnergyReceiver((IEnergyReceiver) obj, side);
+            }
+        } catch (ClassNotFoundException ignored) {}
+
+        try {
+            // IEnergyProvider
+            Class<?> providerClass = Class.forName("cofh.api.energy.IEnergyProvider");
+            if (providerClass.isInstance(obj)) {
+                return new CoFHEnergyProvider((IEnergyProvider) obj, side);
+            }
+        } catch (ClassNotFoundException ignored) {}
+
+        try {
+            // IEnergyHandler
+            Class<?> handlerClass = Class.forName("cofh.api.energy.IEnergyHandler");
+            if (handlerClass.isInstance(obj)) {
+                return new CoFHEnergyHandler((IEnergyHandler) obj, side);
+            }
+        } catch (ClassNotFoundException ignored) {}
+
+        return null;
+    }
+
 }
