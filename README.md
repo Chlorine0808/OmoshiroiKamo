@@ -68,7 +68,8 @@ a rewritten backport of the modern Environmental Tech mod:
 - Breeding trees and NEI integration
 - Can Have Trait It will Give Buff/Debuff (Can Turn Off In Config)
 
-![Chickens](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
+![Cows](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
+![Cows](https://media.forgecdn.net/attachments/1397/915/2025-11-19_19-23-22-png.png)
 
 ### Sophisticated Backpacks (Backport Rewrite WIP)
 
