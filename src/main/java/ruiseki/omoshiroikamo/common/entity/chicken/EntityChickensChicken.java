@@ -41,6 +41,8 @@ import ruiseki.omoshiroikamo.plugin.waila.IWailaEntityInfoProvider;
 public class EntityChickensChicken extends EntityChicken
     implements IMobStats, IWailaEntityInfoProvider, IMobInfoProvider {
 
+    public static final String PROGRESS_NBT = "Progress";
+
     private final Map<MobTrait, Integer> traits = new HashMap<>();
 
     public EntityChickensChicken(World world) {
@@ -293,12 +295,14 @@ public class EntityChickensChicken extends EntityChicken
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         writeStatsNBT(tagCompound);
+        tagCompound.setInteger(PROGRESS_NBT, getLayProgress());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         readStatsNBT(tagCompound);
+        timeUntilNextEgg = tagCompound.getInteger(PROGRESS_NBT);
     }
 
     @Override

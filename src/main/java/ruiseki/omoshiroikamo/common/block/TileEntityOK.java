@@ -7,11 +7,10 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketProgress;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public abstract class TileEntityOK extends TileEntity {
 
@@ -95,13 +94,13 @@ public abstract class TileEntityOK extends TileEntity {
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
-        writeCommon(tag);
+        writeToNBT(tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        readCommon(pkt.func_148857_g());
+        readFromNBT(pkt.func_148857_g());
     }
 
     public boolean canPlayerAccess(EntityPlayer player) {
@@ -135,7 +134,7 @@ public abstract class TileEntityOK extends TileEntity {
 
     public BlockPos getLocation() {
         return cachedLocation == null || !cachedLocation.equals(xCoord, yCoord, zCoord)
-            ? (cachedLocation = new BlockPos(xCoord, yCoord, zCoord))
+            ? (cachedLocation = new BlockPos(xCoord, yCoord, zCoord, worldObj))
             : cachedLocation;
     }
 

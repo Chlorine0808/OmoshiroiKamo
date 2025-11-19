@@ -56,24 +56,31 @@ a rewritten backport of the modern Environmental Tech mod:
 - Breeding trees and NEI integration
 - Can Have Trait It will Give Buff/Debuff (Can Turn Off In Config)
 
-![Cows](https://media.forgecdn.net/attachments/1388/697/2025-11-11_13-12-17-png.png)
+![Chickens](https://media.forgecdn.net/attachments/1388/697/2025-11-11_13-12-17-png.png)
 ![Chickens](https://media.forgecdn.net/attachments/1393/409/2025-11-15_17-58-35-png.png)
 
-### Fluid Cows (Backport WIP)Fluid Cows (Backport WIP)
+### Fluid Cows (Backport)
 
 - Cows Generate Modded Fluids — Lava, Oil, Molten Metals, Mana, etc.
 - Like Chickens Have Stats (Growth, Gain, Strength)
 - Mob Info Compat & Most Resources from Other Mods.
+- Stall Automation
 - Breeding trees and NEI integration
 - Can Have Trait It will Give Buff/Debuff (Can Turn Off In Config)
 
-![Chickens](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
+![Cows](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
+![Cows](https://media.forgecdn.net/attachments/1397/915/2025-11-19_19-23-22-png.png)
 
 ### Sophisticated Backpacks (Backport Rewrite WIP)
 
 - Fully Upgradable Backpacks (Size, Filters, Feeding, Magnets…)
 - Crafting Upgrade, Feeding Upgrade, Pickup Upgrade
 - Custom Colors & Skins
+
+### Traits (WIP)
+
+- Level Up Like Enchantment
+- Buff/Debuff Trait
 
 ## License
 

@@ -14,7 +14,7 @@ import baubles.api.expanded.BaubleItemHelper;
 import baubles.api.expanded.IBaubleExpanded;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.entity.EntityDoppleganger;
-import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class ItemBauble extends ItemOK implements IBaubleExpanded {

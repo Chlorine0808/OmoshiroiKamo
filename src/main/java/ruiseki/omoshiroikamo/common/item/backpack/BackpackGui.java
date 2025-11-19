@@ -55,7 +55,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.slot.ModularCraftingSlotAdv;
 import ruiseki.omoshiroikamo.client.gui.modularui2.widgets.BackPackPageButton;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.item.upgrade.EnergyUpgrade;
-import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 

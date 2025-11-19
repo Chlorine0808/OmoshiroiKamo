@@ -3,8 +3,6 @@ package ruiseki.omoshiroikamo.common.network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -12,6 +10,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.IPowerContainer;
 import io.netty.buffer.ByteBuf;
 import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public class PacketEnergy implements IMessage, IMessageHandler<PacketEnergy, IMessage> {
 

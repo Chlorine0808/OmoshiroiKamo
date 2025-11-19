@@ -16,10 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.init.ModItems;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.TooltipUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
@@ -141,13 +140,13 @@ public class DataChicken {
     /**
      * Spawns the chicken at a block coordinate
      */
-    public void spawnEntity(World world, BlockPos pos) {
-        EntityChickensChicken entity = buildEntity(world);
+    public void spawnEntity(BlockPos pos) {
+        EntityChickensChicken entity = buildEntity(pos.world);
         entity.setPosition(pos.x + 0.5, pos.y, pos.z + 0.5);
         entity.onSpawnWithEgg(null);
         entity.setStatsAnalyzed(true);
         entity.setType(getType());
-        world.spawnEntityInWorld(entity);
+        pos.world.spawnEntityInWorld(entity);
     }
 
     /**

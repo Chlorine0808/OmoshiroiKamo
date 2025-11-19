@@ -60,7 +60,11 @@ public class SmartTank extends FluidTank {
         if (!canDrainFluidType(resource)) {
             return null;
         }
-        return drain(resource.amount, doDrain);
+        FluidStack drained = super.drain(resource.amount, doDrain);
+        if (doDrain && drained != null && drained.amount > 0) {
+            onContentsChanged();
+        }
+        return drained;
     }
 
     public boolean canFill(FluidStack resource) {
@@ -101,6 +105,7 @@ public class SmartTank extends FluidTank {
         } else {
             setFluid(null);
         }
+        onContentsChanged();
     }
 
     @Override
@@ -108,7 +113,11 @@ public class SmartTank extends FluidTank {
         if (!canFill(resource)) {
             return 0;
         }
-        return super.fill(resource, doFill);
+        int filled = super.fill(resource, doFill);
+        if (doFill && filled > 0) {
+            onContentsChanged();
+        }
+        return filled;
     }
 
     @Override
@@ -136,6 +145,7 @@ public class SmartTank extends FluidTank {
         if (getFluidAmount() > capacity) {
             setFluidAmount(capacity);
         }
+        onContentsChanged();
     }
 
     public void writeCommon(String name, NBTTagCompound nbtRoot) {
@@ -162,9 +172,18 @@ public class SmartTank extends FluidTank {
                     restriction = FluidRegistry.getFluid(fluidName);
                 }
             }
+            onContentsChanged();
         } else {
             setFluid(null);
             // not reseting 'restriction' here on purpose
         }
     }
+
+    @Override
+    public void setFluid(FluidStack fluid) {
+        super.setFluid(fluid);
+        onContentsChanged();
+    }
+
+    protected void onContentsChanged() {}
 }

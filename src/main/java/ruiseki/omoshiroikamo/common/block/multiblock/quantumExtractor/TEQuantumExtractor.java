@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
 import cpw.mods.fml.relauncher.Side;
@@ -24,8 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
-import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
-import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
+import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
+import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
@@ -34,6 +33,7 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.TEQuan
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res.TEQuantumResExtractorT4;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
 public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements IEnergySink, ISidedInventory {
@@ -86,7 +86,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntity tileEntity = getLocation().getTileEntity();
         if (tileEntity instanceof TEQuantumOreExtractorT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_VOID_ORE_MINER_T1.get());
         }
@@ -107,13 +107,13 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             return false;
         }
 
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = new BlockPos(x, y, z, worldObj);
         if (modifiers.contains(pos)) {
             return false;
         }
 
         if (block == ModBlocks.COLORED_LENS.get() || block == ModBlocks.LENS.get()) {
-            lens = new BlockPos(x, y, z);
+            lens = new BlockPos(x, y, z, worldObj);
             return true;
         }
         if (isModifierBlock(block)) {
@@ -248,7 +248,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
 
         List<IModifierBlock> mods = new ArrayList<>();
         for (BlockPos pos : this.modifiers) {
-            Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
+            Block block = pos.getBlock();
             if (block instanceof IModifierBlock) {
                 mods.add((IModifierBlock) block);
             }
@@ -260,9 +260,9 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
 
         if (this.possibleResults.isEmpty()) {
             if (lens != null) {
-                Block block = worldObj.getBlock(lens.x, lens.y, lens.z);
+                Block block = lens.getBlock();
                 if (block instanceof BlockColoredLens) {
-                    int meta = worldObj.getBlockMetadata(lens.x, lens.y, lens.z);
+                    int meta = lens.getMetadata();
                     this.focusColor = ((BlockColoredLens) block).getFocusColor(meta);
                     this.possibleResults.clear();
                     this.possibleResults.addAll(

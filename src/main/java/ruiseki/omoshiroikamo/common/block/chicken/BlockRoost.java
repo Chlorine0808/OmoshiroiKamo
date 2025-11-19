@@ -61,15 +61,15 @@ public class BlockRoost extends AbstractBlock<TERoost> {
     }
 
     @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, player, stack);
         AbstractTE te = (AbstractTE) world.getTileEntity(x, y, z);
         world.setBlockMetadataWithNotify(x, y, z, te.getFacing(), 2);
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
     }
 
     @Override
@@ -115,10 +115,5 @@ public class BlockRoost extends AbstractBlock<TERoost> {
                 tooltip.add("Progress: " + roost.getFormattedProgress());
             }
         }
-    }
-
-    @Override
-    public int getDefaultDisplayMask(World world, int x, int y, int z) {
-        return 0;
     }
 }

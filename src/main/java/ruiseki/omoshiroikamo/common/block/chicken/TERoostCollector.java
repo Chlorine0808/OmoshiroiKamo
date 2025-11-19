@@ -18,12 +18,12 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public class TERoostCollector extends AbstractStorageTE {
 
@@ -49,13 +49,13 @@ public class TERoostCollector extends AbstractStorageTE {
         for (int x = -4; x < 5; x++) {
             int y = searchOffset / 9;
             int z = (searchOffset % 9) - 4;
-            BlockPos targetPos = new BlockPos(xCoord + x, yCoord + y, zCoord + z);
+            BlockPos targetPos = new BlockPos(xCoord + x, yCoord + y, zCoord + z, worldObj);
             gatherItemAtPos(targetPos);
         }
     }
 
     private void gatherItemAtPos(BlockPos pos) {
-        TileEntity tileEntity = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+        TileEntity tileEntity = pos.getTileEntity();
         if (!(tileEntity instanceof TERoost teRoost)) {
             return;
         }

@@ -4,8 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -13,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import ruiseki.omoshiroikamo.api.io.IIoConfigurable;
 import ruiseki.omoshiroikamo.api.io.IoMode;
 import ruiseki.omoshiroikamo.api.io.IoType;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMessage> {
 

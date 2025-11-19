@@ -12,14 +12,20 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.mojang.authlib.GameProfile;
 
+import lombok.Getter;
+import lombok.Setter;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
 public abstract class AbstractMBModifierTE extends AbstractEnergyTE {
 
     protected GameProfile player;
+    @Getter
     protected boolean isFormed = false;
     private boolean isProcessing = false;
+    @Getter
     private int currentDuration = 0;
+    @Getter
+    @Setter
     private int currentProgress = 0;
 
     protected abstract IStructureDefinition getStructureDefinition();
@@ -164,22 +170,6 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE {
     @Override
     public void setProgress(float progress) {
         setCurrentProgress((int) progress);
-    }
-
-    public boolean isFormed() {
-        return this.isFormed;
-    }
-
-    public int getCurrentDuration() {
-        return currentDuration;
-    }
-
-    public int getCurrentProgress() {
-        return currentProgress;
-    }
-
-    public void setCurrentProgress(int currentProgress) {
-        this.currentProgress = currentProgress;
     }
 
     public void setPlayer(EntityPlayer plr) {

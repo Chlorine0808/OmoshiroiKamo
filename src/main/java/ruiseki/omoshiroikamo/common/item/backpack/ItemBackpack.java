@@ -23,13 +23,13 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.energy.IEnergyItem;
-import ruiseki.omoshiroikamo.api.energy.PowerDisplayUtil;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.item.IBaubleRender;
 import ruiseki.omoshiroikamo.client.render.item.backpack.BackpackRenderer;
 import ruiseki.omoshiroikamo.common.entity.EntityImmortalItem;
 import ruiseki.omoshiroikamo.common.item.ItemBauble;
 import ruiseki.omoshiroikamo.common.item.upgrade.EnergyUpgrade;
+import ruiseki.omoshiroikamo.common.util.energy.PowerDisplayUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
 public class ItemBackpack extends ItemBauble implements IEnergyItem, IGuiHolder<PlayerInventoryGuiData>, IBaubleRender {
@@ -116,7 +116,7 @@ public class ItemBackpack extends ItemBauble implements IEnergyItem, IGuiHolder<
         if (GuiScreen.isShiftKeyDown()) {
             EnergyUpgrade up = EnergyUpgrade.loadFromItem(itemstack);
             if (up != null) {
-                list.add(PowerDisplayUtil.formatStoredPower(up.getEnergy(), up.getCapacity()));
+                list.add(PowerDisplayUtils.formatStoredPower(up.getEnergy(), up.getCapacity()));
             }
         }
     }

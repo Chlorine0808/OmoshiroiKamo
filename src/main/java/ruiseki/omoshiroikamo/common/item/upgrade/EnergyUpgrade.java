@@ -13,9 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 import lombok.Getter;
 import lombok.Setter;
-import ruiseki.omoshiroikamo.api.energy.PowerDisplayUtil;
 import ruiseki.omoshiroikamo.api.item.IAnvilUpgradeItem;
-import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.util.energy.PowerDisplayUtils;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.item.AnvilUpgradeConfig;
 
@@ -172,7 +172,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
         if (up == null) {
             return null;
         }
-        return PowerDisplayUtil.formatStoredPower(up.energy, up.capacity);
+        return PowerDisplayUtils.formatStoredPower(up.energy, up.capacity);
     }
 
     public static int getEnergyStored(ItemStack container) {
@@ -221,7 +221,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
         if (GuiScreen.isShiftKeyDown()) {
             List<String> upgradeStr = new ArrayList<String>();
             upgradeStr.add(EnumChatFormatting.DARK_AQUA + LibMisc.LANG.localizeExact(getUnlocalizedName() + ".name"));
-            String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+            String capString = PowerDisplayUtils.formatPower(capacity) + " " + PowerDisplayUtils.abrevation();
             for (int i = 0; i < upgradeStr.size(); i++) {
                 String str = upgradeStr.get(i);
                 str = str.replaceAll("\\$P", capString);

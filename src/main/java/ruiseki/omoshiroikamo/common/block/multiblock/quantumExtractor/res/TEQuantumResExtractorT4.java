@@ -6,7 +6,7 @@ import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
+import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;

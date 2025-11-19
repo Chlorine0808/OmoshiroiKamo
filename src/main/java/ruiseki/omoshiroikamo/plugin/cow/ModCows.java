@@ -23,7 +23,7 @@ import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistry;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.common.util.handler.CowNetherPopulateHandler;
+import ruiseki.omoshiroikamo.common.util.handler.NetherPopulateHandler;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.CowConfig;
 
@@ -41,7 +41,7 @@ public class ModCows {
         loadConfiguration();
 
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
-        if (biomesForSpawning.size() > 0) {
+        if (!biomesForSpawning.isEmpty()) {
             EntityRegistry.addSpawn(
                 EntityCowsCow.class,
                 CowConfig.spawnProbability,
@@ -51,7 +51,7 @@ public class ModCows {
                 biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()]));
             if (biomesForSpawning.contains(BiomeGenBase.hell)) {
                 MinecraftForge.TERRAIN_GEN_BUS
-                    .register(new CowNetherPopulateHandler(CowConfig.netherSpawnChanceMultiplier));
+                    .register(new NetherPopulateHandler(CowConfig.netherSpawnChanceMultiplier, EntityCowsCow.class));
             }
         }
     }
@@ -60,6 +60,11 @@ public class ModCows {
 
     private static void registerModAddons() {
         addModAddon(new BaseCows());
+        addModAddon(new TinkersCows());
+        addModAddon(new EnderIOCows());
+        addModAddon(new BuildCraftCows());
+        addModAddon(new BigReactorsCows());
+        addModAddon(new MineFactoryReloadedCows());
     }
 
     private static List<BiomeGenBase> getAllSpawnBiomes() {

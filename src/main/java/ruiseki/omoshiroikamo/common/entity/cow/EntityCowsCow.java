@@ -24,6 +24,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +47,9 @@ import ruiseki.omoshiroikamo.plugin.waila.IWailaEntityInfoProvider;
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobInfoProvider", modid = "mobsinfo")
 public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityInfoProvider, IMobInfoProvider {
 
+    public static final String PROGRESS_NBT = "Progress";
+    public static final String MILK_TANK_NBT = "MilkTank";
+
     private final Map<MobTrait, Integer> traits = new HashMap<>();
     public int timeUntilNextMilk;
     public SmartTank milkTank;
@@ -60,6 +64,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     public void setType(int type) {
         dataWatcher.updateObject(20, type);
         isImmuneToFire = getCowDescription().isImmuneToFire();
+        resetTimeUntilNextMilk();
     }
 
     @Override
@@ -183,7 +188,8 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
             return false;
         }
 
-        if (!isChild() && milkTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
+        if (!isChild() && milkTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME
+            && stack.getItem() instanceof IFluidContainerItem) {
             FluidStack milkToDrain = milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
             if (milkToDrain.amount == 1000) {
                 ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(milkToDrain, stack);
@@ -215,9 +221,9 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     @Override
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote && !this.isChild()) {
-            int newTimeUntilNextEgg = timeUntilNextMilk - 1;
-            setTimeUntilNextMilk(newTimeUntilNextEgg);
-            if (newTimeUntilNextEgg <= 1) {
+            int newTimeUntilNextMilk = timeUntilNextMilk - 1;
+            setTimeUntilNextMilk(newTimeUntilNextMilk);
+            if (newTimeUntilNextMilk <= 1) {
                 CowsRegistryItem cow = getCowDescription();
                 FluidStack fluid = cow.createMilkFluid();
                 if (fluid != null) {
@@ -311,14 +317,16 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         writeStatsNBT(tagCompound);
-        milkTank.writeCommon("milkTank", tagCompound);
+        milkTank.writeCommon(MILK_TANK_NBT, tagCompound);
+        tagCompound.setInteger(PROGRESS_NBT, getMilkProgress());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         readStatsNBT(tagCompound);
-        milkTank.readCommon("milkTank", tagCompound);
+        milkTank.readCommon(MILK_TANK_NBT, tagCompound);
+        timeUntilNextMilk = tagCompound.getInteger(PROGRESS_NBT);
     }
 
     @Override

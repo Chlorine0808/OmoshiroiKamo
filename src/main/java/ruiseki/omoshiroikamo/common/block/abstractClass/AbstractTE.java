@@ -13,9 +13,9 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosGuiData> {
 
@@ -172,7 +172,7 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     @Override
     public BlockPos getLocation() {
-        return new BlockPos(xCoord, yCoord, zCoord);
+        return new BlockPos(xCoord, yCoord, zCoord, worldObj);
     }
 
 }

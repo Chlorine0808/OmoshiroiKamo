@@ -2,7 +2,7 @@ package ruiseki.omoshiroikamo.api.io;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 
 public interface IIoConfigurable {
 
