@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
-import static ruiseki.omoshiroikamo.config.backport.ChickenConfig.netherSpawnChanceMultiplier;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +24,7 @@ import ruiseki.omoshiroikamo.api.entity.chicken.LiquidEggRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.LiquidEggRegistryItem;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.common.util.handler.ChickenNetherPopulateHandler;
+import ruiseki.omoshiroikamo.common.util.handler.NetherPopulateHandler;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
@@ -62,7 +60,8 @@ public class ModChickens {
                 EnumCreatureType.creature,
                 biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()]));
             if (biomesForSpawning.contains(BiomeGenBase.hell)) {
-                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler(netherSpawnChanceMultiplier));
+                MinecraftForge.TERRAIN_GEN_BUS.register(
+                    new NetherPopulateHandler(ChickenConfig.netherSpawnChanceMultiplier, EntityChickensChicken.class));
             }
         }
     }

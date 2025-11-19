@@ -10,8 +10,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -22,14 +20,13 @@ import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketNBBClientFlight;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 
 public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IEnergySink {
 
     private final List<BlockPos> modifiers = new ArrayList<>();
     protected ModifierHandler modifierHandler = new ModifierHandler();
-
-    private boolean dealsWithFlight = false;
 
     public TEQuantumBeacon(int eBuffSize) {
         this.energyStorage = new EnergyStorage(eBuffSize);
@@ -42,28 +39,43 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
     @Override
     public void onChunkUnload() {
-        this.removePlayerEffects();
         super.onChunkUnload();
+        disablePlayerFlight();
     }
 
     @Override
     protected void clearStructureParts() {
         modifiers.clear();
         modifierHandler = new ModifierHandler();
-        this.removePlayerEffects();
+        disablePlayerFlight();
+    }
+
+    private void disablePlayerFlight() {
+        if (player == null || worldObj.isRemote) {
+            return;
+        }
+        EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
+        if (plr != null) {
+            plr.capabilities.isFlying = false;
+            plr.capabilities.allowFlying = false;
+            plr.sendPlayerAbilities();
+            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+        }
     }
 
     @Override
     protected boolean processTasks(boolean redstoneCheckPassed) {
-
-        if (redstoneCheckPassed) {
+        if (!worldObj.isRemote && player != null && getEnergyStored() > 0) {
             EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
-            if (plr != null && !plr.capabilities.isCreativeMode && dealsWithFlight) {
-                plr.capabilities.allowFlying = false;
-                plr.capabilities.isFlying = false;
-                dealsWithFlight = false;
-                plr.sendPlayerAbilities();
-                PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+            if (plr != null) {
+                if (redstoneCheckPassed && !plr.capabilities.isCreativeMode) {
+                    plr.capabilities.isFlying = false;
+                    plr.capabilities.allowFlying = false;
+                    plr.sendPlayerAbilities();
+                    PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+                } else {
+                    handleFlightUpdate(plr);
+                }
             }
         }
         return super.processTasks(redstoneCheckPassed);
@@ -75,7 +87,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
             return false;
         }
 
-        BlockPos coord = new BlockPos(x, y, z);
+        BlockPos coord = new BlockPos(x, y, z, worldObj);
         if (modifiers.contains(coord)) {
             return false;
         }
@@ -104,23 +116,21 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         if (player == null || !PlayerUtils.doesPlayerExist(worldObj, player.getId())) {
             return;
         }
-
         EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
         if (plr == null || modifierHandler == null) {
             return;
         }
-
         int potionDuration = getBaseDuration() * 2 + 300;
         int energyCost = (int) (modifierHandler.getAttributeMultiplier("energycost_fixed") * getBaseDuration());
-
-        if (getEnergyStored() < energyCost) {
-            removePlayerEffects();
+        if (getEnergyStored() < energyCost && !plr.capabilities.isCreativeMode) {
+            plr.capabilities.isFlying = false;
+            plr.capabilities.allowFlying = false;
+            plr.sendPlayerAbilities();
+            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
             return;
         }
-
         setEnergyStored(getEnergyStored() - energyCost);
-        updateFlightCapability(plr);
-
+        handleFlightUpdate(plr);
         applyPotionEffects(plr, potionDuration);
     }
 
@@ -152,46 +162,19 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
     }
 
-    private void updateFlightCapability(EntityPlayer plr) {
-        if (plr.capabilities.isCreativeMode) {
+    private void handleFlightUpdate(EntityPlayer plr) {
+        if (!modifierHandler.hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName())) {
+            plr.capabilities.isFlying = false;
+            plr.capabilities.allowFlying = false;
+            plr.sendPlayerAbilities();
+            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
             return;
         }
-
-        boolean canFly = modifierHandler.hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName());
-
-        if (canFly && !dealsWithFlight) {
+        if (!plr.capabilities.allowFlying) {
             plr.capabilities.allowFlying = true;
+            plr.capabilities.isFlying = true;
             plr.sendPlayerAbilities();
-            dealsWithFlight = true;
             PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), true), plr);
-
-        } else if (!canFly && dealsWithFlight) {
-            plr.capabilities.isFlying = false;
-            plr.capabilities.allowFlying = false;
-            plr.sendPlayerAbilities();
-            dealsWithFlight = false;
-            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
-        }
-    }
-
-    private void removePlayerEffects() {
-        if (player == null || modifierHandler == null) {
-            return;
-        }
-
-        EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
-        if (plr == null || plr.capabilities.isCreativeMode) {
-            return;
-        }
-
-        boolean hasFlightAttribute = modifierHandler
-            .hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName());
-        if (dealsWithFlight && !hasFlightAttribute) {
-            plr.capabilities.allowFlying = false;
-            plr.capabilities.isFlying = false;
-            dealsWithFlight = false;
-            plr.sendPlayerAbilities();
-            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
         }
     }
 
@@ -221,7 +204,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     public boolean canProcess() {
         List<IModifierBlock> mods = new ArrayList<>();
         for (BlockPos pos : this.modifiers) {
-            Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
+            Block block = pos.getBlock();
             if (block instanceof IModifierBlock) {
                 mods.add((IModifierBlock) block);
             }
@@ -251,7 +234,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntity tileEntity = getLocation().getTileEntity();
         if (tileEntity instanceof TEQuantumBeaconT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_NANO_BOT_BEACON_T1.get());
         }

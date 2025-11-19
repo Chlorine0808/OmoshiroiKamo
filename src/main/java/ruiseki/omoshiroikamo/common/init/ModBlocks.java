@@ -1,6 +1,7 @@
 package ruiseki.omoshiroikamo.common.init;
 
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useChicken;
+import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useCow;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useEnvironmentalTech;
 
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockBreeder;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoost;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoostCollector;
+import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockMachineBase;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockStructureFrame;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.BlockModifierAccuracy;
@@ -71,6 +73,7 @@ public enum ModBlocks {
     MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
     MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
 
+    STALL(useCow, BlockStall.create()),
     ROOST(useChicken, BlockRoost.create()),
     BREEDER(useChicken, BlockBreeder.create()),
     ROOST_COLLECTOR(useChicken, BlockRoostCollector.create()),;

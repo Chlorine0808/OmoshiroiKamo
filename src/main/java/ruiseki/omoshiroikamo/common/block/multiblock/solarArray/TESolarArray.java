@@ -11,10 +11,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
-import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
 import ruiseki.omoshiroikamo.api.energy.IEnergySource;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -22,7 +19,9 @@ import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
+import ruiseki.omoshiroikamo.common.util.energy.EnergyTransfer;
 
 public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource {
 
@@ -74,7 +73,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         List<IModifierBlock> mods = new ArrayList<>();
 
         for (BlockPos pos : this.modifiers) {
-            Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
+            Block block = pos.getBlock();
             if (block instanceof IModifierBlock) {
                 mods.add((IModifierBlock) block);
             }
@@ -104,7 +103,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntity tileEntity = getLocation().getTileEntity();
         if (tileEntity instanceof TESolarArrayT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_SOLAR_ARRAY_T1.get());
         }
@@ -180,7 +179,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
             return false;
         }
 
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = new BlockPos(x, y, z, getWorldObj());
         if (modifiers.contains(pos)) {
             return false;
         }

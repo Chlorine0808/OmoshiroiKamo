@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.client.IRenderUpgrade;
 import ruiseki.omoshiroikamo.api.item.IAnvilUpgrade;
-import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 

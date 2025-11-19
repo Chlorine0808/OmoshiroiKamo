@@ -21,10 +21,10 @@ import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
-import ruiseki.omoshiroikamo.api.item.OKItemIO;
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
-import ruiseki.omoshiroikamo.common.util.ItemUtils;
+import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
+import ruiseki.omoshiroikamo.common.util.item.capability.OKItemIO;
 
 public abstract class TERoostBase extends AbstractStorageTE implements IProgressTile {
 

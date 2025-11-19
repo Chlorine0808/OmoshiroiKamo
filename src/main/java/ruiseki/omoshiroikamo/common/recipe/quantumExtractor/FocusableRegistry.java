@@ -9,10 +9,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandom;
 
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
-import ruiseki.omoshiroikamo.api.item.IFocusableRegistry;
-import ruiseki.omoshiroikamo.api.item.WeightedRandomUtil;
-import ruiseki.omoshiroikamo.api.item.WeightedStackBase;
-import ruiseki.omoshiroikamo.common.util.ItemUtils;
+import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
+import ruiseki.omoshiroikamo.api.item.weighted.WeightedRandomUtil;
+import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
+import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 
 public class FocusableRegistry implements IFocusableRegistry {
 

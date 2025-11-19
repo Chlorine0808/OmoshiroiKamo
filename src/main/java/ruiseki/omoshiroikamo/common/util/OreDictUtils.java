@@ -10,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import codechicken.nei.NEIServerUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 
 public class OreDictUtils {

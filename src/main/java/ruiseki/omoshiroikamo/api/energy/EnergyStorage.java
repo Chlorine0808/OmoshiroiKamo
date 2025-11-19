@@ -4,6 +4,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import cofh.api.energy.IEnergyStorage;
 import cpw.mods.fml.common.Optional;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Reference implementation of {@link cofh.api.energy.IEnergyStorage}. Use/extend this or implement your own.
@@ -16,7 +18,11 @@ public class EnergyStorage implements IEnergyStorage {
 
     protected int energy;
     protected int capacity;
+    @Setter
+    @Getter
     protected int maxReceive;
+    @Setter
+    @Getter
     protected int maxExtract;
 
     public EnergyStorage(int capacity) {
@@ -33,30 +39,23 @@ public class EnergyStorage implements IEnergyStorage {
         this.maxExtract = maxExtract;
     }
 
-    public EnergyStorage readFromNBT(NBTTagCompound nbt) {
-        return readFromNBT(nbt, "Energy");
+    public void readFromNBT(NBTTagCompound nbt) {
+        readFromNBT(nbt, "Energy");
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        return writeToNBT(nbt, "Energy");
+    public void writeToNBT(NBTTagCompound nbt) {
+        writeToNBT(nbt, "Energy");
     }
 
-    public EnergyStorage readFromNBT(NBTTagCompound nbt, String tag) {
+    public void readFromNBT(NBTTagCompound nbt, String tag) {
         this.energy = nbt.getInteger(tag);
         if (this.energy > this.capacity) {
             this.energy = this.capacity;
         }
-
-        return this;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt, String tag) {
-        if (this.energy < 0) {
-            this.energy = 0;
-        }
-
-        nbt.setInteger(tag, this.energy);
-        return nbt;
+    public void writeToNBT(NBTTagCompound nbt, String tag) {
+        nbt.setInteger(tag, getEnergyStored());
     }
 
     public void setCapacity(int capacity) {
@@ -70,22 +69,6 @@ public class EnergyStorage implements IEnergyStorage {
     public void setMaxTransfer(int maxTransfer) {
         this.setMaxReceive(maxTransfer);
         this.setMaxExtract(maxTransfer);
-    }
-
-    public void setMaxReceive(int maxReceive) {
-        this.maxReceive = maxReceive;
-    }
-
-    public void setMaxExtract(int maxExtract) {
-        this.maxExtract = maxExtract;
-    }
-
-    public int getMaxReceive() {
-        return this.maxReceive;
-    }
-
-    public int getMaxExtract() {
-        return this.maxExtract;
     }
 
     public void setEnergyStored(int energy) {

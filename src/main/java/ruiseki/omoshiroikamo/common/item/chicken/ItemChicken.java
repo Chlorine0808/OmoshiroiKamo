@@ -15,14 +15,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.TooltipUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
@@ -82,8 +81,8 @@ public class ItemChicken extends ItemOK {
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            BlockPos pos = correctPosition(new BlockPos(x, y, z), side);
-            activate(stack, world, pos);
+            BlockPos pos = correctPosition(new BlockPos(x, y, z, world), side);
+            activate(stack, pos);
             if (!player.capabilities.isCreativeMode) {
                 stack.stackSize--;
             }
@@ -100,15 +99,15 @@ public class ItemChicken extends ItemOK {
         int posY = pos.y + offsetsYForSide[side];
         int posZ = pos.z + offsetsZForSide[side];
 
-        return new BlockPos(posX, posY, posZ);
+        return new BlockPos(posX, posY, posZ, pos.world);
     }
 
-    private void activate(ItemStack stack, World worldIn, BlockPos pos) {
+    private void activate(ItemStack stack, BlockPos pos) {
         DataChicken chicken = DataChicken.getDataFromStack(stack);
         if (chicken == null) {
             return;
         }
-        chicken.spawnEntity(worldIn, pos);
+        chicken.spawnEntity(pos);
     }
 
     @Override

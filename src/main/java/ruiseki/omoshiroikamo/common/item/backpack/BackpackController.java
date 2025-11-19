@@ -40,12 +40,12 @@ import codechicken.lib.vec.Vector3;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
 import ruiseki.omoshiroikamo.api.energy.IEnergyItem;
-import ruiseki.omoshiroikamo.api.energy.capability.ok.OKEnergyItem;
 import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
 import ruiseki.omoshiroikamo.common.entity.EntityImmortalItem;
-import ruiseki.omoshiroikamo.common.util.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.util.energy.EnergyTransfer;
+import ruiseki.omoshiroikamo.common.util.energy.capability.ok.OKEnergyItem;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 @EventBusSubscriber

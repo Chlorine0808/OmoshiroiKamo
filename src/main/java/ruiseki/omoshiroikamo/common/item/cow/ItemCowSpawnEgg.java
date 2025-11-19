@@ -9,13 +9,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,8 +22,10 @@ import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistry;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.block.cow.TileStall;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
+import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.TooltipUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
@@ -83,7 +84,13 @@ public class ItemCowSpawnEgg extends ItemOK {
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            BlockPos pos = correctPosition(new BlockPos(x, y, z), side);
+
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileStall) {
+                return onItemUseOnTile((TileStall) te, stack, player, world);
+            }
+
+            BlockPos pos = correctPosition(new BlockPos(x, y, z, world), side);
             activate(stack, world, pos);
             if (!player.capabilities.isCreativeMode) {
                 stack.stackSize--;
@@ -101,7 +108,7 @@ public class ItemCowSpawnEgg extends ItemOK {
         int posY = pos.y + offsetsYForSide[side];
         int posZ = pos.z + offsetsZForSide[side];
 
-        return new BlockPos(posX, posY, posZ);
+        return new BlockPos(posX, posY, posZ, pos.world);
     }
 
     private void activate(ItemStack stack, World worldIn, BlockPos pos) {
@@ -130,6 +137,48 @@ public class ItemCowSpawnEgg extends ItemOK {
         }
 
         worldIn.spawnEntityInWorld(entity);
+    }
+
+    public boolean onItemUseOnTile(TileStall tile, ItemStack stack, EntityPlayer player, World world) {
+        if (tile == null || world.isRemote) {
+            return false;
+        }
+        if (tile.hasCow()) {
+            return false;
+        }
+        // Tạo entity từ spawn egg giống như activate
+        EntityCowsCow cow = new EntityCowsCow(world);
+        cow.setPosition(tile.xCoord + 0.5, tile.yCoord, tile.zCoord + 0.5);
+        cow.onSpawnWithEgg(null);
+        cow.setType(stack.getItemDamage());
+
+        if (CowConfig.useTrait) {
+            cow.addRandomTraits();
+        }
+
+        // Nếu egg có NBT thì copy sang entity
+        if (stack.hasTagCompound()) {
+            NBTTagCompound entityNBT = new NBTTagCompound();
+            cow.writeEntityToNBT(entityNBT);
+
+            NBTTagCompound stackNBT = ItemNBTHelper.getNBT(stack);
+            for (String key : stackNBT.func_150296_c()) {
+                NBTBase value = stackNBT.getTag(key);
+                entityNBT.setTag(key, value.copy());
+            }
+
+            cow.readEntityFromNBT(entityNBT);
+        }
+
+        // Set cow vào TileStall
+        tile.setCow(cow);
+
+        // Nếu không ở chế độ Creative thì giảm stack
+        if (!player.capabilities.isCreativeMode) {
+            stack.stackSize--;
+        }
+
+        return true;
     }
 
     @Override
