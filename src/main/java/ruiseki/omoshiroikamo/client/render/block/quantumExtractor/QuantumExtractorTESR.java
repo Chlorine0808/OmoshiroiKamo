@@ -53,10 +53,10 @@ public class QuantumExtractorTESR extends TileEntitySpecialRenderer {
             double d5 = (double) b0 * 0.2D;
 
             double[][] corners = {
-                {0.5 + Math.cos(d3 + 2.356194490192345D) * d5, 0.5 + Math.sin(d3 + 2.356194490192345D) * d5},
-                {0.5 + Math.cos(d3 + Math.PI / 4D) * d5, 0.5 + Math.sin(d3 + Math.PI / 4D) * d5},
-                {0.5 + Math.cos(d3 + 3.9269908169872414D) * d5, 0.5 + Math.sin(d3 + 3.9269908169872414D) * d5},
-                {0.5 + Math.cos(d3 + 5.497787143782138D) * d5, 0.5 + Math.sin(d3 + 5.497787143782138D) * d5}};
+                { 0.5 + Math.cos(d3 + 2.356194490192345D) * d5, 0.5 + Math.sin(d3 + 2.356194490192345D) * d5 },
+                { 0.5 + Math.cos(d3 + Math.PI / 4D) * d5, 0.5 + Math.sin(d3 + Math.PI / 4D) * d5 },
+                { 0.5 + Math.cos(d3 + 3.9269908169872414D) * d5, 0.5 + Math.sin(d3 + 3.9269908169872414D) * d5 },
+                { 0.5 + Math.cos(d3 + 5.497787143782138D) * d5, 0.5 + Math.sin(d3 + 5.497787143782138D) * d5 } };
 
             double beamHeight = 256.0 * beamProgress;
             float u1 = 0, u2 = 1;
@@ -79,7 +79,7 @@ public class QuantumExtractorTESR extends TileEntitySpecialRenderer {
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA(255, 255, 255, 32);
 
-            double[][] innerCorners = {{0.2, 0.2}, {0.8, 0.2}, {0.8, 0.8}, {0.2, 0.8}};
+            double[][] innerCorners = { { 0.2, 0.2 }, { 0.8, 0.2 }, { 0.8, 0.8 }, { 0.2, 0.8 } };
             double beamHeight2 = 256.0 * beamProgress;
             double d24 = -1.0F + f3;
             double d26 = beamHeight2 + d24;
