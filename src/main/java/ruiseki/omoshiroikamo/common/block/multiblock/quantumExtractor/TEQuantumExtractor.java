@@ -51,9 +51,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     protected EnumDye focusColor = EnumDye.WHITE;
     protected float focusBoostModifier = 1.0F;
 
-    @SideOnly(Side.CLIENT)
     private float beamProgress = 0.0F;
-    @SideOnly(Side.CLIENT)
     private long lastBeamUpdateTick = 0L;
 
     public TEQuantumExtractor() {
@@ -391,10 +389,12 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory() {
+    }
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory() {
+    }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
