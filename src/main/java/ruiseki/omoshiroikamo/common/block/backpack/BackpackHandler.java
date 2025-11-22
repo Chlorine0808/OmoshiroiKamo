@@ -2,22 +2,26 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import lombok.Getter;
+import ruiseki.omoshiroikamo.common.block.backpack.handler.BackpackItemStackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
-import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 
-public class BackpackHandler implements ISidedInventory {
+public class BackpackHandler implements IItemHandlerModifiable {
 
     @Getter
     private final ItemStack backpack;
+    @Getter
+    private final TileEntity tile;
     @Getter
     private final BackpackItemStackHandler backpackHandler;
     @Getter
@@ -27,23 +31,28 @@ public class BackpackHandler implements ISidedInventory {
     @Getter
     private static final String UPGRADE_INV = "UpgradeInv";
 
-    private final int[] allSlots;
-    private final TEBackpack inventory;
+    @Getter
+    private final int upgradeSlots;
 
-    public BackpackHandler(ItemStack backpack, TEBackpack inventory) {
+    public BackpackHandler(ItemStack backpack, TileEntity tile) {
+        this(backpack, tile, 27, 1);
+    }
+
+    public BackpackHandler(ItemStack backpack, TileEntity tile, int slots, int upgradeSlots) {
         this.backpack = backpack;
-        this.inventory = inventory;
+        this.tile = tile;
+        this.upgradeSlots = upgradeSlots;
 
-        this.backpackHandler = new BackpackItemStackHandler(27, this) {
+        this.backpackHandler = new BackpackItemStackHandler(slots, this) {
 
             @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
+            protected void onContentsChanged(int slots) {
+                super.onContentsChanged(slots);
                 writeToItem();
             }
         };
 
-        this.upgradeHandler = new ItemStackHandler(7) {
+        this.upgradeHandler = new ItemStackHandler(this.upgradeSlots) {
 
             @Override
             protected void onContentsChanged(int slot) {
@@ -53,15 +62,23 @@ public class BackpackHandler implements ISidedInventory {
         };
 
         readFromItem();
+    }
 
-        allSlots = new int[backpackHandler.getSlots()];
-        for (int i = 0; i < allSlots.length; i++) {
-            allSlots[i] = i;
+    public String getDisplayName() {
+        if (backpack != null) {
+            return backpack.getItem()
+                .getUnlocalizedName(backpack);
         }
+        if (tile != null) {
+            return tile.getBlockType()
+                .getUnlocalizedName();
+        }
+
+        return "container.inventory";
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getSlots() {
         return backpackHandler.getSlots();
     }
 
@@ -71,101 +88,23 @@ public class BackpackHandler implements ISidedInventory {
     }
 
     @Override
-    public ItemStack decrStackSize(int fromSlot, int amount) {
-        ItemStack fromStack = backpackHandler.getStackInSlot(fromSlot);
-        if (fromStack == null) {
-            return null;
-        }
-        if (fromStack.stackSize <= amount) {
-            backpackHandler.setStackInSlot(fromSlot, null);
-            return fromStack;
-        }
-        ItemStack result = fromStack.splitStack(amount);
-        backpackHandler.setStackInSlot(fromSlot, fromStack.stackSize > 0 ? fromStack : null);
-        return result;
+    public @Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
+        return backpackHandler.insertItem(slot, stack, simulate);
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
-        return null;
+    public @Nullable ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return backpackHandler.extractItem(slot, amount, simulate);
     }
 
     @Override
-    public void setInventorySlotContents(int slot, ItemStack contents) {
-        if (contents == null) {
-            backpackHandler.setStackInSlot(slot, null);
-        } else {
-            backpackHandler.setStackInSlot(slot, contents.copy());
-        }
-
-        ItemStack stack = backpackHandler.getStackInSlot(slot);
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
-            backpackHandler.setStackInSlot(slot, stack);
-        }
+    public int getSlotLimit(int slot) {
+        return backpackHandler.getSlotLimit(slot);
     }
 
     @Override
-    public String getInventoryName() {
-        return "Backpack";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64 * getTotalStackMultiplier();
-    }
-
-    @Override
-    public void markDirty() {
-        inventory.markDirty();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        return allSlots;
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        ItemStack existing = backpackHandler.getStackInSlot(slot);
-        if (existing != null) {
-            return ItemUtils.areStackMergable(existing, itemstack);
-        }
-        return isItemValidForSlot(slot, itemstack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        ItemStack existing = backpackHandler.getStackInSlot(slot);
-        if (existing == null || existing.stackSize < itemstack.stackSize) {
-            return false;
-        }
-        return itemstack.getItem() == existing.getItem();
+    public void setStackInSlot(int slot, @Nullable ItemStack stack) {
+        backpackHandler.setStackInSlot(slot, stack);
     }
 
     // ---------- UPGRADE ----------
@@ -219,6 +158,27 @@ public class BackpackHandler implements ISidedInventory {
         return true;
     }
 
+    public boolean canDeposit(int slotIndex) {
+        ItemStack stack = getStackInSlot(slotIndex);
+        // for (IDepositUpgrade upgrade : gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)) {
+        // if (upgrade.canDeposit(stack)) {
+        // return true;
+        // }
+        // }
+        // return false;
+        return true;
+    }
+
+    public boolean canRestock(ItemStack stack) {
+        // for (IDepositUpgrade upgrade : gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)) {
+        // if (upgrade.canRestock(stack)) {
+        // return true;
+        // }
+        // }
+        // return false;
+        return false;
+    }
+
     // ---------- ITEM STACK ----------
     public void writeToItem() {
         if (backpack == null) {
@@ -250,5 +210,9 @@ public class BackpackHandler implements ISidedInventory {
         if (tag.hasKey(UPGRADE_INV)) {
             upgradeHandler.deserializeNBT(tag.getCompoundTag(UPGRADE_INV));
         }
+    }
+
+    public static int ceilDiv(int a, int b) {
+        return (a + b - 1) / b;
     }
 }

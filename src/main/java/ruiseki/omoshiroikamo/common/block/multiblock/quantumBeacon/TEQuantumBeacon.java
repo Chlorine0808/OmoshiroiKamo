@@ -57,9 +57,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
         if (plr != null && !plr.capabilities.isCreativeMode) {
             plr.capabilities.allowFlying = false;
-            if (plr.capabilities.isFlying) {
-                plr.capabilities.isFlying = false;
-            }
             plr.sendPlayerAbilities();
             PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
         }
@@ -72,9 +69,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
             if (plr != null) {
                 if (redstoneCheckPassed && !plr.capabilities.isCreativeMode) {
                     plr.capabilities.allowFlying = false;
-                    if (plr.capabilities.isFlying) {
-                        plr.capabilities.isFlying = false;
-                    }
                     plr.sendPlayerAbilities();
                     PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
                 } else {
@@ -128,9 +122,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         int energyCost = (int) (modifierHandler.getAttributeMultiplier("energycost_fixed") * getBaseDuration());
         if (getEnergyStored() < energyCost && !plr.capabilities.isCreativeMode) {
             plr.capabilities.allowFlying = false;
-            if (plr.capabilities.isFlying) {
-                plr.capabilities.isFlying = false;
-            }
             plr.sendPlayerAbilities();
             PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
             return;
@@ -178,7 +169,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
         if (!plr.capabilities.allowFlying) {
             plr.capabilities.allowFlying = true;
-            plr.capabilities.isFlying = true;
             plr.sendPlayerAbilities();
             PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), true), plr);
         }

@@ -1,9 +1,12 @@
-package ruiseki.omoshiroikamo.common.block.backpack;
+package ruiseki.omoshiroikamo.common.block.backpack.handler;
 
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
+import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
 
 public class BackpackItemStackHandler extends ItemStackHandler {
 
@@ -25,6 +28,18 @@ public class BackpackItemStackHandler extends ItemStackHandler {
     }
 
     @Override
+    public void setStackInSlot(int slot, ItemStack stack) {
+        validateSlotIndex(slot);
+        super.setStackInSlot(slot, stack);
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        validateSlotIndex(slot);
+        return super.getStackInSlot(slot);
+    }
+
+    @Override
     public int getSlotLimit(int slot) {
         return 64 * handler.getTotalStackMultiplier();
     }
@@ -34,9 +49,8 @@ public class BackpackItemStackHandler extends ItemStackHandler {
         if (stack == null) {
             return null;
         }
-        validateSlotIndex(slot);
-
         ItemStack existing = stacks.get(slot);
+
         int limit = getStackLimit(slot, stack);
 
         if (existing != null) {
@@ -69,28 +83,26 @@ public class BackpackItemStackHandler extends ItemStackHandler {
         if (amount == 0) {
             return null;
         }
-        validateSlotIndex(slot);
-
-        ItemStack stack = stacks.get(slot);
-        if (stack == null) {
+        ItemStack existing = getStackInSlot(slot);
+        if (existing == null) {
             return null;
         }
 
-        int slotMaxStackSize = stack.getMaxStackSize() * handler.getTotalStackMultiplier();
+        int slotMaxStackSize = existing.getMaxStackSize() * handler.getTotalStackMultiplier();
         int toExtract = Math.min(amount, slotMaxStackSize);
 
-        if (stack.stackSize <= toExtract) {
+        if (existing.stackSize <= toExtract) {
             if (!simulate) {
                 stacks.set(slot, null);
                 onContentsChanged(slot);
             }
-            return stack;
+            return existing;
         } else {
             if (!simulate) {
-                stacks.set(slot, ItemHandlerHelper.copyStackWithSize(stack, stack.stackSize - toExtract));
+                stacks.set(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.stackSize - toExtract));
                 onContentsChanged(slot);
             }
-            return ItemHandlerHelper.copyStackWithSize(stack, toExtract);
+            return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
     }
 }
