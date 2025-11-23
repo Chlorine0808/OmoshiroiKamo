@@ -3,6 +3,7 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +19,9 @@ import ruiseki.omoshiroikamo.common.block.backpack.capabilities.FeedingUpgradeWr
 import ruiseki.omoshiroikamo.common.block.backpack.capabilities.ToggleableWrapper;
 import ruiseki.omoshiroikamo.common.block.backpack.capabilities.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.block.backpack.handler.BackpackItemStackHandler;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
 public class BackpackHandler implements IItemHandlerModifiable {
@@ -199,7 +202,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
             if (stack == null) {
                 continue;
             }
-            UpgradeWrapper wrapper = BackpackPanel.createWrapper(stack);
+            UpgradeWrapper wrapper = createWrapper(stack);
             if (wrapper == null) {
                 continue;
             }
@@ -285,5 +288,23 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
     public static int ceilDiv(int a, int b) {
         return (a + b - 1) / b;
+    }
+
+    public static UpgradeWrapper createWrapper(ItemStack stack) {
+        if (stack == null) {
+            return null;
+        }
+
+        Item item = stack.getItem();
+
+        if (item instanceof ItemFeedingUpgrade) {
+            return new FeedingUpgradeWrapper(stack);
+        }
+
+        if (item instanceof ItemUpgrade) {
+            return new UpgradeWrapper(stack);
+        }
+
+        return null;
     }
 }

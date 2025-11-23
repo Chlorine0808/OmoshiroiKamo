@@ -1,5 +1,9 @@
 package ruiseki.omoshiroikamo.common.util.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -153,5 +157,23 @@ public final class ItemNBTUtils {
     public static NBTTagList getList(ItemStack stack, String tag, int objtype, boolean nullifyOnFail) {
         return verifyExistance(stack, tag) ? getNBT(stack).getTagList(tag, objtype)
             : nullifyOnFail ? null : new NBTTagList();
+    }
+
+    public static List<String> listKeys(ItemStack stack) {
+        if (stack == null || !stack.hasTagCompound()) {
+            return Collections.emptyList();
+        }
+
+        NBTTagCompound nbt = getNBT(stack);
+        return new ArrayList<>(nbt.func_150296_c());
+    }
+
+    public static List<String> listKeys(ItemStack stack, String tag) {
+        if (!verifyExistance(stack, tag)) {
+            return Collections.emptyList();
+        }
+
+        NBTTagCompound nbt = getNBT(stack).getCompoundTag(tag);
+        return new ArrayList<>(nbt.func_150296_c());
     }
 }

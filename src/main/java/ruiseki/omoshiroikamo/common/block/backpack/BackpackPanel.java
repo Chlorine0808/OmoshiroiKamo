@@ -2,6 +2,7 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 
 import static ruiseki.omoshiroikamo.common.block.backpack.BackpackGuiHolder.SLOT_SIZE;
 import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.ceilDiv;
+import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,6 @@ import ruiseki.omoshiroikamo.common.block.backpack.widget.FeedingUpgradeWidget;
 import ruiseki.omoshiroikamo.common.block.backpack.widget.TabWidget;
 import ruiseki.omoshiroikamo.common.block.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.common.block.backpack.widget.UpgradeSlotUpdateGroup;
-import ruiseki.omoshiroikamo.common.item.backpack.ItemFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
@@ -330,24 +330,6 @@ public class BackpackPanel extends ModularPanel {
                 toggleWidget.setEnabled(false);
             }
         }
-    }
-
-    public static UpgradeWrapper createWrapper(ItemStack stack) {
-        if (stack == null) {
-            return null;
-        }
-
-        Item item = stack.getItem();
-
-        if (item instanceof ItemFeedingUpgrade) {
-            return new FeedingUpgradeWrapper(stack);
-        }
-
-        if (item instanceof ItemUpgrade) {
-            return new UpgradeWrapper(stack);
-        }
-
-        return null;
     }
 
 }

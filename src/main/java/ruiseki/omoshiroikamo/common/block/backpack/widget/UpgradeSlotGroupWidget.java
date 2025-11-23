@@ -2,7 +2,7 @@ package ruiseki.omoshiroikamo.common.block.backpack.widget;
 
 import static ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures.TOGGLE_DISABLE_ICON;
 import static ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures.TOGGLE_ENABLE_ICON;
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel.createWrapper;
+import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

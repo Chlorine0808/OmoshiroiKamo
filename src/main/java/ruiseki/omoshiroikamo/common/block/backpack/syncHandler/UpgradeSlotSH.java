@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.backpack.syncHandler;
 
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel.createWrapper;
+import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
 
 import java.io.IOException;
 
