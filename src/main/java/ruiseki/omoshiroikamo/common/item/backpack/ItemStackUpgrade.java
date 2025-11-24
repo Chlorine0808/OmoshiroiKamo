@@ -12,11 +12,12 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemStackUpgrade extends ItemUpgrade {
+public class ItemStackUpgrade extends ItemUpgrade<UpgradeWrapper> {
 
     @SideOnly(Side.CLIENT)
     protected IIcon tier1, tier2, tier3, tier4;

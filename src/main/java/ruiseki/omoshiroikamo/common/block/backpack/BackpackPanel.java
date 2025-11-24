@@ -2,7 +2,6 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 
 import static ruiseki.omoshiroikamo.common.block.backpack.BackpackGuiHolder.SLOT_SIZE;
 import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.ceilDiv;
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +33,17 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularBackpack
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularUpgradeSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFeedingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FeedingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotUpdateGroup;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.FeedingUpgradeWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.ToggleableWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BackpackPanel extends ModularPanel {
@@ -128,6 +130,7 @@ public class BackpackPanel extends ModularPanel {
 
         syncManager.bindPlayerInventory(player);
         panel.bindPlayerInventory();
+
         return panel;
     }
 
@@ -219,7 +222,7 @@ public class BackpackPanel extends ModularPanel {
                 continue;
             }
 
-            UpgradeWrapper wrapper = createWrapper(upgrade);
+            UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(upgrade);
             if (wrapper == null) {
                 continue;
             }
@@ -251,7 +254,7 @@ public class BackpackPanel extends ModularPanel {
             TabWidget tabWidget = tabWidgets.get(tabIndex);
             UpgradeSlotUpdateGroup upgradeSlotGroup = upgradeSlotGroups[slotIndex];
 
-            UpgradeWrapper wrapper = createWrapper(stack);
+            UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
             if (wrapper == null) {
                 continue;
             }
@@ -271,6 +274,11 @@ public class BackpackPanel extends ModularPanel {
             if (wrapper instanceof FeedingUpgradeWrapper feeding) {
                 upgradeSlotGroup.updateFilterDelegate(feeding);
                 tabWidget.setExpandedWidget(new FeedingUpgradeWidget(slotIndex, feeding));
+            }
+
+            if (wrapper instanceof AdvancedFeedingUpgradeWrapper feeding) {
+                upgradeSlotGroup.updateAdvancedFilterDelegate(feeding);
+                tabWidget.setExpandedWidget(new AdvancedFeedingUpgradeWidget(slotIndex, feeding));
             }
 
             if (tabWidget.getExpandedWidget() != null) {
@@ -321,7 +329,7 @@ public class BackpackPanel extends ModularPanel {
     private void syncToggles() {
         for (int i = 0; i < handler.getUpgradeSlots(); i++) {
             UpgradeSlotGroupWidget.UpgradeToggleWidget toggleWidget = upgradeSlotGroupWidget.getToggleWidget(i);
-            ToggleableWrapper wrapper = toggleWidget.getWrapper();
+            IToggleable wrapper = toggleWidget.getWrapper();
 
             if (wrapper != null) {
                 toggleWidget.setEnabled(true);

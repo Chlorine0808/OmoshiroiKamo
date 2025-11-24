@@ -51,6 +51,7 @@ public abstract class ExpandedTabWidget extends ParentWidget<ExpandedTabWidget> 
         this.phantomTabWidget = new PhantomTabWidget(delegatedIcon.asWidget()).top(0);
 
         this.titleKeyWidget = new TextWidget<>(IKey.lang(titleKey)).alignment(Alignment.CENTER)
+            .paddingRight(2)
             .topRel(0.5f);
 
         this.upperTabRow = (Row) new Row().coverChildrenHeight();
@@ -86,18 +87,18 @@ public abstract class ExpandedTabWidget extends ParentWidget<ExpandedTabWidget> 
     protected class PhantomTabWidget extends SingleChildWidget<PhantomTabWidget> implements Interactable {
 
         public PhantomTabWidget(Widget<?> tabIcon) {
-            size(32, 28);
-            tabIcon.size(16)
-                .top(6);
+            size(28, 24);
+            tabIcon.size(18)
+                .top(5);
 
             switch (expandDirection) {
                 case LEFT:
                     right(0);
-                    tabIcon.right(8);
+                    tabIcon.right(7);
                     break;
 
                 case RIGHT:
-                    tabIcon.left(8);
+                    tabIcon.left(7);
                     break;
             }
 

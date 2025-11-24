@@ -26,7 +26,15 @@ public class BackpackEventHandler {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
+
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof BlockBackpack.ItemBackpack) {
+            feedTickCounter = -100;
+            return;
+        }
+
         if (player.openContainer instanceof BackPackContainer) {
+            feedTickCounter = -100;
             return;
         }
 

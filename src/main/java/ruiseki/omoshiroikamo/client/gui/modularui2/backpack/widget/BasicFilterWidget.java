@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
@@ -67,9 +67,9 @@ public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
         this.filterSlots = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             PhantomItemSlot slot = new PhantomItemSlot();
-            slot.name(syncKey + "_" + slotIndex);
-            slot.syncHandler(syncKey + "_" + slotIndex, i);
-            slot.pos(i % 3 * 18, i / 3 * 18);
+            slot.name(syncKey + "_" + slotIndex)
+                .syncHandler(syncKey + "_" + slotIndex, i)
+                .pos(i % 3 * 18, i / 3 * 18);
 
             this.filterSlots.add(slot);
             slotGroup.child(slot);

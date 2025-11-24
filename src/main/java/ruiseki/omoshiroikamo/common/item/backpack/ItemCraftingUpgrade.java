@@ -6,11 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemCraftingUpgrade extends ItemUpgrade {
+public class ItemCraftingUpgrade extends ItemUpgrade<UpgradeWrapper> {
 
     public ItemCraftingUpgrade() {
         super(ModObject.itemCraftingUpgrade.unlocalisedName);

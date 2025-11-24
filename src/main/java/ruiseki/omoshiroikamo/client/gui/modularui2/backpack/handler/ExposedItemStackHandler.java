@@ -2,16 +2,16 @@ package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.FilterableWrapper;
+import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
-public class ExposedItemStackHandler extends ItemStackHandler {
+public class ExposedItemStackHandler extends UpgradeItemStackHandler {
 
-    private final FilterableWrapper wrapper;
+    private final UpgradeWrapper wrapper;
 
-    public ExposedItemStackHandler(int size, FilterableWrapper wrapper) {
+    public ExposedItemStackHandler(int size, UpgradeWrapper wrapper) {
         super(size);
         this.wrapper = wrapper;
     }
@@ -19,6 +19,6 @@ public class ExposedItemStackHandler extends ItemStackHandler {
     @Override
     protected void onContentsChanged(int slot) {
         NBTTagCompound tag = ItemNBTUtils.getNBT(wrapper.getUpgrade());
-        tag.setTag(FilterableWrapper.FILTER_ITEMS_TAG, this.serializeNBT());
+        tag.setTag(IBasicFilterable.FILTER_ITEMS_TAG, this.serializeNBT());
     }
 }

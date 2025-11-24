@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.item.backpack.capabilities;
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandler;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.ExposedItemStackHandler;
 
-public class FeedingUpgradeWrapper extends FilterableWrapper {
+public class FeedingUpgradeWrapper extends BasicUpgradeWrapper implements IFeedingUpgrade {
 
     public FeedingUpgradeWrapper(ItemStack upgrade) {
         super(upgrade);
@@ -15,12 +15,13 @@ public class FeedingUpgradeWrapper extends FilterableWrapper {
 
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
-                return getStackInSlot(slot).getItem() instanceof ItemFood;
+                return stack != null && stack.getItem() instanceof ItemFood;
             }
 
         };
     }
 
+    @Override
     public ItemStack getFeedingStack(IItemHandler handler, int foodLevel, float health, float maxHealth) {
         int size = handler.getSlots();
         for (int i = 0; i < size; i++) {

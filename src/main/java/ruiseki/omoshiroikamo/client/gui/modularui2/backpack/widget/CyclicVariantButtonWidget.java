@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import lombok.Getter;
 import lombok.Setter;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class CyclicVariantButtonWidget extends ButtonWidget<CyclicVariantButtonWidget> {
 
@@ -50,7 +49,7 @@ public class CyclicVariantButtonWidget extends ButtonWidget<CyclicVariantButtonW
                 tooltip.addLine(variants.get(this.index).name);
                 if (!inEffect) {
                     tooltip.addLine(
-                        IKey.lang(LibMisc.MOD_ID + ".gui.not_in_effect")
+                        IKey.lang("gui.not_in_effect")
                             .style(IKey.RED));
                 }
                 tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);

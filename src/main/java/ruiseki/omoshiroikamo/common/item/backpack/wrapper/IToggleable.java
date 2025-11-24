@@ -1,6 +1,4 @@
-package ruiseki.omoshiroikamo.common.item.backpack.capabilities;
-
-import net.minecraft.item.ItemStack;
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
 
 public interface IToggleable {
 
@@ -10,7 +8,7 @@ public interface IToggleable {
 
     void setEnabled(boolean enabled);
 
-    default void toggle(ItemStack stack) {
+    default void toggle() {
         setEnabled(!isEnabled());
     }
 

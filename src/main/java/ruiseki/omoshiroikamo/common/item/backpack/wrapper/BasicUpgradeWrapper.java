@@ -1,17 +1,16 @@
-package ruiseki.omoshiroikamo.common.item.backpack.capabilities;
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.ExposedItemStackHandler;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
-import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 
-public class FilterableWrapper extends ToggleableWrapper implements IBasicFilterable {
+public class BasicUpgradeWrapper extends ToggleableWrapper implements IBasicFilterable {
 
     protected ExposedItemStackHandler handler;
 
-    public FilterableWrapper(ItemStack upgrade) {
+    public BasicUpgradeWrapper(ItemStack upgrade) {
         super(upgrade);
         handler = new ExposedItemStackHandler(9, this);
     }
@@ -20,17 +19,17 @@ public class FilterableWrapper extends ToggleableWrapper implements IBasicFilter
     public FilterType getFilterType() {
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
         int ordinal = tag.getInteger(FILTER_TYPE_TAG);
-        IBasicFilterable.FilterType[] types = IBasicFilterable.FilterType.values();
+        FilterType[] types = FilterType.values();
         if (ordinal < 0 || ordinal >= types.length) {
-            return IBasicFilterable.FilterType.WHITELIST;
+            return FilterType.WHITELIST;
         }
         return types[ordinal];
     }
 
     @Override
-    public void setFilterType(IBasicFilterable.FilterType type) {
+    public void setFilterType(FilterType type) {
         if (type == null) {
-            type = IBasicFilterable.FilterType.WHITELIST;
+            type = FilterType.WHITELIST;
         }
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
         tag.setInteger(FILTER_TYPE_TAG, type.ordinal());
@@ -53,24 +52,8 @@ public class FilterableWrapper extends ToggleableWrapper implements IBasicFilter
         tag.setTag(FILTER_ITEMS_TAG, handler.serializeNBT());
     }
 
+    @Override
     public boolean checkFilter(ItemStack check) {
-        switch (getFilterType()) {
-            case WHITELIST:
-                for (ItemStack s : getFilterItems().getStacks()) {
-                    if (ItemUtils.areItemsEqualIgnoreDurability(s, check)) {
-                        return true;
-                    }
-                }
-                return false;
-            case BLACKLIST:
-                for (ItemStack s : getFilterItems().getStacks()) {
-                    if (ItemUtils.areItemsEqualIgnoreDurability(s, check)) {
-                        return false;
-                    }
-                }
-                return true;
-            default:
-                return false;
-        }
+        return isEnabled() && IBasicFilterable.super.checkFilter(check);
     }
 }

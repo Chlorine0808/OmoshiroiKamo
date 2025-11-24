@@ -9,8 +9,8 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.FilterSl
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.FoodFilterSlotSH;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.IAdvancedFilterable;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IAdvancedFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 
 public class UpgradeSlotUpdateGroup {
 

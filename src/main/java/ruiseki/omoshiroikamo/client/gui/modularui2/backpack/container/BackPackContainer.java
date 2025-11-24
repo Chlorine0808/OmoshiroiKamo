@@ -56,10 +56,6 @@ public class BackPackContainer extends ModularContainer {
                     ItemStack slotStack = clickedSlot.getStack();
                     ItemStack heldStack = inventoryplayer.getItemStack();
 
-                    // if (slotStack != null) {
-                    // returnable = slotStack.copy();
-                    // } // Removed
-
                     if (slotStack == null) {
                         if (heldStack != null && clickedSlot.isItemValid(heldStack)) {
                             int stackCount = mouseButton == LEFT_MOUSE ? heldStack.stackSize : 1;

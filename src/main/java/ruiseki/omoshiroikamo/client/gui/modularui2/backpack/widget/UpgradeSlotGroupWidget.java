@@ -2,7 +2,6 @@ package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget;
 
 import static ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures.TOGGLE_DISABLE_ICON;
 import static ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures.TOGGLE_ENABLE_ICON;
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,9 @@ import com.cleanroommc.modularui.widget.Widget;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.ToggleableWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class UpgradeSlotGroupWidget extends ParentWidget<UpgradeSlotGroupWidget> {
@@ -123,19 +123,19 @@ public class UpgradeSlotGroupWidget extends ParentWidget<UpgradeSlotGroupWidget>
 
             this.setEnabled(false);
 
-            ToggleableWrapper wrapper = getWrapper();
+            IToggleable wrapper = getWrapper();
             if (wrapper != null) {
                 isToggleEnabled = wrapper.isEnabled();
                 setEnabled(true);
             }
         }
 
-        public ToggleableWrapper getWrapper() {
+        public IToggleable getWrapper() {
             ItemStack stack = panel.getHandler()
                 .getUpgradeHandler()
                 .getStackInSlot(slotIndex);
-            UpgradeWrapper wrapper = createWrapper(stack);
-            if (wrapper instanceof ToggleableWrapper toggleableWrapper) {
+            UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+            if (wrapper instanceof IToggleable toggleableWrapper) {
                 return toggleableWrapper;
             } else {
                 return null;
@@ -145,7 +145,7 @@ public class UpgradeSlotGroupWidget extends ParentWidget<UpgradeSlotGroupWidget>
         @Override
         public @NotNull Result onMousePressed(int mouseButton) {
             isToggleEnabled = !isToggleEnabled;
-            ToggleableWrapper wrapper = getWrapper();
+            IToggleable wrapper = getWrapper();
             if (wrapper != null) {
                 wrapper.toggle();
             }

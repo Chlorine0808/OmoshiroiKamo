@@ -19,7 +19,7 @@ Can On/Off Backport Mod in Config
 - Environmental Tech (Backport Rewrite)
 - Chickens, More Chickens and Roost (Backport)
 - Fluid Cows (Backport WIP)
-- Sophisticated Backpacks (Backport Rewrite WIP)
+- Sophisticated Backpacks (Backport Base on RetroSophisticated Backpacks)
 
 ![Backport Config](https://media.forgecdn.net/attachments/1389/517/z7214707883928_63d047db4be5142074322b35573e34d4.jpg)
 

@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler;
 
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.createWrapper;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -12,8 +10,9 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.DelegatedItemHandler;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.FilterableWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 
 public class DelegatedStackHandlerSH extends SyncHandler {
 
@@ -44,8 +43,8 @@ public class DelegatedStackHandlerSH extends SyncHandler {
         ItemStack stack = handler.getUpgradeHandler()
             .getStackInSlot(slotIndex);
         if (id == UPDATE_FILTERABLE) {
-            UpgradeWrapper wrapper = createWrapper(stack);
-            if (wrapper instanceof FilterableWrapper filterable) {
+            UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+            if (wrapper instanceof IBasicFilterable filterable) {
                 setDelegatedStackHandler(filterable::getFilterItems);
             }
         }

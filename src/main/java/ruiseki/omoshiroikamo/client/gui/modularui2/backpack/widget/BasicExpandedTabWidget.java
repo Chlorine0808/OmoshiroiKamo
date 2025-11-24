@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.IBasicFilterable;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 
 public class BasicExpandedTabWidget<T extends UpgradeWrapper & IBasicFilterable> extends ExpandedUpgradeTabWidget<T> {
 

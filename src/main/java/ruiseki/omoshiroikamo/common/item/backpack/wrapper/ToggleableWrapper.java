@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.item.backpack.capabilities;
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,16 +11,19 @@ public class ToggleableWrapper extends UpgradeWrapper implements IToggleable {
         super(upgrade);
     }
 
+    @Override
     public boolean isEnabled() {
-        return upgrade.hasTagCompound() && upgrade.getTagCompound()
-            .getBoolean(ENABLED_TAG);
+        NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
+        return tag.hasKey(IUpgrade.TAB_STATE_TAG) && tag.getBoolean(ENABLED_TAG);
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
-        tag.setBoolean(IToggleable.ENABLED_TAG, enabled);
+        tag.setBoolean(ENABLED_TAG, enabled);
     }
 
+    @Override
     public void toggle() {
         setEnabled(!isEnabled());
     }

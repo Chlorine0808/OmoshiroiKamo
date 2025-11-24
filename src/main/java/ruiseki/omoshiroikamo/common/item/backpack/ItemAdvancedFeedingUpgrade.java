@@ -6,17 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
-import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemFeedingUpgrade extends ItemUpgrade<FeedingUpgradeWrapper> {
+public class ItemAdvancedFeedingUpgrade extends ItemUpgrade<AdvancedFeedingUpgradeWrapper> {
 
-    public ItemFeedingUpgrade() {
-        super(ModObject.itemFeedingUpgrade.unlocalisedName);
+    public ItemAdvancedFeedingUpgrade() {
+        super(ModObject.itemAdvancedFeedingUpgrade.unlocalisedName);
         setMaxStackSize(1);
-        setTextureName("feeding_upgrade");
+        setTextureName("advanced_feeding_upgrade");
     }
 
     @Override
@@ -26,14 +26,14 @@ public class ItemFeedingUpgrade extends ItemUpgrade<FeedingUpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "feeding_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "advanced_feeding_upgrade"));
         list.add(
             ItemNBTUtils.getNBT(itemstack)
                 .toString());
     }
 
     @Override
-    public FeedingUpgradeWrapper createWrapper(ItemStack stack) {
-        return new FeedingUpgradeWrapper(stack);
+    public AdvancedFeedingUpgradeWrapper createWrapper(ItemStack stack) {
+        return new AdvancedFeedingUpgradeWrapper(stack);
     }
 }

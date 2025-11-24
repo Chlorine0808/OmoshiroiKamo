@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,12 +15,14 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import lombok.Getter;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.BackpackItemStackHandler;
-import ruiseki.omoshiroikamo.common.item.backpack.ItemFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
-import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.FeedingUpgradeWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.ToggleableWrapper;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.DepositUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFeedingUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.RestockUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
 public class BackpackHandler implements IItemHandlerModifiable {
@@ -182,9 +183,12 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public ItemStack getFeedingStack(int foodLevel, float health, float maxHealth) {
-        List<FeedingUpgradeWrapper> feedingUpgrades = gatherCapabilityUpgrades(FeedingUpgradeWrapper.class);
 
-        for (FeedingUpgradeWrapper upgrade : feedingUpgrades) {
+        List<IFeedingUpgrade> list = new ArrayList<>();
+        list.addAll(gatherCapabilityUpgrades(AdvancedFeedingUpgradeWrapper.class));
+        list.addAll(gatherCapabilityUpgrades(FeedingUpgradeWrapper.class));
+
+        for (IFeedingUpgrade upgrade : list) {
             ItemStack feedingStack = upgrade.getFeedingStack(backpackHandler, foodLevel, health, maxHealth);
 
             if (feedingStack != null && feedingStack.stackSize > 0) {
@@ -195,6 +199,25 @@ public class BackpackHandler implements IItemHandlerModifiable {
         return null;
     }
 
+    public boolean canDeposit(int slotIndex) {
+        ItemStack stack = getStackInSlot(slotIndex);
+        for (DepositUpgradeWrapper upgrade : gatherCapabilityUpgrades(DepositUpgradeWrapper.class)) {
+            if (upgrade.canDeposit(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canRestock(ItemStack stack) {
+        for (RestockUpgradeWrapper upgrade : gatherCapabilityUpgrades(RestockUpgradeWrapper.class)) {
+            if (upgrade.canRestock(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private <T> List<T> gatherCapabilityUpgrades(Class<T> capabilityClass) {
         List<T> result = new ArrayList<>();
 
@@ -202,11 +225,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
             if (stack == null) {
                 continue;
             }
-            UpgradeWrapper wrapper = createWrapper(stack);
+            UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
             if (wrapper == null) {
-                continue;
-            }
-            if (wrapper instanceof ToggleableWrapper toggleable && !toggleable.isEnabled()) {
                 continue;
             }
 
@@ -216,25 +236,6 @@ public class BackpackHandler implements IItemHandlerModifiable {
         }
 
         return result;
-    }
-
-    public boolean canDeposit(int slotIndex) {
-        ItemStack stack = getStackInSlot(slotIndex);
-        // for (IDepositUpgrade upgrade : gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)) {
-        // if (upgrade.canDeposit(stack)) {
-        // return true;
-        // }
-        // }
-        return false;
-    }
-
-    public boolean canRestock(ItemStack stack) {
-        // for (IDepositUpgrade upgrade : gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)) {
-        // if (upgrade.canRestock(stack)) {
-        // return true;
-        // }
-        // }
-        return false;
     }
 
     // ---------- ITEM STACK ----------
@@ -290,21 +291,4 @@ public class BackpackHandler implements IItemHandlerModifiable {
         return (a + b - 1) / b;
     }
 
-    public static UpgradeWrapper createWrapper(ItemStack stack) {
-        if (stack == null) {
-            return null;
-        }
-
-        Item item = stack.getItem();
-
-        if (item instanceof ItemFeedingUpgrade) {
-            return new FeedingUpgradeWrapper(stack);
-        }
-
-        if (item instanceof ItemUpgrade) {
-            return new UpgradeWrapper(stack);
-        }
-
-        return null;
-    }
 }

@@ -7,11 +7,12 @@ import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
-import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IUpgradeWrapperFactory;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemUpgrade extends ItemOK {
+public class ItemUpgrade<T extends UpgradeWrapper> extends ItemOK implements IUpgradeWrapperFactory<T> {
 
     public ItemUpgrade(String name) {
         super(name);
@@ -30,9 +31,11 @@ public class ItemUpgrade extends ItemOK {
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
         list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "upgrade_base"));
-        list.add(
-            ItemNBTUtils.getNBT(itemstack)
-                .toString());
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public T createWrapper(ItemStack stack) {
+        return (T) new UpgradeWrapper(stack);
+    }
 }

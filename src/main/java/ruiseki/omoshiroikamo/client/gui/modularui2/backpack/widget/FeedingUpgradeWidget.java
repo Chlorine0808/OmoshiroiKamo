@@ -1,7 +1,7 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget;
 
 import ruiseki.omoshiroikamo.common.init.ModItems;
-import ruiseki.omoshiroikamo.common.item.backpack.capabilities.FeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
 
 public class FeedingUpgradeWidget extends BasicExpandedTabWidget<FeedingUpgradeWrapper> {
 

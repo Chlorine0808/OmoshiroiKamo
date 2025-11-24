@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import ruiseki.omoshiroikamo.common.util.item.BaublesUtils;
+import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
 public abstract class BackpackGuiHolder {
 
@@ -78,6 +79,9 @@ public abstract class BackpackGuiHolder {
         public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
             BackpackPanel panel = createPanel(syncManager, settings, data.getPlayer(), null);
 
+            addCommonWidgets(panel, data.getPlayer());
+            panel.modifyPlayerSlot(syncManager, data.getInventoryType(), data.getSlotIndex(), data.getPlayer());
+
             syncManager.addCloseListener(player -> {
                 if (!(player instanceof EntityPlayerMP)) {
                     return;
@@ -90,7 +94,7 @@ public abstract class BackpackGuiHolder {
                     if (current != null && current.getItem() instanceof BlockBackpack.ItemBackpack) {
                         player.inventory.mainInventory[data.getSlotIndex()] = backpackItem;
                     }
-                } else if (data.getInventoryType() == InventoryTypes.BAUBLES) {
+                } else if (data.getInventoryType() == InventoryTypes.BAUBLES && LibMods.Baubles.isLoaded()) {
                     current = BaublesUtils.instance()
                         .getBaubles(player)
                         .getStackInSlot(data.getSlotIndex());
@@ -102,8 +106,6 @@ public abstract class BackpackGuiHolder {
                 }
             });
 
-            addCommonWidgets(panel, data.getPlayer());
-            panel.modifyPlayerSlot(syncManager, data.getInventoryType(), data.getSlotIndex(), data.getPlayer());
             return panel;
         }
     }

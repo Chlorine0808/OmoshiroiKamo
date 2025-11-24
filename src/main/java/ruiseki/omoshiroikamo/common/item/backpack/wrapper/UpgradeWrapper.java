@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.item.backpack.capabilities;
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
-public class UpgradeWrapper {
+public class UpgradeWrapper implements IUpgrade {
 
     @Getter
     protected final ItemStack upgrade;
@@ -15,13 +15,16 @@ public class UpgradeWrapper {
         this.upgrade = upgrade;
     }
 
+    @Override
     public void setTabOpened(boolean opened) {
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
-        tag.setBoolean(IUpgrade.TAB_STATE_TAG, opened);
+        tag.setBoolean(TAB_STATE_TAG, opened);
     }
 
+    @Override
     public boolean getTabOpened() {
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
-        return tag.hasKey(IUpgrade.TAB_STATE_TAG) && tag.getBoolean(IUpgrade.TAB_STATE_TAG);
+        return tag.hasKey(TAB_STATE_TAG) && tag.getBoolean(TAB_STATE_TAG);
     }
+
 }

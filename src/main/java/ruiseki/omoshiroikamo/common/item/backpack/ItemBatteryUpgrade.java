@@ -6,11 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemBatteryUpgrade extends ItemUpgrade {
+public class ItemBatteryUpgrade extends ItemUpgrade<UpgradeWrapper> {
 
     public ItemBatteryUpgrade() {
         super(ModObject.itemBatteryUpgrade.unlocalisedName);
