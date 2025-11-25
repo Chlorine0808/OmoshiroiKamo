@@ -35,17 +35,21 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.Backpack
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedExpandedTabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFeedingUpgradeWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedMagnetUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BasicExpandedTabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FeedingUpgradeWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.MagnetUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotUpdateGroup;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.BasicUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
@@ -251,7 +255,7 @@ public class BackpackPanel extends ModularPanel {
             }
             Item item = stack.getItem();
 
-            if (!(item instanceof ItemUpgrade) || !((ItemUpgrade) item).hasTab()) {
+            if (!(item instanceof ItemUpgrade) || !((ItemUpgrade<?>) item).hasTab()) {
                 continue;
             }
 
@@ -281,18 +285,20 @@ public class BackpackPanel extends ModularPanel {
             } else if (wrapper instanceof FeedingUpgradeWrapper feeding) {
                 upgradeSlotGroup.updateFilterDelegate(feeding);
                 tabWidget.setExpandedWidget(new FeedingUpgradeWidget(slotIndex, feeding));
-            } else if (wrapper instanceof AdvancedUpgradeWrapper upgradeWrapper) {
-                upgradeSlotGroup.updateAdvancedFilterDelegate(upgradeWrapper);
+            } else if (wrapper instanceof AdvancedMagnetUpgradeWrapper feeding) {
+                upgradeSlotGroup.updateAdvancedFilterDelegate(feeding);
+                tabWidget.setExpandedWidget(new AdvancedMagnetUpgradeWidget(slotIndex, feeding));
+            } else if (wrapper instanceof MagnetUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateFilterDelegate(upgrade);
+                tabWidget.setExpandedWidget(new MagnetUpgradeWidget(slotIndex, upgrade));
+            } else if (wrapper instanceof AdvancedUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateAdvancedFilterDelegate(upgrade);
                 tabWidget.setExpandedWidget(
-                    new AdvancedExpandedTabWidget<>(
-                        slotIndex,
-                        upgradeWrapper,
-                        stack,
-                        upgradeWrapper.getSettingLangKey()));
-            } else if (wrapper instanceof BasicUpgradeWrapper upgradeWrapper) {
-                upgradeSlotGroup.updateFilterDelegate(upgradeWrapper);
+                    new AdvancedExpandedTabWidget<>(slotIndex, upgrade, stack, upgrade.getSettingLangKey()));
+            } else if (wrapper instanceof BasicUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateFilterDelegate(upgrade);
                 tabWidget.setExpandedWidget(
-                    new BasicExpandedTabWidget<>(slotIndex, upgradeWrapper, stack, upgradeWrapper.getSettingLangKey()));
+                    new BasicExpandedTabWidget<>(slotIndex, upgrade, stack, upgrade.getSettingLangKey()));
             }
 
             if (tabWidget.getExpandedWidget() != null) {

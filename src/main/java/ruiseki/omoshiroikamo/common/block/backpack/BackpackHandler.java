@@ -1,11 +1,18 @@
 package ruiseki.omoshiroikamo.common.block.backpack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -17,10 +24,13 @@ import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.BackpackItemStackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedPickupUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.DepositUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFeedingUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IMagnetUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.PickupUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.RestockUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
@@ -186,11 +196,15 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
     public ItemStack getFeedingStack(int foodLevel, float health, float maxHealth) {
 
-        List<IFeedingUpgrade> list = new ArrayList<>();
-        list.addAll(gatherCapabilityUpgrades(AdvancedFeedingUpgradeWrapper.class));
-        list.addAll(gatherCapabilityUpgrades(FeedingUpgradeWrapper.class));
+        for (IFeedingUpgrade upgrade : gatherCapabilityUpgrades(AdvancedFeedingUpgradeWrapper.class)) {
+            ItemStack feedingStack = upgrade.getFeedingStack(backpackHandler, foodLevel, health, maxHealth);
 
-        for (IFeedingUpgrade upgrade : list) {
+            if (feedingStack != null && feedingStack.stackSize > 0) {
+                return feedingStack;
+            }
+        }
+
+        for (IFeedingUpgrade upgrade : gatherCapabilityUpgrades(FeedingUpgradeWrapper.class)) {
             ItemStack feedingStack = upgrade.getFeedingStack(backpackHandler, foodLevel, health, maxHealth);
 
             if (feedingStack != null && feedingStack.stackSize > 0) {
@@ -199,6 +213,41 @@ public class BackpackHandler implements IItemHandlerModifiable {
         }
 
         return null;
+    }
+
+    public List<Entity> getMagnetEntities(World world, AxisAlignedBB aabb) {
+        Set<Entity> result = new HashSet<>();
+
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, aabb);
+        List<EntityXPOrb> xps = world.getEntitiesWithinAABB(EntityXPOrb.class, aabb);
+
+        for (IMagnetUpgrade upgrade : gatherCapabilityUpgrades(AdvancedMagnetUpgradeWrapper.class)) {
+            if (upgrade.isCollectItem()) {
+                for (EntityItem item : items) {
+                    if (upgrade.canCollectItem(item.getEntityItem())) {
+                        result.add(item);
+                    }
+                }
+            }
+            if (upgrade.isCollectExp()) {
+                result.addAll(xps);
+            }
+        }
+
+        for (IMagnetUpgrade upgrade : gatherCapabilityUpgrades(MagnetUpgradeWrapper.class)) {
+            if (upgrade.isCollectItem()) {
+                for (EntityItem item : items) {
+                    if (upgrade.canCollectItem(item.getEntityItem())) {
+                        result.add(item);
+                    }
+                }
+            }
+            if (upgrade.isCollectExp()) {
+                result.addAll(xps);
+            }
+        }
+
+        return new ArrayList<>(result);
     }
 
     public boolean canDeposit(int slotIndex) {

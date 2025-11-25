@@ -6,17 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
-import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemMagnetUpgrade extends ItemUpgrade<MagnetUpgradeWrapper> {
+public class ItemAdvancedMagnetUpgrade extends ItemUpgrade<AdvancedMagnetUpgradeWrapper> {
 
-    public ItemMagnetUpgrade() {
-        super(ModObject.itemMagnetUpgrade.unlocalisedName);
+    public ItemAdvancedMagnetUpgrade() {
+        super(ModObject.itemAdvancedMagnetUpgrade.unlocalisedName);
         setMaxStackSize(1);
-        setTextureName("magnet_upgrade");
+        setTextureName("advanced_magnet_upgrade");
     }
 
     @Override
@@ -26,14 +26,14 @@ public class ItemMagnetUpgrade extends ItemUpgrade<MagnetUpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "magnet_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "advanced_magnet_upgrade"));
         list.add(
             ItemNBTUtils.getNBT(itemstack)
                 .toString());
     }
 
     @Override
-    public MagnetUpgradeWrapper createWrapper(ItemStack stack) {
-        return new MagnetUpgradeWrapper(stack);
+    public AdvancedMagnetUpgradeWrapper createWrapper(ItemStack stack) {
+        return new AdvancedMagnetUpgradeWrapper(stack);
     }
 }

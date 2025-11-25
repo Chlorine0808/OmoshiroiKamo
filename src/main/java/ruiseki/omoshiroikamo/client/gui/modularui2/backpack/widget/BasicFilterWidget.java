@@ -13,21 +13,16 @@ import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
 
     private static final List<CyclicVariantButtonWidget.Variant> FILTER_TYPE_VARIANTS = new ArrayList<>();
 
     static {
-        FILTER_TYPE_VARIANTS.add(
-            new CyclicVariantButtonWidget.Variant(
-                IKey.lang(LibMisc.MOD_ID + ".gui.whitelist"),
-                MGuiTextures.CHECK_ICON));
-        FILTER_TYPE_VARIANTS.add(
-            new CyclicVariantButtonWidget.Variant(
-                IKey.lang(LibMisc.MOD_ID + ".gui.blacklist"),
-                MGuiTextures.CROSS_ICON));
+        FILTER_TYPE_VARIANTS
+            .add(new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON));
+        FILTER_TYPE_VARIANTS
+            .add(new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON));
     }
 
     private final IBasicFilterable filterableWrapper;

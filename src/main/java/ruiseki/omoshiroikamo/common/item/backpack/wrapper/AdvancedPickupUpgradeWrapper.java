@@ -9,6 +9,11 @@ public class AdvancedPickupUpgradeWrapper extends AdvancedUpgradeWrapper impleme
     }
 
     @Override
+    public String getSettingLangKey() {
+        return "gui.advanced_pickup_settings";
+    }
+
+    @Override
     public boolean canPickup(ItemStack stack) {
         return checkFilter(stack);
     }

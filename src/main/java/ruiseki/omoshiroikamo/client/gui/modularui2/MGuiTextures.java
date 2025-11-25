@@ -86,6 +86,11 @@ public final class MGuiTextures {
     public static final IDrawable REMOVE_ICON = icon("remove", 112, 32);
     public static final IDrawable BRAIN_ICON = icon("brain", 128, 32);
 
+    public static final IDrawable EXP_MAGNET_ICON = icon("exp_magnet", 96, 48);
+    public static final IDrawable IGNORE_EXP_MAGNET_ICON = icon("ignore_exp_magnet", 112, 48);
+    public static final IDrawable ITEM_MAGNET_ICON = icon("exp_magnet", 128, 48);
+    public static final IDrawable IGNORE_ITEM_MAGNET_ICON = icon("ignore_exp_magnet", 144, 48);
+
     public static final UITexture MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96);
     public static final UITexture IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96);
 

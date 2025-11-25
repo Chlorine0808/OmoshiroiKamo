@@ -39,6 +39,9 @@ container.backpack=Backpack
 gui.pickup_settings=Pickup Settings
 gui.advanced_pickup_settings=Adv. Pickup Settings
 
+gui.magnet_settings=Magnet Settings
+gui.advanced_magnet_settings=Adv. Magnet Settings
+
 gui.feeding_settings=Feeding Settings
 gui.advanced_feeding_settings=Adv. Feeding Settings
 
@@ -71,6 +74,12 @@ gui.ignore_durability=Ignore Durability
 
 gui.match_nbt=Match NBT
 gui.ignore_nbt=Ignore NBT
+
+gui.item_magnet=Get items
+gui.ignore_item_magnet=Do not get items
+
+gui.exp_magnet=Get experients
+gui.ignore_exp_magnet=Do not get experients
 
 gui.add_ore_dict_entry=Add Ore Dict.
 gui.remove_ore_dict_entry=Remove Ore Dict.
@@ -267,8 +276,11 @@ element.dendro.name=Dendro
 
 #Item
 
-item.operationOrb.name=Operation Orb
-
+tile.backpackLeather.name=Leather Backpack
+tile.backpackIron.name=Iron Backpack
+tile.backpackGold.name=Gold Backpack
+tile.backpackDiamond.name=Diamond Backpack
+tile.backpackObsidian.name=Obsidian Backpack
 item.backPack.Starter.name=Starter Backpack
 item.backPack.Copper.name=Copper Backpack
 item.backPack.Iron.name=Iron Backpack
@@ -283,10 +295,14 @@ item.stackUpgrade.Gold.name=Stack Upgrade Tier 2
 item.stackUpgrade.Diamond.name=Stack Upgrade Tier 3
 item.stackUpgrade.Netherite.name=Stack Upgrade Tier 4
 item.craftingUpgrade.name=Crafting Upgrade
-item.magnetUpgrade.name=Magnet Upgrade
-item.feedingUpgrade.name=Feeding Upgrade
 item.batteryUpgrade.name=Battery Upgrade
 item.everlastingUpgrade.name=Everlasting Upgrade
+item.magnetUpgrade.name=Magnet Upgrade
+item.advancedMagnetUpgrade.name=Adv. Magnet Upgrade
+item.pickupUpgrade.name=Pickup Upgrade
+item.advancedPickupUpgrade.name=Adv. Pickup Upgrade
+item.feedingUpgrade.name=Feeding Upgrade
+item.advancedFeedingUpgrade.name=Adv. Feeding Upgrade
 
 item.stabilizedEnderPear.name=Stabilized Ender Pearl
 item.photovoltaicCell.name=Photovoltaic Cell
@@ -405,12 +421,6 @@ tile.roost.name=Roost
 tile.roostCollector.name=Roost Collector
 tile.breeder.name=Chicken Breeder
 tile.stall.name=Stall
-
-tile.backpackLeather.name=Leather Backpack
-tile.backpackIron.name=Iron Backpack
-tile.backpackGold.name=Gold Backpack
-tile.backpackDiamond.name=Diamond Backpack
-tile.backpackObsidian.name=Obsidian Backpack
 
 #ENTITY
 

@@ -11,17 +11,4 @@ public interface IToggleable {
     default void toggle() {
         setEnabled(!isEnabled());
     }
-
-    class Impl implements IToggleable {
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
-
-        @Override
-        public void setEnabled(boolean enabled) {
-
-        }
-    }
 }

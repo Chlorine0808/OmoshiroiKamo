@@ -68,9 +68,4 @@ public class BasicUpgradeWrapper extends UpgradeWrapper implements IBasicFiltera
         NBTTagCompound tag = ItemNBTUtils.getNBT(upgrade);
         tag.setBoolean(ENABLED_TAG, enabled);
     }
-
-    @Override
-    public void toggle() {
-        setEnabled(!isEnabled());
-    }
 }

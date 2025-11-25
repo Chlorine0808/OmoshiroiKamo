@@ -50,6 +50,7 @@ public enum ModObject {
     itemStackUpgrade,
     itemCraftingUpgrade,
     itemMagnetUpgrade,
+    itemAdvancedMagnetUpgrade,
     itemFeedingUpgrade,
     itemAdvancedFeedingUpgrade,
     itemPickupUpgrade,

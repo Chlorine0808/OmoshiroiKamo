@@ -12,6 +12,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgrade
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IAdvancedFilterable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFilterUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
@@ -24,6 +25,7 @@ public class UpgradeSlotSH extends ItemSlotSH {
     public static final int UPDATE_ADVANCED_FILTERABLE = 9;
     public static final int UPDATE_ADVANCED_FEEDING = 10;
     public static final int UPDATE_FILTER_WAY = 11;
+    public static final int UPDATE_MAGNET = 12;
 
     public UpgradeSlotSH(ModularSlot slot) {
         super(slot);
@@ -52,6 +54,9 @@ public class UpgradeSlotSH extends ItemSlotSH {
             // case UPDATE_FILTER_WAY:
             // // updateFilterUpgrade(buf);
             // break;
+            case UPDATE_MAGNET:
+                updateMagnetUpgrade(buf);
+                break;
         }
     }
 
@@ -137,6 +142,19 @@ public class UpgradeSlotSH extends ItemSlotSH {
         int filterOrdinal = buf.readInt();
 
         upgradeWrapper.setFilterWay(IFilterUpgrade.FilterWayType.values()[filterOrdinal]);
+    }
+
+    private void updateMagnetUpgrade(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof IMagnetUpgrade upgrade)) {
+            return;
+        }
+        boolean item = buf.readBoolean();
+        boolean exp = buf.readBoolean();
+
+        upgrade.setCollectItem(item);
+        upgrade.setCollectExp(exp);
     }
 
 }

@@ -1,25 +1,32 @@
 package ruiseki.omoshiroikamo.common.block.backpack;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import codechicken.lib.vec.Vector3;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.container.BackPackContainer;
 import ruiseki.omoshiroikamo.common.util.item.BaublesUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
+import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 @EventBusSubscriber
 public class BackpackEventHandler {
 
     private static int feedTickCounter = 0;
+    private static int magnetTickCounter = 0;
 
     @SubscribeEvent
     public static void onPlayerPickup(EntityItemPickupEvent event) {
@@ -28,6 +35,10 @@ public class BackpackEventHandler {
         ItemStack stack = event.item.getEntityItem()
             .copy();
 
+        if (player.openContainer instanceof BackPackContainer) {
+            return;
+        }
+
         if (LibMods.Baubles.isLoaded()) {
             IInventory baublesInventory = BaublesUtils.instance()
                 .getBaubles(player);
@@ -35,6 +46,7 @@ public class BackpackEventHandler {
         }
 
         stack = attemptPickup(inventory, stack);
+
         if (stack == null || stack.stackSize <= 0) {
             event.item.setDead();
             event.setCanceled(true);
@@ -101,7 +113,7 @@ public class BackpackEventHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+    public static void onPlayerTickFeed(TickEvent.PlayerTickEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             return;
         }
@@ -173,5 +185,94 @@ public class BackpackEventHandler {
         }
 
         return false;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTickMagnet(TickEvent.PlayerTickEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            return;
+        }
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        magnetTickCounter++;
+        if (magnetTickCounter % 2 == 0) {
+            magnetTickCounter = 0;
+            attemptMagnet(player);
+        }
+    }
+
+    public static void attemptMagnet(EntityPlayer player) {
+        boolean result = false;
+
+        if (LibMods.Baubles.isLoaded()) {
+            IInventory baublesInventory = BaublesUtils.instance()
+                .getBaubles(player);
+            result = attemptMagnet(player, baublesInventory);
+        }
+
+        if (!result) {
+            attemptMagnet(player, player.inventory);
+        }
+    }
+
+    public static boolean attemptMagnet(EntityPlayer player, IInventory searchInventory) {
+        int size = searchInventory.getSizeInventory();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = searchInventory.getStackInSlot(i);
+            if (stack == null || stack.stackSize <= 0) {
+                continue;
+            }
+
+            if (!(stack.getItem() instanceof BlockBackpack.ItemBackpack backpack)) {
+                continue;
+            }
+
+            BackpackHandler handler = new BackpackHandler(stack, null, backpack);
+
+            AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
+                player.posX - BackpackConfig.magnetConfig.magnetRange,
+                player.posY - BackpackConfig.magnetConfig.magnetRange,
+                player.posZ - BackpackConfig.magnetConfig.magnetRange,
+                player.posX + BackpackConfig.magnetConfig.magnetRange,
+                player.posY + BackpackConfig.magnetConfig.magnetRange,
+                player.posZ + BackpackConfig.magnetConfig.magnetRange);
+
+            List<Entity> entities = handler.getMagnetEntities(player.worldObj, aabb);
+            if (entities.isEmpty()) {
+                return false;
+            }
+            int pulled = 0;
+            for (Entity entity : entities) {
+                if (pulled++ > 200) {
+                    break;
+                }
+                Vector3 target = new Vector3(
+                    player.posX,
+                    player.posY - (player.worldObj.isRemote ? 1.62 : 0) + 0.75,
+                    player.posZ);
+                setEntityMotionFromVector(entity, target, 0.45F);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void setEntityMotionFromVector(Entity entity, Vector3 target, float modifier) {
+        Vector3 current = Vector3.fromEntityCenter(entity);
+        Vector3 motion = target.copy()
+            .subtract(current);
+
+        if (motion.mag() > 1) {
+            motion.normalize();
+        }
+
+        entity.motionX = motion.x * modifier;
+        entity.motionY = motion.y * modifier;
+        entity.motionZ = motion.z * modifier;
     }
 }

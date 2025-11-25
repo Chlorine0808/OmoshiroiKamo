@@ -38,7 +38,7 @@ public interface IBasicFilterable {
                         return false;
                     }
                 }
-                return true;
+                return getFilterItems().hasAnyItem();
             default:
                 return false;
         }

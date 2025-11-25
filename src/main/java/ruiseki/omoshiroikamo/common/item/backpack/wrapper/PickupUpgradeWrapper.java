@@ -9,6 +9,11 @@ public class PickupUpgradeWrapper extends BasicUpgradeWrapper implements IPickup
     }
 
     @Override
+    public String getSettingLangKey() {
+        return "gui.pickup_settings";
+    }
+
+    @Override
     public boolean canPickup(ItemStack stack) {
         return checkFilter(stack);
     }

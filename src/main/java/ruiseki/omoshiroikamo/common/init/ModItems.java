@@ -13,6 +13,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedFeedingUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedPickupUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemBackpack;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemBatteryUpgrade;
@@ -42,6 +43,7 @@ public enum ModItems {
     STACK_UPGRADE(useBackpack, new ItemStackUpgrade()),
     CRAFTING_UPGRADE(useBackpack, new ItemCraftingUpgrade()),
     MAGNET_UPGRADE(useBackpack, new ItemMagnetUpgrade()),
+    ADVANCED_MAGNET_UPGRADE(useBackpack, new ItemAdvancedMagnetUpgrade()),
     FEEDING_UPGRADE(useBackpack, new ItemFeedingUpgrade()),
     ADVANCED_FEEDING_UPGRADE(useBackpack, new ItemAdvancedFeedingUpgrade()),
     PICKUP_UPGRADE(useBackpack, new ItemPickupUpgrade()),
