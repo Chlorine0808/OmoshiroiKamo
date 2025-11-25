@@ -2,7 +2,6 @@ package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot;
 
 import net.minecraft.item.ItemStack;
 
-import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
@@ -11,8 +10,8 @@ public class ModularBackpackSlot extends ModularSlot {
 
     protected final BackpackHandler handler;
 
-    public ModularBackpackSlot(IItemHandler itemHandler, int index, BackpackHandler handler) {
-        super(itemHandler, index);
+    public ModularBackpackSlot(BackpackHandler handler, int index) {
+        super(handler.getBackpackHandler(), index);
         this.handler = handler;
     }
 

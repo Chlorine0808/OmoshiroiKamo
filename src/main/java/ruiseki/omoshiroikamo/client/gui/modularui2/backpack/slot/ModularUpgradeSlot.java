@@ -7,43 +7,62 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemInceptionUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 
 public class ModularUpgradeSlot extends ModularSlot {
 
+    private final BackpackPanel panel;
     protected final BackpackHandler handler;
-    private UpgradeSlotSH syncHandler = null;
 
-    public ModularUpgradeSlot(IItemHandler itemHandler, int index, BackpackHandler gui) {
-        super(itemHandler, index);
-        this.handler = gui;
+    public ModularUpgradeSlot(BackpackHandler handler, int index, BackpackPanel panel) {
+        super(handler.getUpgradeHandler(), index);
+        this.panel = panel;
+        this.handler = handler;
     }
 
     @Override
     public boolean canTakeStack(EntityPlayer player) {
-        ItemStack originalUpgradeItem = this.getStack();
-        if (originalUpgradeItem == null) {
+        ItemStack originalStack = this.getStack();
+        if (originalStack == null) {
             return true;
         }
 
-        ItemStack newUpgradeItem = player.inventory.getItemStack();
-        if (newUpgradeItem == null) {
-            if (originalUpgradeItem.getItem() instanceof ItemStackUpgrade original) {
-                return handler.canRemoveStackUpgrade(original.multiplier(originalUpgradeItem));
+        Item originalItem = originalStack.getItem();
+
+        ItemStack newStack = player.inventory.getItemStack();
+        boolean newEmpty = (newStack == null);
+
+        if (originalItem instanceof ItemStackUpgrade original) {
+            if (newEmpty) {
+                return handler.canRemoveStackUpgrade(original.multiplier(originalStack));
             }
-            return true;
+
+            Item newItem = newStack.getItem();
+
+            if (newItem instanceof ItemStackUpgrade newer) {
+                return handler.canReplaceStackUpgrade(original.multiplier(originalStack), newer.multiplier(newStack));
+            } else {
+                return handler.canRemoveStackUpgrade(original.multiplier(originalStack));
+            }
         }
 
-        if (originalUpgradeItem.getItem() instanceof ItemStackUpgrade original
-            && newUpgradeItem.getItem() instanceof ItemStackUpgrade newer) {
-            return handler
-                .canReplaceStackUpgrade(original.multiplier(originalUpgradeItem), newer.multiplier(newUpgradeItem));
+        if (originalItem instanceof ItemInceptionUpgrade) {
+            if (newEmpty) {
+                return handler.canRemoveInceptionUpgrade();
+            }
+
+            Item newItem = newStack.getItem();
+            if (!(newItem instanceof ItemInceptionUpgrade)) {
+                return handler.canRemoveInceptionUpgrade();
+            } else {
+                return true;
+            }
         }
 
         return true;
@@ -59,10 +78,13 @@ public class ModularUpgradeSlot extends ModularSlot {
         if (stack == null) {
             return false;
         }
+
         Item item = stack.getItem();
+
         if (item instanceof ItemStackUpgrade upgrade) {
             return handler.canAddStackUpgrade(upgrade.multiplier(stack));
         }
+
         return item instanceof ItemUpgrade;
     }
 

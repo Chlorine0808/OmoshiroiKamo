@@ -73,9 +73,17 @@ a rewritten backport of the modern Environmental Tech mod:
 
 ### Sophisticated Backpacks (Backport Rewrite WIP)
 
-- Fully Upgradable Backpacks (Size, Filters, Feeding, Magnets…)
-- Crafting Upgrade, Feeding Upgrade, Pickup Upgrade
-- Custom Colors & Skins
+- [X] Stack upgrade
+- [ ] Inception upgrade
+- [X] Pickup upgrade
+- [X] Feeding upgrade
+- [ ] Deposit upgrade
+- [ ] Restock upgrade
+- [ ] Filter upgrade
+- [X] Magnet upgrade
+- [ ] Void upgrade
+- [ ] Crafting upgrade
+- [ ] Everlasting upgrade
 
 ### Traits (WIP)
 

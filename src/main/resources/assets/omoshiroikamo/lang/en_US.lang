@@ -303,6 +303,7 @@ item.pickupUpgrade.name=Pickup Upgrade
 item.advancedPickupUpgrade.name=Adv. Pickup Upgrade
 item.feedingUpgrade.name=Feeding Upgrade
 item.advancedFeedingUpgrade.name=Adv. Feeding Upgrade
+item.inceptionUpgrade.name=Inception Upgrade
 
 item.stabilizedEnderPear.name=Stabilized Ender Pearl
 item.photovoltaicCell.name=Photovoltaic Cell

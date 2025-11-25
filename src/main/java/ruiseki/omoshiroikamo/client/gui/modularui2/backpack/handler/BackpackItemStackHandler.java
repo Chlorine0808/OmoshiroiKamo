@@ -19,25 +19,12 @@ public class BackpackItemStackHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-        return !(stack.getItem() instanceof BlockBackpack.ItemBackpack);
+        return !(stack.getItem() instanceof BlockBackpack.ItemBackpack) || handler.canNestBackpack();
     }
 
     @Override
     public int getStackLimit(int slot, ItemStack stack) {
         return stack.getMaxStackSize() * handler.getTotalStackMultiplier();
-    }
-
-    @Override
-    public void setStackInSlot(int slot, ItemStack stack) {
-        validateSlotIndex(slot);
-        super.setStackInSlot(slot, stack);
-        handler.writeToItem();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        validateSlotIndex(slot);
-        return super.getStackInSlot(slot);
     }
 
     @Override

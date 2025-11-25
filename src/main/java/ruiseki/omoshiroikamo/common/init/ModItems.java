@@ -20,6 +20,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.ItemBatteryUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemCraftingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemEverlastingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemFeedingUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemInceptionUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemPickupUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
@@ -50,6 +51,7 @@ public enum ModItems {
     ADVANCED_PICKUP_UPGRADE(useBackpack, new ItemAdvancedPickupUpgrade()),
     BATTERY_UPGRADE(useBackpack, new ItemBatteryUpgrade()),
     EVERLASTING_UPGRADE(useBackpack, new ItemEverlastingUpgrade()),
+    INCEPTION_UPGRADE(useBackpack, new ItemInceptionUpgrade()),
 
     ANALYZER(useChicken || useCow, new ItemAnalyzer()),
     CHICKEN_CATCHER(useChicken, new ItemChickenCatcher()),

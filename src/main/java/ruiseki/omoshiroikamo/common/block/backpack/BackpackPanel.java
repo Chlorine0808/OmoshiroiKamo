@@ -103,7 +103,7 @@ public class BackpackPanel extends ModularPanel {
         this.upgradeSlotSyncHandlers = new UpgradeSlotSH[handler.getUpgradeSlots()];
         this.upgradeSlotGroups = new UpgradeSlotUpdateGroup[handler.getUpgradeSlots()];
         for (int i = 0; i < handler.getUpgradeSlots(); i++) {
-            ModularUpgradeSlot modularUpgradeSlot = new ModularUpgradeSlot(handler.getUpgradeHandler(), i, handler);
+            ModularUpgradeSlot modularUpgradeSlot = new ModularUpgradeSlot(handler, i, this);
             modularUpgradeSlot.slotGroup("upgrade_inventory");
             UpgradeSlotSH syncHandler = new UpgradeSlotSH(modularUpgradeSlot);
             modularUpgradeSlot.changeListener((lastStack, currentStack, isClient, init) -> {
@@ -119,7 +119,7 @@ public class BackpackPanel extends ModularPanel {
 
         this.backpackSlotSyncHandlers = new BackpackSlotSH[handler.getBackpackSlots()];
         for (int i = 0; i < handler.getBackpackSlots(); i++) {
-            ModularBackpackSlot modularBackpackSlot = new ModularBackpackSlot(handler.getBackpackHandler(), i, handler);
+            ModularBackpackSlot modularBackpackSlot = new ModularBackpackSlot(handler, i);
             modularBackpackSlot.slotGroup("backpack_inventory");
             BackpackSlotSH syncHandler = new BackpackSlotSH(modularBackpackSlot);
             syncManager.syncValue("backpack", i, syncHandler);

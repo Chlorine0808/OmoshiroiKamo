@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import lombok.Getter;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.BackpackItemStackHandler;
+import ruiseki.omoshiroikamo.common.item.backpack.ItemInceptionUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
@@ -192,6 +193,45 @@ public class BackpackHandler implements IItemHandlerModifiable {
         }
 
         return true;
+    }
+
+    public boolean canNestBackpack() {
+        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
+            ItemStack stack = upgradeHandler.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof ItemInceptionUpgrade) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canRemoveInceptionUpgrade() {
+        boolean containsBackpack = false;
+        int backpackSize = backpackHandler.getSlots();
+
+        for (int i = 0; i < backpackSize; i++) {
+            ItemStack stack = backpackHandler.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof BlockBackpack.ItemBackpack) {
+                containsBackpack = true;
+                break;
+            }
+        }
+
+        if (!containsBackpack) {
+            return true;
+        }
+
+        int upgradeSize = upgradeHandler.getSlots();
+        int inceptionCount = 0;
+
+        for (int i = 0; i < upgradeSize; i++) {
+            ItemStack stack = upgradeHandler.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof ItemInceptionUpgrade) {
+                inceptionCount++;
+            }
+        }
+
+        return inceptionCount > 1;
     }
 
     public ItemStack getFeedingStack(int foodLevel, float health, float maxHealth) {
