@@ -74,7 +74,7 @@ a rewritten backport of the modern Environmental Tech mod:
 ### Sophisticated Backpacks (Backport Rewrite WIP)
 
 - [X] Stack upgrade
-- [ ] Inception upgrade
+- [X] Inception upgrade
 - [X] Pickup upgrade
 - [X] Feeding upgrade
 - [ ] Deposit upgrade
