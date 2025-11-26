@@ -1,8 +1,10 @@
 package ruiseki.omoshiroikamo;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -23,12 +25,14 @@ import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtract
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
 import ruiseki.omoshiroikamo.client.render.item.backpack.BackpackRenderer;
+import ruiseki.omoshiroikamo.client.render.item.backpack.ItemBackpackRenderer;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
 import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.cow.TEStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
+import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 
@@ -67,6 +71,22 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
 
         RenderingRegistry.registerBlockHandler(JsonModelISBRH.INSTANCE);
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_BASE.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_IRON.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_GOLD.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_DIAMOND.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_OBSIDIAN.getItem(), new ItemBackpackRenderer());
+        for (Object obj : Block.blockRegistry) {
+            Block block = (Block) obj;
+
+            if (block.getRenderType() == JsonModelISBRH.JSON_ISBRH_ID) {
+                Item item = Item.getItemFromBlock(block);
+                if (item != null) {
+                    MinecraftForgeClient.registerItemRenderer(item, JsonModelISBRH.INSTANCE);
+                }
+            }
+        }
+
     }
 
     @Override

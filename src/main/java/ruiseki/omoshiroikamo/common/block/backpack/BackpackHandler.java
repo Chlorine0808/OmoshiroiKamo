@@ -62,6 +62,17 @@ public class BackpackHandler implements IItemHandlerModifiable {
     @Setter
     private int upgradeSlots;
 
+    @Getter
+    @Setter
+    private int mainColor;
+    @Getter
+    @Setter
+    private int accentColor;
+    @Getter
+    private static final String MAIN_COLOR = "MainColor";
+    @Getter
+    private static final String ACCENT_COLOR = "AccentColor";
+
     public BackpackHandler(ItemStack backpack, TileEntity tile) {
         this(backpack, tile, 120, 7);
     }
@@ -70,11 +81,17 @@ public class BackpackHandler implements IItemHandlerModifiable {
         this(backpack, tile, itemBackpack.getBackpackSlots(), itemBackpack.getUpgradeSlots());
     }
 
+    public BackpackHandler(ItemStack backpack, TileEntity tile, BlockBackpack blockBackpack) {
+        this(backpack, tile, blockBackpack.getBackpackSlots(), blockBackpack.getUpgradeSlots());
+    }
+
     public BackpackHandler(ItemStack backpack, TileEntity tile, int backpackSlots, int upgradeSlots) {
         this.backpack = backpack;
         this.tile = tile;
         this.backpackSlots = backpackSlots;
         this.upgradeSlots = upgradeSlots;
+        this.mainColor = 0xFFCC613A;
+        this.accentColor = 0xFF622E1A;
 
         this.backpackHandler = new BackpackItemStackHandler(backpackSlots, this) {
 
@@ -360,6 +377,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
     public void writeToNBT(NBTTagCompound tag) {
         tag.setInteger(BACKPACK_SLOTS, getBackpackSlots());
         tag.setInteger(UPGRADE_SLOTS, getUpgradeSlots());
+        tag.setInteger(MAIN_COLOR, getMainColor());
+        tag.setInteger(ACCENT_COLOR, getAccentColor());
         tag.setTag(BACKPACK_INV, backpackHandler.serializeNBT());
         tag.setTag(UPGRADE_INV, upgradeHandler.serializeNBT());
     }
@@ -368,15 +387,16 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
         if (tag.hasKey(BACKPACK_SLOTS)) {
             backpackSlots = tag.getInteger(BACKPACK_SLOTS);
-            if (backpackHandler.getSlots() != backpackSlots) {
-                backpackHandler.setSize(backpackSlots);
-            }
         }
         if (tag.hasKey(UPGRADE_SLOTS)) {
             upgradeSlots = tag.getInteger(UPGRADE_SLOTS);
-            if (upgradeHandler.getSlots() != upgradeSlots) {
-                upgradeHandler.setSize(upgradeSlots);
-            }
+        }
+
+        if (tag.hasKey(MAIN_COLOR)) {
+            mainColor = tag.getInteger(MAIN_COLOR);
+        }
+        if (tag.hasKey(ACCENT_COLOR)) {
+            accentColor = tag.getInteger(ACCENT_COLOR);
         }
 
         if (tag.hasKey(BACKPACK_INV)) {

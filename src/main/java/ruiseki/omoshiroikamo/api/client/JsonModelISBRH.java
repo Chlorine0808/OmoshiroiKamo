@@ -11,9 +11,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
 
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
@@ -28,7 +31,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 @ThreadSafeISBRH(perThread = true)
-public class JsonModelISBRH extends ModelISBRH {
+public class JsonModelISBRH extends ModelISBRH implements IItemRenderer {
 
     public static final JsonModelISBRH INSTANCE = new JsonModelISBRH();
 
@@ -37,7 +40,7 @@ public class JsonModelISBRH extends ModelISBRH {
      */
     public static final int JSON_ISBRH_ID = RenderingRegistry.getNextAvailableRenderId();
 
-    private final Random RAND = new Random();
+    public final Random RAND = new Random();
 
     public JsonModelISBRH() {
         ModelRegistry.registerModid(LibMisc.MOD_ID);
@@ -46,43 +49,39 @@ public class JsonModelISBRH extends ModelISBRH {
     @Override
     public void renderInventoryBlock(Block block, int meta, int modelId, RenderBlocks renderer) {
         final Tessellator tesselator = TessellatorManager.get();
-        final BakedModel model = getModel(null, block, meta, 0, 0, 0);
+        final BakedModel model = getModel(renderer.blockAccess, block, meta, 0, 0, 0);
 
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         tesselator.startDrawingQuads();
 
-        int color = model.getColor(null, 0, 0, 0, block, meta, RAND);
-
-        float ox = -0.5F, oy = -0.5F, oz = -0.5F;
+        int color = model.getColor(renderer.blockAccess, 0, 0, 0, block, meta, RAND);
 
         for (ModelQuadFacing dir : DIRECTIONS) {
 
-            final var quads = model.getQuads(null, 0, 0, 0, block, meta, dir, RAND, -1, null);
+            final var quads = model.getQuads(renderer.blockAccess, 0, 0, 0, block, meta, dir, RAND, -1, null);
             if (quads.isEmpty()) {
                 continue;
             }
 
             for (ModelQuadView quad : quads) {
-                int quadColor = color;
-                if (quad.getColorIndex() != -1) {
-                    quadColor = block.getRenderColor(meta);
+
+                if (quad.getColorIndex() != -1 && color == -1) {
+                    color = block.getRenderColor(meta);
                 }
 
-                float r = 1f, g = 1f, b = 1f;
-                if (quadColor != -1) {
-                    r = (quadColor & 0xFF) / 255f;
-                    g = (quadColor >> 8 & 0xFF) / 255f;
-                    b = (quadColor >> 16 & 0xFF) / 255f;
-                }
+                float r = (color & 0xFF) / 255f;
+                float g = (color >> 8 & 0xFF) / 255f;
+                float b = (color >> 16 & 0xFF) / 255f;
 
                 final float shade = diffuseLight(quad.getComputedFaceNormal());
                 tesselator.setColorOpaque_F(r * shade, g * shade, b * shade);
-                renderQuad(quad, ox, oy, oz, tesselator, null);
+                renderQuad(quad, -0.5f, -0.5f, -0.5f, tesselator, null);
             }
         }
 
-        GL11.glRotated(180f, 0f, 1f, 0f);
+        GL11.glRotated(-90f, 0f, 1f, 0f);
+
         tesselator.draw();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
@@ -98,10 +97,10 @@ public class JsonModelISBRH extends ModelISBRH {
         final int meta = world.getBlockMetadata(x, y, z);
         final var model = getModel(world, block, meta, x, y, z);
 
-        int color = model.getColor(world, x, y, z, block, meta, random);
+        int color = model.getColor(world, x, y, z, block, meta, RAND);
 
-        var rendered = false;
-        for (ModelQuadFacing dir : DIRECTIONS) {
+        boolean rendered = false;
+        for (var dir : DIRECTIONS) {
 
             final var quads = model.getQuads(world, x, y, z, block, meta, dir, random, color, null);
             if (quads.isEmpty()) {
@@ -109,18 +108,16 @@ public class JsonModelISBRH extends ModelISBRH {
             }
 
             rendered = true;
-            for (ModelQuadView quad : quads) {
+            for (final var quad : quads) {
                 int quadColor = color;
+
                 if (quad.getColorIndex() != -1) {
-                    quadColor = block.getRenderColor(meta);
+                    quadColor = BlockColor.getColor(block, world, x, y, z, quad.getColorIndex());
                 }
 
-                float r = 1f, g = 1f, b = 1f;
-                if (quadColor != -1) {
-                    r = (quadColor & 0xFF) / 255f;
-                    g = (quadColor >> 8 & 0xFF) / 255f;
-                    b = (quadColor >> 16 & 0xFF) / 255f;
-                }
+                final float r = (quadColor & 255) / 255f;
+                final float g = (quadColor >> 8 & 255) / 255f;
+                final float b = (quadColor >> 16 & 255) / 255f;
 
                 final int lm = getLightMap(block, quad, dir, world, x, y, z, renderer);
                 tesselator.setBrightness(lm);
@@ -163,7 +160,7 @@ public class JsonModelISBRH extends ModelISBRH {
         }
 
         // ...or greatest among neighbors otherwise
-        int lm = block.getMixedBrightnessForBlock(world, x, y, z);
+        int lm = block.getMixedBrightnessForBlock(world, x, y, z);;
         for (int i = 0; i < 6; i++) {
             final var neighbor = DIRECTIONS[i];
             final int lx = x + neighbor.getStepX();
@@ -189,7 +186,7 @@ public class JsonModelISBRH extends ModelISBRH {
 
     @Override
     public boolean shouldRender3DInInventory(int modelId) {
-        return true;
+        return false;
     }
 
     @Override
@@ -197,7 +194,20 @@ public class JsonModelISBRH extends ModelISBRH {
         return JSON_ISBRH_ID;
     }
 
+    @Override
+    public void renderQuad(ModelQuadView quad, float x, float y, float z, Tessellator tessellator,
+        @Nullable IIcon overrideIcon) {
+        super.renderQuad(quad, x, y, z, tessellator, overrideIcon);
+    }
+
+    @Override
+    @SuppressWarnings("unused")
+    public BakedModel getModel(IBlockAccess world, Block block, int meta, int x, int y, int z) {
+        return super.getModel(world, block, meta, x, y, z);
+    }
+
     public static void renderToEntity(ItemStack stack) {
+
         Block block = Block.getBlockFromItem(stack.getItem());
         if (block == null) return;
 
@@ -215,8 +225,6 @@ public class JsonModelISBRH extends ModelISBRH {
 
         tesselator.startDrawingQuads();
 
-        int color = model.getColor(null, 0, 0, 0, block, meta, INSTANCE.RAND);
-
         for (ModelQuadFacing dir : DIRECTIONS) {
 
             final var quads = model.getQuads(null, 0, 0, 0, block, meta, dir, INSTANCE.RAND, -1, null);
@@ -225,17 +233,17 @@ public class JsonModelISBRH extends ModelISBRH {
             }
 
             for (ModelQuadView quad : quads) {
-                int quadColor = color;
-                if (quad.getColorIndex() != -1) {
-                    quadColor = block.getRenderColor(meta);
+                int color;
+                if (stack.getItem() != null && quad.getColorIndex() != -1) {
+                    color = stack.getItem()
+                        .getColorFromItemStack(stack, quad.getColorIndex());
+                } else {
+                    color = block.getRenderColor(meta);
                 }
 
-                float r = 1f, g = 1f, b = 1f;
-                if (quadColor != -1) {
-                    r = (quadColor & 0xFF) / 255f;
-                    g = (quadColor >> 8 & 0xFF) / 255f;
-                    b = (quadColor >> 16 & 0xFF) / 255f;
-                }
+                float r = (color & 0xFF) / 255f;
+                float g = (color >> 8 & 0xFF) / 255f;
+                float b = (color >> 16 & 0xFF) / 255f;
 
                 final float shade = diffuseLight(quad.getComputedFaceNormal());
                 tesselator.setColorOpaque_F(r * shade, g * shade, b * shade);
@@ -250,4 +258,18 @@ public class JsonModelISBRH extends ModelISBRH {
         GL11.glPopMatrix();
     }
 
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return true;
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+
+    }
 }

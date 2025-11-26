@@ -23,10 +23,12 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lombok.Getter;
+import ruiseki.omoshiroikamo.api.client.BlockColor;
 import ruiseki.omoshiroikamo.api.client.IBaubleRender;
 import ruiseki.omoshiroikamo.api.client.IItemJSONRender;
 import ruiseki.omoshiroikamo.api.client.JsonModelISBRH;
 import ruiseki.omoshiroikamo.api.client.RenderUtils;
+import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.common.block.ItemBlockBauble;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
@@ -64,6 +66,11 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> {
     }
 
     @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
     public void registerBlockIcons(IIconRegister reg) {
         cloth = reg.registerIcon(LibResources.PREFIX_MOD + "backpack_cloth");
         border = reg.registerIcon(LibResources.PREFIX_MOD + "backpack_border");
@@ -91,6 +98,17 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> {
     public void init() {
         GameRegistry.registerBlock(this, ItemBackpack.class, name);
         GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+        BlockColor.registerBlockColors((world, x, y, z, tintIndex) -> {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof TEBackpack backpack) {
+                if (tintIndex == 0) {
+                    return EnumDye.rgbToAbgr(backpack.getMainColor());
+                } else if (tintIndex == 1) {
+                    return EnumDye.rgbToAbgr(backpack.getAccentColor());
+                }
+            }
+            return EnumDye.WHITE.dyeToAbgr();
+        }, this);
     }
 
     @Override
@@ -138,9 +156,20 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> {
         public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isHeld) {
             super.onUpdate(stack, world, entity, slot, isHeld);
             if (!stack.hasTagCompound()) {
-                BackpackHandler cap = new BackpackHandler(stack, null, backpackSlots, upgradeSlots);
+                BackpackHandler cap = new BackpackHandler(stack, null, this);
                 cap.writeToItem();
             }
+        }
+
+        @Override
+        public int getColorFromItemStack(ItemStack stack, int tintIndex) {
+            BackpackHandler handler = new BackpackHandler(stack, null, this);
+            if (tintIndex == 0) {
+                return EnumDye.rgbToAbgr(handler.getMainColor());
+            } else if (tintIndex == 1) {
+                return EnumDye.rgbToAbgr(handler.getAccentColor());
+            }
+            return EnumDye.BROWN.dyeToAbgr();
         }
 
         @Override
@@ -171,7 +200,7 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> {
         @Override
         public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
             ItemStack stack = data.getUsedItemStack();
-            BackpackHandler cap = new BackpackHandler(stack, null, backpackSlots, upgradeSlots);
+            BackpackHandler cap = new BackpackHandler(stack, null, this);
             return new BackpackGuiHolder.ItemStackGuiHolder(cap).buildUI(data, syncManager, settings);
         }
 

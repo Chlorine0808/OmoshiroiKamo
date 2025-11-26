@@ -164,6 +164,14 @@ public class TEBackpack extends AbstractTE implements ISidedInventory, IGuiHolde
         handler.readFromNBT(root);
     }
 
+    public int getMainColor() {
+        return handler.getMainColor();
+    }
+
+    public int getAccentColor() {
+        return handler.getAccentColor();
+    }
+
     @Override
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
         float hitZ) {
