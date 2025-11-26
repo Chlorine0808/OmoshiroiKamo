@@ -31,7 +31,6 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.config.backport.CowConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
-import vazkii.botania.common.core.helper.ItemNBTHelper;
 
 public class ItemCowSpawnEgg extends ItemOK {
 
