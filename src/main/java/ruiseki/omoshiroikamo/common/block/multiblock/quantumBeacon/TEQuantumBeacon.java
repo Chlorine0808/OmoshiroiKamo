@@ -162,7 +162,6 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
     }
 
-
     private void handleFlightUpdate(EntityPlayer plr) {
         if (plr.capabilities.isCreativeMode) {
             return;
