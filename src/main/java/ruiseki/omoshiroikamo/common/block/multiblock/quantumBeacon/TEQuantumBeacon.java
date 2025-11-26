@@ -162,17 +162,26 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
     }
 
+
     private void handleFlightUpdate(EntityPlayer plr) {
-        if (!modifierHandler.hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName())) {
-            plr.capabilities.isFlying = false;
-            plr.capabilities.allowFlying = false;
-            plr.sendPlayerAbilities();
-            PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+        if (plr.capabilities.isCreativeMode) {
             return;
         }
-        if (!plr.capabilities.allowFlying) {
+        boolean hasFlight = modifierHandler.hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName());
+
+        boolean allow = plr.capabilities.allowFlying;
+        if (!hasFlight) {
+            if (allow || plr.capabilities.isFlying) {
+                plr.capabilities.allowFlying = false;
+                plr.capabilities.isFlying = false;
+                plr.sendPlayerAbilities();
+                PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), false), plr);
+            }
+            return;
+        }
+
+        if (!allow) {
             plr.capabilities.allowFlying = true;
-            plr.capabilities.isFlying = true;
             plr.sendPlayerAbilities();
             PacketHandler.sendToAllAround(new PacketNBBClientFlight(plr.getUniqueID(), true), plr);
         }
