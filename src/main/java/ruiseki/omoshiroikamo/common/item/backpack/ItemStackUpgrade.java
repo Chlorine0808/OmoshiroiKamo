@@ -12,16 +12,18 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
-public class ItemStackUpgrade extends ItemUpgrade {
+public class ItemStackUpgrade extends ItemUpgrade<UpgradeWrapper> {
 
     @SideOnly(Side.CLIENT)
     protected IIcon tier1, tier2, tier3, tier4;
 
     public ItemStackUpgrade() {
-        super(ModObject.itemStackUpgrade);
+        super(ModObject.itemStackUpgrade.unlocalisedName);
         setMaxStackSize(1);
     }
 
@@ -73,19 +75,19 @@ public class ItemStackUpgrade extends ItemUpgrade {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "stack_multiplier", multiplier(itemstack)));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "stack_upgrade", multiplier(itemstack)));
     }
 
     public int multiplier(ItemStack stack) {
         switch (stack.getItemDamage()) {
             case 1:
-                return 4;
+                return BackpackConfig.stackUpgradeTier2Mul;
             case 2:
-                return 8;
+                return BackpackConfig.stackUpgradeTier3Mul;
             case 3:
-                return 16;
+                return BackpackConfig.stackUpgradeTier4Mul;
             default:
-                return 2;
+                return BackpackConfig.stackUpgradeTier1Mul;
         }
     }
 }

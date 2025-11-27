@@ -80,4 +80,21 @@ public enum EnumDye {
     public String toString() {
         return getName();
     }
+
+    public static int rgbToAbgr(int rgb) {
+        int r = (rgb >> 16) & 0xFF;
+        int g = (rgb >> 8) & 0xFF;
+        int b = rgb & 0xFF;
+
+        return (0xFF << 24) | (b << 16) | (g << 8) | r;
+    }
+
+    public int rgbToArgb(int r, int g, int b) {
+        return (0xFF << 24) | (r << 16) | (g << 8) | b;
+    }
+
+    public int dyeToAbgr() {
+        int rgb = this.getColor();
+        return rgbToAbgr(rgb);
+    }
 }

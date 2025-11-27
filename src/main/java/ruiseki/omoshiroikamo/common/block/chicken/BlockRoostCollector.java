@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.chicken;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,7 +24,7 @@ public class BlockRoostCollector extends AbstractBlock<TERoostCollector> {
     IIcon side, face;
 
     protected BlockRoostCollector() {
-        super(ModObject.blockRoostCollector, TERoostCollector.class, Material.wood);
+        super(ModObject.blockRoostCollector.unlocalisedName, TERoostCollector.class, Material.wood);
     }
 
     public static BlockRoostCollector create() {

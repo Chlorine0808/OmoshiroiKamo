@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class BlockLens extends BlockOK {
     IIcon lens_top, lens_top_2, lens_side, lens_side_2;
 
     protected BlockLens() {
-        super(ModObject.blockLens, Material.glass);
+        super(ModObject.blockLens.unlocalisedName, Material.glass);
     }
 
     public static BlockLens create() {
@@ -43,6 +43,11 @@ public class BlockLens extends BlockOK {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     @Override

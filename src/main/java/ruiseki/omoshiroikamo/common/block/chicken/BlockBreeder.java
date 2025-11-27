@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.chicken;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +29,7 @@ public class BlockBreeder extends AbstractBlock<TEBreeder> {
     IIcon side, floor, top;
 
     protected BlockBreeder() {
-        super(ModObject.blockBreeder, TEBreeder.class, Material.wood);
+        super(ModObject.blockBreeder.unlocalisedName, TEBreeder.class, Material.wood);
         this.setTickRandomly(true);
     }
 

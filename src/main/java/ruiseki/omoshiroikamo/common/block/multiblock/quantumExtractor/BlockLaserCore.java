@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class BlockLaserCore extends BlockOK {
     IIcon laser_core;
 
     protected BlockLaserCore() {
-        super(ModObject.blockLaserCore);
+        super(ModObject.blockLaserCore.unlocalisedName);
     }
 
     public static BlockLaserCore create() {

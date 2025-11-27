@@ -27,10 +27,98 @@ option.omoshiroikamo.grownTime=Grown Time
 
 gui.machine.ioMode.none=None
 gui.machine.ioMode.input=Input
-gui.machine.ioMode.output=Output
+gui.machine.ioMode.output=Outputw
 gui.machine.ioMode.disabled=Disabled
 gui.machine.ioMode.inputOutput=Output / Input
 gui.powerMonitor.of=of
+
+
+# Backpack Gui Elements
+container.backpack=Backpack
+
+gui.pickup_settings=Pickup Settings
+gui.advanced_pickup_settings=Adv. Pickup Settings
+
+gui.magnet_settings=Magnet Settings
+gui.advanced_magnet_settings=Adv. Magnet Settings
+
+gui.feeding_settings=Feeding Settings
+gui.advanced_feeding_settings=Adv. Feeding Settings
+
+gui.deposit_settings=Deposit Settings
+gui.advanced_deposit_settings=Adv. Deposit Settings
+
+gui.restock_settings=Restock Settings
+gui.advanced_restock_settings=Adv. Restock Settings
+
+gui.filter_settings=Filter Settings
+gui.advanced_filter_settings=Adv. Filter Settings
+
+gui.memory_settings=Memory Settings
+gui.sorting_settings=Sorting Settings
+
+# Backpack Gui Tooltips
+
+gui.stack_size_extra=Count: %s / %s
+gui.not_in_effect=Not in effect
+
+gui.whitelist=Whitelist
+gui.blacklist=Blacklist
+
+gui.match_item=By Item
+gui.match_mod_id=By Mod ID
+gui.match_ore_dict=By Ore Dictionary
+
+gui.match_durability=Match Durability
+gui.ignore_durability=Ignore Durability
+
+gui.match_nbt=Match NBT
+gui.ignore_nbt=Ignore NBT
+
+gui.item_magnet=Get items
+gui.ignore_item_magnet=Do not get items
+
+gui.exp_magnet=Get experients
+gui.ignore_exp_magnet=Do not get experients
+
+gui.add_ore_dict_entry=Add Ore Dict.
+gui.remove_ore_dict_entry=Remove Ore Dict.
+gui.ore_dict_input_help=You can input ore dictionary here, regex is supported
+
+gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all
+gui.half_hunger=Only feed when player is hungry enough\nto only waste half hunger points of the food at most
+gui.immediate_hunger=Feed as soon as player is tiny bit hungry\nwastes quite a few hunger points of the food
+
+gui.ignore_health=Do not consider health\nIgnores player's health and only feeds based on hunger setting
+gui.consider_health=Feed player immediately when hurt\nIgnores hunger setting when player is not at max health
+
+gui.input_output=Input & Output
+gui.input=Input Only
+gui.output=Output Only
+
+gui.sort_inventory=Sort Backpack Inventory
+gui.sort_by_name=Sort By Name
+gui.sort_by_mod_id=Sort By Mod ID
+gui.sort_by_count=Sort By Count
+gui.sort_by_ore_dict=Sort By Ore Dictionary
+
+gui.transfer_to_player_inv=Transfer All Items to Player Inventory
+gui.transfer_to_player_inv_matched_1=Transfer Matched Items to Player Inventory
+gui.transfer_to_player_inv_matched_2=Shift To Transfer All
+gui.transfer_to_backpack_inv=Transfer All Items to Backpack Inventory
+gui.transfer_to_backpack_inv_matched_1=Transfer Matched Items to Backpack Inventory
+gui.transfer_to_backpack_inv_matched_2=Shift To Transfer All
+
+gui.settings=Settings
+gui.configuration_tab=Configuration Tab
+
+gui.memorized_slot=Memorized Slot
+gui.memorize_all=Memorize All Slots
+gui.unmemorize_all=Forget All Slots
+
+gui.no_sorting_slot=No Sorting Slot
+gui.lock_all_sort=Select All Slots For No Sorting
+gui.unlock_all_sort=Select All Slots For Sorting
 
 #Display
 
@@ -51,13 +139,20 @@ tooltip.anvilupgrades=Anvil Upgrades:
 tooltip.filter_mode=Whitelist/Blacklist
 tooltip.feeding_type=Full/EXACT
 
-tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
-tooltip.stack_multiplier=Multiplies stack size by %d
-tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
-tooltip.magnet_upgrade=Automatically picks up nearby items
-tooltip.feeding_upgrade=Allows backpacks to automatically feed player
+tooltip.magnet_upgrade=Automatically picks up nearby entities
+tooltip.advanced_magnet_upgrade=Automatically picks up nearby entities with more configurations
 tooltip.everlasting_upgrade=Makes the backpack invincible, preventing despawning or falling into the void. Ensures retrieval even when thrown into the void.
 tooltip.battery_upgrade=Stores energy and automatically recharges energy-using items.
+tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
+tooltip.stack_upgrade=Multiplies stack size by %d
+tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
+tooltip.inception_upgrade=Allows backpacks to be stored inside backpack
+tooltip.pickup_upgrade=Allows backpacks to pickup items
+tooltip.advanced_pickup_upgrade=Allows backpack to pickup items with more configurations
+tooltip.feeding_upgrade=Allows backpacks to automatically feed player
+tooltip.advanced_feeding_upgrade=Allows backpack to automatically feed player with more configurations
+tooltip.filter_upgrade=Filters inserted items when placing in world
+tooltip.advanced_filter_upgrade=Filters inserted items when placing in world with more configurations
 
 tooltip.progress=Progress
 tooltip.duration=Duration
@@ -188,15 +283,20 @@ element.dendro.name=Dendro
 
 #Item
 
-item.operationOrb.name=Operation Orb
+tile.backpackLeather.name=Leather Backpack (WIP)
+tile.backpackIron.name=Iron Backpack (WIP)
+tile.backpackGold.name=Gold Backpack (WIP)
+tile.backpackDiamond.name=Diamond Backpack (WIP)
+tile.backpackObsidian.name=Obsidian Backpack (WIP)
 
-item.backPack.Starter.name=Starter Backpack
-item.backPack.Copper.name=Copper Backpack
-item.backPack.Iron.name=Iron Backpack
-item.backPack.Gold.name=Gold Backpack
-item.backPack.Diamond.name=Diamond Backpack
-item.backPack.Obsidian.name=Obsidian Backpack
-item.backPack.Netherite.name=Netherite Backpack
+item.backPack.Starter.name=Starter Backpack (Will Remove Next Update)
+item.backPack.Copper.name=Copper Backpack (Will Remove Next Update)
+item.backPack.Iron.name=Iron Backpack (Will Remove Next Update)
+item.backPack.Gold.name=Gold Backpack (Will Remove Next Update)
+item.backPack.Diamond.name=Diamond Backpack (Will Remove Next Update)
+item.backPack.Obsidian.name=Obsidian Backpack (Will Remove Next Update)
+item.backPack.Netherite.name=Netherite Backpack (Will Remove Next Update)
+
 item.upgrade.name=Upgrade Base
 item.stackUpgrade.Starter.name=Stack Upgrade Starter Tier
 item.stackUpgrade.Iron.name=Stack Upgrade Tier 1
@@ -204,10 +304,17 @@ item.stackUpgrade.Gold.name=Stack Upgrade Tier 2
 item.stackUpgrade.Diamond.name=Stack Upgrade Tier 3
 item.stackUpgrade.Netherite.name=Stack Upgrade Tier 4
 item.craftingUpgrade.name=Crafting Upgrade
-item.magnetUpgrade.name=Magnet Upgrade
-item.feedingUpgrade.name=Feeding Upgrade
 item.batteryUpgrade.name=Battery Upgrade
 item.everlastingUpgrade.name=Everlasting Upgrade
+item.magnetUpgrade.name=Magnet Upgrade
+item.advancedMagnetUpgrade.name=Adv. Magnet Upgrade
+item.pickupUpgrade.name=Pickup Upgrade
+item.advancedPickupUpgrade.name=Adv. Pickup Upgrade
+item.feedingUpgrade.name=Feeding Upgrade
+item.advancedFeedingUpgrade.name=Adv. Feeding Upgrade
+item.filterUpgrade.name=Filter Upgrade
+item.advancedFilterUpgrade.name=Adv. Filter Upgrade
+item.inceptionUpgrade.name=Inception Upgrade
 
 item.stabilizedEnderPear.name=Stabilized Ender Pearl
 item.photovoltaicCell.name=Photovoltaic Cell

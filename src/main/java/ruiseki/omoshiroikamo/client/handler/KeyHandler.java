@@ -1,6 +1,8 @@
 package ruiseki.omoshiroikamo.client.handler;
 
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -13,6 +15,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
+import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemBackpack;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
@@ -48,15 +51,33 @@ public class KeyHandler {
     }
 
     private void handleOpenBackpack() {
-        if (keyOpenBackpack.isPressed() && LibMods.Baubles.isLoaded()) {
-            InventoryTypes.BAUBLES.visitAll(Platform.getClientPlayer(), (type, index, stack) -> {
-                if (stack != null && stack.getItem() instanceof ItemBackpack) {
+        if (keyOpenBackpack.isPressed()) {
+            EntityPlayer player = Platform.getClientPlayer();
+
+            for (int armorIndex = 0; armorIndex < 4; armorIndex++) {
+                int slot = player.inventory.getSizeInventory() - 1 - armorIndex;
+                ItemStack stack = player.inventory.getStackInSlot(slot);
+                if (stack != null && (stack.getItem() instanceof ItemBackpack
+                    || stack.getItem() instanceof BlockBackpack.ItemBackpack)) {
+
                     GuiFactories.playerInventory()
-                        .openFromBaublesClient(index);
-                    return true;
+                        .openFromPlayerInventoryClient(slot);
+                    return;
                 }
-                return false;
-            });
+            }
+
+            if (LibMods.Baubles.isLoaded()) {
+                InventoryTypes.BAUBLES.visitAll(player, (type, index, stack) -> {
+                    if (stack != null && (stack.getItem() instanceof ItemBackpack
+                        || stack.getItem() instanceof BlockBackpack.ItemBackpack)) {
+                        GuiFactories.playerInventory()
+                            .openFromBaublesClient(index);
+                        return true;
+                    }
+                    return false;
+                });
+            }
         }
     }
+
 }

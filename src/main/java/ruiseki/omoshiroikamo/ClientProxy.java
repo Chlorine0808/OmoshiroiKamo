@@ -16,19 +16,20 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.handler.KeyHandler;
-import ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH;
 import ruiseki.omoshiroikamo.client.render.block.chicken.RoostTESR;
 import ruiseki.omoshiroikamo.client.render.block.cow.StallTESR;
 import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtractorTESR;
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
 import ruiseki.omoshiroikamo.client.render.item.backpack.BackpackRenderer;
+import ruiseki.omoshiroikamo.client.render.item.backpack.ItemBackpackRenderer;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
 import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.cow.TEStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
+import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 
@@ -66,12 +67,17 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
 
-        RenderingRegistry.registerBlockHandler(new JsonModelISBRH());
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_BASE.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_IRON.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_GOLD.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_DIAMOND.getItem(), new ItemBackpackRenderer());
+        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_OBSIDIAN.getItem(), new ItemBackpackRenderer());
     }
 
     public EntityPlayer getClientPlayer() {

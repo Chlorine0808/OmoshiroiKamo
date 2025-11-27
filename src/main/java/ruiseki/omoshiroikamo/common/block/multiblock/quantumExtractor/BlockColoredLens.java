@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class BlockColoredLens extends BlockOK {
         "light_gray", "gray", "pink", "lime", "yellow", "light_blue", "magenta", "orange", "white" };
 
     protected BlockColoredLens() {
-        super(ModObject.blockColoredLens, Material.glass);
+        super(ModObject.blockColoredLens.unlocalisedName, Material.glass);
     }
 
     public static BlockColoredLens create() {
@@ -64,6 +64,11 @@ public class BlockColoredLens extends BlockOK {
     }
 
     @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
     public void registerBlockIcons(IIconRegister reg) {
         lens_colored_top = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_top");
         lens_colored_top_2 = reg.registerIcon(LibResources.PREFIX_MOD + "lens_colored_top_2");
@@ -92,8 +97,7 @@ public class BlockColoredLens extends BlockOK {
 
     @Override
     public int getRenderColor(int meta) {
-        int rgb = EnumDye.values()[meta].getColor();
-        return (0xFF << 24) | ((rgb & 0xFF) << 16) | (rgb & 0xFF00) | ((rgb >> 16) & 0xFF);
+        return EnumDye.values()[meta].dyeToAbgr();
     }
 
     @Override
@@ -119,6 +123,11 @@ public class BlockColoredLens extends BlockOK {
                 return base;
             }
         }
-    }
 
+        @Override
+        public int getColorFromItemStack(ItemStack stack, int pass) {
+            return Block.getBlockFromItem(stack.getItem())
+                .getRenderColor(stack.getItemDamage());
+        }
+    }
 }

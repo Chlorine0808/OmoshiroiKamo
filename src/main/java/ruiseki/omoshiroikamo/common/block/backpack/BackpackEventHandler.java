@@ -1,0 +1,278 @@
+package ruiseki.omoshiroikamo.common.block.backpack;
+
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import codechicken.lib.vec.Vector3;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.container.BackPackContainer;
+import ruiseki.omoshiroikamo.common.util.item.BaublesUtils;
+import ruiseki.omoshiroikamo.common.util.lib.LibMods;
+import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
+
+@EventBusSubscriber
+public class BackpackEventHandler {
+
+    private static int feedTickCounter = 0;
+    private static int magnetTickCounter = 0;
+
+    @SubscribeEvent
+    public static void onPlayerPickup(EntityItemPickupEvent event) {
+        EntityPlayer player = event.entityPlayer;
+        IInventory inventory = player.inventory;
+        ItemStack stack = event.item.getEntityItem()
+            .copy();
+
+        if (player.openContainer instanceof BackPackContainer) {
+            return;
+        }
+
+        if (LibMods.Baubles.isLoaded()) {
+            IInventory baublesInventory = BaublesUtils.instance()
+                .getBaubles(player);
+            stack = attemptPickup(baublesInventory, stack);
+        }
+
+        stack = attemptPickup(inventory, stack);
+
+        if (stack == null || stack.stackSize <= 0) {
+            event.item.setDead();
+            event.setCanceled(true);
+
+            World world = event.item.worldObj;
+
+            world.playSoundEffect(
+                event.item.posX,
+                event.item.posY,
+                event.item.posZ,
+                "random.pop",
+                0.2F,
+                ((player.getRNG()
+                    .nextFloat()
+                    - player.getRNG()
+                        .nextFloat())
+                    * 0.7F + 1.0F) * 2.0F);
+            return;
+        } else if (stack.stackSize != event.item.getEntityItem().stackSize) {
+            event.item.setDead();
+            event.setCanceled(true);
+
+            World world = event.item.worldObj;
+
+            EntityItem newItem = new EntityItem(world, event.item.posX, event.item.posY, event.item.posZ, stack);
+
+            newItem.delayBeforeCanPickup = 0;
+            world.spawnEntityInWorld(newItem);
+        }
+
+    }
+
+    private static ItemStack attemptPickup(IInventory targetInventory, ItemStack stack) {
+
+        for (int i = 0; i < targetInventory.getSizeInventory(); i++) {
+            ItemStack backpackStack = targetInventory.getStackInSlot(i);
+            if (backpackStack == null || backpackStack.stackSize <= 0) {
+                continue;
+            }
+
+            if (!(backpackStack.getItem() instanceof BlockBackpack.ItemBackpack backpack)) {
+                continue;
+            }
+
+            BackpackHandler handler = new BackpackHandler(backpackStack, null, backpack);
+
+            if (!handler.canPickupItem(stack)) {
+                continue;
+            }
+
+            int slotIndex = 0;
+            while (stack != null && slotIndex < handler.getSlots()) {
+                stack = handler.getBackpackHandler()
+                    .prioritizedInsertion(slotIndex, stack, false);
+                slotIndex++;
+            }
+
+            if (stack == null) {
+                break;
+            }
+        }
+
+        return stack;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTickFeed(TickEvent.PlayerTickEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            return;
+        }
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof BlockBackpack.ItemBackpack) {
+            feedTickCounter = -100;
+            return;
+        }
+
+        if (player.openContainer instanceof BackPackContainer) {
+            feedTickCounter = -100;
+            return;
+        }
+
+        feedTickCounter++;
+        if (feedTickCounter % 20 == 0) {
+            feedTickCounter = 0;
+            if (!player.capabilities.isCreativeMode) {
+                attemptFeed(player);
+            }
+        }
+    }
+
+    public static void attemptFeed(EntityPlayer player) {
+        boolean result = false;
+
+        if (LibMods.Baubles.isLoaded()) {
+            IInventory baublesInventory = BaublesUtils.instance()
+                .getBaubles(player);
+            result = attemptFeed(player, baublesInventory);
+        }
+
+        if (!result) {
+            attemptFeed(player, player.inventory);
+        }
+    }
+
+    public static boolean attemptFeed(EntityPlayer player, IInventory searchInventory) {
+        int size = searchInventory.getSizeInventory();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = searchInventory.getStackInSlot(i);
+            if (stack == null || stack.stackSize <= 0) {
+                continue;
+            }
+
+            if (!(stack.getItem() instanceof BlockBackpack.ItemBackpack backpack)) {
+                continue;
+            }
+
+            BackpackHandler handler = new BackpackHandler(stack, null, backpack);
+
+            ItemStack feedingStack = handler.getFeedingStack(
+                player.getFoodStats()
+                    .getFoodLevel(),
+                player.getHealth(),
+                player.getMaxHealth());
+
+            if (feedingStack == null || feedingStack.stackSize <= 0) {
+                continue;
+            }
+
+            feedingStack.onFoodEaten(player.worldObj, player);
+            return true;
+        }
+
+        return false;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTickMagnet(TickEvent.PlayerTickEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            return;
+        }
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        magnetTickCounter++;
+        if (magnetTickCounter % 2 == 0) {
+            magnetTickCounter = 0;
+            attemptMagnet(player);
+        }
+    }
+
+    public static void attemptMagnet(EntityPlayer player) {
+        boolean result = false;
+
+        if (LibMods.Baubles.isLoaded()) {
+            IInventory baublesInventory = BaublesUtils.instance()
+                .getBaubles(player);
+            result = attemptMagnet(player, baublesInventory);
+        }
+
+        if (!result) {
+            attemptMagnet(player, player.inventory);
+        }
+    }
+
+    public static boolean attemptMagnet(EntityPlayer player, IInventory searchInventory) {
+        int size = searchInventory.getSizeInventory();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = searchInventory.getStackInSlot(i);
+            if (stack == null || stack.stackSize <= 0) {
+                continue;
+            }
+
+            if (!(stack.getItem() instanceof BlockBackpack.ItemBackpack backpack)) {
+                continue;
+            }
+
+            BackpackHandler handler = new BackpackHandler(stack, null, backpack);
+
+            AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
+                player.posX - BackpackConfig.magnetConfig.magnetRange,
+                player.posY - BackpackConfig.magnetConfig.magnetRange,
+                player.posZ - BackpackConfig.magnetConfig.magnetRange,
+                player.posX + BackpackConfig.magnetConfig.magnetRange,
+                player.posY + BackpackConfig.magnetConfig.magnetRange,
+                player.posZ + BackpackConfig.magnetConfig.magnetRange);
+
+            List<Entity> entities = handler.getMagnetEntities(player.worldObj, aabb);
+            if (entities.isEmpty()) {
+                return false;
+            }
+            int pulled = 0;
+            for (Entity entity : entities) {
+                if (pulled++ > 200) {
+                    break;
+                }
+                Vector3 target = new Vector3(
+                    player.posX,
+                    player.posY - (player.worldObj.isRemote ? 1.62 : 0) + 0.75,
+                    player.posZ);
+                setEntityMotionFromVector(entity, target, 0.45F);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void setEntityMotionFromVector(Entity entity, Vector3 target, float modifier) {
+        Vector3 current = Vector3.fromEntityCenter(entity);
+        Vector3 motion = target.copy()
+            .subtract(current);
+
+        if (motion.mag() > 1) {
+            motion.normalize();
+        }
+
+        entity.motionX = motion.x * modifier;
+        entity.motionY = motion.y * modifier;
+        entity.motionZ = motion.z * modifier;
+    }
+}

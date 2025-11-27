@@ -1,6 +1,6 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.solarArray;
 
-import static ruiseki.omoshiroikamo.client.render.block.JsonModelISBRH.JSON_ISBRH_ID;
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class BlockSolarCell extends BlockOK {
     IIcon solar;
 
     protected BlockSolarCell() {
-        super(ModObject.blockSolarCell);
+        super(ModObject.blockSolarCell.unlocalisedName);
     }
 
     public static BlockSolarCell create() {

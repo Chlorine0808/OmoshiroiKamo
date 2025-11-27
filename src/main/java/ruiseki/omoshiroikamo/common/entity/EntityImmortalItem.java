@@ -2,7 +2,6 @@ package ruiseki.omoshiroikamo.common.entity;
 
 import java.util.Iterator;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -13,15 +12,32 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class EntityImmortalItem extends EntityItemOK {
 
+    @Getter
     private boolean immortal = false;
+    @Setter
+    @Getter
     private boolean immuneToExplosions = false;
+    @Setter
+    @Getter
     private boolean immuneToCactus = false;
+    @Setter
+    @Getter
     private boolean immuneToLava = false;
+    @Setter
     private boolean immuneToFire = false;
+    @Setter
+    @Getter
     private boolean noDespawn = false;
+    @Setter
+    @Getter
     private boolean floatOnLava = false;
+    @Setter
+    @Getter
     private boolean preventVoidFall = false;
 
     public EntityImmortalItem(World world, Entity original, ItemStack stack) {
@@ -36,10 +52,6 @@ public class EntityImmortalItem extends EntityItemOK {
         applyImmortalFlags();
     }
 
-    public boolean isImmortal() {
-        return immortal;
-    }
-
     private void applyImmortalFlags() {
         this.isImmuneToFire = immortal;
         this.immuneToExplosions = immortal;
@@ -48,58 +60,6 @@ public class EntityImmortalItem extends EntityItemOK {
         this.noDespawn = immortal;
         this.floatOnLava = immortal;
         this.preventVoidFall = immortal;
-    }
-
-    public void setImmuneToExplosions(boolean val) {
-        this.immuneToExplosions = val;
-    }
-
-    public boolean isImmuneToExplosions() {
-        return immuneToExplosions;
-    }
-
-    public void setImmuneToCactus(boolean val) {
-        this.immuneToCactus = val;
-    }
-
-    public boolean isImmuneToCactus() {
-        return immuneToCactus;
-    }
-
-    public void setImmuneToLava(boolean val) {
-        this.immuneToLava = val;
-    }
-
-    public boolean isImmuneToLava() {
-        return immuneToLava;
-    }
-
-    public void setImmuneToFire(boolean val) {
-        this.isImmuneToFire = val;
-    }
-
-    public void setNoDespawn(boolean val) {
-        this.noDespawn = val;
-    }
-
-    public boolean isNoDespawn() {
-        return noDespawn;
-    }
-
-    public void setFloatOnLava(boolean val) {
-        this.floatOnLava = val;
-    }
-
-    public boolean doesFloatOnLava() {
-        return floatOnLava;
-    }
-
-    public void setPreventVoidFall(boolean val) {
-        this.preventVoidFall = val;
-    }
-
-    public boolean doesPreventVoidFall() {
-        return preventVoidFall;
     }
 
     @Override
@@ -164,19 +124,19 @@ public class EntityImmortalItem extends EntityItemOK {
                 || (int) this.prevPosZ != (int) this.posZ;
 
             if (flag || this.ticksExisted % 25 == 0) {
-                Block block = this.worldObj.getBlock(
-                    MathHelper.floor_double(this.posX),
-                    MathHelper.floor_double(this.posY),
-                    MathHelper.floor_double(this.posZ));
-
-                if (block.getMaterial() == Material.lava) {
+                if (this.isInsideOfMaterial(Material.lava)) {
                     if (floatOnLava) {
-                        this.motionY = 0.05D;
+                        this.motionY = Math.max(this.motionY, 0.05D);
                         this.motionX *= 0.5D;
                         this.motionZ *= 0.5D;
                     } else if (!immuneToLava && !immortal) {
-                        this.motionY = 0.2D;
+                        this.motionY = 0.1D;
                         this.playSound("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+                        this.setFire(3);
+                    }
+                    this.fallDistance = 0.0F;
+                    if (this.motionY < -0.02D) {
+                        this.motionY = -0.02D;
                     }
                 }
 
