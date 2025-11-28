@@ -14,7 +14,7 @@ public final class LibMisc {
     public static final String DEPENDENCIES = "required-after:gtnhlib@[0.8.15,);"
         + "required-after:structurelib@[1.4.23,);"
         + "required-after:modularui2@[2.3.18-1.7.10,);"
-        + "after:Baubles|Expanded@[2.2.2-1.7.10,);"
+        + "after:Baubles|Expanded;"
         + "after:Baubles;"
         + "after:NotEnoughItems;"
         + "after:Waila;"
