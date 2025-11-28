@@ -40,9 +40,7 @@ public class JsonModelISBRH extends ModelISBRH implements IItemRenderer {
 
     public final Random RAND = new Random();
 
-    public JsonModelISBRH() {
-        ModelRegistry.registerModid(LibMisc.MOD_ID);
-    }
+    public JsonModelISBRH() {}
 
     @Override
     public int getRenderId() {
