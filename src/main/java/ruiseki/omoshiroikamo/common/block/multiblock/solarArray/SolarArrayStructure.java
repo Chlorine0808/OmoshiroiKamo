@@ -196,12 +196,16 @@ public class SolarArrayStructure {
 
         builder1.addShape(STRUCTURE_TIER_1, transpose(SHAPE_TIER_1))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(
@@ -217,12 +221,16 @@ public class SolarArrayStructure {
 
         builder2.addShape(STRUCTURE_TIER_2, transpose(SHAPE_TIER_2))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 1))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(
@@ -238,12 +246,16 @@ public class SolarArrayStructure {
 
         builder3.addShape(STRUCTURE_TIER_3, transpose(SHAPE_TIER_3))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 2))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(
@@ -259,12 +271,16 @@ public class SolarArrayStructure {
 
         builder4.addShape(STRUCTURE_TIER_4, transpose(SHAPE_TIER_4))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 3))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(
@@ -280,12 +296,16 @@ public class SolarArrayStructure {
 
         builder5.addShape(STRUCTURE_TIER_5, transpose(SHAPE_TIER_5))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 4))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(
@@ -299,14 +319,18 @@ public class SolarArrayStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 4),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 4)));
 
-        builder5.addShape(STRUCTURE_TIER_6, transpose(SHAPE_TIER_6))
+        builder6.addShape(STRUCTURE_TIER_6, transpose(SHAPE_TIER_6))
             .addElement('Q', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 5))
-            .addElement('G', ofBlock(ModBlocks.SOLAR_ARRAY.get(), 0))
-            // .addElement(
-            // 'G',
-            // ofChain(
-            // ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-            // ofBlockAnyMeta(ModBlocks.SOLAR_CELL.get())))
+            .addElement(
+                'G',
+                ofChain(
+                    ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
             .addElement(
                 'A',
                 ofChain(

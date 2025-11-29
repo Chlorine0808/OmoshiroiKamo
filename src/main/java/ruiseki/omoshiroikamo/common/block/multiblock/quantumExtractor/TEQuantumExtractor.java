@@ -106,15 +106,12 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         }
 
         BlockPos pos = new BlockPos(x, y, z, worldObj);
-        if (modifiers.contains(pos)) {
-            return false;
-        }
-
-        if (block == ModBlocks.COLORED_LENS.get() || block == ModBlocks.LENS.get()) {
+        if ((block == ModBlocks.COLORED_LENS.get() || block == ModBlocks.LENS.get()) && lens != pos) {
             lens = new BlockPos(x, y, z, worldObj);
             return true;
         }
-        if (isModifierBlock(block)) {
+
+        if (isModifierBlock(block) && !modifiers.contains(pos)) {
             modifiers.add(pos);
             return true;
         }
