@@ -22,7 +22,6 @@ import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.BlockPos;
-import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 import ruiseki.omoshiroikamo.common.util.energy.EnergyTransfer;
 
@@ -198,7 +197,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         }
 
         BlockPos pos = new BlockPos(x, y, z, getWorldObj());
-        if (block == ModBlocks.SOLAR_CELL.get()&& !cellTiers.containsKey(pos)) {
+        if (block == ModBlocks.SOLAR_CELL.get() && !cellTiers.containsKey(pos)) {
             cellTiers.put(pos, meta);
             return true;
         }

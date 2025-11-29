@@ -200,12 +200,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(
@@ -225,12 +225,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(
@@ -250,12 +250,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(
@@ -275,12 +275,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(
@@ -300,12 +300,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(
@@ -325,12 +325,12 @@ public class SolarArrayStructure {
                 'G',
                 ofChain(
                     ofBlockAdderWithPos(TESolarArray::addToMachine, ModBlocks.SOLAR_CELL.get(), 0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),0),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),1),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),2),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),3),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),4),
-                    ofBlock(ModBlocks.SOLAR_CELL.get(),5)))
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 0),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 1),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 2),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 3),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 4),
+                    ofBlock(ModBlocks.SOLAR_CELL.get(), 5)))
             .addElement(
                 'A',
                 ofChain(

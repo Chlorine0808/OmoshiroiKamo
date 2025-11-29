@@ -101,11 +101,10 @@ public class BlockPos extends com.gtnewhorizon.gtnhlib.blockpos.BlockPos impleme
         if (!(o instanceof BlockPos)) return false;
         final BlockPos other = (BlockPos) o;
         if (!other.canEqual(this)) return false;
-        return getX() == other.getX()
-            && getY() == other.getY()
+        return getX() == other.getX() && getY() == other.getY()
             && getZ() == other.getZ()
             && ((getWorld() == null && other.getWorld() == null)
-            || (getWorld() != null && getWorld().equals(other.getWorld())));
+                || (getWorld() != null && getWorld().equals(other.getWorld())));
     }
 
     protected boolean canEqual(final Object other) {
