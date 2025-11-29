@@ -1,7 +1,7 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore;
 
-import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorStructure.STRUCTURE_DEFINITION_TIER_4;
-import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorStructure.STRUCTURE_TIER_4;
+import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorStructure.STRUCTURE_DEFINITION_TIER_5;
+import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorStructure.STRUCTURE_TIER_5;
 import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorStructure.TIER_OFFSET;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -18,8 +18,8 @@ public class TEQuantumOreExtractorT5 extends TEQuantumExtractor {
     public TEQuantumOreExtractorT5() {}
 
     @Override
-    protected IStructureDefinition<TEQuantumOreExtractorT4> getStructureDefinition() {
-        return STRUCTURE_DEFINITION_TIER_4;
+    protected IStructureDefinition<TEQuantumOreExtractorT5> getStructureDefinition() {
+        return STRUCTURE_DEFINITION_TIER_5;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class TEQuantumOreExtractorT5 extends TEQuantumExtractor {
 
     @Override
     public String getStructurePieceName() {
-        return STRUCTURE_TIER_4;
+        return STRUCTURE_TIER_5;
     }
 
     @Override
     public int getTier() {
-        return 4;
+        return 5;
     }
 
     @Override

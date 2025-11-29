@@ -58,6 +58,8 @@ public class BlockQuantumOreExtractor extends AbstractMBBlock<TEQuantumExtractor
         list.add(new ItemStack(this, 1, 1));
         list.add(new ItemStack(this, 1, 2));
         list.add(new ItemStack(this, 1, 3));
+        list.add(new ItemStack(this, 1, 4));
+        list.add(new ItemStack(this, 1, 5));
     }
 
     @Override
