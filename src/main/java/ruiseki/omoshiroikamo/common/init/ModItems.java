@@ -57,6 +57,12 @@ public enum ModItems {
     FILTER_UPGRADE(useBackpack, new ItemFilterUpgrade()),
     ADVANCED_FILTER_UPGRADE(useBackpack, new ItemAdvancedFilterUpgrade()),
 
+    ASSEMBLER(useEnvironmentalTech, new ItemAssembler()),
+    STABILIZED_ENDER_PEAR(useEnvironmentalTech, new ItemOK().setName(ModObject.itemStabilizedEnderPear)
+        .setTextureName("ender_stabilized")),
+    PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
+        .setTextureName("photovoltaic_cell")),
+
     ANALYZER(useChicken || useCow, new ItemAnalyzer()),
     CHICKEN_CATCHER(useChicken, new ItemChickenCatcher()),
     CHICKEN_SPAWN_EGG(useChicken, new ItemChickenSpawnEgg()),
@@ -64,16 +70,9 @@ public enum ModItems {
     COLORED_EGG(useChicken, new ItemColoredEgg()),
     LIQUID_EGG(useChicken, new ItemLiquidEgg()),
     SOLID_XP(useChicken, new ItemSolidXp()),
-
     COW_HALTER(useCow, new ItemCowHalter()),
     COW_SPAWN_EGG(useCow, new ItemCowSpawnEgg()),
-    SYRINGE(useCow, new ItemSyringe()),
-
-    ASSEMBLER(useEnvironmentalTech, new ItemAssembler()),
-    STABILIZED_ENDER_PEAR(useEnvironmentalTech, new ItemOK().setName(ModObject.itemStabilizedEnderPear)
-        .setTextureName("ender_stabilized")),
-    PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
-        .setTextureName("photovoltaic_cell")),;
+    SYRINGE(useCow, new ItemSyringe()),;
 
     public static final ModItems[] VALUES = values();
 

@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import ruiseki.omoshiroikamo.common.OKCreativeTab;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
@@ -49,6 +50,9 @@ public class BlockOK extends Block {
         setBlockName(name);
         setStepSound(Block.soundTypeMetal);
         setHarvestLevel("pickaxe", 0);
+        setCreativeTab(OKCreativeTab.MULTIBLOCK);
+        setCreativeTab(OKCreativeTab.BACKPACK);
+        setCreativeTab(OKCreativeTab.CHICKEN_COW);
     }
 
     public void init() {

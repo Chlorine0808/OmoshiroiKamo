@@ -48,6 +48,32 @@ import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 public enum ModBlocks {
 
+    BACKPACK_BASE(useBackpack,
+        BlockBackpack.create(
+            ModObject.backpackLeather.unlocalisedName,
+            BackpackConfig.leatherBackpackSlots,
+            BackpackConfig.leatherUpgradeSlots)),
+    BACKPACK_IRON(useBackpack,
+        BlockBackpack.create(
+            ModObject.blockBackpackIron.unlocalisedName,
+            BackpackConfig.ironBackpackSlots,
+            BackpackConfig.ironUpgradeSlots)),
+    BACKPACK_GOLD(useBackpack,
+        BlockBackpack.create(
+            ModObject.blockBackpackGold.unlocalisedName,
+            BackpackConfig.goldBackpackSlots,
+            BackpackConfig.goldUpgradeSlots)),
+    BACKPACK_DIAMOND(useBackpack,
+        BlockBackpack.create(
+            ModObject.blockBackpackDiamond.unlocalisedName,
+            BackpackConfig.diamondBackpackSlots,
+            BackpackConfig.diamondUpgradeSlots)),
+    BACKPACK_OBSIDIAN(useBackpack,
+        BlockBackpack.create(
+            ModObject.blockBackpackObsidian.unlocalisedName,
+            BackpackConfig.obsidianBackpackSlots,
+            BackpackConfig.obsidianUpgradeSlots)),
+
     BLOCK_MICA(useEnvironmentalTech,
         new BlockOK(ModObject.blockMica.unlocalisedName, Material.rock).setTextureName("mica")),
     BLOCK_HARDENED_STONE(useEnvironmentalTech,
@@ -83,32 +109,6 @@ public enum ModBlocks {
     MODIFIER_JUMP_BOOST(useEnvironmentalTech, BlockModifierJumpBoost.create()),
     MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
     MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
-
-    BACKPACK_BASE(useBackpack,
-        BlockBackpack.create(
-            ModObject.backpackLeather.unlocalisedName,
-            BackpackConfig.leatherBackpackSlots,
-            BackpackConfig.leatherUpgradeSlots)),
-    BACKPACK_IRON(useBackpack,
-        BlockBackpack.create(
-            ModObject.blockBackpackIron.unlocalisedName,
-            BackpackConfig.ironBackpackSlots,
-            BackpackConfig.ironUpgradeSlots)),
-    BACKPACK_GOLD(useBackpack,
-        BlockBackpack.create(
-            ModObject.blockBackpackGold.unlocalisedName,
-            BackpackConfig.goldBackpackSlots,
-            BackpackConfig.goldUpgradeSlots)),
-    BACKPACK_DIAMOND(useBackpack,
-        BlockBackpack.create(
-            ModObject.blockBackpackDiamond.unlocalisedName,
-            BackpackConfig.diamondBackpackSlots,
-            BackpackConfig.diamondUpgradeSlots)),
-    BACKPACK_OBSIDIAN(useBackpack,
-        BlockBackpack.create(
-            ModObject.blockBackpackObsidian.unlocalisedName,
-            BackpackConfig.obsidianBackpackSlots,
-            BackpackConfig.obsidianUpgradeSlots)),
 
     STALL(useCow, BlockStall.create()),
     ROOST(useChicken, BlockRoost.create()),
