@@ -41,6 +41,12 @@ public class NEICompat {
             sendCatalyst(
                 ModObject.blockQuantumOreExtractor.getRegistryName(),
                 ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 3));
+            sendCatalyst(
+                ModObject.blockQuantumOreExtractor.getRegistryName(),
+                ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 4));
+            sendCatalyst(
+                ModObject.blockQuantumOreExtractor.getRegistryName(),
+                ModBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, 5));
 
             sendHandler(ModObject.blockQuantumResExtractor.getRegistryName(), 48, 8);
             sendCatalyst(
@@ -55,6 +61,12 @@ public class NEICompat {
             sendCatalyst(
                 ModObject.blockQuantumResExtractor.getRegistryName(),
                 ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 3));
+            sendCatalyst(
+                ModObject.blockQuantumResExtractor.getRegistryName(),
+                ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 4));
+            sendCatalyst(
+                ModObject.blockQuantumResExtractor.getRegistryName(),
+                ModBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, 5));
         }
 
         if (BackportConfigs.useChicken) {

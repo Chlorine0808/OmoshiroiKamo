@@ -21,7 +21,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import lombok.Getter;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.BackpackItemStackHandler;
-import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.UpgradeItemStackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemEverlastingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemInceptionUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;

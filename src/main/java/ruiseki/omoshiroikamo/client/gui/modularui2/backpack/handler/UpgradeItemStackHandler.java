@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.client.gui.modularui2.handler;
+package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler;
 
 import java.util.ArrayList;
 import java.util.List;

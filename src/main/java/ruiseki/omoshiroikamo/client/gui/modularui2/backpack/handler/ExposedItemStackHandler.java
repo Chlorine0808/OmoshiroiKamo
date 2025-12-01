@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import ruiseki.omoshiroikamo.client.gui.modularui2.handler.UpgradeItemStackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;

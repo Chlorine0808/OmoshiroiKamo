@@ -16,6 +16,10 @@ import ruiseki.omoshiroikamo.common.block.chicken.BlockBreeder;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoost;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoostCollector;
 import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
+import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockAlabasterStructure;
+import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockBasaltStructure;
+import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockCrystal;
+import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockHardenedStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockMachineBase;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockStructureFrame;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.BlockModifierAccuracy;
@@ -45,39 +49,6 @@ import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 public enum ModBlocks {
 
-    BLOCK_MICA(useEnvironmentalTech,
-        new BlockOK(ModObject.blockMica.unlocalisedName, Material.rock).setTextureName("mica")),
-    BLOCK_HARDENED_STONE(useEnvironmentalTech,
-        new BlockOK(ModObject.blockHardenedStone.unlocalisedName, Material.rock).setTextureName("hardened_stone")),
-    BLOCK_ALABASTER(useEnvironmentalTech,
-        new BlockOK(ModObject.blockAlabaster.unlocalisedName, Material.rock).setTextureName("alabaster")),
-    BLOCK_BASALT(useEnvironmentalTech,
-        new BlockOK(ModObject.blockBasalt.unlocalisedName, Material.rock).setTextureName("basalt")),
-    QUANTUM_ORE_EXTRACTOR(useEnvironmentalTech, BlockQuantumOreExtractor.create()),
-    QUANTUM_RES_EXTRACTOR(useEnvironmentalTech, BlockQuantumResExtractor.create()),
-    QUANTUM_BEACON(useEnvironmentalTech, BlockQuantumBeacon.create()),
-    LASER_CORE(useEnvironmentalTech, BlockLaserCore.create()),
-    COLORED_LENS(useEnvironmentalTech, BlockColoredLens.create()),
-    LENS(useEnvironmentalTech, BlockLens.create()),
-    SOLAR_ARRAY(useEnvironmentalTech, BlockSolarArray.create()),
-    SOLAR_CELL(useEnvironmentalTech, BlockSolarCell.create()),
-    STRUCTURE_FRAME(useEnvironmentalTech, BlockStructureFrame.create()),
-    MACHINE_BASE(useEnvironmentalTech, BlockMachineBase.create()),
-    MODIFIER_PIEZO(useEnvironmentalTech, BlockModifierPiezo.create()),
-    MODIFIER_SPEED(useEnvironmentalTech, BlockModifierSpeed.create()),
-    MODIFIER_ACCURACY(useEnvironmentalTech, BlockModifierAccuracy.create()),
-    MODIFIER_FLIGHT(useEnvironmentalTech, BlockModifierFlight.create()),
-    MODIFIER_NIGHT_VISION(useEnvironmentalTech, BlockModifierNightVision.create()),
-    MODIFIER_HASTE(useEnvironmentalTech, BlockModifierHaste.create()),
-    MODIFIER_STRENGTH(useEnvironmentalTech, BlockModifierStrength.create()),
-    MODIFIER_WATER_BREATHING(useEnvironmentalTech, BlockModifierWaterBreathing.create()),
-    MODIFIER_REGENERATION(useEnvironmentalTech, BlockModifierRegeneration.create()),
-    MODIFIER_SATURATION(useEnvironmentalTech, BlockModifierSaturation.create()),
-    MODIFIER_RESISTANCE(useEnvironmentalTech, BlockModifierResistance.create()),
-    MODIFIER_JUMP_BOOST(useEnvironmentalTech, BlockModifierJumpBoost.create()),
-    MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
-    MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
-
     BACKPACK_BASE(useBackpack,
         BlockBackpack.create(
             ModObject.backpackLeather.unlocalisedName,
@@ -103,6 +74,43 @@ public enum ModBlocks {
             ModObject.blockBackpackObsidian.unlocalisedName,
             BackpackConfig.obsidianBackpackSlots,
             BackpackConfig.obsidianUpgradeSlots)),
+
+    BLOCK_MICA(useEnvironmentalTech,
+        new BlockOK(ModObject.blockMica.unlocalisedName, Material.rock).setTextureName("mica")),
+    BLOCK_HARDENED_STONE(useEnvironmentalTech,
+        new BlockOK(ModObject.blockHardenedStone.unlocalisedName, Material.rock).setTextureName("hardened_stone")),
+    BLOCK_ALABASTER(useEnvironmentalTech,
+        new BlockOK(ModObject.blockAlabaster.unlocalisedName, Material.rock).setTextureName("alabaster")),
+    BLOCK_BASALT(useEnvironmentalTech,
+        new BlockOK(ModObject.blockBasalt.unlocalisedName, Material.rock).setTextureName("basalt")),
+    QUANTUM_ORE_EXTRACTOR(useEnvironmentalTech, BlockQuantumOreExtractor.create()),
+    QUANTUM_RES_EXTRACTOR(useEnvironmentalTech, BlockQuantumResExtractor.create()),
+    QUANTUM_BEACON(useEnvironmentalTech, BlockQuantumBeacon.create()),
+    LASER_CORE(useEnvironmentalTech, BlockLaserCore.create()),
+    COLORED_LENS(useEnvironmentalTech, BlockColoredLens.create()),
+    LENS(useEnvironmentalTech, BlockLens.create()),
+    SOLAR_CELL(useEnvironmentalTech, BlockSolarCell.create()),
+    SOLAR_ARRAY(useEnvironmentalTech, BlockSolarArray.create()),
+    STRUCTURE_FRAME(useEnvironmentalTech, BlockStructureFrame.create()),
+    BASALT_STRUCTURE(useEnvironmentalTech, BlockBasaltStructure.create()),
+    ALABASTER_STRUCTURE(useEnvironmentalTech, BlockAlabasterStructure.create()),
+    HARDENED_STRUCTURE(useEnvironmentalTech, BlockHardenedStructure.create()),
+    MACHINE_BASE(useEnvironmentalTech, BlockMachineBase.create()),
+    MODIFIER_PIEZO(useEnvironmentalTech, BlockModifierPiezo.create()),
+    MODIFIER_SPEED(useEnvironmentalTech, BlockModifierSpeed.create()),
+    MODIFIER_ACCURACY(useEnvironmentalTech, BlockModifierAccuracy.create()),
+    MODIFIER_FLIGHT(useEnvironmentalTech, BlockModifierFlight.create()),
+    MODIFIER_NIGHT_VISION(useEnvironmentalTech, BlockModifierNightVision.create()),
+    MODIFIER_HASTE(useEnvironmentalTech, BlockModifierHaste.create()),
+    MODIFIER_STRENGTH(useEnvironmentalTech, BlockModifierStrength.create()),
+    MODIFIER_WATER_BREATHING(useEnvironmentalTech, BlockModifierWaterBreathing.create()),
+    MODIFIER_REGENERATION(useEnvironmentalTech, BlockModifierRegeneration.create()),
+    MODIFIER_SATURATION(useEnvironmentalTech, BlockModifierSaturation.create()),
+    MODIFIER_RESISTANCE(useEnvironmentalTech, BlockModifierResistance.create()),
+    MODIFIER_JUMP_BOOST(useEnvironmentalTech, BlockModifierJumpBoost.create()),
+    MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
+    MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
+    BLOCK_CRYSTAL(useEnvironmentalTech, BlockCrystal.create()),
 
     STALL(useCow, BlockStall.create()),
     ROOST(useChicken, BlockRoost.create()),

@@ -5,11 +5,9 @@ import static ruiseki.omoshiroikamo.api.enums.EnumDye.DYE_ORE_NAMES;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
@@ -19,156 +17,6 @@ public class ItemRecipes {
 
     public static void init() {
         if (BackportConfigs.useBackpack) {
-
-            // Starter Backpack
-            GameRegistry.addRecipe(
-                new NBTShapedOreRecipe(
-                    ModItems.BACKPACK.newItemStack(1, 0),
-                    "SLS",
-                    "SCS",
-                    "LLL",
-                    'S',
-                    new ItemStack(Items.string, 1, 1),
-                    'L',
-                    "itemLeather",
-                    'C',
-                    new ItemStack(Blocks.chest, 1, 1)).withInt("BackpackColor", EnumDye.BROWN.getColor()));
-
-            if (OreDictionary.doesOreNameExist("ingotCopper")) {
-                // Copper Backpack
-                GameRegistry.addRecipe(
-                    new NBTShapedOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 1),
-                        "CCC",
-                        "CBC",
-                        "CCC",
-                        'C',
-                        "ingotCopper",
-                        'B',
-                        ModItems.BACKPACK.newItemStack(1, 0)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 0))
-                            .allowAllTags());
-
-                // Iron Backpack
-                GameRegistry.addRecipe(
-                    new NBTShapedOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 2),
-                        "CCC",
-                        "CBC",
-                        "CCC",
-                        'C',
-                        "ingotIron",
-                        'B',
-                        ModItems.BACKPACK.newItemStack(1, 1)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 1))
-                            .allowAllTags());
-            } else {
-
-                // Iron Backpack
-                GameRegistry.addRecipe(
-                    new NBTShapedOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 2),
-                        "CCC",
-                        "CBC",
-                        "CCC",
-                        'C',
-                        "ingotIron",
-                        'B',
-                        ModItems.BACKPACK.newItemStack(1, 0)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 0))
-                            .allowAllTags());
-            }
-
-            // Gold Backpack
-            GameRegistry.addRecipe(
-                new NBTShapedOreRecipe(
-                    ModItems.BACKPACK.newItemStack(1, 3),
-                    "CCC",
-                    "CBC",
-                    "CCC",
-                    'C',
-                    "ingotGold",
-                    'B',
-                    ModItems.BACKPACK.newItemStack(1, 2)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 2))
-                        .allowAllTags());
-
-            // Diamond Backpack
-            GameRegistry.addRecipe(
-                new NBTShapedOreRecipe(
-                    ModItems.BACKPACK.newItemStack(1, 4),
-                    "CCC",
-                    "CBC",
-                    "CCC",
-                    'C',
-                    "gemDiamond",
-                    'B',
-                    ModItems.BACKPACK.newItemStack(1, 3)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 3))
-                        .allowAllTags());
-
-            if (!LibMods.EtFuturum.isLoaded()) {
-                GameRegistry.addRecipe(
-                    new NBTShapedOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 5),
-                        "CSC",
-                        "SBS",
-                        "CSC",
-                        'S',
-                        "itemNetherStar",
-                        'C',
-                        "blockObsidian",
-                        'B',
-                        ModItems.BACKPACK.newItemStack(1, 4)).allowNBTFrom(ModItems.BACKPACK.newItemStack(1, 4))
-                            .allowAllTags());
-            }
-
-            for (int i = 0; i < DYE_ORE_NAMES.length; i++) {
-                String dyeOreName = DYE_ORE_NAMES[i];
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 0),
-                        ModItems.BACKPACK.newItemStack(1, 0),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 1),
-                        ModItems.BACKPACK.newItemStack(1, 1),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 2),
-                        ModItems.BACKPACK.newItemStack(1, 2),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 3),
-                        ModItems.BACKPACK.newItemStack(1, 3),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 4),
-                        ModItems.BACKPACK.newItemStack(1, 4),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-                GameRegistry.addRecipe(
-                    new NBTShapelessOreRecipe(
-                        ModItems.BACKPACK.newItemStack(1, 5),
-                        ModItems.BACKPACK.newItemStack(1, 5),
-                        dyeOreName).withInt(
-                            "BackpackColor",
-                            EnumDye.fromIndex(i)
-                                .getColor()));
-            }
 
             // Upgrade Base
             GameRegistry.addRecipe(
@@ -481,7 +329,7 @@ public class ItemRecipes {
                     'O',
                     "blockObsidian",
                     'B',
-                    ModBlocks.STRUCTURE_FRAME.newItemStack(1, 1)));
+                    ModBlocks.BASALT_STRUCTURE.newItemStack(1, 1)));
 
             // Assembler
             GameRegistry.addRecipe(
@@ -493,7 +341,7 @@ public class ItemRecipes {
                     'O',
                     "blockObsidian",
                     'B',
-                    ModBlocks.STRUCTURE_FRAME.newItemStack(1, 5)));
+                    ModBlocks.ALABASTER_STRUCTURE.newItemStack(1, 1)));
 
             // Assembler
             GameRegistry.addRecipe(
@@ -505,7 +353,7 @@ public class ItemRecipes {
                     'O',
                     "blockObsidian",
                     'B',
-                    ModBlocks.STRUCTURE_FRAME.newItemStack(1, 9)));
+                    ModBlocks.HARDENED_STRUCTURE.newItemStack(1, 1)));
         }
         if (BackportConfigs.useChicken) {
 
@@ -541,6 +389,19 @@ public class ItemRecipes {
                     Items.feather));
 
             GameRegistry.addSmelting(ModItems.CHICKEN.get(), new ItemStack(Items.cooked_chicken), 0.35f);
+        }
+
+        if (BackportConfigs.useCow) {
+            GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                    ModItems.COW_HALTER.get(),
+                    "  L",
+                    " S ",
+                    "S  ",
+                    'L',
+                    Items.leather,
+                    'S',
+                    Items.stick));
         }
 
     }

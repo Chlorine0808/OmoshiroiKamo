@@ -6,6 +6,7 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public enum ModObject {
 
+    blockBlockCrystal,
     blockQuantumOreExtractor,
     blockQuantumResExtractor,
     blockQuantumBeacon,
@@ -15,6 +16,9 @@ public enum ModObject {
     blockSolarArray,
     blockSolarCell,
     blockStructureFrame,
+    blockBasaltStructure,
+    blockHardenedStructure,
+    blockAlabasterStructure,
     blockMachineBase,
     blockModifierNull,
     blockModifierAccuracy,
@@ -61,6 +65,7 @@ public enum ModObject {
     itemFilterUpgrade,
     itemAdvancedFilterUpgrade,
 
+    itemCrystal,
     itemStabilizedEnderPear,
     itemPhotovoltaicCell,
     itemAssembler,

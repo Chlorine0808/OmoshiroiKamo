@@ -21,7 +21,6 @@ import ruiseki.omoshiroikamo.client.render.block.cow.StallTESR;
 import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtractorTESR;
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
-import ruiseki.omoshiroikamo.client.render.item.backpack.BackpackRenderer;
 import ruiseki.omoshiroikamo.client.render.item.backpack.ItemBackpackRenderer;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
 import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
@@ -30,7 +29,6 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumE
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 
 @SuppressWarnings("unused")
@@ -61,8 +59,6 @@ public class ClientProxy extends CommonProxy {
         if (ItemConfigs.renderPufferFish) {
             MinecraftForgeClient.registerItemRenderer(Items.fish, new PufferFishRenderer());
         }
-
-        MinecraftForgeClient.registerItemRenderer(ModItems.BACKPACK.get(), new BackpackRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());

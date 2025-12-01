@@ -1,7 +1,9 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.solarArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +24,7 @@ import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
 import ruiseki.omoshiroikamo.common.util.energy.EnergyTransfer;
+import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 
 public abstract class TESolarArray extends AbstractMBModifierTE implements IEnergySource {
 
@@ -30,6 +33,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
 
     private ModifierHandler modifierHandler = new ModifierHandler();
     private List<BlockPos> modifiers = new ArrayList<>();
+    private Map<BlockPos, Integer> cellTiers = new HashMap<>();
 
     public TESolarArray(int energyGen) {
         this.energyStorage = new EnergyStorage(energyGen * getBaseDuration());
@@ -132,13 +136,14 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     private int getEnergyRegen() {
-        float fromSun = calculateLightRatio();
-        float isRaining = worldObj.isRaining() ? (2f / 3f) : 1f;
-        int formPiezo = worldObj.isRaining()
-            ? (int) (this.modifierHandler.getAttributeMultiplier("piezo") * ((float) getEnergyPerTick() / 64))
+        float light = calculateLightRatio();
+        float rainFactor = worldObj.isRaining() ? (2f / 3f) : 1f;
+        int cellTotal = calculateTotalEnergy();
+        int piezo = worldObj.isRaining()
+            ? (int) (this.modifierHandler.getAttributeMultiplier("piezo") * (cellTotal / 64f))
             : 0;
-        int gen = Math.round(getEnergyPerTick() * fromSun * isRaining) + formPiezo;
-        return Math.min(getEnergyPerTick(), gen);
+        int regen = Math.round(cellTotal * light * rainFactor) + piezo;
+        return Math.min(regen, getEnergyPerTick());
     }
 
     public static float calculateLightRatio(World world, int x, int y, int z) {
@@ -158,7 +163,6 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     private void transmitEnergy() {
-
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             EnergyTransfer transfer = new EnergyTransfer();
             TileEntity adjacent = this.getWorldObj()
@@ -166,6 +170,20 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
             transfer.push(this, side, adjacent);
             transfer.transfer();
         }
+    }
+
+    public int getCellEnergy(int cellTier) {
+        int base = EnvironmentalConfig.solarArrayConfig.cellGen;
+        float multiplier = EnvironmentalConfig.solarArrayConfig.cellTierMul;
+        return (int) Math.round(base * Math.pow(multiplier, cellTier));
+    }
+
+    public int calculateTotalEnergy() {
+        int total = 0;
+        for (int tier : cellTiers.values()) {
+            total += getCellEnergy(tier);
+        }
+        return total;
     }
 
     @Override
@@ -180,11 +198,12 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         }
 
         BlockPos pos = new BlockPos(x, y, z, getWorldObj());
-        if (modifiers.contains(pos)) {
-            return false;
+        if (block == ModBlocks.SOLAR_CELL.get() && !cellTiers.containsKey(pos)) {
+            cellTiers.put(pos, meta);
+            return true;
         }
 
-        if (block == ModBlocks.MODIFIER_PIEZO.get()) {
+        if (block == ModBlocks.MODIFIER_PIEZO.get() && !modifiers.contains(pos)) {
             modifiers.add(pos);
             return true;
         }
@@ -193,6 +212,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
 
     @Override
     protected void clearStructureParts() {
+        cellTiers.clear();
         modifiers.clear();
         modifierHandler = new ModifierHandler();
     }

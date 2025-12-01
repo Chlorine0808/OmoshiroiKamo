@@ -17,8 +17,10 @@ public class ItemOK extends Item {
     protected String name;
 
     public ItemOK() {
-        setCreativeTab(OKCreativeTab.INSTANCE);
         setHasSubtypes(true);
+        setCreativeTab(OKCreativeTab.MULTIBLOCK);
+        setCreativeTab(OKCreativeTab.BACKPACK);
+        setCreativeTab(OKCreativeTab.CHICKEN_COW);
     }
 
     public ItemOK(String name) {

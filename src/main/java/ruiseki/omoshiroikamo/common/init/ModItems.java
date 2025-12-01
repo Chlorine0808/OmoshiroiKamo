@@ -11,12 +11,12 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemAssembler;
+import ruiseki.omoshiroikamo.common.item.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedFilterUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedPickupUpgrade;
-import ruiseki.omoshiroikamo.common.item.backpack.ItemBackpack;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemBatteryUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemCraftingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemEverlastingUpgrade;
@@ -41,7 +41,6 @@ import ruiseki.omoshiroikamo.common.util.Logger;
 
 public enum ModItems {
 
-    BACKPACK(useBackpack, new ItemBackpack()),
     BASE_UPGRADE(useBackpack, new ItemUpgrade<>()),
     STACK_UPGRADE(useBackpack, new ItemStackUpgrade()),
     CRAFTING_UPGRADE(useBackpack, new ItemCraftingUpgrade()),
@@ -57,6 +56,13 @@ public enum ModItems {
     FILTER_UPGRADE(useBackpack, new ItemFilterUpgrade()),
     ADVANCED_FILTER_UPGRADE(useBackpack, new ItemAdvancedFilterUpgrade()),
 
+    CRYSTAL(useEnvironmentalTech, new ItemCrystal()),
+    ASSEMBLER(useEnvironmentalTech, new ItemAssembler()),
+    STABILIZED_ENDER_PEAR(useEnvironmentalTech, new ItemOK().setName(ModObject.itemStabilizedEnderPear)
+        .setTextureName("ender_stabilized")),
+    PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
+        .setTextureName("photovoltaic_cell")),
+
     ANALYZER(useChicken || useCow, new ItemAnalyzer()),
     CHICKEN_CATCHER(useChicken, new ItemChickenCatcher()),
     CHICKEN_SPAWN_EGG(useChicken, new ItemChickenSpawnEgg()),
@@ -64,16 +70,9 @@ public enum ModItems {
     COLORED_EGG(useChicken, new ItemColoredEgg()),
     LIQUID_EGG(useChicken, new ItemLiquidEgg()),
     SOLID_XP(useChicken, new ItemSolidXp()),
-
     COW_HALTER(useCow, new ItemCowHalter()),
     COW_SPAWN_EGG(useCow, new ItemCowSpawnEgg()),
-    SYRINGE(useCow, new ItemSyringe()),
-
-    ASSEMBLER(useEnvironmentalTech, new ItemAssembler()),
-    STABILIZED_ENDER_PEAR(useEnvironmentalTech, new ItemOK().setName(ModObject.itemStabilizedEnderPear)
-        .setTextureName("ender_stabilized")),
-    PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
-        .setTextureName("photovoltaic_cell")),;
+    SYRINGE(useCow, new ItemSyringe()),;
 
     public static final ModItems[] VALUES = values();
 

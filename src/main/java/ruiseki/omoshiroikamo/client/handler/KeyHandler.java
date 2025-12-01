@@ -16,7 +16,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
 import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
-import ruiseki.omoshiroikamo.common.item.backpack.ItemBackpack;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
@@ -57,8 +56,7 @@ public class KeyHandler {
             for (int armorIndex = 0; armorIndex < 4; armorIndex++) {
                 int slot = player.inventory.getSizeInventory() - 1 - armorIndex;
                 ItemStack stack = player.inventory.getStackInSlot(slot);
-                if (stack != null && (stack.getItem() instanceof ItemBackpack
-                    || stack.getItem() instanceof BlockBackpack.ItemBackpack)) {
+                if (stack != null && stack.getItem() instanceof BlockBackpack.ItemBackpack) {
 
                     GuiFactories.playerInventory()
                         .openFromPlayerInventoryClient(slot);
@@ -68,8 +66,7 @@ public class KeyHandler {
 
             if (LibMods.Baubles.isLoaded()) {
                 InventoryTypes.BAUBLES.visitAll(player, (type, index, stack) -> {
-                    if (stack != null && (stack.getItem() instanceof ItemBackpack
-                        || stack.getItem() instanceof BlockBackpack.ItemBackpack)) {
+                    if (stack != null && stack.getItem() instanceof BlockBackpack.ItemBackpack) {
                         GuiFactories.playerInventory()
                             .openFromBaublesClient(index);
                         return true;
