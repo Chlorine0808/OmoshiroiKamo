@@ -326,6 +326,13 @@ item.stabilizedEnderPear.name=Stabilized Ender Pearl
 item.photovoltaicCell.name=Photovoltaic Cell
 item.assembler.name=Assembler
 
+item.crystal.tier_1.name=Luminite Crystal
+item.crystal.tier_2.name=Solaris Crystal
+item.crystal.tier_3.name=Abyssal Crystal
+item.crystal.tier_4.name=Aurora Crystal
+item.crystal.tier_5.name=Eclipse Crystal
+item.crystal.tier_6.name=Nebula Crystal
+
 item.cowHalter.name=Cow Halter
 item.analyzer.name=Analyzer
 item.solidXp.name=Solid Experience
@@ -427,7 +434,14 @@ tile.solarCell.tier_2.name=Solaris Solar Cell
 tile.solarCell.tier_3.name=Abyssal Solar Cell
 tile.solarCell.tier_4.name=Aurora Solar Cell
 tile.solarCell.tier_5.name=Eclipse Solar Cell
-tile.solarCell.tier_6.name=NebulaSolar Cell
+tile.solarCell.tier_6.name=Nebula Solar Cell
+
+tile.blockCrystal.tier_1.name=Block of Luminite 
+tile.blockCrystal.tier_2.name=Block of Solaris
+tile.blockCrystal.tier_3.name=Block of Abyssal
+tile.blockCrystal.tier_4.name=Block of Aurora
+tile.blockCrystal.tier_5.name=Block of Eclipse
+tile.blockCrystal.tier_6.name=Block of Nebula
 
 tile.solarArray.tier_1.name=Solar Array Tier 1
 tile.solarArray.tier_2.name=Solar Array Tier 2

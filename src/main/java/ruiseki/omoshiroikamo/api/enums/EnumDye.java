@@ -94,6 +94,14 @@ public enum EnumDye {
         return (0xFF << 24) | (b << 16) | (g << 8) | r;
     }
 
+    public static int rgbToHex(int r, int g, int b) {
+        int a = 255; // alpha full
+        return ((a & 0xFF) << 24) | // alpha
+            ((r & 0xFF) << 16) | // red
+            ((g & 0xFF) << 8) | // green
+            (b & 0xFF); // blue
+    }
+
     public int dyeToAbgr() {
         int rgb = this.getColor();
         return rgbToAbgr(rgb);

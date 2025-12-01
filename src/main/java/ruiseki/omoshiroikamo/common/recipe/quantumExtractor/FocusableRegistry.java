@@ -2,11 +2,10 @@ package ruiseki.omoshiroikamo.common.recipe.quantumExtractor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.WeightedRandom;
 
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
@@ -63,21 +62,42 @@ public class FocusableRegistry implements IFocusableRegistry {
 
     @Override
     public List<WeightedStackBase> getFocusedList(EnumDye focusColor, float boostMultiplier) {
-        ArrayList<WeightedStackBase> weightedCopy = new ArrayList<WeightedStackBase>(this.oreStacks.size());
-        WeightedRandomUtil.copyWSList(weightedCopy, this.oreStacks);
+        List<WeightedStackBase> weightedCopy = getUnFocusedList();
 
         List<ItemStack> focusList = this.valuesOfFocus(focusColor);
+        if (focusList.isEmpty()) return weightedCopy;
 
-        int totalWeight = WeightedRandom.getTotalWeight(this.oreStacks);
-        int boost = this.oreStacks.isEmpty() ? 0 : totalWeight / Math.max(1, (this.oreStacks.size() / 2));
+        HashSet<ItemStack> focusSet = new HashSet<>(focusList);
 
-        for (ItemStack focusedItem : focusList) {
-            for (WeightedStackBase stack : weightedCopy) {
-                if (stack.isStackEqual(focusedItem)) {
-                    int weight = stack.getWeight();
-                    weight += (int) (boost * MathHelper.abs(boostMultiplier));
-                    stack.itemWeight = weight;
-                }
+        int totalFocusWeight = 0;
+        int totalUnfocusWeight = 0;
+
+        for (WeightedStackBase stack : weightedCopy) {
+            if (stack == null) continue;
+            if (focusSet.stream()
+                .anyMatch(stack::isStackEqual)) {
+                totalFocusWeight += stack.itemWeight;
+            } else {
+                totalUnfocusWeight += stack.itemWeight;
+            }
+        }
+
+        if (totalFocusWeight <= 0) return weightedCopy;
+
+        float groupBoost = Math.min(Math.abs(boostMultiplier), 2f);
+        int boostedFocusTotal = Math.min((int) Math.ceil(totalFocusWeight * (1 + groupBoost)), 100);
+        int remainingUnfocusTotal = 100 - boostedFocusTotal;
+
+        for (WeightedStackBase stack : weightedCopy) {
+            if (stack == null) continue;
+            boolean isFocus = focusSet.stream()
+                .anyMatch(f -> stack.isStackEqual(f));
+            if (isFocus) {
+                stack.itemWeight = Math
+                    .max(1, (int) Math.ceil(stack.itemWeight / (float) totalFocusWeight * boostedFocusTotal));
+            } else {
+                stack.itemWeight = Math
+                    .max(1, (int) Math.ceil(stack.itemWeight / (float) totalUnfocusWeight * remainingUnfocusTotal));
             }
         }
 
@@ -86,7 +106,22 @@ public class FocusableRegistry implements IFocusableRegistry {
 
     @Override
     public List<WeightedStackBase> getUnFocusedList() {
-        return this.oreStacks;
+        ArrayList<WeightedStackBase> weightedCopy = new ArrayList<>(this.oreStacks.size());
+        WeightedRandomUtil.copyWSList(weightedCopy, this.oreStacks);
+
+        int totalWeight = 0;
+        for (WeightedStackBase ws : weightedCopy) {
+            if (ws != null) totalWeight += ws.itemWeight;
+        }
+        if (totalWeight <= 0) return weightedCopy;
+
+        final float targetTotal = 100f;
+        for (WeightedStackBase ws : weightedCopy) {
+            if (ws == null) continue;
+            ws.itemWeight = Math.max(1, (int) Math.ceil(ws.itemWeight / (float) totalWeight * targetTotal));
+        }
+
+        return weightedCopy;
     }
 
     @Override

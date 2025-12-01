@@ -102,28 +102,32 @@ public class QuantumResExtractorRecipeHandler extends RecipeHandlerBase {
         boolean isLens = (item == lens || item == coloredLend);
 
         if (isLens) {
-            IFocusableRegistry[] registries = QuantumExtractorRecipes.oreRegistry;
+            IFocusableRegistry[] registries = QuantumExtractorRecipes.resRegistry;
             for (int tier = 0; tier < registries.length; tier++) {
                 IFocusableRegistry registry = registries[tier];
-                if (ingredient.getItem() == lens) {
-                    for (WeightedStackBase ws : registry.getUnFocusedList()) {
-                        ItemStack output = ws.getMainStack();
-                        if (output != null) {
-                            if (added.add(ws)) {
-                                arecipes.add(new CachedVoidResRecipe(ws, null, tier));
-                            }
-                        }
-                    }
-                } else {
-                    BlockColoredLens coloredLens = (BlockColoredLens) Block.getBlockFromItem(ingredient.getItem());
-                    EnumDye color = coloredLens.getFocusColor(ingredient.getItemDamage());
-                    List<WeightedStackBase> focusedList = registry.getFocusedList(color, 1.0f);
 
-                    for (WeightedStackBase ws : focusedList) {
-                        ItemStack output = ws.getMainStack();
-                        if (output != null && registry.getPrioritizedLens(output) == color) {
+                EnumDye dye = null;
+                Item itemType = ingredient.getItem();
+                int meta = ingredient.getItemDamage();
+
+                if (itemType == lens) {
+                    if (meta == 1) {
+                        dye = EnumDye.CRYSTAL;
+                    }
+                } else if (itemType == coloredLend) {
+                    BlockColoredLens coloredLens = (BlockColoredLens) Block.getBlockFromItem(itemType);
+                    dye = coloredLens.getFocusColor(meta);
+                }
+
+                List<WeightedStackBase> listToUse = (dye != null) ? registry.getFocusedList(dye, 1.0f)
+                    : registry.getUnFocusedList();
+
+                for (WeightedStackBase ws : listToUse) {
+                    ItemStack output = ws.getMainStack();
+                    if (output != null) {
+                        if (dye == null || registry.getPrioritizedLens(output) == dye) {
                             if (added.add(ws)) {
-                                arecipes.add(new CachedVoidResRecipe(ws, color, tier));
+                                arecipes.add(new CachedVoidResRecipe(ws, dye, tier));
                             }
                         }
                     }
@@ -145,7 +149,11 @@ public class QuantumResExtractorRecipeHandler extends RecipeHandlerBase {
                 this.input.add(new PositionedStack(ModBlocks.LENS.newItemStack(1, 0), 75, 16));
             } else {
                 int lens = color.ordinal();
-                this.input.add(new PositionedStack(ModBlocks.COLORED_LENS.newItemStack(1, lens), 75, 16));
+                if (lens == 16) {
+                    this.input.add(new PositionedStack(ModBlocks.LENS.newItemStack(1, 1), 75, 16));
+                } else {
+                    this.input.add(new PositionedStack(ModBlocks.COLORED_LENS.newItemStack(1, lens), 75, 16));
+                }
             }
             this.output = new PositionedStackAdv(recipe.getMainStack(), 125, 16)
                 .setChance((float) recipe.getWeight() / 100);

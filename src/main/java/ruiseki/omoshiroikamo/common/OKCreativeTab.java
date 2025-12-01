@@ -88,7 +88,9 @@ public abstract class OKCreativeTab extends CreativeTabs {
             addBlock(ModBlocks.MODIFIER_WATER_BREATHING.get());
             addBlock(ModBlocks.MODIFIER_SATURATION.get());
             addBlock(ModBlocks.MODIFIER_FIRE_RESISTANCE.get());
+            addBlock(ModBlocks.BLOCK_CRYSTAL.get());
 
+            addItem(ModItems.CRYSTAL.get());
             addItem(ModItems.ASSEMBLER.get());
             addItem(ModItems.STABILIZED_ENDER_PEAR.get());
             addItem(ModItems.PHOTOVOLTAIC_CELL.get());

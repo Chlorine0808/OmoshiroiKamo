@@ -18,6 +18,7 @@ import ruiseki.omoshiroikamo.common.block.chicken.BlockRoostCollector;
 import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockAlabasterStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockBasaltStructure;
+import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockCrystal;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockHardenedStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockMachineBase;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockStructureFrame;
@@ -109,6 +110,7 @@ public enum ModBlocks {
     MODIFIER_JUMP_BOOST(useEnvironmentalTech, BlockModifierJumpBoost.create()),
     MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
     MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
+    BLOCK_CRYSTAL(useEnvironmentalTech, BlockCrystal.create()),
 
     STALL(useCow, BlockStall.create()),
     ROOST(useChicken, BlockRoost.create()),
