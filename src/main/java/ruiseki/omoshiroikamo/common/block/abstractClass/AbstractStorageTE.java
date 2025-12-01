@@ -11,16 +11,16 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSink;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSource;
 
 import ruiseki.omoshiroikamo.api.fluid.SmartTank;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
 import ruiseki.omoshiroikamo.common.network.PacketFluidTanks;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
-import ruiseki.omoshiroikamo.common.util.item.capability.OKItemIO;
 
 public abstract class AbstractStorageTE extends AbstractTE implements ISidedInventory, CapabilityProvider {
 
@@ -100,6 +100,9 @@ public abstract class AbstractStorageTE extends AbstractTE implements ISidedInve
 
     @Override
     public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+        if (!slotDefinition.isInputSlot(slot)) {
+            return false;
+        }
         ItemStack existing = inv.getStackInSlot(slot);
         if (existing != null) {
             return ItemUtils.areStackMergable(existing, itemstack);
@@ -204,10 +207,17 @@ public abstract class AbstractStorageTE extends AbstractTE implements ISidedInve
 
     @Override
     public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == ItemSource.class || capability == ItemSink.class || capability == ItemIO.class) {
-            return capability.cast(new OKItemIO(this, side));
+        if (capability == ItemSink.class) {
+            ItemSink sink = new InventoryItemSink(this, side);
+            sink.setAllowedSinkSlots(slotDefinition.getItemInputSlots());
+            return capability.cast(sink);
         }
 
+        if (capability == ItemSource.class) {
+            ItemSource sink = new InventoryItemSource(this, side);
+            sink.setAllowedSourceSlots(slotDefinition.getItemOutputSlots());
+            return capability.cast(sink);
+        }
         return null;
     }
 }

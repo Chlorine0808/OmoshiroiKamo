@@ -17,6 +17,7 @@ public class CowConfig {
     public static int cowEntityId;
 
     @Config.DefaultInt(8)
+    @Config.RangeInt(min = 1)
     public static int spawnProbability;
 
     @Config.DefaultInt(4)

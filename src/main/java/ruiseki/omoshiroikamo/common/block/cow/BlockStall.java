@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -41,11 +40,6 @@ public class BlockStall extends AbstractBlock<TEStall> {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return super.getIcon(side, meta);
     }
 
     @Override

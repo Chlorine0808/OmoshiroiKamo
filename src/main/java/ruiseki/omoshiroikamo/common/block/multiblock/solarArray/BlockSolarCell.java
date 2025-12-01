@@ -5,12 +5,10 @@ import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -23,11 +21,8 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IMBBlock;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockSolarCell extends BlockOK implements IMBBlock {
-
-    IIcon solar;
 
     protected BlockSolarCell() {
         super(ModObject.blockSolarCell.unlocalisedName);
@@ -121,16 +116,6 @@ public class BlockSolarCell extends BlockOK implements IMBBlock {
     @Override
     public int damageDropped(int meta) {
         return meta;
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        solar = reg.registerIcon(LibResources.PREFIX_MOD + "solar");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return this.solar;
     }
 
     @Override

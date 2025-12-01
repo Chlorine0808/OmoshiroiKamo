@@ -151,6 +151,28 @@ public class SlotDefinition {
         return all;
     }
 
+    public int[] getItemInputSlots() {
+        int count = getItemInputs();
+        if (count == 0) return new int[0];
+
+        int[] arr = new int[count];
+        for (int i = 0; i < count; i++) {
+            arr[i] = minItemInputSlot + i;
+        }
+        return arr;
+    }
+
+    public int[] getItemOutputSlots() {
+        int count = getItemOutputs();
+        if (count == 0) return new int[0];
+
+        int[] arr = new int[count];
+        for (int i = 0; i < count; i++) {
+            arr[i] = minItemOutputSlot + i;
+        }
+        return arr;
+    }
+
     // ----------------- Fluid counts -----------------
     public int getFluidInputs() {
         return minFluidInputSlot < 0 ? 0 : maxFluidInputSlot - minFluidInputSlot + 1;

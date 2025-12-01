@@ -295,6 +295,20 @@ public class ItemRecipes {
         }
         if (BackportConfigs.useEnvironmentalTech) {
 
+            // Crystal T1
+            GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                    ModItems.CRYSTAL.newItemStack(1, 0),
+                    "GFG",
+                    "FDF",
+                    "GFG",
+                    'G',
+                    "dyeCyan",
+                    'F',
+                    Items.flint,
+                    'D',
+                    "gemDiamond"));
+
             // Photovoltaic Cell
             GameRegistry.addRecipe(
                 new ShapedOreRecipe(

@@ -17,6 +17,7 @@ public class ChickenConfig {
     public static int chickenEntityId;
 
     @Config.DefaultInt(10)
+    @Config.RangeInt(min = 1)
     public static int spawnProbability;
 
     @Config.DefaultInt(3)
