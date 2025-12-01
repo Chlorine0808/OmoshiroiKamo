@@ -24,6 +24,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.util.BlockPos;
+import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 
 public class TERoostCollector extends AbstractStorageTE {
 
@@ -60,13 +61,8 @@ public class TERoostCollector extends AbstractStorageTE {
             return;
         }
         ItemTransfer transfer = new ItemTransfer();
-        transfer.pull(this, ForgeDirection.UNKNOWN, teRoost);
+        transfer.pull(this, ForgeDirection.DOWN, teRoost);
         transfer.transfer();
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return true;
     }
 
     @Override
@@ -83,6 +79,20 @@ public class TERoostCollector extends AbstractStorageTE {
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
         float hitZ) {
         openGui(player);
+        return true;
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+        ItemStack existing = inv.getStackInSlot(slot);
+        if (existing != null) {
+            return ItemUtils.areStackMergable(existing, itemstack);
+        }
+        return isItemValidForSlot(slot, itemstack);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return true;
     }
 

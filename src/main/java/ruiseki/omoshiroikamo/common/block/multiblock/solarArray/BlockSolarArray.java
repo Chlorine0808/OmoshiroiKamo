@@ -5,14 +5,12 @@ import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -20,12 +18,9 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBBlock;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockSolarArray extends AbstractMBBlock<TESolarArray> implements IWailaBlockInfoProvider {
-
-    IIcon solar_tex;
 
     protected BlockSolarArray() {
         super(ModObject.blockSolarArray.unlocalisedName, TESolarArray.class);
@@ -55,16 +50,6 @@ public class BlockSolarArray extends AbstractMBBlock<TESolarArray> implements IW
         list.add(new ItemStack(this, 1, 3));
         list.add(new ItemStack(this, 1, 4));
         list.add(new ItemStack(this, 1, 5));
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        solar_tex = reg.registerIcon(LibResources.PREFIX_MOD + "solar_tex");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return this.solar_tex;
     }
 
     @Override

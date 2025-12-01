@@ -6,14 +6,12 @@ import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.MAIN_C
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -41,7 +39,6 @@ import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
 import ruiseki.omoshiroikamo.common.entity.EntityBackpack;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockColor {
 
@@ -49,7 +46,6 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
     private final int backpackSlots;
     @Getter
     private final int upgradeSlots;
-    IIcon cloth, border, leatherClips, copperClips, ironClips, goldClips, diamondClips, obsidianClips;
 
     protected BlockBackpack(String name, int backpackSlots, int upgradeSlots) {
         super(name, TEBackpack.class, Material.cloth);
@@ -76,18 +72,6 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
     @Override
     public boolean renderAsNormalBlock() {
         return false;
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        cloth = reg.registerIcon(LibResources.PREFIX_MOD + "backpack_cloth");
-        border = reg.registerIcon(LibResources.PREFIX_MOD + "backpack_border");
-        leatherClips = reg.registerIcon(LibResources.PREFIX_MOD + "leather_clips");
-        copperClips = reg.registerIcon(LibResources.PREFIX_MOD + "copper_clips");
-        ironClips = reg.registerIcon(LibResources.PREFIX_MOD + "iron_clips");
-        goldClips = reg.registerIcon(LibResources.PREFIX_MOD + "gold_clips");
-        diamondClips = reg.registerIcon(LibResources.PREFIX_MOD + "diamond_clips");
-        obsidianClips = reg.registerIcon(LibResources.PREFIX_MOD + "obsidian_clips");
     }
 
     @Override
