@@ -33,25 +33,13 @@ public class JsonModelISBRH extends ModelISBRH implements IItemRenderer {
 
     public JsonModelISBRH() {}
 
-    @Override
-    public void renderQuad(ModelQuadView quad, float x, float y, float z, Tessellator tessellator,
-        @Nullable IIcon overrideIcon) {
-        super.renderQuad(quad, x, y, z, tessellator, overrideIcon);
-    }
-
-    @Override
-    @SuppressWarnings("unused")
-    public BakedModel getModel(IBlockAccess world, Block block, int meta, int x, int y, int z) {
-        return super.getModel(world, block, meta, x, y, z);
-    }
-
-    public static void renderToEntity(ItemStack stack) {
+    public void renderToEntity(ItemStack stack) {
 
         Block block = Block.getBlockFromItem(stack.getItem());
         if (block == null) return;
 
         int meta = stack.getItemDamage();
-        BakedModel model = INSTANCE.getModel(null, block, meta, 0, 0, 0);
+        BakedModel model = getModel(null, block, meta, 0, 0, 0);
 
         Tessellator tesselator = TessellatorManager.get();
 
@@ -66,11 +54,11 @@ public class JsonModelISBRH extends ModelISBRH implements IItemRenderer {
 
         tesselator.startDrawingQuads();
 
-        int color = model.getColor(null, 0, 0, 0, block, meta, INSTANCE.RAND);
+        int color = model.getColor(null, 0, 0, 0, block, meta, RAND);
 
         for (ModelQuadFacing dir : DIRECTIONS) {
 
-            final var quads = model.getQuads(null, 0, 0, 0, block, meta, dir, INSTANCE.RAND, -1, null);
+            final var quads = model.getQuads(null, 0, 0, 0, block, meta, dir, RAND, -1, null);
             if (quads.isEmpty()) {
                 continue;
             }
@@ -87,7 +75,7 @@ public class JsonModelISBRH extends ModelISBRH implements IItemRenderer {
 
                 final float shade = diffuseLight(quad.getComputedFaceNormal());
                 tesselator.setColorOpaque_F(r * shade, g * shade, b * shade);
-                INSTANCE.renderQuad(quad, -0.5f, -0.5f, -0.5f, tesselator, null);
+                renderQuad(quad, -0.5f, -0.5f, -0.5f, tesselator, null);
             }
         }
 

@@ -83,8 +83,8 @@ public abstract class AbstractBlock<T extends AbstractTE> extends BlockOK implem
     }
 
     protected int getFacingForHeading(int heading) {
-        int[] map = { 3, 4, 2, 5 };
-        return map[heading & 3];
+        int[] map = { 2, 0, 3, 1 };
+        return map[heading];
     }
 
     @Override

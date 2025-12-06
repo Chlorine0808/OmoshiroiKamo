@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "omoshiroikamo:blocks/laserCore" }
+    "": { "model": "omoshiroikamo:block/laserCore" }
   }
 }

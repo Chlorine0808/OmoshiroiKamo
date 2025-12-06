@@ -224,7 +224,7 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
             GL11.glPushMatrix();
             GL11.glTranslatef(0f, 0.3f, 0.3f);
             ruiseki.omoshiroikamo.api.client.RenderUtils.rotateIfSneaking(event.entityPlayer);
-            JsonModelISBRH.renderToEntity(stack);
+            JsonModelISBRH.INSTANCE.renderToEntity(stack);
             GL11.glPopMatrix();
 
         }
@@ -238,7 +238,7 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
             GL11.glPushMatrix();
             GL11.glTranslatef(0f, 0.3f, 0.3f);
             ruiseki.omoshiroikamo.api.client.RenderUtils.rotateIfSneaking(event.entityPlayer);
-            JsonModelISBRH.renderToEntity(stack);
+            JsonModelISBRH.INSTANCE.renderToEntity(stack);
             GL11.glPopMatrix();
 
         }

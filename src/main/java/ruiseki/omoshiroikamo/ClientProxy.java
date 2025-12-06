@@ -23,14 +23,12 @@ import ruiseki.omoshiroikamo.client.render.block.cow.StallTESR;
 import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtractorTESR;
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
-import ruiseki.omoshiroikamo.client.render.item.backpack.ItemBackpackRenderer;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
 import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.cow.TEStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
-import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 
@@ -42,8 +40,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        ModelRegistry.registerModid(LibMisc.MOD_ID);
         super.preInit(event);
+        ModelRegistry.registerModid(LibMisc.MOD_ID);
     }
 
     @Override
@@ -72,12 +70,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-
-        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_BASE.getItem(), new ItemBackpackRenderer());
-        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_IRON.getItem(), new ItemBackpackRenderer());
-        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_GOLD.getItem(), new ItemBackpackRenderer());
-        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_DIAMOND.getItem(), new ItemBackpackRenderer());
-        MinecraftForgeClient.registerItemRenderer(ModBlocks.BACKPACK_OBSIDIAN.getItem(), new ItemBackpackRenderer());
     }
 
     public EntityPlayer getClientPlayer() {

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "omoshiroikamo:blocks/hardenedStructure"
+      "model": "omoshiroikamo:block/hardenedStructure"
     }
   }
 }
