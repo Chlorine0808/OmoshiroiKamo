@@ -3,7 +3,8 @@
 	"textures": {
 		"0": "minecraft:block/hardened_clay_stained_cyan",
 		"1": "minecraft:block/hay_block_top",
-		"2": "minecraft:block/iron_bars"
+		"2": "minecraft:block/iron_bars",
+    "particle": "minecraft:block/iron_bars"
 	},
 	"elements": [
 		{
