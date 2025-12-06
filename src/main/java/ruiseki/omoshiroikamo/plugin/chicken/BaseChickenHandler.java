@@ -3,11 +3,11 @@ package ruiseki.omoshiroikamo.plugin.chicken;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Loader;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;

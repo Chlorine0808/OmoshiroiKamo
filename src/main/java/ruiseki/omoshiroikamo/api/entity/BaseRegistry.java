@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.world.biome.BiomeGenBase;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A generic registry storing {@link BaseRegistryItem} objects by ID.

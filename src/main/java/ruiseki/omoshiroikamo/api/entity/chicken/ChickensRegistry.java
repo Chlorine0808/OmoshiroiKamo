@@ -2,13 +2,13 @@ package ruiseki.omoshiroikamo.api.entity.chicken;
 
 import static ruiseki.omoshiroikamo.plugin.chicken.BaseChickens.smartChicken;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 

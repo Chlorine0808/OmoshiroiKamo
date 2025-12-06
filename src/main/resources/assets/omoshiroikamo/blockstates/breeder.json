@@ -1,10 +1,10 @@
 {
   "variants": {
     "meta=0": {
-      "model": "omoshiroikamo:blocks/breederInactive"
+      "model": "omoshiroikamo:block/breederInactive"
     },
     "meta=1": {
-      "model": "omoshiroikamo:blocks/breeder"
+      "model": "omoshiroikamo:block/breeder"
     }
   }
 }

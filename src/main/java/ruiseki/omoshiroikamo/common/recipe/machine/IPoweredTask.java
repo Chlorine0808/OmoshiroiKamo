@@ -2,8 +2,6 @@ package ruiseki.omoshiroikamo.common.recipe.machine;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +20,6 @@ public interface IPoweredTask {
 
     void writeToNBT(NBTTagCompound nbtRoot);
 
-    @Nullable
     MachineRecipe getRecipe();
 
     List<ItemStack> getItemOutputs();

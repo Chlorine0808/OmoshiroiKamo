@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "omoshiroikamo:blocks/lens"
+      "model": "omoshiroikamo:block/lens"
     }
   }
 }

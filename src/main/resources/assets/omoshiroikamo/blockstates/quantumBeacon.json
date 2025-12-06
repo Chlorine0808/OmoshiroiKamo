@@ -1,5 +1,5 @@
 {
     "variants": {
-      "": { "model": "omoshiroikamo:blocks/quantumBeacon" }
+      "": { "model": "omoshiroikamo:block/quantumBeacon" }
     }
 }

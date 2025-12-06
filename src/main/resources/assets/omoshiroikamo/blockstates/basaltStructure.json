@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "omoshiroikamo:blocks/basaltStructure"
+      "model": "omoshiroikamo:block/basaltStructure"
     }
   }
 }
