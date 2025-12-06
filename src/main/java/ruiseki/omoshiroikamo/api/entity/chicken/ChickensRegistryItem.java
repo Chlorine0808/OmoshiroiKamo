@@ -1,10 +1,10 @@
 package ruiseki.omoshiroikamo.api.entity.chicken;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.entity.BaseRegistryItem;
 

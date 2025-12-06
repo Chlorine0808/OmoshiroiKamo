@@ -1,9 +1,9 @@
 package ruiseki.omoshiroikamo.api.entity;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a single registry entry used by chickens/cows/etc.

@@ -1,11 +1,11 @@
 package ruiseki.omoshiroikamo.api.entity.cow;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.entity.BaseRegistryItem;
 

@@ -3,13 +3,13 @@ package ruiseki.omoshiroikamo.common.recipe.machine;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.common.recipe.chance.ChanceFluidStack;
 import ruiseki.omoshiroikamo.common.recipe.chance.ChanceItemStack;

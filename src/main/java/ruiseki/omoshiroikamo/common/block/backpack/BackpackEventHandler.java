@@ -12,9 +12,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
+import org.joml.Vector3d;
+
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import codechicken.lib.vec.Vector3;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.container.BackPackContainer;
@@ -249,7 +250,7 @@ public class BackpackEventHandler {
                 if (pulled++ > 200) {
                     break;
                 }
-                Vector3 target = new Vector3(
+                Vector3d target = new Vector3d(
                     player.posX,
                     player.posY - (player.worldObj.isRemote ? 1.62 : 0) + 0.75,
                     player.posZ);
@@ -262,17 +263,21 @@ public class BackpackEventHandler {
         return false;
     }
 
-    private static void setEntityMotionFromVector(Entity entity, Vector3 target, float modifier) {
-        Vector3 current = Vector3.fromEntityCenter(entity);
-        Vector3 motion = target.copy()
-            .subtract(current);
+    private static void setEntityMotionFromVector(Entity entity, Vector3d target, float modifier) {
+        Vector3d current = fromEntityCenter(entity);
 
-        if (motion.mag() > 1) {
+        Vector3d motion = new Vector3d(target.x - current.x, target.y - current.y, target.z - current.z);
+
+        if (motion.length() > 1.0) {
             motion.normalize();
         }
 
         entity.motionX = motion.x * modifier;
         entity.motionY = motion.y * modifier;
         entity.motionZ = motion.z * modifier;
+    }
+
+    public static Vector3d fromEntityCenter(Entity e) {
+        return new Vector3d(e.posX, e.posY - e.yOffset + e.height / 2.0, e.posZ);
     }
 }
