@@ -9,6 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.factory.inventory.InventoryType;
+import com.cleanroommc.modularui.factory.inventory.InventoryTypes;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -30,7 +32,7 @@ public abstract class BackpackGuiHolder {
     }
 
     protected BackpackPanel createPanel(PanelSyncManager syncManager, UISettings settings, EntityPlayer player,
-        TileEntity tileEntity) {
+        TileEntity tileEntity, InventoryType type, Integer backpackSlotIndex) {
         return BackpackPanel.defaultPanel(
             syncManager,
             settings,
@@ -38,12 +40,16 @@ public abstract class BackpackGuiHolder {
             tileEntity,
             handler,
             14 + rowSize * SLOT_SIZE,
-            112 + colSize * SLOT_SIZE);
+            112 + colSize * SLOT_SIZE,
+            type == InventoryTypes.PLAYER ? backpackSlotIndex : null);
     }
 
     protected void addCommonWidgets(BackpackPanel panel, EntityPlayer player) {
+        panel.addSortingButtons();
+        panel.addTransferButtons();
         panel.addBackpackInventorySlots();
         panel.addUpgradeSlots();
+        panel.addSettingTab();
         panel.addUpgradeTabs();
         panel.addTexts(player);
     }
@@ -57,7 +63,7 @@ public abstract class BackpackGuiHolder {
         @Override
         public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
             TileEntity tileEntity = data.getTileEntity();
-            BackpackPanel panel = createPanel(syncManager, settings, data.getPlayer(), tileEntity);
+            BackpackPanel panel = createPanel(syncManager, settings, data.getPlayer(), tileEntity, null, null);
             addCommonWidgets(panel, data.getPlayer());
             return panel;
         }
@@ -72,8 +78,13 @@ public abstract class BackpackGuiHolder {
 
         @Override
         public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
-            BackpackPanel panel = createPanel(syncManager, settings, data.getPlayer(), null);
-
+            BackpackPanel panel = createPanel(
+                syncManager,
+                settings,
+                data.getPlayer(),
+                null,
+                data.getInventoryType(),
+                data.getSlotIndex());
             addCommonWidgets(panel, data.getPlayer());
             panel.modifyPlayerSlot(syncManager, data.getInventoryType(), data.getSlotIndex(), data.getPlayer());
 

@@ -49,6 +49,10 @@ public class BackpackHandler implements IItemHandlerModifiable {
     public static final String BACKPACK_SLOTS = "BackpackSlots";
     public static final String UPGRADE_SLOTS = "UpgradeSlots";
 
+    @Getter
+    @Setter
+    private SortType sortType;
+
     public static final String MEMORY_STACK_ITEMS_TAG = "MemoryItems";
     public static final String MEMORY_STACK_RESPECT_NBT_TAG = "MemoryRespectNBT";
     public static final String SORT_TYPE_TAG = "SortType";
@@ -91,6 +95,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
         this.upgradeSlots = upgradeSlots;
         this.mainColor = 0xFFCC613A;
         this.accentColor = 0xFF622E1A;
+        this.sortType = SortType.BY_NAME;
 
         this.backpackHandler = new BackpackItemStackHandler(backpackSlots, this) {
 
@@ -156,6 +161,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
         backpackHandler.setStackInSlot(slot, stack);
     }
 
+    // Setting
+
     public boolean isSlotMemorized(int slotIndex) {
         return !(backpackHandler.memorizedSlotStack.get(slotIndex) == null);
     }
@@ -187,6 +194,14 @@ public class BackpackHandler implements IItemHandlerModifiable {
         backpackHandler.memorizedSlotRespectNbtList.set(slotIndex, respect);
     }
 
+    public boolean isSlotLocked(int slotIndex) {
+        return backpackHandler.sortLockedSlots.get(slotIndex);
+    }
+
+    public void setSlotLocked(int slotIndex, boolean locked) {
+        backpackHandler.sortLockedSlots.set(slotIndex, locked);
+    }
+
     // ---------- UPGRADE ----------
     public int getTotalStackMultiplier() {
         List<ItemStack> stacks = upgradeHandler.getStacks();
@@ -208,14 +223,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public boolean canAddStackUpgrade(int newMultiplier) {
-        int currentMultiplier = getTotalStackMultiplier() * 64;
-
-        try {
-            Math.multiplyExact(currentMultiplier, newMultiplier);
-            return true;
-        } catch (ArithmeticException e) {
-            return false;
-        }
+        long result = (long) getTotalStackMultiplier() * 64L * newMultiplier;
+        return result == (int) result;
     }
 
     public boolean canRemoveStackUpgrade(int originalMultiplier) {
@@ -393,15 +402,29 @@ public class BackpackHandler implements IItemHandlerModifiable {
         tag.setInteger(UPGRADE_SLOTS, getUpgradeSlots());
         tag.setInteger(MAIN_COLOR, getMainColor());
         tag.setInteger(ACCENT_COLOR, getAccentColor());
+
         tag.setTag(BACKPACK_INV, backpackHandler.serializeNBT());
         tag.setTag(UPGRADE_INV, upgradeHandler.serializeNBT());
+
+        NBTTagCompound memoryTag = new NBTTagCompound();
+        BackpackItemStackHelper.saveAllSlotsExtended(memoryTag, backpackHandler.memorizedSlotStack);
+        tag.setTag(MEMORY_STACK_ITEMS_TAG, memoryTag);
 
         List<Boolean> respectList = backpackHandler.memorizedSlotRespectNbtList;
         byte[] respectBytes = new byte[respectList.size()];
         for (int i = 0; i < respectList.size(); i++) {
-            respectBytes[i] = respectList.get(i) ? (byte) 1 : (byte) 0;
+            respectBytes[i] = (byte) (respectList.get(i) ? 1 : 0);
         }
         tag.setByteArray(MEMORY_STACK_RESPECT_NBT_TAG, respectBytes);
+
+        List<Boolean> locked = backpackHandler.sortLockedSlots;
+        byte[] lockedBytes = new byte[locked.size()];
+        for (int i = 0; i < locked.size(); i++) {
+            lockedBytes[i] = (byte) (locked.get(i) ? 1 : 0);
+        }
+        tag.setByteArray(LOCKED_SLOTS_TAG, lockedBytes);
+
+        tag.setByte(SORT_TYPE_TAG, (byte) sortType.ordinal());
     }
 
     public void readFromNBT(NBTTagCompound tag) {
@@ -422,6 +445,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
         if (tag.hasKey(BACKPACK_INV)) {
             backpackHandler.deserializeNBT(tag.getCompoundTag(BACKPACK_INV));
+
+            BackpackItemStackHelper.loadAllItemsExtended(tag.getCompoundTag(BACKPACK_INV), backpackHandler.getStacks());
             if (backpackHandler.getSlots() != backpackSlots) {
                 backpackHandler.resize(backpackSlots);
             }
@@ -431,6 +456,27 @@ public class BackpackHandler implements IItemHandlerModifiable {
             if (upgradeHandler.getSlots() != upgradeSlots) {
                 upgradeHandler.resize(upgradeSlots);
             }
+        }
+
+        if (tag.hasKey(MEMORY_STACK_ITEMS_TAG)) {
+            BackpackItemStackHelper
+                .loadAllItemsExtended(tag.getCompoundTag(MEMORY_STACK_ITEMS_TAG), backpackHandler.memorizedSlotStack);
+        }
+
+        byte[] respectArr = tag.getByteArray(MEMORY_STACK_RESPECT_NBT_TAG);
+        int maxRespect = backpackHandler.memorizedSlotRespectNbtList.size();
+        for (int i = 0; i < respectArr.length && i < maxRespect; i++) {
+            setMemoryStackRespectNBT(i, respectArr[i] != 0);
+        }
+
+        byte[] lockedArr = tag.getByteArray(LOCKED_SLOTS_TAG);
+        int maxLocked = backpackHandler.sortLockedSlots.size();
+        for (int i = 0; i < lockedArr.length && i < maxLocked; i++) {
+            setSlotLocked(i, lockedArr[i] != 0);
+        }
+
+        if (tag.hasKey(SORT_TYPE_TAG)) {
+            sortType = SortType.values()[tag.getByte(SORT_TYPE_TAG)];
         }
     }
 

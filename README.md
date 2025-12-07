@@ -72,8 +72,8 @@ a rewritten backport of the modern Environmental Tech mod:
 
 #### Backpack
 
-- [ ] Sorting system
-- [ ] Memory slot
+- [X] Sorting system
+- [X] Memory slot
 - [ ] Lockable by player
 - [X] Backpack model render on player's back when equipped
 - [X] Custom Backpack main color and accent color

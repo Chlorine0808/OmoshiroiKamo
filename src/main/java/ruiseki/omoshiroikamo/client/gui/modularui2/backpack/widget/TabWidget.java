@@ -26,6 +26,7 @@ public class TabWidget extends SingleChildWidget<TabWidget> implements Interacta
     private final ExpandDirection expandDirection;
 
     @Setter
+    @Getter
     private boolean showExpanded = false;
     @Getter
     private ExpandedTabWidget expandedWidget = null;
@@ -73,7 +74,7 @@ public class TabWidget extends SingleChildWidget<TabWidget> implements Interacta
     public void onInit() {
         getContext().getUISettings()
             .getRecipeViewerSettings()
-            .addRecipeViewerExclusionArea(this);
+            .addExclusionArea(this);
     }
 
     @Override
