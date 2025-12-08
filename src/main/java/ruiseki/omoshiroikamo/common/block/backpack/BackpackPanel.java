@@ -23,6 +23,8 @@ import com.cleanroommc.modularui.factory.inventory.InventoryTypes;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.item.PlayerInvWrapper;
 import com.cleanroommc.modularui.utils.item.PlayerMainInvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -46,6 +48,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFeedi
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFilterUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedMagnetUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BasicExpandedTabWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CraftingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CyclicVariantButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FeedingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FilterUpgradeWidget;
@@ -61,6 +64,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFilterUpgradeW
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.BasicUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.CraftingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FilterUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
@@ -146,25 +150,6 @@ public class BackpackPanel extends ModularPanel {
         this.backpackSyncHandler = new BackpackSH(new PlayerMainInvWrapper(player.inventory), this.handler);
         this.syncManager.syncValue("backpack_wrapper", this.backpackSyncHandler);
 
-        tabWidgets = new ArrayList<>();
-        this.upgradeSlotGroupWidget = new UpgradeSlotGroupWidget(this, this.handler.getUpgradeSlots());
-        this.upgradeSlotSyncHandlers = new UpgradeSlotSH[this.handler.getUpgradeSlots()];
-        this.upgradeSlotGroups = new UpgradeSlotUpdateGroup[this.handler.getUpgradeSlots()];
-        for (int i = 0; i < this.handler.getUpgradeSlots(); i++) {
-            ModularUpgradeSlot modularUpgradeSlot = new ModularUpgradeSlot(this.handler, i, this);
-            modularUpgradeSlot.slotGroup("upgrade_inventory");
-            UpgradeSlotSH syncHandler = new UpgradeSlotSH(modularUpgradeSlot);
-            modularUpgradeSlot.changeListener((lastStack, currentStack, isClient, init) -> {
-                if (isClient) {
-                    updateUpgradeWidgets();
-                }
-            });
-            this.syncManager.syncValue("upgrades", i, syncHandler);
-            this.upgradeSlotSyncHandlers[i] = syncHandler;
-            this.upgradeSlotGroups[i] = new UpgradeSlotUpdateGroup(this, this.handler, i);
-        }
-        this.syncManager.registerSlotGroup(new SlotGroup("upgrade_inventory", 1, 99, true));
-
         this.backpackSlotSyncHandlers = new BackpackSlotSH[this.handler.getBackpackSlots()];
         for (int i = 0; i < this.handler.getBackpackSlots(); i++) {
             ModularBackpackSlot modularBackpackSlot = new ModularBackpackSlot(this.handler, i);
@@ -175,6 +160,25 @@ public class BackpackPanel extends ModularPanel {
         }
         this.syncManager
             .registerSlotGroup(new SlotGroup("backpack_inventory", this.handler.getBackpackSlots(), 100, true));
+
+        tabWidgets = new ArrayList<>();
+        this.upgradeSlotGroupWidget = new UpgradeSlotGroupWidget(this, this.handler.getUpgradeSlots());
+        this.upgradeSlotSyncHandlers = new UpgradeSlotSH[this.handler.getUpgradeSlots()];
+        this.upgradeSlotGroups = new UpgradeSlotUpdateGroup[this.handler.getUpgradeSlots()];
+        for (int i = 0; i < this.handler.getUpgradeSlots(); i++) {
+            ModularUpgradeSlot modularUpgradeSlot = new ModularUpgradeSlot(this.handler, i, this);
+            modularUpgradeSlot.slotGroup("upgrade_inventory");
+            UpgradeSlotSH syncHandler = new UpgradeSlotSH(this.handler, modularUpgradeSlot);
+            modularUpgradeSlot.changeListener((lastStack, currentStack, isClient, init) -> {
+                if (isClient) {
+                    updateUpgradeWidgets();
+                }
+            });
+            this.syncManager.syncValue("upgrades", i, syncHandler);
+            this.upgradeSlotSyncHandlers[i] = syncHandler;
+            this.upgradeSlotGroups[i] = new UpgradeSlotUpdateGroup(this, this.handler, i);
+        }
+        this.syncManager.registerSlotGroup(new SlotGroup("upgrade_inventory", 1, 99, true));
 
         settingPanel = this.syncManager
             .panel("setting_panel", (syncManager1, syncHandler) -> new BackpackSettingPanel(this), true);
@@ -447,8 +451,14 @@ public class BackpackPanel extends ModularPanel {
 
             // spotless: off
 
+            // Crafting
+            if (wrapper instanceof CraftingUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateCraftingDelegate(upgrade);
+                tabWidget.setExpandedWidget(new CraftingUpgradeWidget(slotIndex, upgrade));
+            }
+
             // Feeding
-            if (wrapper instanceof AdvancedFeedingUpgradeWrapper upgrade) {
+            else if (wrapper instanceof AdvancedFeedingUpgradeWrapper upgrade) {
                 upgradeSlotGroup.updateAdvancedFilterDelegate(upgrade);
                 tabWidget.setExpandedWidget(new AdvancedFeedingUpgradeWidget(slotIndex, upgrade));
             } else if (wrapper instanceof FeedingUpgradeWrapper upgrade) {
@@ -546,4 +556,16 @@ public class BackpackPanel extends ModularPanel {
         }
     }
 
+    @Override
+    public void postDraw(ModularGuiContext context, boolean transformed) {
+        super.postDraw(context, transformed);
+        LAYERED_TAB_TEXTURE.draw(
+            context,
+            getFlex().getArea().width - 6,
+            0,
+            6,
+            getFlex().getArea().height,
+            WidgetTheme.getDefault()
+                .getTheme());
+    }
 }

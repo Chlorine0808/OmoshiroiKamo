@@ -119,7 +119,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public String getDisplayName() {
-        if (backpack != null) {
+        if (backpack != null && backpack.getItem() != null) {
             return backpack.getItem()
                 .getUnlocalizedName(backpack);
         }
@@ -143,7 +143,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
     @Override
     public @Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
-        return backpackHandler.insertItem(slot, stack, simulate);
+        return backpackHandler.prioritizedInsertion(slot, stack, simulate);
     }
 
     @Override

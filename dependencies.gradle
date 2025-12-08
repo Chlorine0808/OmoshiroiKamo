@@ -60,7 +60,6 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.45:dev')
     compileOnly('com.github.GTNewHorizons:Mobs-Info:0.5.7-GTNH:dev')
     compileOnly("curse.maven:avaritia-233785:2519595")
-    compileOnly("curse.maven:environmental-tech-245453:2691536")
 
     runtimeOnlyNonPublishable files("libs/CoFHCore-[1.7.10]3.1.4-329.jar")
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:Hodgepodge:2.6.110:dev") { transitive = false }

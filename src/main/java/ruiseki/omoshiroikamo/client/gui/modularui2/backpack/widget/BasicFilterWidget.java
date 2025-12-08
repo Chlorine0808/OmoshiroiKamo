@@ -1,6 +1,7 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -16,14 +17,9 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 
 public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
 
-    private static final List<CyclicVariantButtonWidget.Variant> FILTER_TYPE_VARIANTS = new ArrayList<>();
-
-    static {
-        FILTER_TYPE_VARIANTS
-            .add(new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON));
-        FILTER_TYPE_VARIANTS
-            .add(new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON));
-    }
+    private static final List<CyclicVariantButtonWidget.Variant> FILTER_TYPE_VARIANTS = Arrays.asList(
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON));
 
     private final IBasicFilterable filterableWrapper;
     @Getter

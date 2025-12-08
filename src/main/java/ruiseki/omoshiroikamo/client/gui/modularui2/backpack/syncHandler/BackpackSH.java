@@ -53,6 +53,7 @@ public class BackpackSH extends SyncHandler {
             default:
                 break;
         }
+        handler.writeToItem();
     }
 
     public void setSortType(PacketBuffer buf) {

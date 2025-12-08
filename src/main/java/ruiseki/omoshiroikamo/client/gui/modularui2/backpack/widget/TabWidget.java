@@ -38,6 +38,10 @@ public class TabWidget extends SingleChildWidget<TabWidget> implements Interacta
         this(tabIndex, tabIndex * 30, ExpandDirection.RIGHT);
     }
 
+    public TabWidget(int tabIndex, ExpandDirection expandDirection) {
+        this(tabIndex, tabIndex * 30, expandDirection);
+    }
+
     public TabWidget(int tabIndex, int top) {
         this(tabIndex, top, ExpandDirection.RIGHT);
     }

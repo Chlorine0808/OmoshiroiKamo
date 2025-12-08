@@ -4,6 +4,8 @@ import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.ceilDi
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -92,10 +94,19 @@ public abstract class BackpackGuiHolder {
                 if (!(player instanceof EntityPlayerMP)) {
                     return;
                 }
-                data.getUsedItemStack()
-                    .setTagCompound(
-                        handler.getBackpack()
-                            .getTagCompound());
+
+                ItemStack used = data.getUsedItemStack();
+                NBTTagCompound tag = handler.getBackpack()
+                    .getTagCompound();
+
+                if (used != null) {
+                    used.setTagCompound(tag);
+                } else {
+                    ItemStack slotStack = player.inventory.getStackInSlot(data.getSlotIndex());
+                    if (slotStack != null) {
+                        slotStack.setTagCompound(tag);
+                    }
+                }
             });
 
             return panel;

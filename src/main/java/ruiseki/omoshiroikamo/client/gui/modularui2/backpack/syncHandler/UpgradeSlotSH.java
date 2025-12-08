@@ -8,9 +8,11 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IAdvancedFilterable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFilterUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
@@ -26,14 +28,17 @@ public class UpgradeSlotSH extends ItemSlotSH {
     public static final int UPDATE_ADVANCED_FEEDING = 10;
     public static final int UPDATE_FILTER_WAY = 11;
     public static final int UPDATE_MAGNET = 12;
+    public static final int UPDATE_CRAFTING_DES = 13;
 
-    public UpgradeSlotSH(ModularSlot slot) {
+    private final BackpackHandler handler;
+
+    public UpgradeSlotSH(BackpackHandler handler, ModularSlot slot) {
         super(slot);
+        this.handler = handler;
     }
 
     @Override
     public void readOnServer(int id, PacketBuffer buf) throws IOException {
-        super.readOnServer(id, buf);
 
         switch (id) {
             case UPDATE_UPGRADE_TAB_STATE:
@@ -57,7 +62,15 @@ public class UpgradeSlotSH extends ItemSlotSH {
             case UPDATE_MAGNET:
                 updateMagnetUpgrade(buf);
                 break;
+            case UPDATE_CRAFTING_DES:
+                updateCraftingDes(buf);
+                break;
+
+            default:
+                super.readOnServer(id, buf);
+                break;
         }
+        handler.writeToItem();
     }
 
     private void updateTabState(PacketBuffer buf) {
@@ -155,6 +168,17 @@ public class UpgradeSlotSH extends ItemSlotSH {
 
         upgrade.setCollectItem(item);
         upgrade.setCollectExp(exp);
+    }
+
+    private void updateCraftingDes(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof ICraftingUpgrade upgradeWrapper)) {
+            return;
+        }
+        int ordinal = buf.readInt();
+        ICraftingUpgrade.CraftingDestination[] types = ICraftingUpgrade.CraftingDestination.values();
+        upgradeWrapper.setCraftingDes(types[ordinal]);
     }
 
 }

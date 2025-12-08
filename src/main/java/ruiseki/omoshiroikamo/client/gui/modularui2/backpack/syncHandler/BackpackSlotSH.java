@@ -25,10 +25,10 @@ public class BackpackSlotSH extends ItemSlotSH {
 
     @Override
     public void readOnServer(int id, PacketBuffer buf) throws IOException {
+
         switch (id) {
             case UPDATE_SET_MEMORY_STACK: {
-                boolean respectNBT = buf.readBoolean();
-                handler.setMemoryStack(getSlot().getSlotIndex(), respectNBT);
+                handler.setMemoryStack(getSlot().getSlotIndex(), buf.readBoolean());
                 break;
             }
 
@@ -46,6 +46,8 @@ public class BackpackSlotSH extends ItemSlotSH {
 
             default:
                 super.readOnServer(id, buf);
+                break;
         }
+        handler.writeToItem();
     }
 }

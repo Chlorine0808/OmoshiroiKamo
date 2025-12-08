@@ -1,0 +1,54 @@
+package ruiseki.omoshiroikamo.common.item.backpack.wrapper;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.handler.CraftingStackHandler;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
+
+public class CraftingUpgradeWrapper extends UpgradeWrapper implements ICraftingUpgrade {
+
+    protected CraftingStackHandler handler;
+
+    public CraftingUpgradeWrapper(ItemStack upgrade) {
+        super(upgrade);
+        handler = new CraftingStackHandler(10, this);
+    }
+
+    @Override
+    public CraftingStackHandler getMatrix() {
+        NBTTagCompound handlerTag = ItemNBTUtils.getCompound(upgrade, MATRIX_TAG, false);
+        if (handlerTag != null) {
+            handler.deserializeNBT(handlerTag);
+        }
+        handler.resize(10);
+        return handler;
+    }
+
+    @Override
+    public void setMatrix(CraftingStackHandler handler) {
+        if (handler != null) {
+            ItemNBTUtils.setCompound(upgrade, MATRIX_TAG, handler.serializeNBT());
+        }
+    }
+
+    @Override
+    public CraftingDestination getCraftingDes() {
+        int ordinal = ItemNBTUtils.getInt(upgrade, CRAFTING_DEST_TAG, IBasicFilterable.FilterType.WHITELIST.ordinal());
+        CraftingDestination[] types = CraftingDestination.values();
+        if (ordinal < 0 || ordinal >= types.length) {
+            return CraftingDestination.BACKPACK;
+        }
+        return types[ordinal];
+    }
+
+    @Override
+    public void setCraftingDes(CraftingDestination type) {
+        if (type == null) {
+            type = CraftingDestination.BACKPACK;
+        }
+        ItemNBTUtils.setInt(upgrade, CRAFTING_DEST_TAG, type.ordinal());
+
+    }
+
+}

@@ -63,6 +63,8 @@ gui.advanced_filter_settings=Adv. Filter Settings
 gui.memory_settings=Memory Settings
 gui.sorting_settings=Sorting Settings
 
+gui.crafting_settings=Crafting Settings
+
 # Backpack Gui Tooltips
 
 gui.stack_size_extra=Count: %s / %s
@@ -125,6 +127,9 @@ gui.unmemorize_all=Forget All Slots
 gui.no_sorting_slot=No Sorting Slot
 gui.lock_all_sort=Select All Slots For No Sorting
 gui.unlock_all_sort=Select All Slots For Sorting
+
+gui.into_backpack= Shift Click Result Into\nBackpack
+gui.into_inventory= "hift Click Result Into\nPlayer's Inventory
 
 #Display
 

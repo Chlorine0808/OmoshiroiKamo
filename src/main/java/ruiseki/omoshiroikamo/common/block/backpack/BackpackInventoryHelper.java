@@ -41,16 +41,14 @@ public class BackpackInventoryHelper {
                     baseStack.stackSize += diff;
                     stack.stackSize -= diff;
 
-                    // nếu stack còn 0 thì remove hẳn
                     if (stack.stackSize <= 0) {
                         handler.getBackpackHandler()
                             .setStackInSlot(j, null);
                     }
-                } else if (diff == 0) break; // slot đầy
+                } else if (diff == 0) break;
             }
         }
 
-        // phần sort như trước
         List<ItemStack> sorted = new ArrayList<>();
         List<Map.Entry<ItemStack, Integer>> inPlace = new ArrayList<>();
 
@@ -100,7 +98,7 @@ public class BackpackInventoryHelper {
 
         for (int i = 0; i < sorted.size(); i++) {
             handler.getBackpackHandler()
-                .setStackInSlot(i, sorted.get(i));
+                .prioritizedInsertion(i, sorted.get(i), false);
         }
     }
 

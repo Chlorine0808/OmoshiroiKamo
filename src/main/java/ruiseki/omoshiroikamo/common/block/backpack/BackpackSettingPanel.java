@@ -49,7 +49,7 @@ public class BackpackSettingPanel extends ModularPanel {
         memoryTab.setExpandedWidget(new MemorySettingWidget(parent, this, memoryTab));
         memoryTab.setTabIcon(MGuiTextures.BRAIN_ICON);
 
-        sortTab = new TabWidget(1, 0, ExpandDirection.LEFT);
+        sortTab = new TabWidget(1, ExpandDirection.LEFT);
         sortTab.tooltipStatic(
             tooltip -> tooltip.addLine(IKey.lang("gui.sorting_settings"))
                 .pos(RichTooltip.Pos.NEXT_TO_MOUSE));

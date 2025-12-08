@@ -1,10 +1,5 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot;
 
-import static ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH.UPDATE_SET_MEMORY_STACK;
-import static ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH.UPDATE_SET_SLOT_LOCK;
-import static ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK;
-import static ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -38,6 +33,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
 
@@ -66,7 +62,7 @@ public class BackpackSlot extends ItemSlot {
 
     @Override
     public void buildTooltip(ItemStack stack, RichTooltip tooltip) {
-        ItemStack memorizedStack = handler.getMemorizedStack(getSlot().slotNumber - handler.getUpgradeSlots());
+        ItemStack memorizedStack = handler.getMemorizedStack(getSlot().slotNumber);
 
         if (stack == null && memorizedStack == null) return;
 
@@ -97,7 +93,7 @@ public class BackpackSlot extends ItemSlot {
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA))
                     .getFormattedText()));
 
-        int index = getSlot().slotNumber - handler.getUpgradeSlots();
+        int index = getSlot().slotNumber;
 
         if (handler.isSlotMemorized(index)) {
             tooltip.addLine(
@@ -124,7 +120,7 @@ public class BackpackSlot extends ItemSlot {
 
     @Override
     public @NotNull Result onMousePressed(int mouseButton) {
-        int index = getSlot().slotNumber - handler.getUpgradeSlots();
+        int index = getSlot().slotNumber;
 
         if (isInMemorySettingMode()) {
 
@@ -132,13 +128,14 @@ public class BackpackSlot extends ItemSlot {
 
             if (isMemorySet && mouseButton == 1) {
                 handler.unsetMemoryStack(index);
-                getSyncHandler().syncToServer(UPDATE_UNSET_MEMORY_STACK);
+                getSyncHandler().syncToServer(BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK);
                 return Result.SUCCESS;
 
             } else if (!isMemorySet && mouseButton == 0) {
                 handler.setMemoryStack(index, panel.shouldMemorizeRespectNBT);
-                getSyncHandler()
-                    .syncToServer(UPDATE_SET_MEMORY_STACK, buf -> buf.writeBoolean(panel.shouldMemorizeRespectNBT));
+                getSyncHandler().syncToServer(
+                    BackpackSlotSH.UPDATE_SET_MEMORY_STACK,
+                    buf -> buf.writeBoolean(panel.shouldMemorizeRespectNBT));
                 return Result.SUCCESS;
 
             } else return Result.STOP;
@@ -149,11 +146,11 @@ public class BackpackSlot extends ItemSlot {
 
             if (locked && mouseButton == 1) {
                 handler.setSlotLocked(index, false);
-                getSyncHandler().syncToServer(UPDATE_UNSET_SLOT_LOCK);
+                getSyncHandler().syncToServer(BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK);
                 return Result.SUCCESS;
             } else if (!locked && mouseButton == 0) {
                 handler.setSlotLocked(index, true);
-                getSyncHandler().syncToServer(UPDATE_SET_SLOT_LOCK);
+                getSyncHandler().syncToServer(BackpackSlotSH.UPDATE_SET_SLOT_LOCK);
                 return Result.SUCCESS;
             } else return Result.STOP;
         }
@@ -179,7 +176,7 @@ public class BackpackSlot extends ItemSlot {
 
     @Override
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        int index = getSlot().slotNumber - handler.getUpgradeSlots();
+        int index = getSlot().slotNumber;
 
         if (handler.isSlotLocked(index)) drawLockedSlot(context, widgetTheme.getTheme());
 
@@ -188,8 +185,11 @@ public class BackpackSlot extends ItemSlot {
     }
 
     private void drawSettingStack(ModularGuiContext context, WidgetTheme widgetTheme) {
-        ItemStack memoryStack = handler.getBackpackHandler().memorizedSlotStack
-            .get(getSlot().slotNumber - handler.getUpgradeSlots());
+        ItemStack slotStack = getSlot().getStack();
+        ItemStack memoryStack = handler.getBackpackHandler().memorizedSlotStack.get(getSlot().slotNumber);
+        if (slotStack == null && memoryStack == null) {
+            return;
+        }
 
         GuiScreen guiScreen = getScreen().getScreenWrapper()
             .getGuiScreen();
@@ -203,14 +203,14 @@ public class BackpackSlot extends ItemSlot {
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.disableLighting();
 
-        if (getSlot().getStack() == null) renderItem.renderItemAndEffectIntoGUI(
+        if (slotStack == null) renderItem.renderItemIntoGUI(
             Minecraft.getMinecraft().fontRenderer,
             Minecraft.getMinecraft()
                 .getTextureManager(),
             memoryStack,
             1,
             1);
-        else renderItem.renderItemAndEffectIntoGUI(
+        else renderItem.renderItemIntoGUI(
             Minecraft.getMinecraft().fontRenderer,
             Minecraft.getMinecraft()
                 .getTextureManager(),
@@ -218,7 +218,7 @@ public class BackpackSlot extends ItemSlot {
             1,
             1);
 
-        if (memoryStack != null) {
+        if (slotStack == null && memoryStack != null) {
             GlStateManager.disableDepth();
             GuiDraw.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128));
             GlStateManager.enableAlpha();
@@ -254,7 +254,7 @@ public class BackpackSlot extends ItemSlot {
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.disableLighting();
 
-        renderItem.renderItemAndEffectIntoGUI(
+        renderItem.renderItemIntoGUI(
             Minecraft.getMinecraft().fontRenderer,
             Minecraft.getMinecraft()
                 .getTextureManager(),

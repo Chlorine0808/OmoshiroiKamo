@@ -186,17 +186,18 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
         @Override
         public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
             float hitX, float hitY, float hitZ) {
+            if (world.isRemote) return true;
+
             TileEntity te = world.getTileEntity(x, y, z);
+
             if (player.isSneaking() && te == null) {
                 return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
             }
-            if (!world.isRemote) {
-                GuiFactories.playerInventory()
-                    .openFromMainHand(player);
-                return true;
-            }
 
-            return false;
+            GuiFactories.playerInventory()
+                .openFromMainHand(player);
+
+            return true;
         }
 
         @Override

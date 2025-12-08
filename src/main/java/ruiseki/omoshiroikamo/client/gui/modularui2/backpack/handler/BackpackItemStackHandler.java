@@ -76,6 +76,7 @@ public class BackpackItemStackHandler extends ItemStackHandler {
     }
 
     public ItemStack insertItemToMemorySlots(ItemStack stack, boolean simulate) {
+        if (stack == null) return null;
         for (int i = 0; i < memorizedSlotStack.size(); i++) {
             ItemStack mem = memorizedSlotStack.get(i);
             if (mem == null) continue;
