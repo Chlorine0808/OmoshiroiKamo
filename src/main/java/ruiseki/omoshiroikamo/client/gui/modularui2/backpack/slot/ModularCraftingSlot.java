@@ -18,9 +18,11 @@ import com.cleanroommc.modularui.widgets.slot.InventoryCraftingWrapper;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import lombok.Setter;
 
 public class ModularCraftingSlot extends ModularSlot {
 
+    @Setter
     private InventoryCraftingWrapper craftMatrix;
     private int amountCrafted;
 
@@ -118,9 +120,11 @@ public class ModularCraftingSlot extends ModularSlot {
 
     @Override
     public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
-        FMLCommonHandler.instance()
-            .firePlayerCraftingEvent(player, stack, craftMatrix);
-        onCrafting(stack);
+        if (stack != null && stack.getItem() != null) {
+            FMLCommonHandler.instance()
+                .firePlayerCraftingEvent(player, stack, craftMatrix);
+            onCrafting(stack);
+        }
 
         for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i) {
             ItemStack itemstack1 = this.craftMatrix.getStackInSlot(i);
@@ -153,15 +157,10 @@ public class ModularCraftingSlot extends ModularSlot {
             }
         }
         this.craftMatrix.notifyContainer();
-
     }
 
     public void updateResult(ItemStack stack) {
         putStack(stack);
         getSyncHandler().forceSyncItem();
-    }
-
-    public void setCraftMatrix(InventoryCraftingWrapper craftMatrix) {
-        this.craftMatrix = craftMatrix;
     }
 }

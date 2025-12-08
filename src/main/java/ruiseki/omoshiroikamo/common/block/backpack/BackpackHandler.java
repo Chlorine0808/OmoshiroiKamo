@@ -1,8 +1,10 @@
 package ruiseki.omoshiroikamo.common.block.backpack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.entity.Entity;
@@ -280,7 +282,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public ItemStack getFeedingStack(int foodLevel, float health, float maxHealth) {
-        for (IFeedingUpgrade upgrade : gatherCapabilityUpgrades(IFeedingUpgrade.class)) {
+        for (IFeedingUpgrade upgrade : gatherCapabilityUpgrades(IFeedingUpgrade.class).values()) {
             ItemStack feedingStack = upgrade.getFeedingStack(backpackHandler, foodLevel, health, maxHealth);
 
             if (feedingStack != null && feedingStack.stackSize > 0) {
@@ -296,7 +298,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
         List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, aabb);
         List<EntityXPOrb> xps = world.getEntitiesWithinAABB(EntityXPOrb.class, aabb);
-        for (IMagnetUpgrade upgrade : gatherCapabilityUpgrades(IMagnetUpgrade.class)) {
+
+        for (IMagnetUpgrade upgrade : gatherCapabilityUpgrades(IMagnetUpgrade.class).values()) {
             if (upgrade.isCollectItem()) {
                 for (EntityItem item : items) {
                     if (upgrade.canCollectItem(item.getEntityItem())) {
@@ -313,11 +316,13 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public boolean canInsert(ItemStack stack) {
-        List<IFilterUpgrade> upgrades = gatherCapabilityUpgrades(IFilterUpgrade.class);
+        Map<Integer, IFilterUpgrade> upgrades = gatherCapabilityUpgrades(IFilterUpgrade.class);
+
         if (upgrades.isEmpty()) {
             return true;
         }
-        for (IFilterUpgrade upgrade : upgrades) {
+
+        for (IFilterUpgrade upgrade : upgrades.values()) {
             if (upgrade.canInsert(stack)) {
                 return true;
             }
@@ -326,11 +331,13 @@ public class BackpackHandler implements IItemHandlerModifiable {
     }
 
     public boolean canExtract(ItemStack stack) {
-        List<IFilterUpgrade> upgrades = gatherCapabilityUpgrades(IFilterUpgrade.class);
+        Map<Integer, IFilterUpgrade> upgrades = gatherCapabilityUpgrades(IFilterUpgrade.class);
+
         if (upgrades.isEmpty()) {
             return true;
         }
-        for (IFilterUpgrade upgrade : upgrades) {
+
+        for (IFilterUpgrade upgrade : upgrades.values()) {
             if (upgrade.canExtract(stack)) {
                 return true;
             }
@@ -340,7 +347,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
     public boolean canPickupItem(ItemStack stack) {
 
-        for (IPickupUpgrade upgrade : gatherCapabilityUpgrades(IPickupUpgrade.class)) {
+        for (IPickupUpgrade upgrade : gatherCapabilityUpgrades(IPickupUpgrade.class).values()) {
             if (upgrade.canPickup(stack)) {
                 return true;
             }
@@ -348,20 +355,18 @@ public class BackpackHandler implements IItemHandlerModifiable {
         return false;
     }
 
-    private <T> List<T> gatherCapabilityUpgrades(Class<T> capabilityClass) {
-        List<T> result = new ArrayList<>();
+    public <T> Map<Integer, T> gatherCapabilityUpgrades(Class<T> capabilityClass) {
+        Map<Integer, T> result = new HashMap<>();
 
-        for (ItemStack stack : upgradeHandler.getStacks()) {
-            if (stack == null) {
-                continue;
-            }
+        for (int i = 0; i < upgradeSlots; i++) {
+            ItemStack stack = upgradeHandler.getStackInSlot(i);
+            if (stack == null) continue;
+
             UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
-            if (wrapper == null) {
-                continue;
-            }
+            if (wrapper == null) continue;
 
             if (capabilityClass.isAssignableFrom(wrapper.getClass())) {
-                result.add(capabilityClass.cast(wrapper));
+                result.put(i, capabilityClass.cast(wrapper));
             }
         }
 

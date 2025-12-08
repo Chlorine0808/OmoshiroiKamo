@@ -89,7 +89,7 @@ a rewritten backport of the modern Environmental Tech mod:
 - [X] Magnet upgrade — collect item and experient around player
 - [X] Everlasting upgrade — make backpack immortal
 - [ ] Void upgrade
-- [ ] Crafting upgrade
+- [X] Crafting upgrade
 - [ ] Jukebox upgrade
 
 ### Traits (WIP)

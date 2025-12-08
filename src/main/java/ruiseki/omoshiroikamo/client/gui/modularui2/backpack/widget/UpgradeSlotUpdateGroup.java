@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.crafting.CraftingManager;
 
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.InventoryCraftingWrapper;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
@@ -41,7 +42,7 @@ public class UpgradeSlotUpdateGroup {
 
     // Crafting
     public DelegatedStackHandlerSH craftingStackHandler;
-    private final InventoryCraftingWrapper craftMatrix;
+    private InventoryCraftingWrapper craftMatrix;
     public ModularSlot[] craftingMatrixSlots;
     public ModularCraftingSlot craftingResultSlot;
 
@@ -50,7 +51,7 @@ public class UpgradeSlotUpdateGroup {
         this.handler = handler;
         this.slotIndex = slotIndex;
 
-        var syncManager = panel.getSyncManager();
+        PanelSyncManager syncManager = panel.getSyncManager();
 
         // COMMON FILTER
         this.commonFilterStackHandler = new DelegatedStackHandlerSH(handler, slotIndex, 9);
@@ -115,8 +116,30 @@ public class UpgradeSlotUpdateGroup {
         syncManager.registerSlotGroup(new SlotGroup("adv_feeding_filters_" + slotIndex, 16, false));
 
         // Crafting
+        craftingUpgradeGroup();
+    }
+
+    public void updateFilterDelegate(IBasicFilterable wrapper) {
+        commonFilterStackHandler.setDelegatedStackHandler(wrapper::getFilterItems);
+        commonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE);
+    }
+
+    public void updateAdvancedFilterDelegate(IAdvancedFilterable wrapper) {
+        advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::getFilterItems);
+        advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE);
+    }
+
+    public void updateCraftingDelegate(ICraftingUpgrade wrapper) {
+        craftingStackHandler.setDelegatedStackHandler(wrapper::getMatrix);
+        craftingStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_CRAFTING);
+    }
+
+    private void craftingUpgradeGroup() {
+        PanelSyncManager syncManager = panel.getSyncManager();
+
         this.craftingStackHandler = new DelegatedStackHandlerSH(handler, slotIndex, 10);
         syncManager.syncValue("crafting_delegation_" + slotIndex, craftingStackHandler);
+
         this.craftMatrix = new InventoryCraftingWrapper(new Container() {
 
             @Override
@@ -155,27 +178,13 @@ public class UpgradeSlotUpdateGroup {
         }
 
         ModularCraftingSlot resultSlot = new ModularCraftingSlot(craftingStackHandler.getDelegatedStackHandler(), 9);
-        resultSlot.slotGroup("crafting_slots_" + slotIndex);
+        resultSlot.slotGroup("crafting_slots_" + slotIndex)
+            .accessibility(false, true);
         resultSlot.setCraftMatrix(craftMatrix);
         syncManager.syncValue("crafting_result_" + slotIndex, 9, new ItemSlotSH(resultSlot));
         craftingResultSlot = resultSlot;
 
         syncManager.registerSlotGroup(new SlotGroup("crafting_slots_" + slotIndex, 10, false));
-    }
-
-    public void updateFilterDelegate(IBasicFilterable wrapper) {
-        commonFilterStackHandler.setDelegatedStackHandler(wrapper::getFilterItems);
-        commonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE);
-    }
-
-    public void updateAdvancedFilterDelegate(IAdvancedFilterable wrapper) {
-        advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::getFilterItems);
-        advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE);
-    }
-
-    public void updateCraftingDelegate(ICraftingUpgrade wrapper) {
-        craftingStackHandler.setDelegatedStackHandler(wrapper::getMatrix);
-        craftingStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_CRAFTING);
     }
 
 }
