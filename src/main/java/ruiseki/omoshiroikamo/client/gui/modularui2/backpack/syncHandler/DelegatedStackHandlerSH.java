@@ -60,6 +60,7 @@ public class DelegatedStackHandlerSH extends SyncHandler {
                 setDelegatedStackHandler(upgrade::getMatrix);
             }
         }
+        handler.writeToItem();
     }
 
     @FunctionalInterface

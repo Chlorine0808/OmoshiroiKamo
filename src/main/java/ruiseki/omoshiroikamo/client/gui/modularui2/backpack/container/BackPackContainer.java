@@ -21,7 +21,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularBackpackSlot;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
-import ruiseki.omoshiroikamo.common.item.backpack.wrapper.CraftingUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 
 public class BackPackContainer extends ModularContainer {
 
@@ -128,10 +128,8 @@ public class BackPackContainer extends ModularContainer {
                                 slotStack.stackSize += stackCount;
                                 clickedSlot.putStack(slotStack); // Added
                             } else if (heldStack.stackSize <= stackLimit(clickedSlot, heldStack)) {
-                                if (clickedSlot.getStack().stackSize <= 64) {
-                                    clickedSlot.putStack(heldStack);
-                                    inventoryplayer.setItemStack(slotStack);
-                                }
+                                clickedSlot.putStack(heldStack);
+                                inventoryplayer.setItemStack(slotStack);
                             }
                         } else if (slotStack.getItem() == heldStack.getItem() && heldStack.getMaxStackSize() > 1
                             && (!slotStack.getHasSubtypes() || slotStack.getItemDamage() == heldStack.getItemDamage())
@@ -182,37 +180,28 @@ public class BackPackContainer extends ModularContainer {
     public ItemStack transferItem(ModularSlot fromSlot, ItemStack fromStack) {
         if (fromStack == null || fromStack.stackSize <= 0) return fromStack;
 
-        String group = fromSlot.getSlotGroupName();
+        int craftingSlotIndex = parseCraftingSlotIndex(fromSlot.getSlotGroupName());
 
-        if (group != null && group.startsWith("crafting_slots_")) {
-            int craftingSlotIndex = -1;
-            try {
-                craftingSlotIndex = Integer.parseInt(group.substring("crafting_slots_".length()));
-            } catch (NumberFormatException ignored) {}
+        if (craftingSlotIndex >= 0) {
+            Map<Integer, ICraftingUpgrade> map = handler.gatherCapabilityUpgrades(ICraftingUpgrade.class);
+            ICraftingUpgrade wrapper = map.get(craftingSlotIndex);
 
-            if (craftingSlotIndex >= 0) {
-                Map<Integer, CraftingUpgradeWrapper> map = handler
-                    .gatherCapabilityUpgrades(CraftingUpgradeWrapper.class);
+            if (wrapper != null) {
+                String targetGroup = switch (wrapper.getCraftingDes()) {
+                    case BACKPACK -> "backpack_inventory";
+                    case INVENTORY -> "player_inventory";
+                };
 
-                CraftingUpgradeWrapper wrapper = map.get(craftingSlotIndex);
-
-                if (wrapper != null) {
-                    String targetGroup = switch (wrapper.getCraftingDes()) {
-                        case BACKPACK -> "backpack_inventory";
-                        case INVENTORY -> "player_inventory";
-                    };
-
-                    for (ModularSlot toSlot : getShiftClickSlots()) {
-                        if (!targetGroup.equals(toSlot.getSlotGroupName())) continue;
-                        fromStack = transferToSlot(fromStack, toSlot);
-                        if (fromStack == null || fromStack.stackSize <= 0) return null;
-                    }
-                    return fromStack;
+                for (ModularSlot toSlot : getShiftClickSlots()) {
+                    if (!targetGroup.equals(toSlot.getSlotGroupName())) continue;
+                    fromStack = transferToSlot(fromStack, toSlot);
+                    if (fromStack == null || fromStack.stackSize <= 0) return null;
                 }
+                return fromStack;
             }
         }
 
-        if ("player_inventory".equals(group)) {
+        if ("player_inventory".equals(fromSlot.getSlotGroupName())) {
             List<ModularSlot> memorizedSlots = getShiftClickSlots().stream()
                 .filter(s -> s instanceof ModularBackpackSlot sb && handler.isSlotMemorized(sb.getSlotIndex()))
                 .collect(Collectors.toList());
@@ -259,7 +248,20 @@ public class BackPackContainer extends ModularContainer {
         return stack;
     }
 
-    public static int stackLimit(Slot slot, ItemStack stack) {
+    protected Integer parseCraftingSlotIndex(String groupName) {
+        if (groupName == null) return -1;
+
+        int slotIndexPos = groupName.lastIndexOf("_slot_");
+        if (slotIndexPos < 0) return -1;
+
+        try {
+            return Integer.parseInt(groupName.substring(slotIndexPos + "_slot_".length()));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    protected static int stackLimit(Slot slot, ItemStack stack) {
         if (stack == null) return 0;
         if (slot instanceof SlotItemHandler slotItemHandler) {
             // this is triggered for modular slots

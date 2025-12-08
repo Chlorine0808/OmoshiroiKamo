@@ -165,7 +165,7 @@ public class UpgradeSlotUpdateGroup {
         this.craftingMatrixSlots = new ModularSlot[9];
         for (int i = 0; i < 9; i++) {
             ModularSlot slot = new ModularSlot(craftingStackHandler.getDelegatedStackHandler(), i);
-            slot.slotGroup("crafting_slots_" + slotIndex)
+            slot.slotGroup("crafting_workbench_slot_" + slotIndex)
                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
                     if (client || init) return;
                     craftingResultSlot.updateResult(
@@ -178,13 +178,13 @@ public class UpgradeSlotUpdateGroup {
         }
 
         ModularCraftingSlot resultSlot = new ModularCraftingSlot(craftingStackHandler.getDelegatedStackHandler(), 9);
-        resultSlot.slotGroup("crafting_slots_" + slotIndex)
+        resultSlot.slotGroup("crafting_workbench_slot_" + slotIndex)
             .accessibility(false, true);
         resultSlot.setCraftMatrix(craftMatrix);
         syncManager.syncValue("crafting_result_" + slotIndex, 9, new ItemSlotSH(resultSlot));
         craftingResultSlot = resultSlot;
 
-        syncManager.registerSlotGroup(new SlotGroup("crafting_slots_" + slotIndex, 10, false));
+        syncManager.registerSlotGroup(new SlotGroup("crafting_workbench_slot_" + slotIndex, 10, false));
     }
 
 }
