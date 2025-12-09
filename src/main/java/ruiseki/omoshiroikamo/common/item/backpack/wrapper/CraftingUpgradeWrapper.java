@@ -21,7 +21,6 @@ public class CraftingUpgradeWrapper extends UpgradeWrapper implements ICraftingU
         if (handlerTag != null) {
             handler.deserializeNBT(handlerTag);
         }
-        handler.resize(10);
         return handler;
     }
 

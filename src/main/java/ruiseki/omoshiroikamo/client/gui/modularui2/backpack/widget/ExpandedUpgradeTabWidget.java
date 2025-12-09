@@ -23,7 +23,7 @@ public abstract class ExpandedUpgradeTabWidget<U extends UpgradeWrapper> extends
     }
 
     public ExpandedUpgradeTabWidget(int slotIndex, int coveredTabSize, ItemStack delegatedIconStack, String titleKey) {
-        this(slotIndex, coveredTabSize, delegatedIconStack, titleKey, 75);
+        this(slotIndex, coveredTabSize, delegatedIconStack, titleKey, 80);
     }
 
     public void updateTabState() {

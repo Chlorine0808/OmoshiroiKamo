@@ -87,6 +87,9 @@ public final class MGuiTextures {
     public static final UITexture INTO_BACKPACK = icon("into_backpack", 32, 48);
     public static final UITexture INTO_INVENTORY = icon("small_m", 48, 48);
 
+    public static final UITexture PLAY_ICON = icon("play", 0, 64);
+    public static final UITexture STOP_ICON = icon("stop", 16, 64);
+
     public static final UITexture SOLID_UP_ARROW_ICON = icon("solid_up_arrow", 0, 144, 12, 12);
     public static final UITexture SOLID_DOWN_ARROW_ICON = icon("solid_down_arrow", 12, 156, 12, 12);
     public static final UITexture DOT_DOWN_ARROW_ICON = icon("dot_down_arrow", 24, 156, 12, 12);

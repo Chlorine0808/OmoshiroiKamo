@@ -47,7 +47,7 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
                 }
             }).size(20, 20);
 
-        SlotGroupWidget craftingMatrixSlotGroupsWidget = new SlotGroupWidget().name("crafting_matrix")
+        SlotGroupWidget craftingGroupsWidget = new SlotGroupWidget().name("crafting_matrix")
             .width(64)
             .coverChildren()
             .top(26);
@@ -58,21 +58,21 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
                 .pos(i % 3 * 18, i / 3 * 18)
                 .name("crafting_slot_" + i);
 
-            craftingMatrixSlotGroupsWidget.child(itemSlot);
+            craftingGroupsWidget.child(itemSlot);
             craftingMatrix[i] = itemSlot;
         }
 
         ItemSlot craftingResult = new ItemSlot().syncHandler("crafting_result_" + slotIndex, 9)
             .pos(18, 18 * 3 + 9)
             .name("crafting_result_" + slotIndex);
-        craftingMatrixSlotGroupsWidget.child(craftingResult);
+        craftingGroupsWidget.child(craftingResult);
 
         ParentWidget<?> widget = new ParentWidget<>().name("crafting_widget")
             .width(64)
             .coverChildrenHeight();
 
         widget.child(craftingDesButton)
-            .child(craftingMatrixSlotGroupsWidget);
+            .child(craftingGroupsWidget);
 
         Column column = (Column) new Column().pos(8, 28)
             .width(64)

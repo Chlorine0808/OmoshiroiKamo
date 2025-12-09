@@ -129,7 +129,7 @@ gui.lock_all_sort=Select All Slots For No Sorting
 gui.unlock_all_sort=Select All Slots For Sorting
 
 gui.into_backpack= Shift Click Result Into\nBackpack
-gui.into_inventory= "hift Click Result Into\nPlayer's Inventory
+gui.into_inventory= "Shift Click Result Into\nPlayer's Inventory
 
 #Display
 
@@ -326,6 +326,8 @@ item.advancedFeedingUpgrade.name=Adv. Feeding Upgrade
 item.filterUpgrade.name=Filter Upgrade
 item.advancedFilterUpgrade.name=Adv. Filter Upgrade
 item.inceptionUpgrade.name=Inception Upgrade
+item.jukeBoxUpgrade.name=Juke Box Upgrade
+item.advancedJukeBoxUpgrade.name=Adv. Juke Box Upgrade
 
 item.stabilizedEnderPear.name=Stabilized Ender Pearl
 item.photovoltaicCell.name=Photovoltaic Cell
