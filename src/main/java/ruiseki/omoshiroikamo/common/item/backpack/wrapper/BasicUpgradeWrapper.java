@@ -56,7 +56,7 @@ public class BasicUpgradeWrapper extends UpgradeWrapper implements IBasicFiltera
 
     @Override
     public boolean isEnabled() {
-        return ItemNBTUtils.getBoolean(upgrade, ENABLED_TAG, false);
+        return ItemNBTUtils.getBoolean(upgrade, ENABLED_TAG, true);
     }
 
     @Override

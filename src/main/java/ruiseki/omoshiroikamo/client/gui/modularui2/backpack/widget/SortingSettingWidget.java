@@ -24,7 +24,7 @@ public class SortingSettingWidget extends ExpandedTabWidget {
     private final ButtonWidget<?> unlockAllButton;
 
     public SortingSettingWidget(BackpackPanel panel, BackpackSettingPanel settingPanel, TabWidget parentTabWidget) {
-        super(2, MGuiTextures.NO_SORT_ICON, "gui.sorting_settings", 75, ExpandDirection.LEFT);
+        super(2, MGuiTextures.NO_SORT_ICON, "gui.sorting_settings", 80, ExpandDirection.RIGHT);
 
         this.panel = panel;
         this.settingPanel = settingPanel;
@@ -87,9 +87,16 @@ public class SortingSettingWidget extends ExpandedTabWidget {
     }
 
     @Override
+    public void onInit() {
+        getContext().getUISettings()
+            .getRecipeViewerSettings()
+            .addExclusionArea(this);
+    }
+
+    @Override
     public void updateTabState() {
         parentTabWidget.setShowExpanded(!parentTabWidget.isShowExpanded());
         panel.isSortingSettingTabOpened = parentTabWidget.isShowExpanded();
-        settingPanel.updateTabState(1);
+        settingPanel.updateTabState(2);
     }
 }

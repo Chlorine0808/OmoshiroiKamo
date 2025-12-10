@@ -47,6 +47,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedExpan
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFeedingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFilterUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedMagnetUpgradeWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedVoidUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BasicExpandedTabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CraftingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CyclicVariantButtonWidget;
@@ -58,11 +59,13 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TransferButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotUpdateGroup;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.VoidUpgradeWidget;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFilterUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedVoidUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.BasicUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.CraftingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
@@ -71,11 +74,12 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.VoidUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BackpackPanel extends ModularPanel {
 
-    private static final AdaptableUITexture LAYERED_TAB_TEXTURE = (AdaptableUITexture) UITexture.builder()
+    public static final AdaptableUITexture LAYERED_TAB_TEXTURE = (AdaptableUITexture) UITexture.builder()
         .location(LibMisc.MOD_ID, "gui/gui_controls")
         .imageSize(256, 256)
         .xy(132, 0, 124, 256)
@@ -122,6 +126,7 @@ public class BackpackPanel extends ModularPanel {
     private final int rowSize;
     private final int colSize;
 
+    @Getter
     public final BackpackSH backpackSyncHandler;
     @Getter
     private final BackpackSlotSH[] backpackSlotSyncHandlers;
@@ -358,8 +363,10 @@ public class BackpackPanel extends ModularPanel {
     public void addUpgradeTabs() {
         for (int i = 0; i < handler.getUpgradeSlots(); i++) {
             TabWidget tab = new TabWidget(i + 1).name("upgrade_tab_" + i);
-
             tab.setEnabled(false);
+            if (settingPanel.isPanelOpen()) {
+                tab.setEnabled(false);
+            }
             tabWidgets.add(tab);
         }
 
@@ -476,12 +483,21 @@ public class BackpackPanel extends ModularPanel {
             }
 
             // Filter
-            else if (wrapper instanceof AdvancedFilterUpgradeWrapper feeding) {
-                upgradeSlotGroup.updateAdvancedFilterDelegate(feeding);
-                tabWidget.setExpandedWidget(new AdvancedFilterUpgradeWidget(slotIndex, feeding));
+            else if (wrapper instanceof AdvancedFilterUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateAdvancedFilterDelegate(upgrade);
+                tabWidget.setExpandedWidget(new AdvancedFilterUpgradeWidget(slotIndex, upgrade));
             } else if (wrapper instanceof FilterUpgradeWrapper upgrade) {
                 upgradeSlotGroup.updateFilterDelegate(upgrade);
                 tabWidget.setExpandedWidget(new FilterUpgradeWidget(slotIndex, upgrade));
+            }
+
+            // Void
+            else if (wrapper instanceof AdvancedVoidUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateAdvancedFilterDelegate(upgrade);
+                tabWidget.setExpandedWidget(new AdvancedVoidUpgradeWidget(slotIndex, upgrade));
+            } else if (wrapper instanceof VoidUpgradeWrapper upgrade) {
+                upgradeSlotGroup.updateFilterDelegate(upgrade);
+                tabWidget.setExpandedWidget(new VoidUpgradeWidget(slotIndex, upgrade));
             }
 
             // Base
@@ -535,6 +551,16 @@ public class BackpackPanel extends ModularPanel {
 
     private void disableUnusedTabWidgets(int startTabIndex) {
         for (int i = startTabIndex; i < handler.getUpgradeSlots(); i++) {
+            TabWidget tabWidget = tabWidgets.get(i);
+            if (tabWidget != null) {
+                tabWidget.setEnabled(false);
+            }
+        }
+        this.scheduleResize();
+    }
+
+    public void disableAllTabWidgets() {
+        for (int i = 0; i < handler.getUpgradeSlots(); i++) {
             TabWidget tabWidget = tabWidgets.get(i);
             if (tabWidget != null) {
                 tabWidget.setEnabled(false);

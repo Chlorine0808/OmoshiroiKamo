@@ -32,7 +32,7 @@ public class MemorySettingWidget extends ExpandedTabWidget {
     private final CyclicVariantButtonWidget respectNBTButton;
 
     public MemorySettingWidget(BackpackPanel panel, BackpackSettingPanel settingPanel, TabWidget parentTabWidget) {
-        super(2, MGuiTextures.BRAIN_ICON, "gui.memory_settings", 75, ExpandDirection.LEFT);
+        super(2, MGuiTextures.BRAIN_ICON, "gui.memory_settings", 80, ExpandDirection.RIGHT);
 
         this.panel = panel;
         this.settingPanel = settingPanel;
@@ -106,10 +106,17 @@ public class MemorySettingWidget extends ExpandedTabWidget {
     }
 
     @Override
+    public void onInit() {
+        getContext().getUISettings()
+            .getRecipeViewerSettings()
+            .addExclusionArea(this);
+    }
+
+    @Override
     public void updateTabState() {
         parentTabWidget.setShowExpanded(!parentTabWidget.isShowExpanded());
         panel.isMemorySettingTabOpened = parentTabWidget.isShowExpanded();
-        settingPanel.updateTabState(0);
+        settingPanel.updateTabState(1);
     }
 
 }

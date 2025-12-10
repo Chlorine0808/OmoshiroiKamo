@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -55,10 +56,20 @@ public class BackpackHandler implements IItemHandlerModifiable {
     @Setter
     private SortType sortType;
 
+    @Getter
+    @Setter
+    private boolean lockBackpack;
+
+    @Getter
+    @Setter
+    private String uuid;
+
     public static final String MEMORY_STACK_ITEMS_TAG = "MemoryItems";
     public static final String MEMORY_STACK_RESPECT_NBT_TAG = "MemoryRespectNBT";
     public static final String SORT_TYPE_TAG = "SortType";
     public static final String LOCKED_SLOTS_TAG = "LockedSlots";
+    public static final String LOCKED_BACKPACK_TAG = "LockedBackpack";
+    public static final String UUID_TAG = "UUID";
 
     @Getter
     @Setter
@@ -98,6 +109,8 @@ public class BackpackHandler implements IItemHandlerModifiable {
         this.mainColor = 0xFFCC613A;
         this.accentColor = 0xFF622E1A;
         this.sortType = SortType.BY_NAME;
+        this.lockBackpack = false;
+        this.uuid = "";
 
         this.backpackHandler = new BackpackItemStackHandler(backpackSlots, this) {
 
@@ -383,6 +396,10 @@ public class BackpackHandler implements IItemHandlerModifiable {
         return false;
     }
 
+    public boolean canPlayerAccess(UUID playerUUID) {
+        return !isLockBackpack() || playerUUID.equals(UUID.fromString(getUuid()));
+    }
+
     // ---------- ITEM STACK ----------
     public void writeToItem() {
         if (backpack == null) {
@@ -430,6 +447,10 @@ public class BackpackHandler implements IItemHandlerModifiable {
         tag.setByteArray(LOCKED_SLOTS_TAG, lockedBytes);
 
         tag.setByte(SORT_TYPE_TAG, (byte) sortType.ordinal());
+
+        tag.setBoolean(LOCKED_BACKPACK_TAG, lockBackpack);
+
+        tag.setString(UUID_TAG, uuid);
     }
 
     public void readFromNBT(NBTTagCompound tag) {
@@ -482,6 +503,14 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
         if (tag.hasKey(SORT_TYPE_TAG)) {
             sortType = SortType.values()[tag.getByte(SORT_TYPE_TAG)];
+        }
+
+        if (tag.hasKey(LOCKED_BACKPACK_TAG)) {
+            lockBackpack = tag.getBoolean(LOCKED_BACKPACK_TAG);
+        }
+
+        if (tag.hasKey(UUID_TAG)) {
+            uuid = tag.getString(UUID_TAG);
         }
     }
 

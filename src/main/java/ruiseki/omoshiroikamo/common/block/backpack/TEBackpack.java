@@ -175,7 +175,9 @@ public class TEBackpack extends AbstractTE implements ISidedInventory, IGuiHolde
     @Override
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
         float hitZ) {
-        openGui(player);
+        if (handler.canPlayerAccess(player.getUniqueID())) {
+            openGui(player);
+        }
         return true;
     }
 

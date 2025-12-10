@@ -60,6 +60,7 @@ gui.advanced_restock_settings=Adv. Restock Settings
 gui.filter_settings=Filter Settings
 gui.advanced_filter_settings=Adv. Filter Settings
 
+gui.backpack_settings=Backpack Settings
 gui.memory_settings=Memory Settings
 gui.sorting_settings=Sorting Settings
 
@@ -142,6 +143,10 @@ fluid.empty=Empty
 gui.energy.tooltip=RF: %s / %s
 tooltip.lvs=lvs
 tooltip.effPowered=Efficiency when powered
+
+tooltip.backpack.inventory_size=Inventory size: %d
+tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
+tooltip.backpack.stack_multiplier=-> Stack multiplier: %d%s
 
 tooltip.oreDictNames=Ore Dictionary Names:
 tooltip.durability=Durability:

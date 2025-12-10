@@ -46,11 +46,12 @@ public class SettingTabWidget extends Widget<SettingTabWidget> implements Intera
                 .isPanelOpen()) {
                 panel.getSettingPanel()
                     .closePanel();
+                panel.updateUpgradeWidgets();
             } else {
                 panel.getSettingPanel()
                     .openPanel();
+                panel.disableAllTabWidgets();
             }
-
             return Result.SUCCESS;
         }
 

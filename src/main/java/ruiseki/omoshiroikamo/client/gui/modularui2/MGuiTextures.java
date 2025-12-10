@@ -61,6 +61,10 @@ public final class MGuiTextures {
     public static final IDrawable REMOVE_ICON = icon("remove", 112, 32);
     public static final IDrawable BRAIN_ICON = icon("brain", 128, 32);
 
+    public static final IDrawable BACKPACK_ICON = icon("backpack", 64, 48);
+    public static final IDrawable UNLOCK_BACKPACK_ICON = icon("unlock_backpack", 176, 32);
+    public static final IDrawable LOCK_BACKPACK_ICON = icon("lock_backpack", 192, 32);
+
     public static final IDrawable ONE_IN_FOUR_SLOT_ICON = icon("one_in_four_slot", 0, 80);
     public static final IDrawable ALL_FOUR_SLOT_ICON = icon("all_in_four_slot", 16, 80);
     public static final IDrawable NO_SORT_ICON = icon("no_sort", 32, 80);

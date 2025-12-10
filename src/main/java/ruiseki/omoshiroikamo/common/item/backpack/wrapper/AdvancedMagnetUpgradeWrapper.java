@@ -12,7 +12,7 @@ public class AdvancedMagnetUpgradeWrapper extends AdvancedPickupUpgradeWrapper i
 
     @Override
     public boolean isCollectItem() {
-        return ItemNBTUtils.getBoolean(upgrade, MAG_ITEM_TAG, false);
+        return ItemNBTUtils.getBoolean(upgrade, MAG_ITEM_TAG, true);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class AdvancedMagnetUpgradeWrapper extends AdvancedPickupUpgradeWrapper i
 
     @Override
     public boolean isCollectExp() {
-        return ItemNBTUtils.getBoolean(upgrade, MAG_EXP_TAG, false);
+        return ItemNBTUtils.getBoolean(upgrade, MAG_EXP_TAG, true);
     }
 
     @Override

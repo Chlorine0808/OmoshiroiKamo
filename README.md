@@ -74,7 +74,8 @@ a rewritten backport of the modern Environmental Tech mod:
 
 - [X] Sorting system
 - [X] Memory slot
-- [ ] Lockable by player
+- [X] Lockable by player
+- [ ] Searching System
 - [X] Backpack model render on player's back when equipped
 - [X] Custom Backpack main color and accent color
 - [X] Modifier each backpack and upgrade slot size
@@ -90,7 +91,6 @@ a rewritten backport of the modern Environmental Tech mod:
 - [X] Everlasting upgrade — make backpack immortal
 - [ ] Void upgrade
 - [X] Crafting upgrade
-- [ ] Jukebox upgrade
 
 ### Traits (WIP)
 

@@ -22,6 +22,7 @@ public class TabWidget extends SingleChildWidget<TabWidget> implements Interacta
 
     public static final TabTexture TAB_TEXTURE = GuiTextures.TAB_RIGHT;
 
+    @Getter
     private final int tabIndex;
     private final ExpandDirection expandDirection;
 

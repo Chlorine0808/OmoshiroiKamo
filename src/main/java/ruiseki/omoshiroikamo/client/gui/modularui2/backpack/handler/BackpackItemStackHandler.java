@@ -6,13 +6,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
 import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 
-public class BackpackItemStackHandler extends ItemStackHandler {
+public class BackpackItemStackHandler extends UpgradeItemStackHandler {
 
     private final BackpackHandler handler;
 
@@ -56,21 +55,11 @@ public class BackpackItemStackHandler extends ItemStackHandler {
         return 64 * handler.getTotalStackMultiplier();
     }
 
-    public void resize(int newSize) {
-        List<ItemStack> newStacks = new ArrayList<>(newSize);
-
-        for (int i = 0; i < newSize; i++) {
-            if (i < stacks.size()) {
-                newStacks.add(stacks.get(i));
-            } else {
-                newStacks.add(null);
-            }
+    public ItemStack prioritizedInsertion(int slotIndex, ItemStack stack, boolean simulate) {
+        if (stack != null && !handler.canNestBackpack() && stack.getItem() instanceof BlockBackpack.ItemBackpack) {
+            return stack;
         }
 
-        this.stacks = newStacks;
-    }
-
-    public ItemStack prioritizedInsertion(int slotIndex, ItemStack stack, boolean simulate) {
         stack = insertItemToMemorySlots(stack, simulate);
         return insertItem(slotIndex, stack, simulate);
     }
