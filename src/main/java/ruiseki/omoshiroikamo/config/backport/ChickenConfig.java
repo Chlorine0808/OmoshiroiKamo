@@ -41,11 +41,36 @@ public class ChickenConfig {
     @Config.RangeInt(min = 1, max = 64)
     public static int chickenStackLimit;
 
+    @Config.DefaultInt(10)
+    @Config.RangeInt(min = 1)
+    public static int maxGrowthStat;
+
+    @Config.DefaultInt(10)
+    @Config.RangeInt(min = 1)
+    public static int maxGainStat;
+
+    @Config.DefaultInt(10)
+    @Config.RangeInt(min = 1)
+    public static int maxStrengthStat;
+
+    @Config.DefaultFloat(1.0f)
     @Config.RangeFloat(min = 1)
     public static float roostSpeed;
 
     public static int getChickenStackLimit() {
         return MathHelper.clamp_int(chickenStackLimit, 1, 64);
+    }
+
+    public static int getMaxGrowthStat() {
+        return Math.max(1, maxGrowthStat);
+    }
+
+    public static int getMaxGainStat() {
+        return Math.max(1, maxGainStat);
+    }
+
+    public static int getMaxStrengthStat() {
+        return Math.max(1, maxStrengthStat);
     }
 
 }

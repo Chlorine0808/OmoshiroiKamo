@@ -22,6 +22,7 @@ import ruiseki.omoshiroikamo.common.util.BlockPos;
 import ruiseki.omoshiroikamo.common.util.TooltipUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 /**
  * Represents all data for a chicken entity in the mod, including stats,
@@ -56,9 +57,9 @@ public class DataChicken {
     private DataChicken(ChickensRegistryItem chickenIn, NBTTagCompound compound) {
         chicken = chickenIn;
         if (compound != null) {
-            gain = Math.max(1, Math.min(10, compound.getInteger(GROWTH_NBT)));
-            growth = Math.max(1, Math.min(10, compound.getInteger(GAIN_NBT)));
-            strength = Math.max(1, Math.min(10, compound.getInteger(STRENGTH_NBT)));
+            gain = clampStat(compound.getInteger(GAIN_NBT), ChickenConfig.getMaxGainStat());
+            growth = clampStat(compound.getInteger(GROWTH_NBT), ChickenConfig.getMaxGrowthStat());
+            strength = clampStat(compound.getInteger(STRENGTH_NBT), ChickenConfig.getMaxStrengthStat());
         }
     }
 
@@ -74,6 +75,18 @@ public class DataChicken {
      */
     public ChickensRegistryItem getItems() {
         return chicken;
+    }
+
+    public int getGrowthStat() {
+        return growth;
+    }
+
+    public int getGainStat() {
+        return gain;
+    }
+
+    public int getStrengthStat() {
+        return strength;
     }
 
     /**
@@ -102,10 +115,10 @@ public class DataChicken {
      */
     public List<String> getStatsInfoTooltip() {
         return TooltipUtils.builder()
-            .addLang(LibResources.TOOLTIP + "mob.growth", growth)
-            .addLang(LibResources.TOOLTIP + "mob.gain", gain)
-            .addLang(LibResources.TOOLTIP + "mob.strength", strength)
-            .build();
+                .addLang(LibResources.TOOLTIP + "mob.growth", growth)
+                .addLang(LibResources.TOOLTIP + "mob.gain", gain)
+                .addLang(LibResources.TOOLTIP + "mob.strength", strength)
+                .build();
     }
 
     /**
@@ -116,8 +129,8 @@ public class DataChicken {
             return false;
         }
         return getType() == other.getType() && growth == other.growth
-            && gain == other.gain
-            && strength == other.strength;
+                && gain == other.gain
+                && strength == other.strength;
     }
 
     /**
@@ -184,7 +197,11 @@ public class DataChicken {
      */
     public ItemStack createLayStack() {
         ItemStack stack = chicken.createLayItem();
-        stack.stackSize = gain >= 10 ? 3 : gain >= 5 ? 2 : 1;
+        if (stack == null) {
+            return null;
+        }
+        int bonusMultiplier = Math.max(0, gain / 5);
+        stack.stackSize *= (1 + bonusMultiplier);
         return stack;
     }
 
@@ -220,9 +237,9 @@ public class DataChicken {
      */
     public NBTTagCompound createTagCompound() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger(GAIN_NBT, gain);
-        tag.setInteger(GROWTH_NBT, growth);
-        tag.setInteger(STRENGTH_NBT, strength);
+        tag.setInteger(GAIN_NBT, clampStat(gain, ChickenConfig.getMaxGainStat()));
+        tag.setInteger(GROWTH_NBT, clampStat(growth, ChickenConfig.getMaxGrowthStat()));
+        tag.setInteger(STRENGTH_NBT, clampStat(strength, ChickenConfig.getMaxStrengthStat()));
         return tag;
     }
 
@@ -273,6 +290,10 @@ public class DataChicken {
         return null;
     }
 
+    private static int clampStat(int value, int maxValue) {
+        return Math.max(1, Math.min(maxValue, value));
+    }
+
     /**
      * @return DataChicken from a spawn egg stack, or null
      */
@@ -294,14 +315,14 @@ public class DataChicken {
     @Override
     public String toString() {
         return "DataChicken [name=" + getName()
-            + " type="
-            + getType()
-            + ", gain="
-            + gain
-            + ", growth="
-            + growth
-            + ", strength="
-            + strength
-            + "]";
+                + " type="
+                + getType()
+                + ", gain="
+                + gain
+                + ", growth="
+                + growth
+                + ", strength="
+                + strength
+                + "]";
     }
 }

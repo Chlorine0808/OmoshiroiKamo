@@ -39,7 +39,7 @@ import ruiseki.omoshiroikamo.plugin.waila.IWailaEntityInfoProvider;
 
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobInfoProvider", modid = "mobsinfo")
 public class EntityChickensChicken extends EntityChicken
-    implements IMobStats, IWailaEntityInfoProvider, IMobInfoProvider {
+        implements IMobStats, IWailaEntityInfoProvider, IMobInfoProvider {
 
     public static final String PROGRESS_NBT = "Progress";
 
@@ -66,7 +66,8 @@ public class EntityChickensChicken extends EntityChicken
 
     @Override
     public void setBaseGrowth(int growth) {
-        this.dataWatcher.updateObject(21, growth);
+        int clamped = MathHelper.clamp_int(growth, 1, getMaxGrowthStat());
+        this.dataWatcher.updateObject(21, clamped);
     }
 
     @Override
@@ -76,7 +77,8 @@ public class EntityChickensChicken extends EntityChicken
 
     @Override
     public void setBaseGain(int gain) {
-        this.dataWatcher.updateObject(22, gain);
+        int clamped = MathHelper.clamp_int(gain, 1, getMaxGainStat());
+        this.dataWatcher.updateObject(22, clamped);
     }
 
     @Override
@@ -86,7 +88,8 @@ public class EntityChickensChicken extends EntityChicken
 
     @Override
     public void setBaseStrength(int strength) {
-        this.dataWatcher.updateObject(23, strength);
+        int clamped = MathHelper.clamp_int(strength, 1, getMaxStrengthStat());
+        this.dataWatcher.updateObject(23, clamped);
     }
 
     @Override
@@ -207,10 +210,8 @@ public class EntityChickensChicken extends EntityChicken
                 if (itemToLay != null) {
                     int gain = getGain();
                     if (gain >= 5) {
-                        itemToLay.stackSize += chicken.createLayItem().stackSize;
-                    }
-                    if (gain >= 10) {
-                        itemToLay.stackSize += chicken.createLayItem().stackSize;
+                        int multiplier = (int) (Math.log(gain / 5.0) / Math.log(2)) + 1;
+                        itemToLay.stackSize += chicken.createLayItem().stackSize * multiplier;
                     }
 
                     entityDropItem(itemToLay, 0.0F);
@@ -231,8 +232,9 @@ public class EntityChickensChicken extends EntityChicken
     private void resetTimeUntilNextEgg() {
         ChickensRegistryItem chickenDescription = getChickenDescription();
         int newBaseTimeUntilNextEgg = (chickenDescription.getMinTime()
-            + rand.nextInt(chickenDescription.getMaxTime() - chickenDescription.getMinTime()));
-        int newTimeUntilNextEgg = (int) Math.max(1.0f, (newBaseTimeUntilNextEgg * (10.f - getGrowth() + 1.f)) / 10.f);
+                + rand.nextInt(chickenDescription.getMaxTime() - chickenDescription.getMinTime()));
+        float growthModifier = getGrowthTimeModifier();
+        int newTimeUntilNextEgg = (int) Math.max(1.0f, newBaseTimeUntilNextEgg * growthModifier);
         setTimeUntilNextEgg(newTimeUntilNextEgg * 2);
     }
 
@@ -240,10 +242,10 @@ public class EntityChickensChicken extends EntityChicken
     public boolean getCanSpawnHere() {
         boolean anyInNether = ChickensRegistry.INSTANCE.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.INSTANCE.isAnyIn(SpawnType.NORMAL)
-            || ChickensRegistry.INSTANCE.isAnyIn(SpawnType.SNOW);
+                || ChickensRegistry.INSTANCE.isAnyIn(SpawnType.SNOW);
 
         BiomeGenBase biome = worldObj
-            .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
+                .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
         boolean isNetherBiome = biome == BiomeGenBase.hell;
 
@@ -262,7 +264,7 @@ public class EntityChickensChicken extends EntityChicken
 
             if (!list.isEmpty()) {
                 int type = list.get(rand.nextInt(list.size()))
-                    .getId();
+                        .getId();
                 setType(type);
                 data = new GroupData(type);
             }
@@ -276,7 +278,7 @@ public class EntityChickensChicken extends EntityChicken
 
     private SpawnType getSpawnType() {
         BiomeGenBase biome = worldObj
-            .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
+                .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
         return ChickensRegistry.getSpawnType(biome);
     }
 
@@ -289,6 +291,12 @@ public class EntityChickensChicken extends EntityChicken
         this.dataWatcher.addObject(23, 1); // STRENGTH
         this.dataWatcher.addObject(24, 0); // LAY_PROGRESS
         this.dataWatcher.addObject(25, (byte) 0); // ANALYZED (boolean)
+    }
+
+    private float getGrowthTimeModifier() {
+        int maxGrowth = Math.max(1, getMaxGrowthStat());
+        int clampedGrowth = Math.max(1, Math.min(getGrowth(), maxGrowth));
+        return (float) (maxGrowth - clampedGrowth + 1) / (float) maxGrowth;
     }
 
     @Override
@@ -365,8 +373,8 @@ public class EntityChickensChicken extends EntityChicken
         Item j = this.getDropItem();
         if (j != null) {
             drops.add(
-                MobDrop.create(j)
-                    .withLooting());
+                    MobDrop.create(j)
+                            .withLooting());
         }
     }
 
@@ -381,5 +389,20 @@ public class EntityChickensChicken extends EntityChicken
         public int getType() {
             return type;
         }
+    }
+
+    @Override
+    public int getMaxGrowthStat() {
+        return ChickenConfig.getMaxGrowthStat();
+    }
+
+    @Override
+    public int getMaxGainStat() {
+        return ChickenConfig.getMaxGainStat();
+    }
+
+    @Override
+    public int getMaxStrengthStat() {
+        return ChickenConfig.getMaxStrengthStat();
     }
 }

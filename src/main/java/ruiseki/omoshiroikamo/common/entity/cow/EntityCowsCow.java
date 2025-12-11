@@ -89,7 +89,8 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
     @Override
     public void setBaseGrowth(int growth) {
-        this.dataWatcher.updateObject(21, growth);
+        int clamped = MathHelper.clamp_int(growth, 1, getMaxGrowthStat());
+        this.dataWatcher.updateObject(21, clamped);
     }
 
     @Override
@@ -99,7 +100,8 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
     @Override
     public void setBaseGain(int gain) {
-        this.dataWatcher.updateObject(22, gain);
+        int clamped = MathHelper.clamp_int(gain, 1, getMaxGainStat());
+        this.dataWatcher.updateObject(22, clamped);
     }
 
     @Override
@@ -109,7 +111,8 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
     @Override
     public void setBaseStrength(int strength) {
-        this.dataWatcher.updateObject(23, strength);
+        int clamped = MathHelper.clamp_int(strength, 1, getMaxStrengthStat());
+        this.dataWatcher.updateObject(23, clamped);
     }
 
     @Override
@@ -189,7 +192,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
         }
 
         if (!isChild() && milkTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME
-            && stack.getItem() instanceof IFluidContainerItem) {
+                && stack.getItem() instanceof IFluidContainerItem) {
             FluidStack milkToDrain = milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
             if (milkToDrain.amount == 1000) {
                 ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(milkToDrain, stack);
@@ -229,10 +232,11 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
                 if (fluid != null) {
                     int gain = getGain();
                     if (gain >= 5) {
-                        fluid.amount += cow.createMilkFluid().amount;
-                    }
-                    if (gain >= 10) {
-                        fluid.amount += cow.createMilkFluid().amount;
+                        int bonusMultiplier = Math.max(0, gain / 5);
+                        if (bonusMultiplier > 0) {
+                            int baseAmount = fluid.amount;
+                            fluid.amount += baseAmount * bonusMultiplier;
+                        }
                     }
 
                     milkTank.fill(fluid, true);
@@ -252,8 +256,9 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     private void resetTimeUntilNextMilk() {
         CowsRegistryItem cowDescription = getCowDescription();
         int newBaseTimeUntilNextEgg = (cowDescription.getMaxTime()
-            + rand.nextInt(cowDescription.getMaxTime() - cowDescription.getMinTime()));
-        int newTimeUntilNextMilk = (int) Math.max(1.0f, (newBaseTimeUntilNextEgg * (10.f - getGrowth() + 1.f)) / 10.f);
+                + rand.nextInt(cowDescription.getMaxTime() - cowDescription.getMinTime()));
+        float growthModifier = getGrowthTimeModifier();
+        int newTimeUntilNextMilk = (int) Math.max(1.0f, newBaseTimeUntilNextEgg * growthModifier);
         setTimeUntilNextMilk(newTimeUntilNextMilk * 2);
     }
 
@@ -261,10 +266,10 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     public boolean getCanSpawnHere() {
         boolean anyInNether = ChickensRegistry.INSTANCE.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.INSTANCE.isAnyIn(SpawnType.NORMAL)
-            || ChickensRegistry.INSTANCE.isAnyIn(SpawnType.SNOW);
+                || ChickensRegistry.INSTANCE.isAnyIn(SpawnType.SNOW);
 
         BiomeGenBase biome = worldObj
-            .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
+                .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
         boolean isNetherBiome = biome == BiomeGenBase.hell;
 
@@ -283,7 +288,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
             if (!list.isEmpty()) {
                 int type = list.get(rand.nextInt(list.size()))
-                    .getId();
+                        .getId();
                 setType(type);
                 data = new GroupData(type);
             }
@@ -297,7 +302,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
 
     private SpawnType getSpawnType() {
         BiomeGenBase biome = worldObj
-            .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
+                .getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
         return CowsRegistry.getSpawnType(biome);
     }
 
@@ -311,6 +316,12 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
         this.dataWatcher.addObject(24, (byte) 0); // ANALYZED (boolean)
         this.dataWatcher.addObject(25, 0); // PROGRESS
         this.dataWatcher.addObject(26, ""); // FluidStack (NBT string)
+    }
+
+    private float getGrowthTimeModifier() {
+        int maxGrowth = Math.max(1, getMaxGrowthStat());
+        int clampedGrowth = Math.max(1, Math.min(getGrowth(), maxGrowth));
+        return (float) (maxGrowth - clampedGrowth + 1) / (float) maxGrowth;
     }
 
     @Override
@@ -337,7 +348,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
     public void syncMilkFluid() {
         if (milkTank.getFluid() != null) {
             NBTTagCompound tag = milkTank.getFluid()
-                .writeToNBT(new NBTTagCompound());
+                    .writeToNBT(new NBTTagCompound());
             this.dataWatcher.updateObject(26, tag.toString());
         } else {
             this.dataWatcher.updateObject(26, "");
@@ -410,16 +421,16 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
             FluidStack stored = cow.getMilkFluid();
             if (!(stored == null || stored.getFluid() == null)) {
                 String fluidName = stored.getFluid()
-                    .getLocalizedName(stored);
+                        .getLocalizedName(stored);
                 int amount = stored.amount;
                 tooltip.add(
-                    String.format(
-                        "%s%s : %s (%d %s)",
-                        EnumChatFormatting.GRAY,
-                        LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.fluid"),
-                        fluidName,
-                        amount,
-                        LibMisc.LANG.localize("fluid.millibucket.abr")));
+                        String.format(
+                                "%s%s : %s (%d %s)",
+                                EnumChatFormatting.GRAY,
+                                LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.fluid"),
+                                fluidName,
+                                amount,
+                                LibMisc.LANG.localize("fluid.millibucket.abr")));
             }
         }
     }
@@ -430,8 +441,8 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
         Item j = this.getDropItem();
         if (j != null) {
             drops.add(
-                MobDrop.create(j)
-                    .withLooting());
+                    MobDrop.create(j)
+                            .withLooting());
         }
     }
 
@@ -446,6 +457,21 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
         public int getType() {
             return type;
         }
+    }
+
+    @Override
+    public int getMaxGrowthStat() {
+        return CowConfig.getMaxGrowthStat();
+    }
+
+    @Override
+    public int getMaxGainStat() {
+        return CowConfig.getMaxGainStat();
+    }
+
+    @Override
+    public int getMaxStrengthStat() {
+        return CowConfig.getMaxStrengthStat();
     }
 
 }

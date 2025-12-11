@@ -38,7 +38,7 @@ public class TEBreeder extends TERoostBase {
         DataChicken right = getChickenData(1);
         if (left != null && right != null) {
             putStackInOutput(left.createChildStack(right, worldObj));
-            playSpawnSound();
+                playSpawnSound();
         }
     }
 
