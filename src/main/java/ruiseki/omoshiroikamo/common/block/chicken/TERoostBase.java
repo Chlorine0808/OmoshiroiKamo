@@ -19,6 +19,7 @@ import ruiseki.omoshiroikamo.api.io.SlotDefinition;
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
+import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 public abstract class TERoostBase extends AbstractStorageTE implements IProgressTile {
 
@@ -30,7 +31,6 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
     protected boolean needsCacheRefresh = true;
     protected DataChicken[] chickenCache;
-    protected int CHICKEN_STACK_LIMIT = 16;
 
     public TERoostBase() {
         super(new SlotDefinition().setItemSlots(3, 3));
@@ -46,7 +46,7 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
             @Override
             public int getSlotLimit(int slot) {
                 if (slot < getSizeChickenInventory()) {
-                    return CHICKEN_STACK_LIMIT;
+                    return getChickenStackLimit();
                 }
                 return super.getSlotLimit(slot);
             }
@@ -322,8 +322,8 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
         // Enforce chicken stack limit
         ItemStack slotStack = inv.getStackInSlot(slot);
-        if (slotStack != null && slot < getSizeChickenInventory() && slotStack.stackSize > CHICKEN_STACK_LIMIT) {
-            slotStack.stackSize = CHICKEN_STACK_LIMIT;
+        if (slotStack != null && slot < getSizeChickenInventory() && slotStack.stackSize > getChickenStackLimit()) {
+            slotStack.stackSize = getChickenStackLimit();
             // setStackInSlot to notify changes
             inv.setStackInSlot(slot, slotStack);
         }
@@ -387,6 +387,10 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     protected abstract int requiredSeedsForDrop();
 
     protected abstract double speedMultiplier();
+
+    protected int getChickenStackLimit() {
+        return ChickenConfig.chickenStackLimit;
+    }
 
     protected void playSpawnSound() {
         worldObj.playSoundEffect(xCoord, yCoord, zCoord, "mob.chicken.plop", 0.5F, 0.8F);
