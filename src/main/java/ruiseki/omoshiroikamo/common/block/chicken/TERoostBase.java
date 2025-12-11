@@ -11,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
@@ -28,9 +30,28 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
     protected boolean needsCacheRefresh = true;
     protected DataChicken[] chickenCache;
+    protected int CHICKEN_STACK_LIMIT = 16;
 
     public TERoostBase() {
         super(new SlotDefinition().setItemSlots(3, 3));
+
+        // Override inv to enforce slot limits specific to chickens
+        this.inv = new ItemStackHandler(slotDefinition.getItemSlots()) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                onContentsChange(slot);
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                if (slot < getSizeChickenInventory()) {
+                    return CHICKEN_STACK_LIMIT;
+                }
+                return super.getSlotLimit(slot);
+            }
+        };
+
         chickenCache = new DataChicken[getSizeChickenInventory()];
     }
 
@@ -275,7 +296,7 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
     @Override
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
-        float hitZ) {
+            float hitZ) {
         openGui(player);
         return true;
     }
@@ -298,6 +319,16 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         super.setInventorySlotContents(slot, stack);
+
+        // Enforce chicken stack limit
+        if (stack != null && slot < getSizeChickenInventory() && stack.stackSize > CHICKEN_STACK_LIMIT) {
+            stack.stackSize = CHICKEN_STACK_LIMIT;
+            // The logic in AbstractStorageTE might have already set it, but we update it
+            // again just in case
+            // AbstractStorageTE clamps to getInventoryStackLimit() which is 64
+            inv.setStackInSlot(slot, stack);
+        }
+
         needsCacheRefresh();
         resetTimer();
     }
@@ -342,7 +373,8 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     }
 
     @Override
-    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {}
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {
+    }
 
     /**
      * -----------------------------------------------------------
