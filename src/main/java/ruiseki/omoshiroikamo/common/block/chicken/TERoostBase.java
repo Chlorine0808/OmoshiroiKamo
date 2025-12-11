@@ -321,12 +321,11 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
         super.setInventorySlotContents(slot, stack);
 
         // Enforce chicken stack limit
-        if (stack != null && slot < getSizeChickenInventory() && stack.stackSize > CHICKEN_STACK_LIMIT) {
-            stack.stackSize = CHICKEN_STACK_LIMIT;
-            // The logic in AbstractStorageTE might have already set it, but we update it
-            // again just in case
-            // AbstractStorageTE clamps to getInventoryStackLimit() which is 64
-            inv.setStackInSlot(slot, stack);
+        ItemStack slotStack = inv.getStackInSlot(slot);
+        if (slotStack != null && slot < getSizeChickenInventory() && slotStack.stackSize > CHICKEN_STACK_LIMIT) {
+            slotStack.stackSize = CHICKEN_STACK_LIMIT;
+            // setStackInSlot to notify changes
+            inv.setStackInSlot(slot, slotStack);
         }
 
         needsCacheRefresh();
@@ -342,9 +341,9 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         if (slot == 2) {
-            return isSeed(stack);
+            return requiredSeedsForDrop() > 0 && isSeed(stack);
         }
-        return slotDefinition.isInputSlot(slot) && DataChicken.isChicken(stack);
+        return slot < getSizeChickenInventory() && slotDefinition.isInputSlot(slot) && DataChicken.isChicken(stack);
     }
 
     public static boolean isSeed(ItemStack stack) {
@@ -373,8 +372,7 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     }
 
     @Override
-    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {
-    }
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {}
 
     /**
      * -----------------------------------------------------------
