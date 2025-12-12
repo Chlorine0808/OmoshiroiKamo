@@ -16,6 +16,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFilterUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IVoidUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 
@@ -26,9 +27,10 @@ public class UpgradeSlotSH extends ItemSlotSH {
     public static final int UPDATE_BASIC_FILTERABLE = 8;
     public static final int UPDATE_ADVANCED_FILTERABLE = 9;
     public static final int UPDATE_ADVANCED_FEEDING = 10;
-    public static final int UPDATE_FILTER_WAY = 11;
+    public static final int UPDATE_FILTER = 11;
     public static final int UPDATE_MAGNET = 12;
-    public static final int UPDATE_CRAFTING_DES = 13;
+    public static final int UPDATE_CRAFTING = 13;
+    public static final int UPDATE_VOID = 14;
 
     private final BackpackHandler handler;
 
@@ -56,14 +58,17 @@ public class UpgradeSlotSH extends ItemSlotSH {
             case UPDATE_ADVANCED_FEEDING:
                 updateAdvanceFeedingUpgrade(buf);
                 break;
-            case UPDATE_FILTER_WAY:
+            case UPDATE_FILTER:
                 updateFilterUpgrade(buf);
                 break;
             case UPDATE_MAGNET:
                 updateMagnetUpgrade(buf);
                 break;
-            case UPDATE_CRAFTING_DES:
-                updateCraftingDes(buf);
+            case UPDATE_CRAFTING:
+                updateCraftingUpgrade(buf);
+                break;
+            case UPDATE_VOID:
+                updateVoidUpgrade(buf);
                 break;
 
             default:
@@ -170,7 +175,7 @@ public class UpgradeSlotSH extends ItemSlotSH {
         upgrade.setCollectExp(exp);
     }
 
-    private void updateCraftingDes(PacketBuffer buf) {
+    private void updateCraftingUpgrade(PacketBuffer buf) {
         ItemStack stack = getSlot().getStack();
         UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
         if (!(wrapper instanceof ICraftingUpgrade upgradeWrapper)) {
@@ -181,6 +186,20 @@ public class UpgradeSlotSH extends ItemSlotSH {
         ICraftingUpgrade.CraftingDestination[] types = ICraftingUpgrade.CraftingDestination.values();
         upgradeWrapper.setCraftingDes(types[ordinal]);
         upgradeWrapper.setUseBackpack(backpack);
+    }
+
+    private void updateVoidUpgrade(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof IVoidUpgrade upgradeWrapper)) {
+            return;
+        }
+        int voidType = buf.readInt();
+        IVoidUpgrade.VoidType[] voidTypes = IVoidUpgrade.VoidType.values();
+        int voidInput = buf.readInt();
+        IVoidUpgrade.VoidInput[] voidInputs = IVoidUpgrade.VoidInput.values();
+        upgradeWrapper.setVoidType(voidTypes[voidType]);
+        upgradeWrapper.setVoidInput(voidInputs[voidInput]);
     }
 
 }

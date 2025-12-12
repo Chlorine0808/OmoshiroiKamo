@@ -98,8 +98,10 @@ public final class MGuiTextures {
     public static final UITexture USED_BACKPACK = icon("into_backpack", 176, 80);
     public static final UITexture UNUSED_BACKPACK = icon("unused_backpack", 192, 80);
 
-    public static final UITexture PLAY_ICON = icon("play", 0, 64);
-    public static final UITexture STOP_ICON = icon("stop", 16, 192);
+    public static final UITexture VOID_OVERFLOW = icon("void_overflow", 224, 16);
+    public static final UITexture VOID_ANY = icon("void_any", 208, 16);
+    public static final UITexture VOID_ALL = icon("void_all", 0, 48);
+    public static final UITexture VOID_AUTOMATION = icon("void_automation", 16, 48);
 
     public static final UITexture SOLID_UP_ARROW_ICON = icon("solid_up_arrow", 0, 144, 12, 12);
     public static final UITexture SOLID_DOWN_ARROW_ICON = icon("solid_down_arrow", 12, 156, 12, 12);

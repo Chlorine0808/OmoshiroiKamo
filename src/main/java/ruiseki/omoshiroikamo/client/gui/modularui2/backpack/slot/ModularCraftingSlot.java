@@ -135,20 +135,21 @@ public class ModularCraftingSlot extends ModularSlot {
         ICraftingUpgrade wrapper = handler != null ? handler.gatherCapabilityUpgrades(ICraftingUpgrade.class)
             .get(slotIndex) : null;
 
-        for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+        for (int i = 0; i < craftMatrix.getSizeInventory() - 1; i++) {
             ItemStack slotStack = craftMatrix.getStackInSlot(i);
             if (slotStack == null) continue;
 
-            int toExtract = 1;
+            boolean extractedFromHandler = false;
 
             if (wrapper != null && wrapper.isUseBackpack()) {
-                ItemStack extracted = handler.extractItem(slotStack, toExtract, false);
-                if (extracted != null) toExtract--;
+                ItemStack extracted = handler.extractItem(slotStack, 1, false);
+                if (extracted != null) {
+                    extractedFromHandler = true;
+                }
             }
 
-            if (toExtract > 0) {
-                slotStack = slotStack.copy();
-                slotStack.stackSize -= toExtract;
+            if (!extractedFromHandler) {
+                slotStack.stackSize--;
                 if (slotStack.stackSize <= 0) slotStack = null;
                 craftMatrix.setInventorySlotContents(i, slotStack);
             }

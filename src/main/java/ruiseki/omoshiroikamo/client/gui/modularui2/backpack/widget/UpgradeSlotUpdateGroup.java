@@ -3,6 +3,7 @@ package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
@@ -30,15 +31,15 @@ public class UpgradeSlotUpdateGroup {
 
     // Common filters
     public DelegatedStackHandlerSH commonFilterStackHandler;
-    public ModularSlot[] commonFilterSlots;
+    public ModularFilterSlot[] commonFilterSlots;
 
     // Advanced common filters
     public DelegatedStackHandlerSH advancedCommonFilterStackHandler;
-    public ModularSlot[] advancedCommonFilterSlots;
+    public ModularFilterSlot[] advancedCommonFilterSlots;
 
     // Feeding filters
-    public ModularSlot[] feedingFilterSlots;
-    public ModularSlot[] advancedFeedingFilterSlots;
+    public ModularFilterSlot[] feedingFilterSlots;
+    public ModularFilterSlot[] advancedFeedingFilterSlots;
 
     // Crafting
     public DelegatedStackHandlerSH craftingStackHandler;
@@ -57,7 +58,7 @@ public class UpgradeSlotUpdateGroup {
         this.commonFilterStackHandler = new DelegatedStackHandlerSH(handler, slotIndex, 9);
         syncManager.syncValue("common_filter_delegation_" + slotIndex, commonFilterStackHandler);
 
-        this.commonFilterSlots = new ModularSlot[9];
+        this.commonFilterSlots = new ModularFilterSlot[9];
         for (int i = 0; i < 9; i++) {
             ModularFilterSlot slot = new ModularFilterSlot(commonFilterStackHandler.getDelegatedStackHandler(), i);
             slot.slotGroup("common_filters_" + slotIndex);
@@ -73,7 +74,7 @@ public class UpgradeSlotUpdateGroup {
         this.advancedCommonFilterStackHandler = new DelegatedStackHandlerSH(handler, slotIndex, 16);
         syncManager.syncValue("adv_common_filter_delegation_" + slotIndex, advancedCommonFilterStackHandler);
 
-        this.advancedCommonFilterSlots = new ModularSlot[16];
+        this.advancedCommonFilterSlots = new ModularFilterSlot[16];
         for (int i = 0; i < 16; i++) {
             ModularFilterSlot slot = new ModularFilterSlot(
                 advancedCommonFilterStackHandler.getDelegatedStackHandler(),
@@ -88,7 +89,7 @@ public class UpgradeSlotUpdateGroup {
         syncManager.registerSlotGroup(new SlotGroup("adv_common_filters_" + slotIndex, 16, false));
 
         // FEEDING FILTER
-        this.feedingFilterSlots = new ModularSlot[9];
+        this.feedingFilterSlots = new ModularFilterSlot[9];
         for (int i = 0; i < 9; i++) {
             ModularFilterSlot slot = new ModularFilterSlot(commonFilterStackHandler.getDelegatedStackHandler(), i);
             slot.slotGroup("feeding_filters_" + slotIndex);
@@ -101,7 +102,7 @@ public class UpgradeSlotUpdateGroup {
         syncManager.registerSlotGroup(new SlotGroup("feeding_filters_" + slotIndex, 9, false));
 
         // ADVANCED FEEDING FILTER
-        this.advancedFeedingFilterSlots = new ModularSlot[16];
+        this.advancedFeedingFilterSlots = new ModularFilterSlot[16];
         for (int i = 0; i < 16; i++) {
             ModularFilterSlot slot = new ModularFilterSlot(
                 advancedCommonFilterStackHandler.getDelegatedStackHandler(),
@@ -168,11 +169,23 @@ public class UpgradeSlotUpdateGroup {
             slot.slotGroup("crafting_workbench_slot_" + slotIndex)
                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
                     if (client || init) return;
-                    craftingResultSlot.updateResult(
-                        CraftingManager.getInstance()
-                            .findMatchingRecipe(craftMatrix, panel.getPlayer().worldObj));
-                });
+                    boolean empty = true;
+                    for (int j = 0; j < craftingMatrixSlots.length; j++) {
+                        ItemStack stack = craftingMatrixSlots[j].getStack();
+                        if (stack != null && stack.stackSize > 0) {
+                            empty = false;
+                            break;
+                        }
+                    }
 
+                    if (empty) {
+                        craftingResultSlot.updateResult(null);
+                    } else {
+                        craftingResultSlot.updateResult(
+                            CraftingManager.getInstance()
+                                .findMatchingRecipe(craftMatrix, panel.getPlayer().worldObj));
+                    }
+                });
             syncManager.syncValue("crafting_slot_" + slotIndex, i, new ItemSlotSH(slot));
             craftingMatrixSlots[i] = slot;
         }
@@ -185,7 +198,7 @@ public class UpgradeSlotUpdateGroup {
         resultSlot.slotGroup("crafting_workbench_slot_" + slotIndex)
             .accessibility(false, true);
         resultSlot.setCraftMatrix(craftMatrix);
-        syncManager.syncValue("crafting_result_" + slotIndex, 9, new ItemSlotSH(resultSlot));
+        syncManager.syncValue("crafting_result_" + slotIndex, 0, new ItemSlotSH(resultSlot));
         craftingResultSlot = resultSlot;
 
         syncManager.registerSlotGroup(new SlotGroup("crafting_workbench_slot_" + slotIndex, 10, false));

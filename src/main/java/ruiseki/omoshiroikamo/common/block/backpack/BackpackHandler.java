@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFilterUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IMagnetUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IPickupUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IVoidUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
@@ -182,6 +184,53 @@ public class BackpackHandler implements IItemHandlerModifiable {
     @Override
     public @Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
         return backpackHandler.prioritizedInsertion(slot, stack, simulate);
+    }
+
+    public @Nullable ItemStack insertItem(@Nullable ItemStack stack, boolean simulate) {
+        if (stack == null || stack.stackSize <= 0) return null;
+
+        // Void ANY
+        if (canVoid(stack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
+            return simulate ? stack : null;
+        }
+
+        // Void Overflow early have max item
+        for (int i = 0; i < backpackHandler.getSlots(); i++) {
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack != null && ItemHandlerHelper.canItemStacksStack(slotStack, stack)) {
+
+                int limit = getSlotLimit(i);
+                if (slotStack.stackSize >= limit
+                    && canVoid(stack, IVoidUpgrade.VoidType.OVERFLOW, IVoidUpgrade.VoidInput.ALL)) {
+                    return null;
+                }
+            }
+        }
+
+        ItemStack remaining = stack;
+
+        for (int i = 0; i < backpackHandler.getSlots() && remaining != null; i++) {
+
+            int before = remaining.stackSize;
+            remaining = insertItem(i, remaining, simulate);
+
+            boolean changed = (remaining == null) || (remaining.stackSize != before);
+
+            // Void Overflow
+            if (changed && remaining != null && remaining.stackSize > 0) {
+                if (canVoid(remaining, IVoidUpgrade.VoidType.OVERFLOW, IVoidUpgrade.VoidInput.ALL)) {
+                    return simulate ? remaining : null;
+                }
+            }
+        }
+
+        if (remaining != null && remaining.stackSize > 0) {
+            if (!simulate) {
+                return null;
+            }
+        }
+
+        return remaining;
     }
 
     @Override
@@ -411,6 +460,17 @@ public class BackpackHandler implements IItemHandlerModifiable {
 
         for (IPickupUpgrade upgrade : gatherCapabilityUpgrades(IPickupUpgrade.class).values()) {
             if (upgrade.canPickup(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canVoid(ItemStack newStack, IVoidUpgrade.VoidType type, IVoidUpgrade.VoidInput input) {
+
+        for (IVoidUpgrade upgrade : gatherCapabilityUpgrades(IVoidUpgrade.class).values()) {
+            if (upgrade.canVoid(newStack) && upgrade.getVoidType() == type
+                && (upgrade.getVoidInput() == input || input == IVoidUpgrade.VoidInput.AUTOMATION)) {
                 return true;
             }
         }

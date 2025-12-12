@@ -63,7 +63,7 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
             craftingMatrix[i] = itemSlot;
         }
 
-        ItemSlot craftingResult = new ItemSlot().syncHandler("crafting_result_" + slotIndex, 9)
+        ItemSlot craftingResult = new ItemSlot().syncHandler("crafting_result_" + slotIndex, 0)
             .pos(18, 18 * 3 + 9)
             .name("crafting_result_" + slotIndex);
         craftingGroupsWidget.child(craftingResult);
@@ -87,7 +87,7 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
 
     public void updateWrapper() {
         this.getSyncHandler()
-            .syncToServer(UpgradeSlotSH.UPDATE_CRAFTING_DES, buf -> {
+            .syncToServer(UpgradeSlotSH.UPDATE_CRAFTING, buf -> {
                 buf.writeInt(
                     wrapper.getCraftingDes()
                         .ordinal());

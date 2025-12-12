@@ -98,7 +98,7 @@ public class BackpackInventoryHelper {
 
         for (int i = 0; i < sorted.size(); i++) {
             handler.getBackpackHandler()
-                .prioritizedInsertion(i, sorted.get(i), false);
+                .insertItem(i, sorted.get(i), false);
         }
     }
 
@@ -131,16 +131,9 @@ public class BackpackInventoryHelper {
                 if (!handler.canNestBackpack()) continue;
             }
 
-            for (int j = 0; j < handler.getBackpackSlots(); j++) {
-                stack = handler.getBackpackHandler()
-                    .insertItemToMemorySlots(stack, false);
+            ItemStack remaining = handler.insertItem(stack, false);
+            playerInv.setStackInSlot(i, remaining);
 
-                if (transferMatched && handler.getStackInSlot(j) == null) continue;
-
-                stack = handler.insertItem(j, stack, false);
-            }
-
-            playerInv.setStackInSlot(i, stack);
         }
     }
 
@@ -156,8 +149,7 @@ public class BackpackInventoryHelper {
                 stack = playerInv.insertItem(j, stack, false);
             }
 
-            handler.getBackpackHandler()
-                .setStackInSlot(i, stack);
+            handler.setStackInSlot(i, stack);
         }
     }
 

@@ -73,6 +73,7 @@ a rewritten backport of the modern Environmental Tech mod:
 #### Backpack
 
 - [X] Sorting system
+- [X] Custom name
 - [X] Memory slot
 - [X] Lockable by player
 - [X] Searching System

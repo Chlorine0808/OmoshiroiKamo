@@ -54,10 +54,10 @@ public class AdvancedUpgradeWrapper extends UpgradeWrapper implements IAdvancedF
 
     @Override
     public MatchType getMatchType() {
-        int ordinal = ItemNBTUtils.getInt(upgrade, MATCH_TYPE_TAG, MatchType.MOD.ordinal());
+        int ordinal = ItemNBTUtils.getInt(upgrade, MATCH_TYPE_TAG, MatchType.ITEM.ordinal());
         MatchType[] types = MatchType.values();
         if (ordinal < 0 || ordinal >= types.length) {
-            return MatchType.MOD;
+            return MatchType.ITEM;
         }
         return types[ordinal];
     }

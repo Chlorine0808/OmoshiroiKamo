@@ -1,28 +1,45 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.container;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.inventory.ClickType;
 import com.cleanroommc.modularui.screen.ModularContainer;
+import com.cleanroommc.modularui.screen.NEAAnimationHandler;
+import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularBackpackSlot;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularFilterSlot;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IVoidUpgrade;
 
 public class BackPackContainer extends ModularContainer {
 
     private final BackpackHandler handler;
     private final Integer backpackSlotIndex;
+
+    private static final int DROP_TO_WORLD = -999;
+    private static final int LEFT_MOUSE = 0;
+    private static final int RIGHT_MOUSE = 1;
+
+    private int dragState = 0;
+    private final Set<Slot> dragSlots = new HashSet<>();
+    private int dragButton = -1;
 
     public BackPackContainer(BackpackHandler handler, Integer backpackSlotIndex) {
         this.handler = handler;
@@ -32,37 +49,331 @@ public class BackPackContainer extends ModularContainer {
     @Override
     public ItemStack slotClick(int slotId, int mouseButton, int mode, EntityPlayer player) {
         ClickType clickTypeIn = ClickType.fromNumber(mode);
+
         InventoryPlayer inventoryplayer = player.inventory;
         ItemStack heldStack = inventoryplayer.getItemStack();
+        ItemStack returnable = null;
 
-        if (clickTypeIn == ClickType.CLONE && player.capabilities.isCreativeMode
+        if (clickTypeIn == ClickType.QUICK_CRAFT) {
+            if (heldStack != null && slotId >= 0) {
+                Slot clickedSlot = getSlot(slotId);
+                if (clickedSlot instanceof ModularBackpackSlot) {
+                    // VOID ANY
+                    if (handler.canVoid(heldStack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
+                        inventoryplayer.setItemStack(null);
+                        clickedSlot.onSlotChanged();
+                        return Platform.EMPTY_STACK;
+                    }
+
+                    // VOID OVERFLOW
+                    if (handler.canVoid(heldStack, IVoidUpgrade.VoidType.OVERFLOW, IVoidUpgrade.VoidInput.ALL)) {
+                        handler.insertItem(heldStack, false);
+                        inventoryplayer.setItemStack(null);
+                        clickedSlot.onSlotChanged();
+                        return Platform.EMPTY_STACK;
+                    }
+                }
+            }
+            return handleQuickCraft(slotId, mouseButton, mode, player);
+        } else if (this.dragState != 0) {
+            this.resetDrag();
+        }
+
+        if (clickTypeIn == ClickType.PICKUP_ALL && slotId >= 0) {
+            Slot clicked = getSlot(slotId);
+            ItemStack cursor = inventoryplayer.getItemStack();
+            if (cursor != null && (clicked == null || !clicked.getHasStack() || !clicked.canTakeStack(player))) {
+                int start = mouseButton == 0 ? 0 : this.inventorySlots.size() - 1;
+                int step = mouseButton == 0 ? 1 : -1;
+
+                // Lặp 2 vòng như vanilla
+                for (int pass = 0; pass < 2; pass++) {
+                    for (int i = start; i >= 0 && i < this.inventorySlots.size()
+                        && cursor.stackSize < cursor.getMaxStackSize(); i += step) {
+                        Slot slot = this.inventorySlots.get(i);
+
+                        if (slot == null || !slot.getHasStack()) continue;
+                        if (slot instanceof ModularFilterSlot) continue;
+
+                        ItemStack slotStack = slot.getStack();
+
+                        if (func_94527_a(slot, cursor, true) && slot.canTakeStack(player)
+                            && func_94530_a(cursor, slot)
+                            && (pass != 0 || slotStack.stackSize != slotStack.getMaxStackSize())) {
+                            int take = Math.min(cursor.getMaxStackSize() - cursor.stackSize, slotStack.stackSize);
+
+                            ItemStack removed = slot.decrStackSize(take);
+                            cursor.stackSize += take;
+
+                            if (removed.stackSize <= 0) slot.putStack(null);
+
+                            slot.onPickupFromSlot(player, removed);
+                        }
+                    }
+                }
+            }
+
+            detectAndSendChanges();
+            return Platform.EMPTY_STACK;
+        }
+
+        if ((clickTypeIn == ClickType.PICKUP || clickTypeIn == ClickType.QUICK_MOVE)
+            && (mouseButton == LEFT_MOUSE || mouseButton == RIGHT_MOUSE)) {
+
+            if (slotId == DROP_TO_WORLD) {
+                return superSlotClick(slotId, mouseButton, mode, player);
+            }
+
+            // early return
+            if (slotId < 0) return Platform.EMPTY_STACK;
+
+            if (clickTypeIn == ClickType.QUICK_MOVE) {
+                Slot fromSlot = getSlot(slotId);
+
+                if (fromSlot == null || !fromSlot.canTakeStack(player)) {
+                    return Platform.EMPTY_STACK;
+                }
+
+                if (fromSlot instanceof ModularFilterSlot) {
+                    fromSlot.putStack(null);
+                    return Platform.EMPTY_STACK;
+                }
+
+                if (NEAAnimationHandler.shouldHandleNEA(this)) {
+                    returnable = NEAAnimationHandler.injectQuickMove(this, player, slotId, fromSlot);
+                } else {
+                    returnable = handleQuickMove(player, slotId, fromSlot);
+                }
+            } else {
+                // PICKUP (normal left/right click)
+                Slot clickedSlot = getSlot(slotId);
+                boolean isBackpackSlot = clickedSlot instanceof ModularBackpackSlot;
+                boolean isFilterSlot = clickedSlot instanceof ModularFilterSlot;
+
+                if (clickedSlot != null) {
+                    ItemStack slotStack = clickedSlot.getStack();
+
+                    if (isFilterSlot) {
+                        if (heldStack != null) {
+                            ItemStack putStack = heldStack.copy();
+                            putStack.stackSize = 1;
+                            clickedSlot.putStack(putStack);
+                        }
+
+                        if (heldStack == null) {
+                            clickedSlot.putStack(null);
+                        }
+
+                        return Platform.EMPTY_STACK;
+                    }
+
+                    // If slot is empty & player holds something -> try place
+                    if (slotStack == null) {
+                        if (heldStack != null && clickedSlot.isItemValid(heldStack)) {
+                            if (isBackpackSlot && handler != null
+                                && handler.canVoid(heldStack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
+
+                                if (mouseButton == LEFT_MOUSE) {
+                                    inventoryplayer.setItemStack(null);
+                                } else {
+                                    heldStack.splitStack(1);
+                                    if (heldStack.stackSize <= 0) {
+                                        inventoryplayer.setItemStack(null);
+                                    } else {
+                                        inventoryplayer.setItemStack(heldStack);
+                                    }
+                                }
+
+                                clickedSlot.putStack(null);
+                                clickedSlot.onSlotChanged();
+                                return null;
+                            }
+
+                            if (isBackpackSlot && handler != null
+                                && handler
+                                    .canVoid(heldStack, IVoidUpgrade.VoidType.OVERFLOW, IVoidUpgrade.VoidInput.ALL)) {
+
+                                if (mouseButton == LEFT_MOUSE) {
+                                    ItemStack remainder = handler.insertItem(heldStack, false);
+                                    if (remainder == null || remainder.stackSize <= 0) {
+                                        inventoryplayer.setItemStack(null);
+                                        clickedSlot.onSlotChanged();
+                                        return null;
+                                    }
+                                    heldStack = remainder;
+                                    inventoryplayer.setItemStack(heldStack);
+
+                                } else {
+                                    ItemStack single = heldStack.splitStack(1);
+                                    ItemStack remainder = handler.insertItem(single, false);
+                                    if (remainder == null || remainder.stackSize <= 0) {
+                                        if (heldStack.stackSize <= 0) {
+                                            inventoryplayer.setItemStack(null);
+                                        } else {
+                                            inventoryplayer.setItemStack(heldStack);
+                                        }
+                                        clickedSlot.onSlotChanged();
+                                        return null;
+                                    } else {
+                                        heldStack.stackSize += remainder.stackSize;
+                                        inventoryplayer.setItemStack(heldStack);
+                                    }
+                                }
+                            }
+
+                            int lim = stackLimit(clickedSlot, heldStack);
+                            if (lim <= 0) return null;
+                            int placeCount = mouseButton == LEFT_MOUSE ? heldStack.stackSize : 1;
+                            if (placeCount > lim) placeCount = lim;
+
+                            ItemStack toPut = heldStack.splitStack(placeCount);
+                            clickedSlot.putStack(toPut);
+                            clickedSlot.onPickupFromSlot(player, clickedSlot.getStack());
+
+                            if (heldStack.stackSize <= 0) inventoryplayer.setItemStack(null);
+                        }
+                    }
+                    // Slot has item and can be taken
+                    else if (clickedSlot.canTakeStack(player)) {
+
+                        // Player not holding anything => pick up (left: all/ right: half)
+                        if (heldStack == null) {
+                            int available = Math.min(slotStack.stackSize, slotStack.getMaxStackSize());
+                            int take = mouseButton == LEFT_MOUSE ? available : (available + 1) / 2;
+
+                            ItemStack taken = slotStack.splitStack(take);
+                            inventoryplayer.setItemStack(taken);
+
+                            if (slotStack.stackSize == 0) {
+                                clickedSlot.putStack(null);
+                            } else {
+                                clickedSlot.putStack(slotStack);
+                            }
+
+                            clickedSlot.onPickupFromSlot(player, inventoryplayer.getItemStack());
+                        }
+                        // Player holding something
+                        else {
+                            // If same item type and tags -> try merge into slot
+                            if (slotStack.getItem() == heldStack.getItem()
+                                && slotStack.getItemDamage() == heldStack.getItemDamage()
+                                && ItemStack.areItemStackTagsEqual(slotStack, heldStack)) {
+
+                                int lim = stackLimit(clickedSlot, heldStack);
+                                int canAdd = Math.max(0, lim - slotStack.stackSize);
+
+                                if (canAdd > 0) {
+                                    // Void Overflow
+                                    if (isBackpackSlot && handler != null
+                                        && handler.canVoid(
+                                            heldStack,
+                                            IVoidUpgrade.VoidType.OVERFLOW,
+                                            IVoidUpgrade.VoidInput.ALL)) {
+
+                                        int add = Math.min(heldStack.stackSize, canAdd);
+
+                                        slotStack.stackSize += add;
+                                        clickedSlot.putStack(slotStack);
+
+                                        int overflow = heldStack.stackSize - add;
+                                        if (overflow > 0) {
+                                            heldStack.stackSize = 0;
+                                            inventoryplayer.setItemStack(null);
+                                        } else {
+                                            heldStack.splitStack(add);
+                                            if (heldStack.stackSize <= 0) {
+                                                inventoryplayer.setItemStack(null);
+                                            }
+                                        }
+                                        clickedSlot.onSlotChanged();
+                                        return null;
+                                    }
+
+                                    // Merge
+                                    int want = mouseButton == LEFT_MOUSE ? heldStack.stackSize : 1;
+                                    if (want > canAdd) want = canAdd;
+
+                                    if (want > 0) {
+                                        heldStack.splitStack(want);
+                                        if (heldStack.stackSize == 0) inventoryplayer.setItemStack(null);
+
+                                        slotStack.stackSize += want;
+                                        clickedSlot.putStack(slotStack);
+                                    }
+                                }
+                            }
+
+                            // If heldStack fits entirely into slot (and is valid) -> swap
+                            else if (clickedSlot.isItemValid(heldStack)
+                                && heldStack.stackSize <= stackLimit(clickedSlot, heldStack)) {
+                                    // swap: put held into slot, give slotStack to cursor
+                                    if (isBackpackSlot && handler
+                                        .canVoid(heldStack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
+                                        heldStack = null;
+                                    }
+                                    clickedSlot.putStack(heldStack);
+                                    inventoryplayer.setItemStack(slotStack);
+                                }
+                            // If items are different but stackable into heldStack (merge from slot into held)
+                            else if (heldStack.getItem() == slotStack.getItem() && heldStack.getMaxStackSize() > 1
+                                && (!slotStack.getHasSubtypes()
+                                    || slotStack.getItemDamage() == heldStack.getItemDamage())
+                                && ItemStack.areItemStackTagsEqual(slotStack, heldStack)) {
+                                    int canMove = slotStack.stackSize;
+                                    if (canMove > 0 && canMove + heldStack.stackSize <= heldStack.getMaxStackSize()) {
+                                        heldStack.stackSize += canMove;
+                                        ItemStack removed = clickedSlot.decrStackSize(canMove);
+                                        if (removed.stackSize == 0) {
+                                            clickedSlot.putStack(null);
+                                        } else {
+                                            clickedSlot.putStack(removed);
+                                        }
+                                        clickedSlot.onPickupFromSlot(player, inventoryplayer.getItemStack());
+                                    }
+                                }
+                        }
+                    }
+
+                    clickedSlot.onSlotChanged();
+                }
+            }
+
+            detectAndSendChanges();
+            return returnable;
+        }
+        // creative clone
+        else if (clickTypeIn == ClickType.CLONE && player.capabilities.isCreativeMode
             && (heldStack == null || heldStack.stackSize <= 0)
             && slotId >= 0) {
 
-            ModularSlot slot = (ModularSlot) getSlot(slotId);
-            if (slot != null && slot.getStack() != null) {
-                player.inventory.setItemStack(
-                    slot.getStack()
-                        .copy());
+                ModularSlot slot = (ModularSlot) getSlot(slotId);
+                if (slot != null && slot.getStack() != null) {
+                    player.inventory.setItemStack(
+                        slot.getStack()
+                            .copy());
+                }
+                return Platform.EMPTY_STACK;
             }
-            return null;
-
-        } else if (clickTypeIn == ClickType.SWAP && mouseButton >= 0
+        // hotbar swap blocked for backpack slot
+        else if (clickTypeIn == ClickType.SWAP && mouseButton >= 0
             && mouseButton < 9
             && backpackSlotIndex != null
             && backpackSlotIndex == mouseButton) {
-                return null;
+                return Platform.EMPTY_STACK;
             }
 
-        return super.slotClick(slotId, mouseButton, mode, player);
+        return returnable;
     }
 
     @Override
     public ItemStack transferItem(ModularSlot fromSlot, ItemStack fromStack) {
         if (fromStack == null || fromStack.stackSize <= 0) return fromStack;
 
-        int craftingSlotIndex = parseCraftingSlotIndex(fromSlot.getSlotGroupName());
+        @Nullable
+        SlotGroup fromSlotGroup = fromSlot.getSlotGroup();
 
+        // Crafting upgrade slots
+        int craftingSlotIndex = parseCraftingSlotIndex(fromSlot.getSlotGroupName());
         if (craftingSlotIndex >= 0) {
             Map<Integer, ICraftingUpgrade> map = handler.gatherCapabilityUpgrades(ICraftingUpgrade.class);
             ICraftingUpgrade wrapper = map.get(craftingSlotIndex);
@@ -75,58 +386,76 @@ public class BackPackContainer extends ModularContainer {
 
                 for (ModularSlot toSlot : getShiftClickSlots()) {
                     if (!targetGroup.equals(toSlot.getSlotGroupName())) continue;
-                    fromStack = transferToSlot(fromStack, toSlot);
-                    if (fromStack == null || fromStack.stackSize <= 0) return null;
+                    if (!toSlot.isItemValid(fromStack)) continue;
+                    transferToSlot(fromSlot, toSlot, fromStack, toSlot.getStack());
+                    if (fromStack.stackSize < 1) {
+                        return fromStack;
+                    }
                 }
-                return fromStack;
             }
         }
 
+        // Memorized slots
         if ("player_inventory".equals(fromSlot.getSlotGroupName())) {
             List<ModularSlot> memorizedSlots = getShiftClickSlots().stream()
                 .filter(s -> s instanceof ModularBackpackSlot sb && handler.isSlotMemorized(sb.getSlotIndex()))
                 .collect(Collectors.toList());
 
             for (ModularSlot toSlot : memorizedSlots) {
-                fromStack = transferToSlot(fromStack, toSlot);
-                if (fromStack == null || fromStack.stackSize <= 0) return null;
+                if (!toSlot.isItemValid(fromStack)) continue;
+                transferToSlot(fromSlot, toSlot, fromStack, toSlot.getStack());
+                if (fromStack.stackSize < 1) {
+                    return fromStack;
+                }
+            }
+        }
+
+        for (ModularSlot toSlot : getShiftClickSlots()) {
+            SlotGroup slotGroup = Objects.requireNonNull(toSlot.getSlotGroup());
+            if (slotGroup != fromSlotGroup && toSlot.func_111238_b() && toSlot.isItemValid(fromStack)) {
+                transferToSlot(fromSlot, toSlot, fromStack, toSlot.getStack());
+                if (fromStack.stackSize < 1) {
+                    return fromStack;
+                }
             }
         }
 
         return super.transferItem(fromSlot, fromStack);
     }
 
-    protected @Nullable ItemStack transferToSlot(ItemStack stack, ModularSlot toSlot) {
-        if (stack == null || stack.stackSize <= 0) return null;
-        if (toSlot == null || !toSlot.func_111238_b() || !toSlot.isItemValid(stack)) return stack;
-
-        ItemStack existing = toSlot.getStack();
-        int limit = toSlot.getItemStackLimit(stack);
-
-        if (existing == null || existing.stackSize <= 0) {
-            if (stack.stackSize > limit) {
-                toSlot.putStack(stack.splitStack(limit));
-            } else {
-                toSlot.putStack(stack.splitStack(stack.stackSize));
-            }
-            return stack.stackSize > 0 ? stack : null;
+    private void transferToSlot(ModularSlot fromSlot, ModularSlot toSlot, ItemStack fromStack, ItemStack toStack) {
+        boolean isBackpackSlot = toSlot instanceof ModularBackpackSlot;
+        if (isBackpackSlot && handler.canVoid(fromStack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
+            fromStack.stackSize = 0;
+            toSlot.onSlotChanged();
         }
 
-        if (ItemHandlerHelper.canItemStacksStack(stack, existing)) {
-            int total = existing.stackSize + stack.stackSize;
-            if (total <= limit) {
-                existing.stackSize = total;
-                toSlot.onSlotChanged();
-                return null;
+        int limit = stackLimit(toSlot, fromStack);
+        if (fromStack.stackSize > 0 && !fromSlot.isPhantom()
+            && ItemHandlerHelper.canItemStacksStack(fromStack, toStack)) {
+            int j = toStack.stackSize + fromStack.stackSize;
+
+            if (j <= limit) {
+                fromStack.stackSize = 0;
+                toStack.stackSize = j;
             } else {
-                existing.stackSize = limit;
-                toSlot.onSlotChanged();
-                stack.stackSize = total - limit;
-                return stack;
+                if (isBackpackSlot
+                    && handler.canVoid(fromStack, IVoidUpgrade.VoidType.OVERFLOW, IVoidUpgrade.VoidInput.ALL)) {
+                    fromStack.stackSize = 0;
+                } else {
+                    fromStack.stackSize -= limit - toStack.stackSize;
+                }
+                toStack.stackSize = limit;
             }
+            toSlot.onSlotChanged();
         }
 
-        return stack;
+        if (fromStack.stackSize > 0 && toStack == null) {
+            int move = Math.min(fromStack.stackSize, limit);
+            toSlot.putStack(fromStack.splitStack(move));
+            toSlot.onSlotChanged();
+        }
+
     }
 
     protected Integer parseCraftingSlotIndex(String groupName) {
@@ -140,6 +469,104 @@ public class BackPackContainer extends ModularContainer {
         } catch (NumberFormatException e) {
             return -1;
         }
+    }
+
+    private ItemStack handleQuickCraft(int slotId, int mouseButton, int mode, EntityPlayer player) {
+
+        InventoryPlayer inv = player.inventory;
+        ItemStack held = inv.getItemStack();
+        ItemStack returnable = null;
+        int remaining;
+
+        int previousState = dragState;
+
+        this.dragState = func_94532_c(mouseButton);
+        if ((previousState != 1 || this.dragState != 2) && previousState != this.dragState) {
+            this.resetDrag();
+        } else if (held == null) {
+            this.resetDrag();
+        } else if (this.dragState == 0) {
+            this.dragButton = func_94529_b(mouseButton);
+
+            if (func_94528_d(this.dragButton)) {
+                this.dragState = 1;
+                this.dragSlots.clear();
+            } else {
+                this.resetDrag();
+            }
+        } else if (this.dragState == 1) {
+            Slot slot = getSlot(slotId);
+
+            if (slot != null && func_94527_a(slot, held, true)
+                && slot.isItemValid(held)
+                && held.stackSize > this.dragSlots.size()
+                && this.canDragIntoSlot(slot)) {
+                this.dragSlots.add(slot);
+            }
+        } else if (this.dragState == 2) {
+            if (!dragSlots.isEmpty()) {
+                returnable = held.copy();
+                int remainingAmount = held.stackSize;
+
+                int perSlot;
+                if (dragButton == 0) {
+                    perSlot = held.stackSize / dragSlots.size();
+                } else {
+                    perSlot = 1;
+                }
+                if (perSlot <= 0) {
+                    perSlot = 1;
+                }
+
+                for (Slot slot : dragSlots) {
+                    if (slot == null) continue;
+                    if (!func_94527_a(slot, held, true)) continue;
+                    if (!slot.isItemValid(held)) continue;
+                    if (!canDragIntoSlot(slot)) continue;
+
+                    ItemStack slotStack = slot.getStack();
+                    int before = slotStack == null ? 0 : slotStack.stackSize;
+
+                    int add = perSlot;
+                    int limit = Math.min(held.getMaxStackSize(), slot.getSlotStackLimit());
+                    if (before + add > limit) {
+                        add = limit - before;
+                    }
+                    if (add <= 0) continue;
+
+                    ItemStack newStack;
+                    if (slot instanceof ModularFilterSlot) {
+                        newStack = held.copy();
+                        newStack.stackSize = 1;
+                    } else {
+                        newStack = returnable.copy();
+                        newStack.stackSize = before + add;
+                        remainingAmount -= add;
+                    }
+
+                    slot.putStack(newStack);
+                    slot.onSlotChanged();
+                }
+
+                if (remainingAmount <= 0) returnable = null;
+                else returnable.stackSize = remainingAmount;
+
+                inv.setItemStack(returnable);
+            }
+
+            resetDrag();
+        } else {
+            this.resetDrag();
+        }
+
+        System.out.println(dragSlots.size());
+
+        return Platform.EMPTY_STACK;
+    }
+
+    protected void resetDrag() {
+        this.dragState = 0;
+        this.dragSlots.clear();
     }
 
 }

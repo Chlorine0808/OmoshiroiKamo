@@ -98,12 +98,7 @@ public class BackpackEventHandler {
                 continue;
             }
 
-            int slotIndex = 0;
-            while (stack != null && slotIndex < handler.getSlots()) {
-                stack = handler.getBackpackHandler()
-                    .prioritizedInsertion(slotIndex, stack, false);
-                slotIndex++;
-            }
+            stack = handler.insertItem(stack, false);
 
             if (stack == null) {
                 break;

@@ -63,12 +63,12 @@ public interface IAdvancedFilterable extends IBasicFilterable {
                 for (boolean b : filterResult) if (b) {
                     return true;
                 }
-                return !getFilterItems().hasAnyItem();
+                return false;
             case BLACKLIST:
                 for (boolean b : filterResult) if (b) {
                     return false;
                 }
-                return getFilterItems().hasAnyItem();
+                return true;
             default:
                 return false;
         }

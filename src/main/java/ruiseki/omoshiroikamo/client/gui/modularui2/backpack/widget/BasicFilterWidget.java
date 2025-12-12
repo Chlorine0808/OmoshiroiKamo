@@ -8,10 +8,11 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.FilterSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 
@@ -21,16 +22,14 @@ public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
         new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON),
         new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON));
 
-    private final IBasicFilterable filterableWrapper;
     @Getter
     private final CyclicVariantButtonWidget filterTypeButton;
     @Getter
-    private final List<PhantomItemSlot> filterSlots;
+    private final List<ItemSlot> filterSlots;
     @Getter
     private UpgradeSlotSH slotSyncHandler = null;
 
     public BasicFilterWidget(IBasicFilterable filterableWrapper, int slotIndex, String syncKey) {
-        this.filterableWrapper = filterableWrapper;
 
         this.syncHandler("upgrades", slotIndex);
 
@@ -57,7 +56,7 @@ public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
 
         this.filterSlots = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            PhantomItemSlot slot = new PhantomItemSlot();
+            ItemSlot slot = new FilterSlot();
             slot.name(syncKey + "_" + slotIndex)
                 .syncHandler(syncKey + "_" + slotIndex, i)
                 .pos(i % 3 * 18, i / 3 * 18);
