@@ -114,13 +114,17 @@ public interface IMobStats {
         int p1Strength = p1.getBaseStrength();
         int p2Strength = p2.getBaseStrength();
         child.setBaseGrowth(
-                calculateNewStat(p1Strength, p2Strength, p1.getBaseGrowth(), p2.getBaseGrowth(), rand,
-                        child.getMaxGrowthStat()));
+            calculateNewStat(
+                p1Strength,
+                p2Strength,
+                p1.getBaseGrowth(),
+                p2.getBaseGrowth(),
+                rand,
+                child.getMaxGrowthStat()));
         child.setBaseGain(
-                calculateNewStat(p1Strength, p2Strength, p1.getBaseGain(), p2.getBaseGain(), rand,
-                        child.getMaxGainStat()));
+            calculateNewStat(p1Strength, p2Strength, p1.getBaseGain(), p2.getBaseGain(), rand, child.getMaxGainStat()));
         child.setBaseStrength(
-                calculateNewStat(p1Strength, p2Strength, p1Strength, p2Strength, rand, child.getMaxStrengthStat()));
+            calculateNewStat(p1Strength, p2Strength, p1Strength, p2Strength, rand, child.getMaxStrengthStat()));
     }
 
     default void mutationTrait(IMobStats child, IMobStats p1, IMobStats p2, Random rand) {
@@ -176,8 +180,7 @@ public interface IMobStats {
     default float getDiminishingReturnsModifier(int currentStat, int desiredIncrease, int maxStatValue) {
         int current = Math.max(1, currentStat);
         int cappedIncrease = Math.max(0, desiredIncrease);
-        int effectiveStat = Math.max(1,
-                Math.min(current + cappedIncrease, Math.max(1, maxStatValue)));
+        int effectiveStat = Math.max(1, Math.min(current + cappedIncrease, Math.max(1, maxStatValue)));
         float modifier = 1.0f;
         long threshold = 10;
 

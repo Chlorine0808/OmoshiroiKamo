@@ -37,6 +37,7 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
         // Override inv to enforce slot limits specific to chickens
         this.inv = new ItemStackHandler(slotDefinition.getItemSlots()) {
+
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
@@ -296,7 +297,8 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     }
 
     @Override
-    public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
+        float hitZ) {
         openGui(player);
         return true;
     }

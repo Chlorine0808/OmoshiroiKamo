@@ -77,7 +77,8 @@ public class TERoostCollector extends AbstractStorageTE {
     }
 
     @Override
-    public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
+        float hitZ) {
         openGui(player);
         return true;
     }

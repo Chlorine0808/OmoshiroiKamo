@@ -120,16 +120,31 @@ public class TEBreeder extends TERoostBase {
         }
 
         Random random = worldObj != null ? worldObj.rand : new Random();
-        adjustChildStat(tag, IMobStats.GROWTH_NBT, left.getGrowthStat(), right.getGrowthStat(),
-                ChickenConfig.getMaxGrowthStat(), random);
-        adjustChildStat(tag, IMobStats.GAIN_NBT, left.getGainStat(), right.getGainStat(),
-                ChickenConfig.getMaxGainStat(), random);
-        adjustChildStat(tag, IMobStats.STRENGTH_NBT, left.getStrengthStat(), right.getStrengthStat(),
-                ChickenConfig.getMaxStrengthStat(), random);
+        adjustChildStat(
+            tag,
+            IMobStats.GROWTH_NBT,
+            left.getGrowthStat(),
+            right.getGrowthStat(),
+            ChickenConfig.getMaxGrowthStat(),
+            random);
+        adjustChildStat(
+            tag,
+            IMobStats.GAIN_NBT,
+            left.getGainStat(),
+            right.getGainStat(),
+            ChickenConfig.getMaxGainStat(),
+            random);
+        adjustChildStat(
+            tag,
+            IMobStats.STRENGTH_NBT,
+            left.getStrengthStat(),
+            right.getStrengthStat(),
+            ChickenConfig.getMaxStrengthStat(),
+            random);
     }
 
     private void adjustChildStat(NBTTagCompound tag, String key, int parentStatA, int parentStatB, int maxStat,
-            Random random) {
+        Random random) {
         if (!tag.hasKey(key)) {
             return;
         }
