@@ -18,6 +18,8 @@ import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.io.SlotDefinition;
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
+import ruiseki.omoshiroikamo.common.network.PacketHandler;
+import ruiseki.omoshiroikamo.common.network.PacketProgress;
 import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
@@ -161,13 +163,21 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     private void updateProgress() {
 
         if (!isFullChickens() || !isFullSeeds()) {
+            boolean wasRunning = progress > 0;
             progress = 0;
             timeElapsed = 0;
             timeUntilNextDrop = 0;
+            if (wasRunning) {
+                PacketHandler.sendToAllAround(new PacketProgress(this), this);
+            }
             return;
         }
 
         progress = timeUntilNextDrop == 0 ? 0 : (timeElapsed * 1000 / timeUntilNextDrop);
+
+        if (worldObj.getTotalWorldTime() % 5 == 0) {
+            PacketHandler.sendToAllAround(new PacketProgress(this), this);
+        }
     }
 
     private void resetTimer() {
