@@ -2,45 +2,42 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.PlayerMainInvWrapper;
+
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 
 public class BackpackInventoryHelper {
 
     public static void sortInventory(BackpackHandler handler) {
-
         for (int i = 0; i < handler.getBackpackSlots() - 1; i++) {
-
             if (handler.isSlotLocked(i)) continue;
-
             boolean isMem = handler.isSlotMemorized(i);
             ItemStack baseStack = handler.getStackInSlot(i);
             if (baseStack == null) continue;
-
             int slotMaxSize = baseStack.getMaxStackSize() * handler.getTotalStackMultiplier();
 
             for (int j = i + 1; j < handler.getBackpackSlots(); j++) {
                 if (isMem != handler.isSlotMemorized(j) || handler.isSlotLocked(j)) continue;
-
                 ItemStack stack = handler.getStackInSlot(j);
-
                 if (!ItemHandlerHelper.canItemStacksStack(baseStack, stack)) continue;
-
-                if (stack == null || stack.stackSize <= 0) continue;
+                if (stack.stackSize <= 0) continue;
 
                 int diff = Math.min(stack.stackSize, slotMaxSize - baseStack.stackSize);
 
                 if (diff > 0) {
                     baseStack.stackSize += diff;
                     stack.stackSize -= diff;
-
                     if (stack.stackSize <= 0) {
                         handler.getBackpackHandler()
                             .setStackInSlot(j, null);
@@ -54,7 +51,6 @@ public class BackpackInventoryHelper {
 
         for (int i = 0; i < handler.getBackpackSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
-
             if (handler.isSlotMemorized(i) || handler.isSlotLocked(i)) {
                 inPlace.add(new AbstractMap.SimpleEntry<>(stack, i));
             } else {
@@ -119,6 +115,16 @@ public class BackpackInventoryHelper {
         return Integer.compare(a.size(), b.size());
     }
 
+    private static boolean hasMatchingSlot(BackpackHandler handler, ItemStack stack) {
+        for (int i = 0; i < handler.getBackpackSlots(); i++) {
+            ItemStack inSlot = handler.getStackInSlot(i);
+            if (ItemHandlerHelper.canItemStacksStack(inSlot, stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void transferPlayerInventoryToBackpack(BackpackHandler handler, PlayerMainInvWrapper playerInv,
         boolean transferMatched) {
         for (int i = 9; i < playerInv.getSlots(); i++) {
@@ -129,6 +135,10 @@ public class BackpackInventoryHelper {
                 BackpackHandler other = new BackpackHandler(stack.copy(), null, backpack);
                 if (other == handler) continue;
                 if (!handler.canNestBackpack()) continue;
+            }
+
+            if (transferMatched && !hasMatchingSlot(handler, stack)) {
+                continue;
             }
 
             ItemStack remaining = handler.insertItem(stack, false);
@@ -153,4 +163,169 @@ public class BackpackInventoryHelper {
         }
     }
 
+    public static void rotated(ItemStackHandler stackHandler, boolean clockwise) {
+        ItemStack[] old = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            old[i] = stackHandler.getStackInSlot(i);
+        }
+
+        if (clockwise) {
+            stackHandler.setStackInSlot(0, old[3]);
+            stackHandler.setStackInSlot(1, old[0]);
+            stackHandler.setStackInSlot(2, old[1]);
+
+            stackHandler.setStackInSlot(3, old[6]);
+            stackHandler.setStackInSlot(4, old[4]);
+            stackHandler.setStackInSlot(5, old[2]);
+
+            stackHandler.setStackInSlot(6, old[7]);
+            stackHandler.setStackInSlot(7, old[8]);
+            stackHandler.setStackInSlot(8, old[5]);
+        } else {
+            stackHandler.setStackInSlot(0, old[2]);
+            stackHandler.setStackInSlot(0, old[1]);
+            stackHandler.setStackInSlot(1, old[2]);
+            stackHandler.setStackInSlot(2, old[5]);
+
+            stackHandler.setStackInSlot(3, old[0]);
+            stackHandler.setStackInSlot(4, old[4]);
+            stackHandler.setStackInSlot(5, old[8]);
+
+            stackHandler.setStackInSlot(6, old[3]);
+            stackHandler.setStackInSlot(7, old[6]);
+            stackHandler.setStackInSlot(8, old[7]);
+        }
+    }
+
+    public static void balance(ItemStackHandler handler) {
+
+        Map<ItemStack, List<Integer>> groups = new HashMap<>();
+
+        for (int i = 0; i < 9; i++) {
+            ItemStack s = handler.getStackInSlot(i);
+            if (s == null) continue;
+
+            boolean found = false;
+            for (ItemStack key : groups.keySet()) {
+                if (ItemHandlerHelper.canItemStacksStack(s, key)) {
+                    groups.get(key)
+                        .add(i);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                ItemStack key = s.copy();
+                key.stackSize = 1;
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                groups.put(key, list);
+            }
+        }
+
+        for (Map.Entry<ItemStack, List<Integer>> entry : groups.entrySet()) {
+
+            ItemStack target = entry.getKey();
+            List<Integer> slots = entry.getValue();
+            int slotCount = slots.size();
+
+            if (slotCount <= 1) continue;
+
+            int total = 0;
+            for (int slot : slots) {
+                total += handler.getStackInSlot(slot).stackSize;
+            }
+
+            int base = total / slotCount;
+            int remain = total % slotCount;
+
+            for (int i = 0; i < slotCount; i++) {
+                int slot = slots.get(i);
+                ItemStack old = handler.getStackInSlot(slot);
+
+                int want = base + (i < remain ? 1 : 0);
+                int give = Math.min(want, old.getMaxStackSize());
+
+                ItemStack out = target.copy();
+                out.stackSize = give;
+                handler.setStackInSlot(slot, out);
+            }
+        }
+    }
+
+    public static void spread(ItemStackHandler handler) {
+
+        ItemStack source = null;
+        for (int i = 0; i < 9; i++) {
+            ItemStack s = handler.getStackInSlot(i);
+            if (s != null && s.stackSize > 0) {
+                source = s;
+                break;
+            }
+        }
+        if (source == null) return;
+
+        List<Integer> slots = new ArrayList<>();
+        int totalCount = 0;
+        for (int i = 0; i < 9; i++) {
+            ItemStack s = handler.getStackInSlot(i);
+            if (s == null) {
+                slots.add(i);
+            } else if (ItemHandlerHelper.canItemStacksStack(s, source)) {
+                slots.add(i);
+                totalCount += s.stackSize;
+            }
+        }
+        if (slots.isEmpty()) return;
+
+        int slotCount = slots.size();
+        int base = totalCount / slotCount;
+        int remain = totalCount % slotCount;
+
+        for (int i = 0; i < slotCount; i++) {
+            int slot = slots.get(i);
+            int give = base + (i < remain ? 1 : 0);
+            give = Math.min(give, source.getMaxStackSize());
+
+            ItemStack out = source.copy();
+            out.stackSize = give;
+            handler.setStackInSlot(slot, out);
+        }
+    }
+
+    public static void clear(BackpackPanel panel, ItemStackHandler stackHandler, int ordinal) {
+        ICraftingUpgrade.CraftingDestination type = ICraftingUpgrade.CraftingDestination.values()[ordinal];
+
+        EntityPlayer player = panel.getPlayer();
+        PlayerMainInvWrapper playerInv = new PlayerMainInvWrapper(player.inventory);
+
+        BackpackHandler backpack = panel.getHandler();
+
+        switch (type) {
+            case INVENTORY:
+                for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
+                    ItemStack stack = stackHandler.getStackInSlot(i);
+                    if (stack == null || stack.stackSize <= 0) continue;
+
+                    for (int j = 9; j < playerInv.getSlots(); j++) {
+                        if (stack == null || stack.stackSize <= 0) break;
+                        stack = playerInv.insertItem(j, stack, false);
+                    }
+
+                    stackHandler.setStackInSlot(i, stack);
+                }
+                break;
+
+            case BACKPACK:
+                for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
+                    ItemStack stack = stackHandler.getStackInSlot(i);
+                    if (stack == null || stack.stackSize <= 0) continue;
+
+                    ItemStack remaining = backpack.insertItem(stack, false);
+                    stackHandler.setStackInSlot(i, remaining);
+                }
+                break;
+        }
+    }
 }

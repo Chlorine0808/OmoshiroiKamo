@@ -23,7 +23,7 @@ public class KeyHandler {
 
     public static final KeyHandler instance = new KeyHandler();
 
-    private final KeyBinding keyOpenBackpack;
+    public final KeyBinding keyOpenBackpack;
 
     private KeyHandler() {
         keyOpenBackpack = new KeyBinding(

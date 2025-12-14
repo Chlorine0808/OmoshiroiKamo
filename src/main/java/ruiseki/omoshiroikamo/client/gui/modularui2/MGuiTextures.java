@@ -85,14 +85,6 @@ public final class MGuiTextures {
     public static final UITexture MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96);
     public static final UITexture IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96);
 
-    public static final UITexture TOGGLE_DISABLE_ICON = icon("disable", 0, 128, 4, 10);
-    public static final UITexture TOGGLE_ENABLE_ICON = icon("enable", 4, 128, 4, 10);
-    public static final UITexture SMALL_A_ICON = icon("small_a", 24, 144, 12, 12);
-    public static final UITexture SMALL_1_ICON = icon("small_1", 36, 144, 12, 12);
-    public static final UITexture SMALL_O_ICON = icon("small_ore_dict", 64, 144, 12, 12);
-
-    public static final UITexture SMALL_M_ICON = icon("small_m", 0, 156, 12, 12);
-
     public static final UITexture INTO_BACKPACK = icon("into_backpack", 32, 48);
     public static final UITexture INTO_INVENTORY = icon("small_m", 48, 48);
     public static final UITexture USED_BACKPACK = icon("into_backpack", 176, 80);
@@ -103,10 +95,24 @@ public final class MGuiTextures {
     public static final UITexture VOID_ALL = icon("void_all", 0, 48);
     public static final UITexture VOID_AUTOMATION = icon("void_automation", 16, 48);
 
+    public static final UITexture ROTATED_RIGHT = icon("rotated_right", 0, 170, 16, 16);
+    public static final UITexture ROTATED_LEFT = icon("rotated_left", 48, 170, 16, 16);
+    public static final UITexture BALANCE = icon("balance", 32, 170, 16, 16);
+    public static final UITexture SPREAD = icon("spread", 80, 170, 16, 16);
+    public static final UITexture CLEAR = icon("clear", 16, 170, 16, 16);
+
+    public static final UITexture SMALL_M_ICON = icon("small_m", 0, 156, 12, 12);
+
     public static final UITexture SOLID_UP_ARROW_ICON = icon("solid_up_arrow", 0, 144, 12, 12);
     public static final UITexture SOLID_DOWN_ARROW_ICON = icon("solid_down_arrow", 12, 156, 12, 12);
     public static final UITexture DOT_DOWN_ARROW_ICON = icon("dot_down_arrow", 24, 156, 12, 12);
     public static final UITexture DOT_UP_ARROW_ICON = icon("dot_up_arrow", 36, 156, 12, 12);
+
+    public static final UITexture TOGGLE_DISABLE_ICON = icon("disable", 0, 128, 4, 10);
+    public static final UITexture TOGGLE_ENABLE_ICON = icon("enable", 4, 128, 4, 10);
+    public static final UITexture SMALL_A_ICON = icon("small_a", 24, 144, 12, 12);
+    public static final UITexture SMALL_1_ICON = icon("small_1", 36, 144, 12, 12);
+    public static final UITexture SMALL_O_ICON = icon("small_ore_dict", 64, 144, 12, 12);
 
     private static UITexture icon(String name, int x, int y) {
         return icon(name, x, y, 16, 16);

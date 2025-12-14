@@ -33,9 +33,10 @@ Each backport module can be individually enabled or disabled in the config.
 
 ### *I will add as much compatibility as I can.
 
-### Environmental Tech (Backport Rewrite, Open Source)
+### Environmental Tech Clean-Room Rewrite (Open Source)
 
-a rewritten backport of the modern Environmental Tech mod:
+A clean-room rewrite and backport of the modern Environmental Tech mod.
+All code has been rewritten, and all textures are original.
 
 - Quantum Extractor (Ore, Blocks, Special Drops)
 - Solar Array (Generate Energy From Sun)
@@ -70,7 +71,7 @@ a rewritten backport of the modern Environmental Tech mod:
 ![Cows](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
 ![Cows](https://media.forgecdn.net/attachments/1397/915/2025-11-19_19-23-22-png.png)
 
-### Sophisticated Backpacks (Backport Rewrite WIP)
+### RetroSophisticated Backpacks (Backport Rewrite WIP)
 
 #### Backpack
 

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -11,6 +13,8 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackInventoryHelper;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.CraftingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
@@ -27,8 +31,8 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
 
     private final CraftingUpgradeWrapper wrapper;
 
-    public CraftingUpgradeWidget(int slotIndex, CraftingUpgradeWrapper wrapper) {
-        super(slotIndex, 5, ModItems.CRAFTING_UPGRADE.newItemStack(), "gui.crafting_settings");
+    public CraftingUpgradeWidget(int slotIndex, CraftingUpgradeWrapper wrapper, BackpackPanel panel) {
+        super(slotIndex, 5, ModItems.CRAFTING_UPGRADE.newItemStack(), "gui.crafting_settings", 90);
         this.wrapper = wrapper;
 
         this.syncHandler("upgrades", slotIndex);
@@ -50,6 +54,66 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
                 updateWrapper();
             }).size(20, 20);
 
+        Row buttonRow = (Row) new Row().height(20)
+            .child(craftingDesButton)
+            .child(usedBackpackButton);
+
+        ShiftButtonWidget rotated = new ShiftButtonWidget(MGuiTextures.ROTATED_RIGHT, MGuiTextures.ROTATED_LEFT)
+            .size(16)
+            .onMousePressed(button -> {
+                if (button == 0) {
+                    Interactable.playButtonClickSound();
+                    boolean clockwise = !Interactable.hasShiftDown();
+
+                    BackpackInventoryHelper.rotated(wrapper.getMatrix(), clockwise);
+                    getSlotSyncHandler()
+                        .syncToServer(UpgradeSlotSH.UPDATE_CRAFTING_R, buf -> { buf.writeBoolean(clockwise); });
+                    return true;
+                }
+                return false;
+            });
+
+        ShiftButtonWidget grid = new ShiftButtonWidget(MGuiTextures.BALANCE, MGuiTextures.SPREAD).size(16)
+            .onMousePressed(button -> {
+                if (button == 0) {
+                    Interactable.playButtonClickSound();
+                    boolean balance = !Interactable.hasShiftDown();
+
+                    if (balance) {
+                        BackpackInventoryHelper.balance(wrapper.getMatrix());
+                    } else {
+                        BackpackInventoryHelper.spread(wrapper.getMatrix());
+                    }
+                    getSlotSyncHandler()
+                        .syncToServer(UpgradeSlotSH.UPDATE_CRAFTING_G, buf -> { buf.writeBoolean(balance); });
+                    return true;
+                }
+                return false;
+            });
+
+        ButtonWidget<?> clear = new ButtonWidget<>().overlay(MGuiTextures.CLEAR)
+            .size(16)
+            .onMousePressed(button -> {
+                if (button == 0) {
+                    Interactable.playButtonClickSound();
+
+                    BackpackInventoryHelper.clear(
+                        panel,
+                        wrapper.getMatrix(),
+                        wrapper.getCraftingDes()
+                            .ordinal());
+                    getSlotSyncHandler().syncToServer(
+                        UpgradeSlotSH.UPDATE_CRAFTING_C,
+                        buf -> {
+                            buf.writeInt(
+                                wrapper.getCraftingDes()
+                                    .ordinal());
+                        });
+                    return true;
+                }
+                return false;
+            });
+
         SlotGroupWidget craftingGroupsWidget = new SlotGroupWidget().name("crafting_matrix")
             .coverChildren();
 
@@ -67,15 +131,23 @@ public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgr
             .pos(18, 18 * 3 + 9)
             .name("crafting_result_" + slotIndex);
         craftingGroupsWidget.child(craftingResult);
-        Row buttonRow = (Row) new Row().height(20)
-            .child(craftingDesButton)
-            .child(usedBackpackButton);
+
+        Row craftingRow = (Row) new Row().coverChildrenHeight()
+            .childPadding(2);
+        craftingRow.child(craftingGroupsWidget)
+            .child(
+                new Column().coverChildren()
+                    .childPadding(2)
+                    .top(1)
+                    .child(rotated)
+                    .child(grid)
+                    .child(clear));
 
         Column column = (Column) new Column().pos(8, 28)
-            .width(64)
+            .coverChildren()
             .childPadding(2)
             .child(buttonRow)
-            .child(craftingGroupsWidget);
+            .child(craftingRow);
 
         child(column);
     }

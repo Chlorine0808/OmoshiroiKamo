@@ -70,23 +70,22 @@ public class SearchBarWidget extends TextFieldWidget {
         }
     }
 
+    public void research() {
+        doSearch(prevText);
+    }
+
     public void doSearch(String search) {
         if (prevText.isEmpty()) {
             return;
         }
 
         for (IWidget backpackRow : backpackSlots.getChildren()) {
-            int foundCount = 0;
             for (int i = 0; i < backpackRow.getChildren()
                 .size(); i++) {
                 BackpackSlot slot = (BackpackSlot) backpackRow.getChildren()
                     .get(i);
 
-                slot.setEnabled(slot.matches(search));
-                if (slot.isEnabled()) {
-                    ((BackpackRow) backpackRow).moveChild(i, foundCount);
-                    foundCount++;
-                }
+                slot.setFocus(slot.matches(search));
                 slot.scheduleResize();
             }
             backpackRow.scheduleResize();

@@ -17,10 +17,10 @@ public class BasicUpgradeWrapper extends UpgradeWrapper implements IBasicFiltera
 
     @Override
     public FilterType getFilterType() {
-        int ordinal = ItemNBTUtils.getInt(upgrade, FILTER_TYPE_TAG, FilterType.WHITELIST.ordinal());
+        int ordinal = ItemNBTUtils.getInt(upgrade, FILTER_TYPE_TAG, FilterType.BLACKLIST.ordinal());
         FilterType[] types = FilterType.values();
         if (ordinal < 0 || ordinal >= types.length) {
-            return FilterType.WHITELIST;
+            return FilterType.BLACKLIST;
         }
         return types[ordinal];
     }
@@ -28,7 +28,7 @@ public class BasicUpgradeWrapper extends UpgradeWrapper implements IBasicFiltera
     @Override
     public void setFilterType(FilterType type) {
         if (type == null) {
-            type = FilterType.WHITELIST;
+            type = FilterType.BLACKLIST;
         }
         ItemNBTUtils.setInt(upgrade, FILTER_TYPE_TAG, type.ordinal());
     }

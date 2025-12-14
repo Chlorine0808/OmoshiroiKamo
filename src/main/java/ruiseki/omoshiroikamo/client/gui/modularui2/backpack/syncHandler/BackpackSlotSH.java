@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
 
 public class BackpackSlotSH extends ItemSlotSH {
 
@@ -17,9 +18,11 @@ public class BackpackSlotSH extends ItemSlotSH {
     public static final int UPDATE_UNSET_SLOT_LOCK = 9;
 
     private final BackpackHandler handler;
+    private final BackpackPanel panel;
 
-    public BackpackSlotSH(BackpackHandler handler, ModularSlot slot) {
+    public BackpackSlotSH(BackpackPanel panel, BackpackHandler handler, ModularSlot slot) {
         super(slot);
+        this.panel = panel;
         this.handler = handler;
     }
 

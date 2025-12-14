@@ -6,12 +6,12 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
-public class TransferButtonWidget extends ButtonWidget<TransferButtonWidget> {
+public class ShiftButtonWidget extends ButtonWidget<ShiftButtonWidget> {
 
     private final IDrawable matchedIcon;
     private final IDrawable allIcon;
 
-    public TransferButtonWidget(IDrawable matchedIcon, IDrawable allIcon) {
+    public ShiftButtonWidget(IDrawable matchedIcon, IDrawable allIcon) {
         this.matchedIcon = matchedIcon;
         this.allIcon = allIcon;
     }

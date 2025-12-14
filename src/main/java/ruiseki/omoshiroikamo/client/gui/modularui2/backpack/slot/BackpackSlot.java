@@ -37,6 +37,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lombok.Getter;
+import lombok.Setter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSlotSH;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
@@ -47,9 +49,14 @@ public class BackpackSlot extends ItemSlot {
     private final BackpackPanel panel;
     private final BackpackHandler handler;
 
+    @Getter
+    @Setter
+    private boolean focus;
+
     public BackpackSlot(BackpackPanel panel, BackpackHandler handler) {
         this.panel = panel;
         this.handler = handler;
+        this.focus = true;
     }
 
     private boolean isInSettingMode() {
@@ -187,39 +194,43 @@ public class BackpackSlot extends ItemSlot {
 
         if (isInSettingMode()) drawSettingStack(context, widgetTheme.getTheme());
         else drawNormalStack(context, widgetTheme.getTheme());
+
+        if (!focus && !isInSettingMode()) {
+            drawDimmedSlot(context);
+        }
+    }
+
+    private void drawDimmedSlot(ModularGuiContext context) {
+        GuiDraw.drawRect(1, 1, 17, 17, 0x88000000);
     }
 
     private void drawSettingStack(ModularGuiContext context, WidgetTheme widgetTheme) {
         ItemStack slotStack = getSlot().getStack();
         ItemStack memoryStack = handler.getBackpackHandler().memorizedSlotStack.get(getSlot().slotNumber);
-        if (slotStack == null && memoryStack == null) {
-            return;
-        }
+        ItemStack toRender = slotStack != null ? slotStack : memoryStack;
+
+        if (toRender == null) return;
 
         GuiScreen guiScreen = getScreen().getScreenWrapper()
             .getGuiScreen();
         if (!(guiScreen instanceof GuiContainer guiContainer))
             throw new IllegalStateException("The gui must be an instance of GuiContainer if it contains slots!");
-        RenderItem renderItem = GuiScreenAccessor.getItemRender();
 
-        ((GuiAccessor) guiScreen).setZLevel(100f);
-        renderItem.zLevel = 100f;
+        RenderItem renderItem = GuiScreenAccessor.getItemRender();
+        float z = getContext().getCurrentDrawingZ() + 100;
+        ((GuiAccessor) guiScreen).setZLevel(z);
+        renderItem.zLevel = z;
 
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.disableLighting();
 
-        if (slotStack == null) renderItem.renderItemIntoGUI(
+        Platform.setupDrawItem();
+        float itemScale = NEAAnimationHandler.injectHoverScale(guiContainer, getSlot());
+        renderItem.renderItemAndEffectIntoGUI(
             Minecraft.getMinecraft().fontRenderer,
             Minecraft.getMinecraft()
                 .getTextureManager(),
-            memoryStack,
-            1,
-            1);
-        else renderItem.renderItemIntoGUI(
-            Minecraft.getMinecraft().fontRenderer,
-            Minecraft.getMinecraft()
-                .getTextureManager(),
-            getSlot().getStack(),
+            toRender,
             1,
             1);
 
@@ -228,6 +239,10 @@ public class BackpackSlot extends ItemSlot {
             GuiDraw.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128));
             GlStateManager.enableAlpha();
         }
+
+        GuiDraw.afterRenderItemAndEffectIntoGUI(toRender);
+        NEAAnimationHandler.endHoverScale();
+        Platform.endDrawItem();
 
         GlStateManager.enableLighting();
         RenderHelper.disableStandardItemLighting();
@@ -253,23 +268,32 @@ public class BackpackSlot extends ItemSlot {
             throw new IllegalStateException("The gui must be an instance of GuiContainer if it contains slots!");
         RenderItem renderItem = GuiScreenAccessor.getItemRender();
 
-        ((GuiAccessor) guiScreen).setZLevel(100f);
-        renderItem.zLevel = 100f;
+        float z = getContext().getCurrentDrawingZ() + 100;
+        ((GuiAccessor) guiScreen).setZLevel(z);
+        renderItem.zLevel = z;
 
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.disableLighting();
 
-        renderItem.renderItemIntoGUI(
-            Minecraft.getMinecraft().fontRenderer,
-            Minecraft.getMinecraft()
-                .getTextureManager(),
-            memoryStack,
-            1,
-            1);
+        Platform.setupDrawItem();
+        float itemScale = NEAAnimationHandler.injectHoverScale(guiContainer, getSlot());
+        ItemStack stackToRender = NEAAnimationHandler.injectVirtualStack(memoryStack, guiContainer, getSlot());
+        if (stackToRender != null) {
+            renderItem.renderItemAndEffectIntoGUI(
+                Minecraft.getMinecraft().fontRenderer,
+                Minecraft.getMinecraft()
+                    .getTextureManager(),
+                stackToRender,
+                1,
+                1);
+            GuiDraw.afterRenderItemAndEffectIntoGUI(stackToRender);
+            NEAAnimationHandler.endHoverScale();
+        }
+        Platform.endDrawItem();
 
         GlStateManager.disableDepth();
         GuiDraw.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128));
-        GlStateManager.enableDepth();
+        GlStateManager.enableAlpha();
 
         GlStateManager.enableLighting();
         RenderHelper.disableStandardItemLighting();

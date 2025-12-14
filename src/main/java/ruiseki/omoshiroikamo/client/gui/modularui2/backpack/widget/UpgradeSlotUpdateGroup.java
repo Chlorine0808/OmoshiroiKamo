@@ -189,7 +189,7 @@ public class UpgradeSlotUpdateGroup {
                 i);
             slot.slotGroup("crafting_workbench_slot_" + slotIndex)
                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                    if (client || init) return;
+                    if (client) return;
                     boolean empty = true;
                     for (int j = 0; j < craftingMatrixSlots.length; j++) {
                         ItemStack stack = craftingMatrixSlots[j].getStack();

@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import codechicken.nei.recipe.IRecipeHandler;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularBackpackSlot;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingMatrixSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularFilterSlot;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
@@ -90,7 +91,6 @@ public class BackPackContainer extends ModularContainer implements INEIRecipeTra
                 int start = mouseButton == 0 ? 0 : this.inventorySlots.size() - 1;
                 int step = mouseButton == 0 ? 1 : -1;
 
-                // Lặp 2 vòng như vanilla
                 for (int pass = 0; pass < 2; pass++) {
                     for (int i = start; i >= 0 && i < this.inventorySlots.size()
                         && cursor.stackSize < cursor.getMaxStackSize(); i += step) {
@@ -98,6 +98,7 @@ public class BackPackContainer extends ModularContainer implements INEIRecipeTra
 
                         if (slot == null || !slot.getHasStack()) continue;
                         if (slot instanceof ModularFilterSlot) continue;
+                        if (slot instanceof ModularCraftingMatrixSlot) continue;
 
                         ItemStack slotStack = slot.getStack();
 
@@ -522,19 +523,15 @@ public class BackPackContainer extends ModularContainer implements INEIRecipeTra
                 }
 
                 for (Slot slot : dragSlots) {
-                    if (slot == null) continue;
-                    if (!func_94527_a(slot, held, true)) continue;
-                    if (!slot.isItemValid(held)) continue;
-                    if (!canDragIntoSlot(slot)) continue;
+                    if (slot == null || !func_94527_a(slot, held, true)
+                        || !slot.isItemValid(held)
+                        || !canDragIntoSlot(slot)) continue;
 
                     ItemStack slotStack = slot.getStack();
                     int before = slotStack == null ? 0 : slotStack.stackSize;
 
-                    int add = perSlot;
-                    int limit = Math.min(held.getMaxStackSize(), slot.getSlotStackLimit());
-                    if (before + add > limit) {
-                        add = limit - before;
-                    }
+                    int limit = stackLimit(slot, held); // <-- Sử dụng stackLimit ở đây
+                    int add = Math.min(perSlot, limit - before);
                     if (add <= 0) continue;
 
                     ItemStack newStack;
@@ -542,7 +539,7 @@ public class BackPackContainer extends ModularContainer implements INEIRecipeTra
                         newStack = held.copy();
                         newStack.stackSize = 1;
                     } else {
-                        newStack = returnable.copy();
+                        newStack = held.copy();
                         newStack.stackSize = before + add;
                         remainingAmount -= add;
                     }

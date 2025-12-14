@@ -279,7 +279,7 @@ public class BackpackRecipeTransfer {
         final EntityClientPlayerMP thePlayer = NEIClientUtils.mc().thePlayer;
 
         for (Slot slot : gui.inventorySlots.inventorySlots) {
-            if (slot instanceof ModularCraftingMatrixSlot || !slot.getHasStack()
+            if (slot instanceof ModularCraftingMatrixSlot matrixSlot && matrixSlot.isActive() || !slot.getHasStack()
                 || !canMoveFrom(slot, gui)
                 || !slot.canTakeStack(thePlayer)) continue;
 

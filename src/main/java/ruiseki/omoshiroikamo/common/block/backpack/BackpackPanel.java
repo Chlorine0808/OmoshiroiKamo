@@ -30,6 +30,7 @@ import com.cleanroommc.modularui.utils.item.PlayerMainInvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
@@ -49,7 +50,6 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedFilte
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedMagnetUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedVoidUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BackpackList;
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BackpackRow;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BasicExpandedTabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CraftingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CyclicVariantButtonWidget;
@@ -58,9 +58,9 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FilterUpgrade
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.MagnetUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.SearchBarWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.SettingTabWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.ShiftButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TileWidget;
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TransferButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotUpdateGroup;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.VoidUpgradeWidget;
@@ -155,6 +155,7 @@ public class BackpackPanel extends ModularPanel {
     private final IPanelHandler settingPanel;
     @Getter
     private Column backpackInvCol;
+    private SearchBarWidget searchBarWidget;
 
     public boolean isMemorySettingTabOpened = false;
     public boolean shouldMemorizeRespectNBT = false;
@@ -183,8 +184,13 @@ public class BackpackPanel extends ModularPanel {
         this.backpackSlotSyncHandlers = new BackpackSlotSH[this.handler.getBackpackSlots()];
         for (int i = 0; i < this.handler.getBackpackSlots(); i++) {
             ModularBackpackSlot modularBackpackSlot = new ModularBackpackSlot(this.handler, i);
+            modularBackpackSlot.changeListener((lastStack, currentStack, isClient, init) -> {
+                if (isClient && !currentStack) {
+                    searchBarWidget.research();
+                }
+            });
             modularBackpackSlot.slotGroup("backpack_inventory");
-            BackpackSlotSH syncHandler = new BackpackSlotSH(this.handler, modularBackpackSlot);
+            BackpackSlotSH syncHandler = new BackpackSlotSH(this, this.handler, modularBackpackSlot);
             this.syncManager.syncValue("backpack", i, syncHandler);
             this.backpackSlotSyncHandlers[i] = syncHandler;
         }
@@ -198,7 +204,7 @@ public class BackpackPanel extends ModularPanel {
         for (int i = 0; i < this.handler.getUpgradeSlots(); i++) {
             ModularUpgradeSlot modularUpgradeSlot = new ModularUpgradeSlot(this.handler, i, this);
             modularUpgradeSlot.slotGroup("upgrade_inventory");
-            UpgradeSlotSH syncHandler = new UpgradeSlotSH(this.handler, modularUpgradeSlot);
+            UpgradeSlotSH syncHandler = new UpgradeSlotSH(this, this.handler, modularUpgradeSlot);
             modularUpgradeSlot.changeListener((lastStack, currentStack, isClient, init) -> {
                 if (isClient) {
                     updateUpgradeWidgets();
@@ -283,12 +289,12 @@ public class BackpackPanel extends ModularPanel {
     }
 
     public void addTransferButtons() {
-        TransferButtonWidget transferToPlayerButton = new TransferButtonWidget(
+        ShiftButtonWidget transferToPlayerButton = new ShiftButtonWidget(
             MGuiTextures.DOT_DOWN_ARROW_ICON,
             MGuiTextures.SOLID_DOWN_ARROW_ICON).top(17 + backpackSlotsHeight)
                 .right(21)
                 .size(12)
-                .setEnabledIf(transferButtonWidget -> !settingPanel.isPanelOpen())
+                .setEnabledIf(shiftButtonWidget -> !settingPanel.isPanelOpen())
                 .onMousePressed(mouseButton -> {
                     if (mouseButton == 0) {
                         boolean transferMatched = !Interactable.hasShiftDown();
@@ -316,12 +322,12 @@ public class BackpackPanel extends ModularPanel {
                     tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);
                 });
 
-        TransferButtonWidget transferToBackpackButton = new TransferButtonWidget(
+        ShiftButtonWidget transferToBackpackButton = new ShiftButtonWidget(
             MGuiTextures.DOT_UP_ARROW_ICON,
             MGuiTextures.SOLID_UP_ARROW_ICON).top(17 + backpackSlotsHeight)
                 .right(7)
                 .size(12)
-                .setEnabledIf(transferButtonWidget -> !settingPanel.isPanelOpen())
+                .setEnabledIf(shiftButtonWidget -> !settingPanel.isPanelOpen())
                 .onMousePressed(mouseButton -> {
                     if (mouseButton == 0) {
                         boolean transferMatched = !Interactable.hasShiftDown();
@@ -363,10 +369,10 @@ public class BackpackPanel extends ModularPanel {
             .wrapTight();
 
         backpackInvCol = (Column) new Column().coverChildren();
-        List<BackpackRow> rows = new ArrayList<>();
+        List<Row> rows = new ArrayList<>();
 
         for (int r = 0; r < rowSize; r++) {
-            BackpackRow row = (BackpackRow) new BackpackRow().coverChildren()
+            Row row = (Row) new Row().coverChildren()
                 .left(0);
             rows.add(row);
             backpackInvCol.child(row);
@@ -389,7 +395,7 @@ public class BackpackPanel extends ModularPanel {
 
     public void addSearchBar() {
 
-        SearchBarWidget searchBarWidget = (SearchBarWidget) new SearchBarWidget(this).top(6)
+        searchBarWidget = (SearchBarWidget) new SearchBarWidget(this).top(6)
             .width(this.width - 37)
             .height(10)
             .right(32);
@@ -508,7 +514,7 @@ public class BackpackPanel extends ModularPanel {
             // Crafting
             if (wrapper instanceof CraftingUpgradeWrapper upgrade) {
                 upgradeSlotGroup.updateCraftingDelegate(upgrade);
-                tabWidget.setExpandedWidget(new CraftingUpgradeWidget(slotIndex, upgrade));
+                tabWidget.setExpandedWidget(new CraftingUpgradeWidget(slotIndex, upgrade, this));
                 upgradeSlotGroup.updateCraftingSlotIndex();
             }
 

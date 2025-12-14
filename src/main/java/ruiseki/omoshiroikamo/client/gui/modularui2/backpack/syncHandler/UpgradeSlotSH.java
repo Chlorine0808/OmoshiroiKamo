@@ -5,10 +5,13 @@ import java.io.IOException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackInventoryHelper;
+import ruiseki.omoshiroikamo.common.block.backpack.BackpackPanel;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IAdvancedFilterable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
@@ -31,11 +34,16 @@ public class UpgradeSlotSH extends ItemSlotSH {
     public static final int UPDATE_MAGNET = 12;
     public static final int UPDATE_CRAFTING = 13;
     public static final int UPDATE_VOID = 14;
+    public static final int UPDATE_CRAFTING_R = 15;
+    public static final int UPDATE_CRAFTING_G = 16;
+    public static final int UPDATE_CRAFTING_C = 17;
 
     private final BackpackHandler handler;
+    private final BackpackPanel panel;
 
-    public UpgradeSlotSH(BackpackHandler handler, ModularSlot slot) {
+    public UpgradeSlotSH(BackpackPanel panel, BackpackHandler handler, ModularSlot slot) {
         super(slot);
+        this.panel = panel;
         this.handler = handler;
     }
 
@@ -69,6 +77,15 @@ public class UpgradeSlotSH extends ItemSlotSH {
                 break;
             case UPDATE_VOID:
                 updateVoidUpgrade(buf);
+                break;
+            case UPDATE_CRAFTING_R:
+                updateRotated(buf);
+                break;
+            case UPDATE_CRAFTING_G:
+                updateGrid(buf);
+                break;
+            case UPDATE_CRAFTING_C:
+                updateClear(buf);
                 break;
 
             default:
@@ -200,6 +217,45 @@ public class UpgradeSlotSH extends ItemSlotSH {
         IVoidUpgrade.VoidInput[] voidInputs = IVoidUpgrade.VoidInput.values();
         upgradeWrapper.setVoidType(voidTypes[voidType]);
         upgradeWrapper.setVoidInput(voidInputs[voidInput]);
+    }
+
+    public void updateRotated(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof ICraftingUpgrade upgradeWrapper)) {
+            return;
+        }
+
+        boolean clockwise = buf.readBoolean();
+        ItemStackHandler stackHandler = upgradeWrapper.getMatrix();
+        BackpackInventoryHelper.rotated(stackHandler, clockwise);
+    }
+
+    public void updateGrid(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof ICraftingUpgrade upgradeWrapper)) {
+            return;
+        }
+
+        boolean balance = buf.readBoolean();
+        ItemStackHandler stackHandler = upgradeWrapper.getMatrix();
+        if (balance) {
+            BackpackInventoryHelper.balance(stackHandler);
+        } else {
+            BackpackInventoryHelper.spread(stackHandler);
+        }
+    }
+
+    public void updateClear(PacketBuffer buf) {
+        ItemStack stack = getSlot().getStack();
+        UpgradeWrapper wrapper = UpgradeWrapperFactory.createWrapper(stack);
+        if (!(wrapper instanceof ICraftingUpgrade upgradeWrapper)) {
+            return;
+        }
+
+        int ordinal = buf.readInt();
+        BackpackInventoryHelper.clear(panel, upgradeWrapper.getMatrix(), ordinal);
     }
 
 }

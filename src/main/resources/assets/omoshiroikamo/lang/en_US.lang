@@ -311,6 +311,7 @@ achievement.omoshiroikamo.craft_modifier_saturation.desc=Craft a Saturation Modi
 
 category.omoshiroikamo=Omoshiroi Kamo
 keybind.backpackOpenToggle=Open Backpack
+keybind.backpackSortToggle=Sort Backpack Inventory 
 
 #Elemental
 

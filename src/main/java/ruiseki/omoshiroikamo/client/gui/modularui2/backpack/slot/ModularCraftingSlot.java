@@ -33,6 +33,7 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
         super(itemHandler, index);
         this.handler = handler;
         this.slotIndex = slotIndex;
+        setActive(false);
     }
 
     /**
