@@ -29,7 +29,22 @@ import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 public class TEBreeder extends TERoostBase {
 
-    public TEBreeder() {}
+    public TEBreeder() {
+    }
+
+    private boolean wasActive = false;
+
+    @Override
+    protected boolean processTasks(boolean redstoneChecksPassed) {
+        if (!worldObj.isRemote) {
+            boolean active = isActive();
+            if (active != wasActive) {
+                wasActive = active;
+                worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, active ? 1 : 0, 3);
+            }
+        }
+        return super.processTasks(redstoneChecksPassed);
+    }
 
     @Override
     public String getMachineName() {
@@ -97,7 +112,8 @@ public class TEBreeder extends TERoostBase {
                                                         .hoverBackground(MGuiTextures.ROOST_SLOT)
                                                         .slot(
                                                                 new ModularSlot(inv, index).slotGroup("input")
-                                        .filter(stack -> isItemValidForSlot(index, stack))))
+                                                                        .filter(stack -> isItemValidForSlot(index,
+                                                                                stack))))
                                         .key(
                                                 'S',
                                                 new ItemSlot().slot(
@@ -106,7 +122,8 @@ public class TEBreeder extends TERoostBase {
                                         .key('+', new Widget<>().background(GuiTextures.ADD))
                                         .key(
                                                 'O',
-                            index -> new ItemSlot().slot(new ModularSlot(inv, index + 3).accessibility(false, true)))
+                                                index -> new ItemSlot().slot(
+                                                        new ModularSlot(inv, index + 3).accessibility(false, true)))
                                         .build()
                                         .topRel(0.25f)
                                         .alignX(Alignment.CENTER))
