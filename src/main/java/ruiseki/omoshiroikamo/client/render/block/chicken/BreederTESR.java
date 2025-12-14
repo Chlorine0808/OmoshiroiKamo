@@ -61,13 +61,6 @@ public class BreederTESR extends TileEntitySpecialRenderer {
             ResourceLocation CHICKEN_TEXTURE = chicken.getItems().getTexture();
             Minecraft.getMinecraft().renderEngine.bindTexture(CHICKEN_TEXTURE);
 
-            // Standard model adjustments (Copied/Adapted from RoostTESR but adjusted for
-            // scale)
-            // RoostTESR uses 1.30F Y translate and 180F Z rotation to flip standard MC
-            // model?
-            // Let's stick to standard entity rendering matrix if possible, but RoostLikely
-            // needs this.
-            // Trial and error might be needed here, adhering to RoostTESR pattern first.
             GL11.glTranslatef(0F, 1.30F + 0.2F, 0F); // Adjusted Y slightly because scaling works from center
             GL11.glRotatef(180F, 0F, 0F, 1F);
 
