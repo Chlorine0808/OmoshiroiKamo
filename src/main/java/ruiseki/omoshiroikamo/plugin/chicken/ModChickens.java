@@ -33,13 +33,13 @@ public class ModChickens {
     public static void preInit() {
 
         EntityRegistry.registerModEntity(
-            EntityChickensChicken.class,
-            "chicken",
-            ChickenConfig.chickenEntityId,
-            OmoshiroiKamo.instance,
-            64,
-            3,
-            true);
+                EntityChickensChicken.class,
+                "chicken",
+                ChickenConfig.chickenEntityId,
+                OmoshiroiKamo.instance,
+                64,
+                3,
+                true);
 
         LiquidEggRegistry.register(new LiquidEggRegistryItem(0, Blocks.flowing_water, 0x0000ff, FluidRegistry.WATER));
         LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000, FluidRegistry.LAVA));
@@ -53,15 +53,16 @@ public class ModChickens {
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
         if (biomesForSpawning.size() > 0) {
             EntityRegistry.addSpawn(
-                EntityChickensChicken.class,
-                ChickenConfig.spawnProbability,
-                ChickenConfig.minBroodSize,
-                ChickenConfig.maxBroodSize,
-                EnumCreatureType.creature,
-                biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()]));
+                    EntityChickensChicken.class,
+                    ChickenConfig.spawnProbability,
+                    ChickenConfig.minBroodSize,
+                    ChickenConfig.maxBroodSize,
+                    EnumCreatureType.creature,
+                    biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()]));
             if (biomesForSpawning.contains(BiomeGenBase.hell)) {
                 MinecraftForge.TERRAIN_GEN_BUS.register(
-                    new NetherPopulateHandler(ChickenConfig.netherSpawnChanceMultiplier, EntityChickensChicken.class));
+                        new NetherPopulateHandler(ChickenConfig.netherSpawnChanceMultiplier,
+                                EntityChickensChicken.class));
             }
         }
     }
@@ -80,15 +81,18 @@ public class ModChickens {
         addModAddon(new BigReactorsChickens());
         addModAddon(new DraconicEvolutionChickens());
         addModAddon(new ActuallyAdditionsChickens());
+        addModAddon(new OriginalChickens());
     }
 
     private static List<BiomeGenBase> getAllSpawnBiomes() {
         BiomeGenBase[] allPossibleBiomes = { BiomeGenBase.plains, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-            BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.icePlains, BiomeGenBase.iceMountains,
-            BiomeGenBase.forestHills, BiomeGenBase.taigaHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle,
-            BiomeGenBase.jungleHills, BiomeGenBase.jungleEdge, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
-            BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.extremeHills,
-            BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell };
+                BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.icePlains, BiomeGenBase.iceMountains,
+                BiomeGenBase.forestHills, BiomeGenBase.taigaHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle,
+                BiomeGenBase.jungleHills, BiomeGenBase.jungleEdge, BiomeGenBase.birchForest,
+                BiomeGenBase.birchForestHills,
+                BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
+                BiomeGenBase.extremeHills,
+                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell };
 
         List<BiomeGenBase> biomesForSpawning = new ArrayList<BiomeGenBase>();
         for (BiomeGenBase biome : allPossibleBiomes) {
@@ -127,13 +131,13 @@ public class ModChickens {
     }
 
     private static String getChickenParent(Configuration configuration, String propertyName,
-        Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
+            Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
         String Category = chicken.getEntityName();
         return configuration.getString(
-            propertyName,
-            Category,
-            parent != null ? parent.getEntityName() : "",
-            "First parent, empty if it's base chicken.");
+                propertyName,
+                Category,
+                parent != null ? parent.getEntityName() : "",
+                "First parent, empty if it's base chicken.");
     }
 
     private static void loadConfiguration() {
@@ -149,8 +153,8 @@ public class ModChickens {
         Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
 
         configuration.addCustomCategoryComment(
-            "0",
-            "It is Ideal to regenerate this file after updates as your config files may overwrite changes made to core.");
+                "0",
+                "It is Ideal to regenerate this file after updates as your config files may overwrite changes made to core.");
 
         Logger.info("Chickens Loading Config...");
         for (ChickensRegistryItem chicken : allChickens) {
@@ -159,7 +163,7 @@ public class ModChickens {
             chicken.setEnabled(enabled);
 
             float coefficient = configuration
-                .getFloat("coefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
+                    .getFloat("coefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
             chicken.setCoefficient(coefficient);
 
             ItemStack itemStack = loadItemStack(configuration, chicken, "egg", chicken.createLayItem());
@@ -181,12 +185,12 @@ public class ModChickens {
             }
 
             SpawnType spawnType = SpawnType.valueOf(
-                configuration.getString(
-                    "spawnType",
-                    chicken.getEntityName(),
-                    chicken.getSpawnType()
-                        .toString(),
-                    "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
+                    configuration.getString(
+                            "spawnType",
+                            chicken.getEntityName(),
+                            chicken.getSpawnType()
+                                    .toString(),
+                            "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
             chicken.setSpawnType(spawnType);
 
             ChickensRegistry.INSTANCE.register(chicken);
@@ -197,37 +201,37 @@ public class ModChickens {
 
     @SuppressWarnings("unused")
     private static ItemStack loadItemStack(Configuration configuration, ChickensRegistryItem chicken, String prefix,
-        ItemStack defaultItemStack) {
+            ItemStack defaultItemStack) {
 
         String defaultName = Item.itemRegistry.getNameForObject(defaultItemStack.getItem());
         if (defaultName == null) {
             defaultName = "minecraft:fire";
         }
         String itemName = configuration
-            .get(
-                chicken.getEntityName(),
-                prefix + "ItemName",
-                defaultName,
-                "Item registry name to be laid/dropped (ex: minecraft:egg)")
-            .getString();
+                .get(
+                        chicken.getEntityName(),
+                        prefix + "ItemName",
+                        defaultName,
+                        "Item registry name to be laid/dropped (ex: minecraft:egg)")
+                .getString();
 
         int itemAmount = configuration.getInt(
-            prefix + "ItemAmount",
-            chicken.getEntityName(),
-            defaultItemStack.stackSize,
-            1,
-            64,
-            "Item amount to be laid/dropped.");
+                prefix + "ItemAmount",
+                chicken.getEntityName(),
+                defaultItemStack.stackSize,
+                1,
+                64,
+                "Item amount to be laid/dropped.");
         int itemMeta = configuration.getInt(
-            prefix + "ItemMeta",
-            chicken.getEntityName(),
-            defaultItemStack.getItemDamage(),
-            Integer.MIN_VALUE,
-            Integer.MAX_VALUE,
-            "Item amount to be laid/dropped.");
+                prefix + "ItemMeta",
+                chicken.getEntityName(),
+                defaultItemStack.getItemDamage(),
+                Integer.MIN_VALUE,
+                Integer.MAX_VALUE,
+                "Item amount to be laid/dropped.");
 
         Item item = GameData.getItemRegistry()
-            .getObject(itemName);
+                .getObject(itemName);
         if (item == null) {
             if (defaultItemStack != null) {
                 return defaultItemStack;
@@ -242,7 +246,7 @@ public class ModChickens {
 
         for (ChickensRegistryItem chicken : chickens) {
             if (chicken.getEntityName()
-                .compareToIgnoreCase(name) == 0) {
+                    .compareToIgnoreCase(name) == 0) {
                 return chicken;
             }
         }

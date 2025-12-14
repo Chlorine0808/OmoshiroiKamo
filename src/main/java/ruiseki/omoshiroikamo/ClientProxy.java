@@ -51,8 +51,8 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
 
         FMLCommonHandler.instance()
-            .bus()
-            .register(KeyHandler.instance);
+                .bus()
+                .register(KeyHandler.instance);
 
         QuantumExtractorTESR quantumExtractorTESR = new QuantumExtractorTESR();
         ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, quantumExtractorTESR);
@@ -67,6 +67,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
 
+        ruiseki.omoshiroikamo.client.util.TextureGenerator.generateCustomChickenTextures();
+
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ClientProxy extends CommonProxy {
 
     public World getClientWorld() {
         return FMLClientHandler.instance()
-            .getClient().theWorld;
+                .getClient().theWorld;
     }
 
     @Override
@@ -91,7 +93,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void onClientTick() {
         if (!Minecraft.getMinecraft()
-            .isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
+                .isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
             ++clientTickCount;
         }
     }

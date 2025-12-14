@@ -27,7 +27,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
     protected ItemStack dropItem;
     protected final int bgColor;
     protected final int fgColor;
-    protected final ResourceLocation texture;
+    protected ResourceLocation texture;
 
     protected T parent1;
     protected T parent2;
@@ -48,7 +48,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      * @param parent2    Second parent, or null if this is a base tier item.
      */
     public BaseRegistryItem(int id, String entityName, ResourceLocation texture, int bgColor, int fgColor,
-        @Nullable T parent1, @Nullable T parent2) {
+            @Nullable T parent1, @Nullable T parent2) {
         this.id = id;
         this.entityName = entityName;
         this.bgColor = bgColor;
@@ -233,7 +233,17 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
     }
 
     /**
-     * @return true if this entry is enabled AND both its parents (if any) are enabled.
+     * Sets the texture reference.
+     * 
+     * @param texture The new texture.
+     */
+    public void setTexture(ResourceLocation texture) {
+        this.texture = texture;
+    }
+
+    /**
+     * @return true if this entry is enabled AND both its parents (if any) are
+     *         enabled.
      */
     public boolean isEnabled() {
         return !(!isEnabled || (parent1 != null && !parent1.isEnabled()) || (parent2 != null && !parent2.isEnabled()));
@@ -248,7 +258,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      */
     public boolean isChildOf(T parent1, T parent2) {
         return (this.parent1 == parent1 && this.parent2 == parent2)
-            || (this.parent1 == parent2 && this.parent2 == parent1);
+                || (this.parent1 == parent2 && this.parent2 == parent1);
     }
 
     /**

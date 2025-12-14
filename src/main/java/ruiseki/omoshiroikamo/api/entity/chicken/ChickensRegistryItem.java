@@ -32,6 +32,8 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      */
     private ItemStack layItem;
 
+    private ResourceLocation textureOverlay;
+
     /**
      * Creates a new chicken registry item.
      *
@@ -43,8 +45,19 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      * @param fgColor    foreground color for JEI/GUI
      */
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor,
-        int fgColor) {
+            int fgColor) {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
+    }
+
+    private int tintColor = 0xFFFFFF;
+
+    public int getTintColor() {
+        return tintColor;
+    }
+
+    public ChickensRegistryItem setTintColor(int tintColor) {
+        this.tintColor = tintColor;
+        return this;
     }
 
     /**
@@ -54,7 +67,7 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      * @param parent2 chicken parent 2 (nullable)
      */
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor,
-        int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+            int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         super(id, entityName, texture, bgColor, fgColor, parent1, parent2);
         this.layItem = layItem;
     }
@@ -68,6 +81,36 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
     public ChickensRegistryItem setLayItem(ItemStack itemStack) {
         this.layItem = itemStack;
         return this;
+    }
+
+    public ChickensRegistryItem setTextureOverlay(ResourceLocation textureOverlay) {
+        this.textureOverlay = textureOverlay;
+        return this;
+    }
+
+    public ResourceLocation getTextureOverlay() {
+        return this.textureOverlay;
+    }
+
+    private String iconName;
+    private String iconOverlayName;
+
+    public ChickensRegistryItem setIconName(String iconName) {
+        this.iconName = iconName;
+        return this;
+    }
+
+    public String getIconName() {
+        return this.iconName;
+    }
+
+    public ChickensRegistryItem setIconOverlayName(String iconOverlayName) {
+        this.iconOverlayName = iconOverlayName;
+        return this;
+    }
+
+    public String getIconOverlayName() {
+        return this.iconOverlayName;
     }
 
     /**
