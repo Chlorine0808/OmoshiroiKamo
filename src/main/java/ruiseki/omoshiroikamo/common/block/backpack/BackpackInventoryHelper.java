@@ -19,7 +19,7 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 
 public class BackpackInventoryHelper {
 
-    public static void sortInventory(BackpackHandler handler) {
+    public static void sortInventory(BackpackHandler handler, boolean reverse) {
         for (int i = 0; i < handler.getBackpackSlots() - 1; i++) {
             if (handler.isSlotLocked(i)) continue;
             boolean isMem = handler.isSlotMemorized(i);
@@ -67,20 +67,37 @@ public class BackpackInventoryHelper {
 
             switch (handler.getSortType()) {
                 case BY_NAME:
-                    return a.getDisplayName()
-                        .compareTo(b.getDisplayName());
+                    if (reverse) {
+                        return a.getDisplayName()
+                            .compareTo(b.getDisplayName());
+                    } else {
+                        return b.getDisplayName()
+                            .compareTo(a.getDisplayName());
+                    }
                 case BY_MOD_ID:
                     String aItem = Item.itemRegistry.getNameForObject(a.getItem());
                     String bItem = Item.itemRegistry.getNameForObject(b.getItem());
                     String aDomain = aItem.substring(0, aItem.indexOf(":"));
                     String bDomain = bItem.substring(0, bItem.indexOf(":"));
-                    return aDomain.compareTo(bDomain);
+                    if (reverse) {
+                        return aDomain.compareTo(bDomain);
+                    } else {
+                        return bDomain.compareTo(aDomain);
+                    }
                 case BY_COUNT:
-                    return Integer.compare(a.stackSize, b.stackSize);
+                    if (reverse) {
+                        return Integer.compare(a.stackSize, b.stackSize);
+                    } else {
+                        return Integer.compare(b.stackSize, a.stackSize);
+                    }
                 case BY_ORE_DICT:
                     List<String> ore1 = oreNames(a);
                     List<String> ore2 = oreNames(b);
-                    return compareLists(ore1, ore2);
+                    if (reverse) {
+                        return compareLists(ore1, ore2);
+                    } else {
+                        return compareLists(ore2, ore1);
+                    }
             }
             return 0;
         });

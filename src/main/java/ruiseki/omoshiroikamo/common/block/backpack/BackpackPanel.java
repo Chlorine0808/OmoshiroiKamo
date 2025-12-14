@@ -28,9 +28,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.item.PlayerInvWrapper;
 import com.cleanroommc.modularui.utils.item.PlayerMainInvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
@@ -239,32 +237,33 @@ public class BackpackPanel extends ModularPanel {
 
     public void addSortingButtons() {
 
-        ButtonWidget<?> sortButton = new ButtonWidget<>().top(4)
-            .right(21)
-            .size(12)
-            .overlay(MGuiTextures.SOLID_UP_ARROW_ICON)
-            .setEnabledIf(w -> !settingPanel.isPanelOpen())
-            .onMousePressed((button) -> {
-                if (button == 0) {
-                    Interactable.playButtonClickSound();
+        ShiftButtonWidget sortButton = new ShiftButtonWidget(
+            MGuiTextures.SOLID_DOWN_ARROW_ICON,
+            MGuiTextures.SOLID_UP_ARROW_ICON).top(4)
+                .right(21)
+                .size(12)
+                .setEnabledIf(w -> !settingPanel.isPanelOpen())
+                .onMousePressed((button) -> {
+                    if (button == 0) {
+                        Interactable.playButtonClickSound();
+                        boolean reverse = !Interactable.hasShiftDown();
 
-                    BackpackInventoryHelper.sortInventory(handler);
+                        BackpackInventoryHelper.sortInventory(handler, reverse);
 
-                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV, buf -> {
-                        for (int i = 0; i < handler.getBackpackSlots(); i++) {
-                            buf.writeItemStackToBuffer(handler.getStackInSlot(i));
-                        }
+                        backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV, buf -> {
+                            for (int i = 0; i < handler.getBackpackSlots(); i++) {
+                                buf.writeItemStackToBuffer(handler.getStackInSlot(i));
+                            }
+                        });
+                        return true;
+                    }
+                    return false;
+                })
+                .tooltipStatic(
+                    (tooltip) -> {
+                        tooltip.addLine(IKey.lang("gui.sort_inventory"))
+                            .pos(RichTooltip.Pos.NEXT_TO_MOUSE);
                     });
-
-                    return true;
-                }
-                return false;
-            })
-            .tooltipStatic(
-                (tooltip) -> {
-                    tooltip.addLine(IKey.lang("gui.sort_inventory"))
-                        .pos(RichTooltip.Pos.NEXT_TO_MOUSE);
-                });
 
         CyclicVariantButtonWidget sortTypeButton = new CyclicVariantButtonWidget(
             SORT_TYPE_VARIANTS,
@@ -359,34 +358,26 @@ public class BackpackPanel extends ModularPanel {
     }
 
     public void addBackpackInventorySlots() {
-
         BackpackList backpackList = new BackpackList().name("backpack_slots")
             .coverChildrenWidth()
             .top(17)
             .alignX(0.5f)
             .scrollDirection(GuiAxis.Y)
-            .maxSize(backpackSlotsHeight)
-            .wrapTight();
+            .maxSize(backpackSlotsHeight);
 
         backpackInvCol = (Column) new Column().coverChildren();
-        List<Row> rows = new ArrayList<>();
-
-        for (int r = 0; r < rowSize; r++) {
-            Row row = (Row) new Row().coverChildren()
-                .left(0);
-            rows.add(row);
-            backpackInvCol.child(row);
-        }
 
         for (int i = 0; i < handler.getBackpackSlots(); i++) {
+            int col = i % rowSize;
             int row = i / rowSize;
 
             BackpackSlot slot = (BackpackSlot) new BackpackSlot(this, handler).syncHandler("backpack", i)
-                .size(SLOT_SIZE)
-                .name("slot_" + i);
+                .size(18)
+                .name("slot_" + i)
+                .left(col * (18))
+                .top(row * (18));
 
-            rows.get(row)
-                .child(slot);
+            backpackInvCol.child(slot);
         }
 
         backpackList.child(backpackInvCol);

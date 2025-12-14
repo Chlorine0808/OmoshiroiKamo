@@ -1,5 +1,8 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -79,17 +82,37 @@ public class SearchBarWidget extends TextFieldWidget {
             return;
         }
 
-        for (IWidget backpackRow : backpackSlots.getChildren()) {
-            for (int i = 0; i < backpackRow.getChildren()
-                .size(); i++) {
-                BackpackSlot slot = (BackpackSlot) backpackRow.getChildren()
-                    .get(i);
+        int columns = panel.getRowSize();
+        int slotSize = BackpackSlot.SIZE;
 
-                slot.setFocus(slot.matches(search));
-                slot.scheduleResize();
+        List<BackpackSlot> allSlots = new ArrayList<>();
+        for (IWidget child : backpackSlots.getChildren()) {
+            if (child instanceof BackpackSlot slot) {
+                allSlots.add(slot);
             }
-            backpackRow.scheduleResize();
         }
+
+        for (BackpackSlot slot : allSlots) {
+            slot.setFocus(slot.matches(search));
+        }
+
+        allSlots.sort((a, b) -> {
+            boolean matchA = a.matches(search);
+            boolean matchB = b.matches(search);
+            if (matchA && !matchB) return -1;
+            if (!matchA && matchB) return 1;
+            return 0;
+        });
+
+        for (int i = 0; i < allSlots.size(); i++) {
+            BackpackSlot slot = allSlots.get(i);
+            int x = (i % columns) * (slotSize);
+            int y = (i / columns) * (slotSize);
+            slot.left(x)
+                .top(y);
+            slot.scheduleResize();
+        }
+
         ((BackpackList) backpackSlots.getParent()).getScrollData()
             .scrollTo(((BackpackList) backpackSlots.getParent()).getScrollArea(), 0);
     }
