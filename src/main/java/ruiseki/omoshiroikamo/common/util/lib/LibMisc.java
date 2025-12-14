@@ -26,10 +26,7 @@ public final class LibMisc {
         + "after:Mekanism;"
         + "after:BigReactors;"
         + "after:ActuallyAdditions;"
-        + "after:DraconicEvolution;"
-        + "after:arsmagica2;"
-        + "after:evilcraft;"
-        + "after:extrautils2;";
+        + "after:DraconicEvolution;";
 
     // Proxy Constants
     public static final String PROXY_COMMON = Tags.MOD_GROUP + ".CommonProxy";

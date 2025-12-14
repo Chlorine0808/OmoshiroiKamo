@@ -40,8 +40,8 @@ public abstract class BackpackGuiHolder {
         int screenWidth = Minecraft.getMinecraft().displayWidth;
         int minWidth = 14 + 9 * SLOT_SIZE;
         int maxWidth = 14 + rowSize * SLOT_SIZE;
-        int width = Math.max(minWidth, Math.min(maxWidth, screenWidth / 4));
-        int height = 112 + colSize * SLOT_SIZE;
+        int width = 6 + Math.max(minWidth, Math.min(maxWidth, screenWidth / 4));
+        int height = 115 + colSize * SLOT_SIZE;
 
         return BackpackPanel.defaultPanel(
             syncManager,

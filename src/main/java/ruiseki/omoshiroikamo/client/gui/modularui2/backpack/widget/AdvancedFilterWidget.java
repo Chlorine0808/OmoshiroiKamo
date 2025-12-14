@@ -34,7 +34,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.drawble.Outline;
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.FilterSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IAdvancedFilterable;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
@@ -201,7 +200,7 @@ public class AdvancedFilterWidget extends ParentWidget<AdvancedFilterWidget> {
 
         this.filterSlots = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
-            ItemSlot slot = new FilterSlot();
+            ItemSlot slot = new ItemSlot();
             slot.name(syncKey + "_" + slotIndex)
                 .syncHandler(syncKey + "_" + slotIndex, i)
                 .pos(i % 4 * 18, i / 4 * 18);

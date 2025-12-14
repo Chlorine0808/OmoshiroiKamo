@@ -8,17 +8,10 @@ import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public final class MGuiTextures {
 
     private MGuiTextures() {}
-
-    public static final UITexture ENERGY_PROGRESS = UITexture.builder()
-        .location(LibResources.PROGRESS_ENERGY)
-        .adaptable(1)
-        .imageSize(16, 128)
-        .build();
 
     public static final UITexture BREEDER_PROGRESS = UITexture.builder()
         .location(LibMisc.MOD_ID, "gui/widgets/progress_breeder")

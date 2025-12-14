@@ -172,7 +172,7 @@ public class BackpackPanel extends ModularPanel {
         this.width = width;
         this.height = height;
         this.size(this.width, this.height);
-        this.backpackSlotsHeight = this.height - 112;
+        this.backpackSlotsHeight = this.height - 115;
         int calculated = (this.width - 14) / SLOT_SIZE;
         this.rowSize = Math.max(9, Math.min(12, calculated));
 
@@ -290,7 +290,7 @@ public class BackpackPanel extends ModularPanel {
     public void addTransferButtons() {
         ShiftButtonWidget transferToPlayerButton = new ShiftButtonWidget(
             MGuiTextures.DOT_DOWN_ARROW_ICON,
-            MGuiTextures.SOLID_DOWN_ARROW_ICON).top(17 + backpackSlotsHeight)
+            MGuiTextures.SOLID_DOWN_ARROW_ICON).top(19 + backpackSlotsHeight)
                 .right(21)
                 .size(12)
                 .setEnabledIf(shiftButtonWidget -> !settingPanel.isPanelOpen())
@@ -323,7 +323,7 @@ public class BackpackPanel extends ModularPanel {
 
         ShiftButtonWidget transferToBackpackButton = new ShiftButtonWidget(
             MGuiTextures.DOT_UP_ARROW_ICON,
-            MGuiTextures.SOLID_UP_ARROW_ICON).top(17 + backpackSlotsHeight)
+            MGuiTextures.SOLID_UP_ARROW_ICON).top(19 + backpackSlotsHeight)
                 .right(7)
                 .size(12)
                 .setEnabledIf(shiftButtonWidget -> !settingPanel.isPanelOpen())
@@ -360,7 +360,7 @@ public class BackpackPanel extends ModularPanel {
     public void addBackpackInventorySlots() {
         BackpackList backpackList = new BackpackList().name("backpack_slots")
             .coverChildrenWidth()
-            .top(17)
+            .top(18)
             .alignX(0.5f)
             .scrollDirection(GuiAxis.Y)
             .maxSize(backpackSlotsHeight);
@@ -431,7 +431,7 @@ public class BackpackPanel extends ModularPanel {
         child(
             IKey.lang(player.inventory.getInventoryName())
                 .asWidget()
-                .pos(8, 18 + backpackSlotsHeight));
+                .pos(8, 20 + backpackSlotsHeight));
     }
 
     public void updateUpgradeWidgets() {

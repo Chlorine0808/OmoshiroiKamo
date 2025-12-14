@@ -8,11 +8,8 @@ import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 
 public class EntityBackpack extends EntityImmortalItem {
 
-    private final BackpackHandler handler;
-
     public EntityBackpack(World world, Entity original, ItemStack stack, BackpackHandler handler) {
         super(world, original, stack);
-        this.handler = handler;
         setImmortal(handler.canImportant());
     }
 }

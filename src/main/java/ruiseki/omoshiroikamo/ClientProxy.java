@@ -31,6 +31,7 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumE
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 
 @SuppressWarnings("unused")
@@ -54,18 +55,23 @@ public class ClientProxy extends CommonProxy {
             .bus()
             .register(KeyHandler.instance);
 
-        QuantumExtractorTESR quantumExtractorTESR = new QuantumExtractorTESR();
-        ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, quantumExtractorTESR);
+        if (BackportConfigs.useEnvironmentalTech) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, new QuantumExtractorTESR());
+        }
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TERoost.class, new RoostTESR());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
+        if (BackportConfigs.useChicken) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TERoost.class, new RoostTESR());
+            RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
+        }
+
+        if (BackportConfigs.useCow) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
+            RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
+        }
 
         if (ItemConfigs.renderPufferFish) {
             MinecraftForgeClient.registerItemRenderer(Items.fish, new PufferFishRenderer());
         }
-
-        RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
 
     }
 
