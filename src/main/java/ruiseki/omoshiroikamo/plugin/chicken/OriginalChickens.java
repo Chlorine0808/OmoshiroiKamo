@@ -214,7 +214,6 @@ public class OriginalChickens extends BaseChickenHandler {
                 + "    \"parent2\": \"RedChicken\",\n"
                 + "    \"lang\": {\n"
                 + "      \"en_US\": \"Red Chicken\",\n"
-                + "      \"ja_JP\": \"赤いニワトリ\"\n"
                 + "    }\n"
                 + "  }\n"
                 + "  */\n"
