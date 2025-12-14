@@ -346,6 +346,9 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
 
     @Override
     public void onContentsChange(int slot) {
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            this.forceClientUpdate = true;
+        }
         super.onContentsChange(slot);
         needsCacheRefresh();
     }
@@ -381,6 +384,7 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
         super.readCommon(root);
         timeUntilNextDrop = root.getInteger("timeUntilNextDrop");
         timeElapsed = root.getInteger("timeElapsed");
+        needsCacheRefresh();
     }
 
     @Override
