@@ -2,11 +2,11 @@
   "variants": {
     "meta=0": {
       "model": "omoshiroikamo:block/roost",
-      "y": 0
+      "y": 180
     },
     "meta=1": {
       "model": "omoshiroikamo:block/roost",
-      "y": 0
+      "y": 90
     },
     "meta=2": {
       "model": "omoshiroikamo:block/roost",
