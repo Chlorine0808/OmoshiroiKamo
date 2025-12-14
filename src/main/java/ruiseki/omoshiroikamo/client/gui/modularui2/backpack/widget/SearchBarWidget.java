@@ -60,7 +60,6 @@ public class SearchBarWidget extends TextFieldWidget {
         }
     }
 
-
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -100,7 +99,8 @@ public class SearchBarWidget extends TextFieldWidget {
 
                 int x = (i % columns) * slotSize;
                 int y = (i / columns) * slotSize;
-                slot.left(x).top(y);
+                slot.left(x)
+                    .top(y);
             }
             return;
         }
@@ -109,7 +109,8 @@ public class SearchBarWidget extends TextFieldWidget {
         List<BackpackSlot> emptySlots = new ArrayList<>();
 
         for (BackpackSlot slot : originalOrder) {
-            if (slot.getSlot().getHasStack()) {
+            if (slot.getSlot()
+                .getHasStack()) {
                 filledSlots.add(slot);
                 slot.setFocus(slot.matches(search));
             } else {
@@ -134,7 +135,8 @@ public class SearchBarWidget extends TextFieldWidget {
             BackpackSlot slot = sortedSlots.get(i);
             int x = (i % columns) * slotSize;
             int y = (i / columns) * slotSize;
-            slot.left(x).top(y);
+            slot.left(x)
+                .top(y);
             slot.scheduleResize();
         }
 
