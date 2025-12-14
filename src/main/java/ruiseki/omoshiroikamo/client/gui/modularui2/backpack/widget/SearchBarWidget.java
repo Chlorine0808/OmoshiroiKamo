@@ -21,6 +21,7 @@ public class SearchBarWidget extends TextFieldWidget {
 
     private final Column backpackSlots;
     private final BackpackPanel panel;
+    private List<BackpackSlot> originalOrder;
 
     static protected String prevText = "";
 
@@ -50,6 +51,16 @@ public class SearchBarWidget extends TextFieldWidget {
         }
     }
 
+    private void cacheOriginalOrder() {
+        originalOrder = new ArrayList<>();
+        for (IWidget child : backpackSlots.getChildren()) {
+            if (child instanceof BackpackSlot slot) {
+                originalOrder.add(slot);
+            }
+        }
+    }
+
+
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -64,6 +75,7 @@ public class SearchBarWidget extends TextFieldWidget {
     @Override
     public void onInit() {
         super.onInit();
+        cacheOriginalOrder();
         if (panel.getHandler()
             .isSearchBackpack()) {
             prevText = "";
@@ -78,25 +90,35 @@ public class SearchBarWidget extends TextFieldWidget {
     }
 
     public void doSearch(String search) {
-        if (prevText.isEmpty()) {
-            return;
-        }
-
         int columns = panel.getRowSize();
         int slotSize = BackpackSlot.SIZE;
 
-        List<BackpackSlot> allSlots = new ArrayList<>();
-        for (IWidget child : backpackSlots.getChildren()) {
-            if (child instanceof BackpackSlot slot) {
-                allSlots.add(slot);
+        if (search.isEmpty()) {
+            for (int i = 0; i < originalOrder.size(); i++) {
+                BackpackSlot slot = originalOrder.get(i);
+                slot.setFocus(true);
+
+                int x = (i % columns) * slotSize;
+                int y = (i / columns) * slotSize;
+                slot.left(x).top(y);
+            }
+            return;
+        }
+
+        List<BackpackSlot> filledSlots = new ArrayList<>();
+        List<BackpackSlot> emptySlots = new ArrayList<>();
+
+        for (BackpackSlot slot : originalOrder) {
+            if (slot.getSlot().getHasStack()) {
+                filledSlots.add(slot);
+                slot.setFocus(slot.matches(search));
+            } else {
+                emptySlots.add(slot);
+                slot.setFocus(false);
             }
         }
 
-        for (BackpackSlot slot : allSlots) {
-            slot.setFocus(slot.matches(search));
-        }
-
-        allSlots.sort((a, b) -> {
+        filledSlots.sort((a, b) -> {
             boolean matchA = a.matches(search);
             boolean matchB = b.matches(search);
             if (matchA && !matchB) return -1;
@@ -104,12 +126,15 @@ public class SearchBarWidget extends TextFieldWidget {
             return 0;
         });
 
-        for (int i = 0; i < allSlots.size(); i++) {
-            BackpackSlot slot = allSlots.get(i);
-            int x = (i % columns) * (slotSize);
-            int y = (i / columns) * (slotSize);
-            slot.left(x)
-                .top(y);
+        List<BackpackSlot> sortedSlots = new ArrayList<>();
+        sortedSlots.addAll(filledSlots);
+        sortedSlots.addAll(emptySlots);
+
+        for (int i = 0; i < sortedSlots.size(); i++) {
+            BackpackSlot slot = sortedSlots.get(i);
+            int x = (i % columns) * slotSize;
+            int y = (i / columns) * slotSize;
+            slot.left(x).top(y);
             slot.scheduleResize();
         }
 

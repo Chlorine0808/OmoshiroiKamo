@@ -26,6 +26,7 @@ import codechicken.nei.recipe.IRecipeHandler;
 import codechicken.nei.recipe.StackInfo;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingMatrixSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingSlot;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularFilterSlot;
 
 public class BackpackOverlay implements IOverlayHandler {
 
@@ -327,7 +328,7 @@ public class BackpackOverlay implements IOverlayHandler {
     }
 
     private boolean canMoveFrom(Slot slot, GuiContainer gui) {
-        return slot instanceof ModularSlot;
+        return slot instanceof ModularSlot && !(slot instanceof ModularFilterSlot);
     }
 
     private boolean clearIngredients(GuiContainer gui) {
