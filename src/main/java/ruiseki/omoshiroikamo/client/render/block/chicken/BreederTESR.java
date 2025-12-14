@@ -25,7 +25,8 @@ public class BreederTESR extends TileEntitySpecialRenderer {
         }
 
         // Do not render if the breeder is active (working)
-        if (tile.getBlockMetadata() == 1) {
+        // Use world metadata directly to avoid TileEntity cache latency
+        if (tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 1) {
             return;
         }
 
