@@ -14,28 +14,28 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.cleanroommc.modularui.screen.GuiContainerWrapper;
-import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.FastTransferManager;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.DefaultOverlayHandler;
 import codechicken.nei.recipe.IRecipeHandler;
 import codechicken.nei.recipe.StackInfo;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingMatrixSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingSlot;
 
-public class BackpackRecipeTransfer {
+public class BackpackOverlay implements IOverlayHandler {
 
-    public static String[] getIdents() {
-        return new String[] { "crafting" };
+    @Override
+    public void overlayRecipe(GuiContainer firstGui, IRecipeHandler recipe, int recipeIndex, boolean maxTransfer) {
+        transferRecipe(firstGui, recipe, recipeIndex, maxTransfer ? Integer.MAX_VALUE : 1);
     }
 
-    public static int transferRecipe(GuiContainerWrapper gui, ModularContainer container, IRecipeHandler handler,
-        int recipeIndex, int multiplier) {
+    @Override
+    public int transferRecipe(GuiContainer gui, IRecipeHandler handler, int recipeIndex, int multiplier) {
         final List<PositionedStack> recipeIngredients = handler.getIngredientStacks(recipeIndex);
         final List<DefaultOverlayHandler.DistributedIngred> inventoryDistribute = getPermutationIngredients(
             recipeIngredients);
@@ -58,8 +58,7 @@ public class BackpackRecipeTransfer {
             .anyMatch(distrib -> distrib.distrib.distributed == 0) ? 0 : multiplier;
     }
 
-    private static List<DefaultOverlayHandler.DistributedIngred> getPermutationIngredients(
-        List<PositionedStack> ingredients) {
+    private List<DefaultOverlayHandler.DistributedIngred> getPermutationIngredients(List<PositionedStack> ingredients) {
         ArrayList<DefaultOverlayHandler.DistributedIngred> ingredStacks = new ArrayList<>();
         for (PositionedStack posstack : ingredients) /* work out what we need */ {
             for (ItemStack pstack : posstack.items) {
@@ -71,20 +70,19 @@ public class BackpackRecipeTransfer {
         return ingredStacks;
     }
 
-    public static DefaultOverlayHandler.DistributedIngred findIngred(
+    public DefaultOverlayHandler.DistributedIngred findIngred(
         List<DefaultOverlayHandler.DistributedIngred> ingredStacks, ItemStack pstack) {
         for (DefaultOverlayHandler.DistributedIngred istack : ingredStacks)
             if (canStack(istack.stack, pstack)) return istack;
         return null;
     }
 
-    protected static boolean canStack(ItemStack stack1, ItemStack stack2) {
+    protected boolean canStack(ItemStack stack1, ItemStack stack2) {
         if (stack1 == null || stack2 == null) return true;
         return NEIClientUtils.areStacksSameTypeCraftingWithNBT(stack1, stack2);
     }
 
-    private static void findInventoryQuantities(GuiContainer gui,
-        List<DefaultOverlayHandler.DistributedIngred> ingredStacks) {
+    private void findInventoryQuantities(GuiContainer gui, List<DefaultOverlayHandler.DistributedIngred> ingredStacks) {
         for (Slot slot : gui.inventorySlots.inventorySlots)
         /* work out how much we have to go round */ {
             if (slot instanceof ModularCraftingMatrixSlot) continue;
@@ -120,8 +118,8 @@ public class BackpackRecipeTransfer {
         }
     }
 
-    private static List<DefaultOverlayHandler.IngredientDistribution> assignIngredients(
-        List<PositionedStack> ingredients, List<DefaultOverlayHandler.DistributedIngred> ingredStacks) {
+    private List<DefaultOverlayHandler.IngredientDistribution> assignIngredients(List<PositionedStack> ingredients,
+        List<DefaultOverlayHandler.DistributedIngred> ingredStacks) {
         ArrayList<DefaultOverlayHandler.IngredientDistribution> assignedIngredients = new ArrayList<>();
         for (PositionedStack posstack : ingredients) // assign what we need and have
         {
@@ -157,7 +155,7 @@ public class BackpackRecipeTransfer {
         return assignedIngredients;
     }
 
-    private static int calculateRecipeQuantity(List<DefaultOverlayHandler.IngredientDistribution> assignedIngredients) {
+    private int calculateRecipeQuantity(List<DefaultOverlayHandler.IngredientDistribution> assignedIngredients) {
         int quantity = Integer.MAX_VALUE;
 
         for (DefaultOverlayHandler.IngredientDistribution distrib : assignedIngredients) {
@@ -181,7 +179,7 @@ public class BackpackRecipeTransfer {
         return quantity;
     }
 
-    private static Slot[][] assignIngredSlots(GuiContainer gui, List<PositionedStack> ingredients,
+    private Slot[][] assignIngredSlots(GuiContainer gui, List<PositionedStack> ingredients,
         List<DefaultOverlayHandler.IngredientDistribution> assignedIngredients) {
 
         Slot[][] recipeSlots = mapIngredSlots(gui, ingredients); // setup the slot map
@@ -242,7 +240,7 @@ public class BackpackRecipeTransfer {
         return recipeSlots;
     }
 
-    private static Slot[][] mapIngredSlots(GuiContainer gui, List<PositionedStack> ingredients) {
+    private Slot[][] mapIngredSlots(GuiContainer gui, List<PositionedStack> ingredients) {
         Slot[][] recipeSlotList = new Slot[ingredients.size()][];
 
         List<Slot> availableSlots = new ArrayList<>();
@@ -268,13 +266,13 @@ public class BackpackRecipeTransfer {
         return recipeSlotList;
     }
 
-    private static int getSlotIndex(PositionedStack ps, int startX, int startY, int slotWidth, int slotHeight) {
+    private int getSlotIndex(PositionedStack ps, int startX, int startY, int slotWidth, int slotHeight) {
         int col = (ps.relx - startX) / slotWidth;
         int row = (ps.rely - startY) / slotHeight;
         return row * 3 + col;
     }
 
-    private static void moveIngredients(GuiContainer gui,
+    private void moveIngredients(GuiContainer gui,
         List<DefaultOverlayHandler.IngredientDistribution> assignedIngredients, int multiplier) {
         final EntityClientPlayerMP thePlayer = NEIClientUtils.mc().thePlayer;
 
@@ -328,11 +326,11 @@ public class BackpackRecipeTransfer {
         }
     }
 
-    private static boolean canMoveFrom(Slot slot, GuiContainer gui) {
+    private boolean canMoveFrom(Slot slot, GuiContainer gui) {
         return slot instanceof ModularSlot;
     }
 
-    private static boolean clearIngredients(GuiContainer gui) {
+    private boolean clearIngredients(GuiContainer gui) {
         final EntityClientPlayerMP thePlayer = NEIClientUtils.mc().thePlayer;
 
         for (Slot slot : gui.inventorySlots.inventorySlots) {
@@ -351,7 +349,7 @@ public class BackpackRecipeTransfer {
         return dropOffMouseStack(thePlayer, gui);
     }
 
-    private static boolean dropOffMouseStack(EntityPlayer entityPlayer, GuiContainer gui) {
+    private boolean dropOffMouseStack(EntityPlayer entityPlayer, GuiContainer gui) {
         if (entityPlayer.inventory.getItemStack() == null) {
             return true;
         }
@@ -375,5 +373,4 @@ public class BackpackRecipeTransfer {
 
         return entityPlayer.inventory.getItemStack() == null;
     }
-
 }

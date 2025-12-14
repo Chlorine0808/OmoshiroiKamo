@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiFactories;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IVoidUpgrade;
 import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
@@ -215,6 +216,14 @@ public class TEBackpack extends AbstractTE implements ISidedInventory, IGuiHolde
             openGui(player);
         }
         return true;
+    }
+
+    @Override
+    public void openGui(EntityPlayer player) {
+        if (!worldObj.isRemote) {
+            MGuiFactories.tileEntity()
+                .open(player, xCoord, yCoord, zCoord);
+        }
     }
 
     @Override
