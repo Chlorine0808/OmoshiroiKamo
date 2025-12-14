@@ -48,7 +48,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      * @param parent2    Second parent, or null if this is a base tier item.
      */
     public BaseRegistryItem(int id, String entityName, ResourceLocation texture, int bgColor, int fgColor,
-            @Nullable T parent1, @Nullable T parent2) {
+        @Nullable T parent1, @Nullable T parent2) {
         this.id = id;
         this.entityName = entityName;
         this.bgColor = bgColor;
@@ -258,7 +258,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      */
     public boolean isChildOf(T parent1, T parent2) {
         return (this.parent1 == parent1 && this.parent2 == parent2)
-                || (this.parent1 == parent2 && this.parent2 == parent1);
+            || (this.parent1 == parent2 && this.parent2 == parent1);
     }
 
     /**

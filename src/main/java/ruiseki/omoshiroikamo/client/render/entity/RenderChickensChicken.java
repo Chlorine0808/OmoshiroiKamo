@@ -7,13 +7,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.models.ModelChickensChicken;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 
 @SideOnly(Side.CLIENT)
@@ -44,7 +42,7 @@ public class RenderChickensChicken extends RenderLiving {
     }
 
     public void doRenderChicken(EntityChickensChicken entity, double x, double y, double z, float yaw,
-            float partialTicks) {
+        float partialTicks) {
         super.doRender((EntityLiving) entity, x, y, z, yaw, partialTicks);
     }
 

@@ -26,7 +26,8 @@ public class BreederTESR extends TileEntitySpecialRenderer {
 
         // Do not render if the breeder is active (working)
         // Use world metadata directly to avoid TileEntity cache latency
-        if (tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 1) {
+        if (tile.getWorldObj()
+            .getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 1) {
             return;
         }
 
@@ -43,7 +44,7 @@ public class BreederTESR extends TileEntitySpecialRenderer {
     }
 
     private void renderChicken(TEBreeder tile, int slotIndex, double xOffset, double yOffset, double zOffset,
-            float rotation) {
+        float rotation) {
         DataChicken chicken = tile.getChickenData(slotIndex);
         if (chicken != null && chicken.getItems() != null) {
             GL11.glPushMatrix();
@@ -58,7 +59,8 @@ public class BreederTESR extends TileEntitySpecialRenderer {
             // Rotation
             GL11.glRotatef(rotation, 0F, 1F, 0F);
 
-            ResourceLocation CHICKEN_TEXTURE = chicken.getItems().getTexture();
+            ResourceLocation CHICKEN_TEXTURE = chicken.getItems()
+                .getTexture();
             Minecraft.getMinecraft().renderEngine.bindTexture(CHICKEN_TEXTURE);
 
             GL11.glTranslatef(0F, 1.30F + 0.2F, 0F); // Adjusted Y slightly because scaling works from center

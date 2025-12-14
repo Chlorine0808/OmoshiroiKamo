@@ -3,7 +3,6 @@ package ruiseki.omoshiroikamo.client.util;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -46,12 +45,11 @@ public class TextureGenerator {
     }
 
     private static ResourceLocation combineTextures(ResourceLocation base, ResourceLocation overlay, int tint,
-            String name) throws IOException {
+        String name) throws IOException {
         BufferedImage baseImage = readTexture(base);
         BufferedImage overlayImage = readTexture(overlay);
 
-        if (baseImage == null || overlayImage == null)
-            return null;
+        if (baseImage == null || overlayImage == null) return null;
 
         if (baseImage.getWidth() != overlayImage.getWidth() || baseImage.getHeight() != overlayImage.getHeight()) {
             Logger.warn("Texture dimensions mismatch for " + name);
@@ -70,8 +68,7 @@ public class TextureGenerator {
         for (int i = 0; i < basePixelsRaw.length; i++) {
             int p = basePixelsRaw[i];
             int a = (p >> 24) & 0xFF;
-            if (a == 0)
-                continue;
+            if (a == 0) continue;
 
             int r = (p >> 16) & 0xFF;
             int g = (p >> 8) & 0xFF;
@@ -95,15 +92,17 @@ public class TextureGenerator {
 
         // Convert to DynamicTexture
         DynamicTexture dynTex = new DynamicTexture(combined);
-        ResourceLocation dynLoc = Minecraft.getMinecraft().getTextureManager()
-                .getDynamicTextureLocation(LibMisc.MOD_ID + "_generated_" + name, dynTex);
+        ResourceLocation dynLoc = Minecraft.getMinecraft()
+            .getTextureManager()
+            .getDynamicTextureLocation(LibMisc.MOD_ID + "_generated_" + name, dynTex);
         return dynLoc;
     }
 
     private static BufferedImage readTexture(ResourceLocation loc) throws IOException {
-        IResource res = Minecraft.getMinecraft().getResourceManager().getResource(loc);
-        if (res == null)
-            return null;
+        IResource res = Minecraft.getMinecraft()
+            .getResourceManager()
+            .getResource(loc);
+        if (res == null) return null;
         try (InputStream stream = res.getInputStream()) {
             return ImageIO.read(stream);
         }

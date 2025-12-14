@@ -14,14 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import cpw.mods.fml.common.registry.GameData;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
 public class OriginalChickens extends BaseChickenHandler {
@@ -36,6 +34,7 @@ public class OriginalChickens extends BaseChickenHandler {
     }
 
     private static class CustomChickenData {
+
         String name;
         String texture;
         String textureOverlay;
@@ -50,6 +49,7 @@ public class OriginalChickens extends BaseChickenHandler {
     }
 
     private static class CustomItemData {
+
         String name;
         int amount;
         int meta;
@@ -71,8 +71,7 @@ public class OriginalChickens extends BaseChickenHandler {
             reader.setLenient(true); // Allow comments
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<CustomChickenData>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<CustomChickenData>>() {}.getType();
             List<CustomChickenData> customChickens = gson.fromJson(reader, listType);
 
             if (customChickens == null) {
@@ -104,33 +103,34 @@ public class OriginalChickens extends BaseChickenHandler {
                     }
 
                     ChickensRegistryItem chicken = addChicken(
-                            allChickens,
-                            data.name,
-                            this.nextID(),
-                            data.texture,
-                            layItem,
-                            bgColor,
-                            fgColor,
-                            type);
+                        allChickens,
+                        data.name,
+                        this.nextID(),
+                        data.texture,
+                        layItem,
+                        bgColor,
+                        fgColor,
+                        type);
 
                     if (chicken != null) {
                         // Register Localization
                         String locKey = "entity." + data.name + ".name";
                         // 1. Register 'name' as en_US default
-                        cpw.mods.fml.common.registry.LanguageRegistry.instance().addStringLocalization(locKey, "en_US",
-                                data.name);
+                        cpw.mods.fml.common.registry.LanguageRegistry.instance()
+                            .addStringLocalization(locKey, "en_US", data.name);
 
                         // 2. Register other languages if present
                         if (data.lang != null) {
                             for (java.util.Map.Entry<String, String> entry : data.lang.entrySet()) {
-                                cpw.mods.fml.common.registry.LanguageRegistry.instance().addStringLocalization(locKey,
-                                        entry.getKey(), entry.getValue());
+                                cpw.mods.fml.common.registry.LanguageRegistry.instance()
+                                    .addStringLocalization(locKey, entry.getKey(), entry.getValue());
                             }
                         }
 
                         if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {
                             chicken.setTintColor(tint);
-                            chicken.setTextureOverlay(new ResourceLocation(
+                            chicken.setTextureOverlay(
+                                new ResourceLocation(
                                     LibResources.PREFIX_MOD + "textures/entity/chicken/custom/" + data.textureOverlay));
                         }
 
@@ -140,8 +140,7 @@ public class OriginalChickens extends BaseChickenHandler {
 
                         if (data.texture != null && !data.texture.isEmpty()) {
                             String iconName = data.texture;
-                            if (iconName.endsWith(".png"))
-                                iconName = iconName.substring(0, iconName.length() - 4);
+                            if (iconName.endsWith(".png")) iconName = iconName.substring(0, iconName.length() - 4);
                             chicken.setIconName(LibResources.PREFIX_MOD + "chicken/" + iconName);
                         }
 
@@ -168,16 +167,13 @@ public class OriginalChickens extends BaseChickenHandler {
 
     @Override
     public void registerAllParents(List<ChickensRegistryItem> allChickens) {
-        if (loadedCustomChickens == null)
-            return;
+        if (loadedCustomChickens == null) return;
 
         for (CustomChickenData data : loadedCustomChickens) {
-            if (data.parent1 == null || data.parent2 == null)
-                continue;
+            if (data.parent1 == null || data.parent2 == null) continue;
 
             ChickensRegistryItem child = findChicken(allChickens, data.name);
-            if (child == null)
-                continue;
+            if (child == null) continue;
 
             ChickensRegistryItem p1 = findChicken(allChickens, data.parent1);
             ChickensRegistryItem p2 = findChicken(allChickens, data.parent2);
@@ -185,7 +181,11 @@ public class OriginalChickens extends BaseChickenHandler {
             if (p1 != null && p2 != null) {
                 child.setParents(p1, p2);
             } else {
-                Logger.error("Could not find parents for custom chicken " + data.name + ": " + data.parent1 + ", "
+                Logger.error(
+                    "Could not find parents for custom chicken " + data.name
+                        + ": "
+                        + data.parent1
+                        + ", "
                         + data.parent2);
             }
         }
@@ -196,30 +196,29 @@ public class OriginalChickens extends BaseChickenHandler {
 
     private void createDefaultConfig(File file) {
         try (Writer writer = new FileWriter(file)) {
-            String defaultConfig = "[\n" +
-                    "  /*\n" +
-                    "  {\n" +
-                    "    \"name\": \"ExampleRedChicken\",\n" +
-                    "    \"texture\": \"base_chicken.png\",\n" +
-                    "    \"textureOverlay\": \"base_chicken_overlay.png\",\n" +
-                    "    \"tintColor\": \"0xFF0000\",\n" +
-                    "    \"layItem\": {\n" +
-                    "      \"name\": \"minecraft:redstone\",\n" +
-                    "      \"amount\": 1,\n" +
-                    "      \"meta\": 0\n" +
-                    "    },\n" +
-                    "    \"colorBorder\": \"0xFF0000\",\n" +
-                    "    \"colorCenter\": \"0x800000\",\n" +
-                    "    \"spawnType\": \"NORMAL\",\n" +
-                    "    \"parent1\": \"WhiteChicken\",\n" +
-                    "    \"parent2\": \"RedChicken\",\n" +
-                    "    \"lang\": {\n" +
-                    "      \"en_US\": \"Red Chicken\",\n" +
-                    "      \"ja_JP\": \"赤いニワトリ\"\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "  */\n" +
-                    "]";
+            String defaultConfig = "[\n" + "  /*\n"
+                + "  {\n"
+                + "    \"name\": \"ExampleRedChicken\",\n"
+                + "    \"texture\": \"base_chicken.png\",\n"
+                + "    \"textureOverlay\": \"base_chicken_overlay.png\",\n"
+                + "    \"tintColor\": \"0xFF0000\",\n"
+                + "    \"layItem\": {\n"
+                + "      \"name\": \"minecraft:redstone\",\n"
+                + "      \"amount\": 1,\n"
+                + "      \"meta\": 0\n"
+                + "    },\n"
+                + "    \"colorBorder\": \"0xFF0000\",\n"
+                + "    \"colorCenter\": \"0x800000\",\n"
+                + "    \"spawnType\": \"NORMAL\",\n"
+                + "    \"parent1\": \"WhiteChicken\",\n"
+                + "    \"parent2\": \"RedChicken\",\n"
+                + "    \"lang\": {\n"
+                + "      \"en_US\": \"Red Chicken\",\n"
+                + "      \"ja_JP\": \"赤いニワトリ\"\n"
+                + "    }\n"
+                + "  }\n"
+                + "  */\n"
+                + "]";
             writer.write(defaultConfig);
             Logger.info("Created default " + CONFIG_FILE_NAME);
         } catch (IOException e) {
@@ -228,17 +227,15 @@ public class OriginalChickens extends BaseChickenHandler {
     }
 
     private ItemStack resolveItemStack(CustomItemData data) {
-        if (data == null || data.name == null)
-            return null;
-        Item item = GameData.getItemRegistry().getObject(data.name);
-        if (item == null)
-            return null;
+        if (data == null || data.name == null) return null;
+        Item item = GameData.getItemRegistry()
+            .getObject(data.name);
+        if (item == null) return null;
         return new ItemStack(item, data.amount > 0 ? data.amount : 1, data.meta);
     }
 
     private int parseColor(String hex, int def) {
-        if (hex == null || hex.isEmpty())
-            return def;
+        if (hex == null || hex.isEmpty()) return def;
         try {
             return Integer.decode(hex);
         } catch (NumberFormatException e) {

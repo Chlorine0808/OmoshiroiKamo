@@ -25,8 +25,8 @@ import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtract
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
-import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.chicken.TEBreeder;
+import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.cow.TEStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
@@ -38,8 +38,7 @@ import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public ClientProxy() {
-    }
+    public ClientProxy() {}
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -53,15 +52,16 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
 
         FMLCommonHandler.instance()
-                .bus()
-                .register(KeyHandler.instance);
+            .bus()
+            .register(KeyHandler.instance);
 
         QuantumExtractorTESR quantumExtractorTESR = new QuantumExtractorTESR();
         ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, quantumExtractorTESR);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TERoost.class, new RoostTESR());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEBreeder.class,
-                new ruiseki.omoshiroikamo.client.render.block.chicken.BreederTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TEBreeder.class,
+            new ruiseki.omoshiroikamo.client.render.block.chicken.BreederTESR());
         ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
 
         if (ItemConfigs.renderPufferFish) {
@@ -86,7 +86,7 @@ public class ClientProxy extends CommonProxy {
 
     public World getClientWorld() {
         return FMLClientHandler.instance()
-                .getClient().theWorld;
+            .getClient().theWorld;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void onClientTick() {
         if (!Minecraft.getMinecraft()
-                .isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
+            .isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
             ++clientTickCount;
         }
     }

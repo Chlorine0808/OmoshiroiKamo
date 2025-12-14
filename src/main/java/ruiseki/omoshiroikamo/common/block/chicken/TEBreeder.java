@@ -3,11 +3,10 @@ package ruiseki.omoshiroikamo.common.block.chicken;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.world.World;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -32,8 +31,7 @@ import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 public class TEBreeder extends TERoostBase {
 
-    public TEBreeder() {
-    }
+    public TEBreeder() {}
 
     private boolean wasActive = false;
 
@@ -51,7 +49,7 @@ public class TEBreeder extends TERoostBase {
 
     @Override
     public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y,
-            int z) {
+        int z) {
         return oldBlock != newBlock;
     }
 
@@ -106,46 +104,44 @@ public class TEBreeder extends TERoostBase {
         settings.customContainer(ChickenContainer::new);
         ModularPanel panel = new ModularPanel("breeder_gui");
         panel.child(
-                Flow.column()
-                        .child(
-                                IKey.str(StatCollector.translateToLocal("tile." + getMachineName() + ".name"))
-                                        .asWidget()
-                                        .margin(6, 0, 5, 0)
-                                        .align(Alignment.TopLeft))
-                        .child(
-                                SlotGroupWidget.builder()
-                                        .matrix("S+II  OOO")
-                                        .key(
-                                                'I',
-                                                index -> new ItemSlot().background(MGuiTextures.ROOST_SLOT)
-                                                        .hoverBackground(MGuiTextures.ROOST_SLOT)
-                                                        .slot(
-                                                                new ModularSlot(inv, index).slotGroup("input")
-                                                                        .filter(stack -> isItemValidForSlot(index,
-                                                                                stack))))
-                                        .key(
-                                                'S',
-                                                new ItemSlot().slot(
-                                                        new ModularSlot(inv, 2).slotGroup("input")
-                                                                .filter(stack -> isItemValidForSlot(2, stack))))
-                                        .key('+', new Widget<>().background(GuiTextures.ADD))
-                                        .key(
-                                                'O',
-                                                index -> new ItemSlot().slot(
-                                                        new ModularSlot(inv, index + 3).accessibility(false, true)))
-                                        .build()
-                                        .topRel(0.25f)
-                                        .alignX(Alignment.CENTER))
-                        .child(
-                                new ProgressWidget().progress(this::getProgress)
-                                        .tooltipDynamic(richTooltip -> {
-                                            richTooltip.add(getFormattedProgress());
-                                            richTooltip.markDirty();
-                                        })
-                                        .topRel(0.25f)
-                                        .leftRel(0.57f)
-                                        .size(36, 18)
-                                        .texture(MGuiTextures.BREEDER_PROGRESS, 36)));
+            Flow.column()
+                .child(
+                    IKey.str(StatCollector.translateToLocal("tile." + getMachineName() + ".name"))
+                        .asWidget()
+                        .margin(6, 0, 5, 0)
+                        .align(Alignment.TopLeft))
+                .child(
+                    SlotGroupWidget.builder()
+                        .matrix("S+II  OOO")
+                        .key(
+                            'I',
+                            index -> new ItemSlot().background(MGuiTextures.ROOST_SLOT)
+                                .hoverBackground(MGuiTextures.ROOST_SLOT)
+                                .slot(
+                                    new ModularSlot(inv, index).slotGroup("input")
+                                        .filter(stack -> isItemValidForSlot(index, stack))))
+                        .key(
+                            'S',
+                            new ItemSlot().slot(
+                                new ModularSlot(inv, 2).slotGroup("input")
+                                    .filter(stack -> isItemValidForSlot(2, stack))))
+                        .key('+', new Widget<>().background(GuiTextures.ADD))
+                        .key(
+                            'O',
+                            index -> new ItemSlot().slot(new ModularSlot(inv, index + 3).accessibility(false, true)))
+                        .build()
+                        .topRel(0.25f)
+                        .alignX(Alignment.CENTER))
+                .child(
+                    new ProgressWidget().progress(this::getProgress)
+                        .tooltipDynamic(richTooltip -> {
+                            richTooltip.add(getFormattedProgress());
+                            richTooltip.markDirty();
+                        })
+                        .topRel(0.25f)
+                        .leftRel(0.57f)
+                        .size(36, 18)
+                        .texture(MGuiTextures.BREEDER_PROGRESS, 36)));
         panel.bindPlayerInventory();
         return panel;
     }
@@ -158,30 +154,30 @@ public class TEBreeder extends TERoostBase {
 
         Random random = worldObj != null ? worldObj.rand : new Random();
         adjustChildStat(
-                tag,
-                IMobStats.GROWTH_NBT,
-                left.getGrowthStat(),
-                right.getGrowthStat(),
-                ChickenConfig.getMaxGrowthStat(),
-                random);
+            tag,
+            IMobStats.GROWTH_NBT,
+            left.getGrowthStat(),
+            right.getGrowthStat(),
+            ChickenConfig.getMaxGrowthStat(),
+            random);
         adjustChildStat(
-                tag,
-                IMobStats.GAIN_NBT,
-                left.getGainStat(),
-                right.getGainStat(),
-                ChickenConfig.getMaxGainStat(),
-                random);
+            tag,
+            IMobStats.GAIN_NBT,
+            left.getGainStat(),
+            right.getGainStat(),
+            ChickenConfig.getMaxGainStat(),
+            random);
         adjustChildStat(
-                tag,
-                IMobStats.STRENGTH_NBT,
-                left.getStrengthStat(),
-                right.getStrengthStat(),
-                ChickenConfig.getMaxStrengthStat(),
-                random);
+            tag,
+            IMobStats.STRENGTH_NBT,
+            left.getStrengthStat(),
+            right.getStrengthStat(),
+            ChickenConfig.getMaxStrengthStat(),
+            random);
     }
 
     private void adjustChildStat(NBTTagCompound tag, String key, int parentStatA, int parentStatB, int maxStat,
-            Random random) {
+        Random random) {
         if (!tag.hasKey(key)) {
             return;
         }
