@@ -38,7 +38,8 @@ public class TERoostCollector extends AbstractStorageTE {
     @Override
     protected void doUpdate() {
         super.doUpdate();
-        if (!worldObj.isRemote) {}
+        if (!worldObj.isRemote) {
+        }
         updateSearchOffset();
         gatherItems();
     }
@@ -63,6 +64,9 @@ public class TERoostCollector extends AbstractStorageTE {
         }
         ItemTransfer transfer = new ItemTransfer();
         transfer.pull(this, ForgeDirection.DOWN, teRoost);
+        // 1 slot per operation
+        transfer.transfer();
+        transfer.transfer();
         transfer.transfer();
     }
 
@@ -78,7 +82,7 @@ public class TERoostCollector extends AbstractStorageTE {
 
     @Override
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
-        float hitZ) {
+            float hitZ) {
         openGui(player);
         return true;
     }
@@ -104,21 +108,23 @@ public class TERoostCollector extends AbstractStorageTE {
         panel.bindPlayerInventory();
 
         panel.child(
-            Flow.column()
-                .child(
-                    IKey.str(StatCollector.translateToLocal("tile." + getMachineName() + ".name"))
-                        .asWidget()
-                        .margin(6, 0, 5, 0)
-                        .align(Alignment.TopLeft))
-                .child(
-                    SlotGroupWidget.builder()
-                        .row("OOOOOOOOO")
-                        .row("OOOOOOOOO")
-                        .row("OOOOOOOOO")
-                        .key('O', index -> new ItemSlot().slot(new ModularSlot(inv, index).accessibility(false, true)))
-                        .build()
-                        .topRel(0.15f)
-                        .alignX(Alignment.CENTER)));
+                Flow.column()
+                        .child(
+                                IKey.str(StatCollector.translateToLocal("tile." + getMachineName() + ".name"))
+                                        .asWidget()
+                                        .margin(6, 0, 5, 0)
+                                        .align(Alignment.TopLeft))
+                        .child(
+                                SlotGroupWidget.builder()
+                                        .row("OOOOOOOOO")
+                                        .row("OOOOOOOOO")
+                                        .row("OOOOOOOOO")
+                                        .key('O',
+                                                index -> new ItemSlot()
+                                                        .slot(new ModularSlot(inv, index).accessibility(false, true)))
+                                        .build()
+                                        .topRel(0.15f)
+                                        .alignX(Alignment.CENTER)));
 
         panel.child(new Column().coverChildren());
 
