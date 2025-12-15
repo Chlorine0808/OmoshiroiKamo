@@ -19,33 +19,30 @@ public class BatterySlotWidget extends Column {
 
     public static class BatteryWidget extends ParentWidget<BatteryWidget> {
 
-        public static final AdaptableUITexture TOP_TEXTURE = (AdaptableUITexture) UITexture.builder()
+        public static final UITexture TOP_TEXTURE = UITexture.builder()
             .location(LibMisc.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
             .xy(47, 48, 63, 52)
-            .adaptable(1)
-            .tiled()
             .build();
 
-        public static final AdaptableUITexture BOTTOM_TEXTURE = (AdaptableUITexture) UITexture.builder()
+        public static final UITexture BOTTOM_TEXTURE = UITexture.builder()
             .location(LibMisc.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
             .xy(47, 52, 63, 55)
-            .adaptable(1)
-            .tiled()
             .build();
 
         private final IBatteryUpgrade upgrade;
 
         public BatteryWidget(IBatteryUpgrade upgrade) {
             this.upgrade = upgrade;
+            width(ItemSlot.SIZE);
         }
 
         @Override
         public void drawOverlay(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
             super.drawOverlay(context, widgetTheme);
-            TOP_TEXTURE.draw(0, 0,16, 4);
-            BOTTOM_TEXTURE.draw(0, this.getArea().height - 3,16, 3);
+            TOP_TEXTURE.draw(context,0, 0,16, 4, widgetTheme.getTheme());
+            BOTTOM_TEXTURE.draw(context, 0, this.getArea().height - 3,16, 3, widgetTheme.getTheme());
         }
     }
 
