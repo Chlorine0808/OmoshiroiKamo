@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +16,10 @@ import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
@@ -67,7 +70,7 @@ public class OriginalChickens extends BaseChickenHandler {
         }
 
         try (FileReader fileReader = new FileReader(configFile)) {
-            com.google.gson.stream.JsonReader reader = new com.google.gson.stream.JsonReader(fileReader);
+            JsonReader reader = new JsonReader(fileReader);
             reader.setLenient(true); // Allow comments
 
             Gson gson = new Gson();
@@ -115,14 +118,14 @@ public class OriginalChickens extends BaseChickenHandler {
                     if (chicken != null) {
                         // Register Localization
                         String locKey = "entity." + data.name + ".name";
-                        // 1. Register 'name' as en_US default
-                        cpw.mods.fml.common.registry.LanguageRegistry.instance()
+                        // Register 'name' as en_US default
+                        LanguageRegistry.instance()
                             .addStringLocalization(locKey, "en_US", data.name);
 
-                        // 2. Register other languages if present
+                        // Register other languages if present
                         if (data.lang != null) {
-                            for (java.util.Map.Entry<String, String> entry : data.lang.entrySet()) {
-                                cpw.mods.fml.common.registry.LanguageRegistry.instance()
+                            for (Entry<String, String> entry : data.lang.entrySet()) {
+                                LanguageRegistry.instance()
                                     .addStringLocalization(locKey, entry.getKey(), entry.getValue());
                             }
                         }

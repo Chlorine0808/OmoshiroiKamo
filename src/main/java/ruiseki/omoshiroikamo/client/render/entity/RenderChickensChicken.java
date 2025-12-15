@@ -79,7 +79,6 @@ public class RenderChickensChicken extends RenderLiving {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
                 // Prevent Z-Fighting by slightly scaling up the overlay model
-                // Prevent Z-Fighting by slightly scaling up the overlay model
                 GL11.glScalef(1.01F, 1.01F, 1.01F);
 
                 this.setRenderPassModel(this.mainModel);

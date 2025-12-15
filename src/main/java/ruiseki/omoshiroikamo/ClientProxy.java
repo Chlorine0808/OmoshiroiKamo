@@ -19,12 +19,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiFactories;
 import ruiseki.omoshiroikamo.client.handler.KeyHandler;
+import ruiseki.omoshiroikamo.client.render.block.chicken.BreederTESR;
 import ruiseki.omoshiroikamo.client.render.block.chicken.RoostTESR;
 import ruiseki.omoshiroikamo.client.render.block.cow.StallTESR;
 import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtractorTESR;
 import ruiseki.omoshiroikamo.client.render.entity.RenderChickensChicken;
 import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
+import ruiseki.omoshiroikamo.client.util.TextureGenerator;
 import ruiseki.omoshiroikamo.common.block.chicken.TEBreeder;
 import ruiseki.omoshiroikamo.common.block.chicken.TERoost;
 import ruiseki.omoshiroikamo.common.block.cow.TEStall;
@@ -59,9 +61,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, quantumExtractorTESR);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TERoost.class, new RoostTESR());
-        ClientRegistry.bindTileEntitySpecialRenderer(
-            TEBreeder.class,
-            new ruiseki.omoshiroikamo.client.render.block.chicken.BreederTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEBreeder.class, new BreederTESR());
         ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
 
         if (ItemConfigs.renderPufferFish) {
@@ -71,7 +71,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityChickensChicken.class, new RenderChickensChicken());
         RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
 
-        ruiseki.omoshiroikamo.client.util.TextureGenerator.generateCustomChickenTextures();
+        TextureGenerator.generateCustomChickenTextures();
 
     }
 

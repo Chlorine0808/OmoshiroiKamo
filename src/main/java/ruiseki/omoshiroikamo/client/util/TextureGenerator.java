@@ -30,7 +30,6 @@ public class TextureGenerator {
                     ResourceLocation generated = combineTextures(baseLoc, overlayLoc, tintColor, item.getEntityName());
                     if (generated != null) {
                         // Update the registry item to use the generated texture
-                        // Reflection or setter? We have setTexture.
                         item.setTexture(generated);
                         // Nullify overlay so renderer uses single pass
                         item.setTextureOverlay(null);
@@ -59,7 +58,7 @@ public class TextureGenerator {
         int height = baseImage.getHeight();
         BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-        // 1. Tint the Base Image (basePixelsRaw)
+        // Tint the Base Image (basePixelsRaw)
         int[] basePixelsRaw = baseImage.getRGB(0, 0, width, height, null, 0, width);
         int rTint = (tint >> 16) & 0xFF;
         int gTint = (tint >> 8) & 0xFF;
@@ -84,7 +83,7 @@ public class TextureGenerator {
         BufferedImage tintedBase = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         tintedBase.setRGB(0, 0, width, height, basePixelsRaw, 0, width);
 
-        // 2. Draw Tinted Base + Untinted Overlay
+        // Draw Tinted Base + Untinted Overlay
         java.awt.Graphics2D g2 = combined.createGraphics();
         g2.drawImage(tintedBase, 0, 0, null);
         g2.drawImage(overlayImage, 0, 0, null);
