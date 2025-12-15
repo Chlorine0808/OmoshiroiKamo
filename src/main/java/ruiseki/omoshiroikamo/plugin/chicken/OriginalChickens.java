@@ -199,7 +199,21 @@ public class OriginalChickens extends BaseChickenHandler {
 
     private void createDefaultConfig(File file) {
         try (Writer writer = new FileWriter(file)) {
-            String defaultConfig = "[\n" + "  /*\n"
+            String defaultConfig = "// This file is for custom chicken settings.\n"
+                + "// You can add original chicken by writing format below.\n"
+                + "// name : Chicken's name\n"
+                + "// texture : Texture path\n"
+                + "// overlay Texture : If you use auto generated texture, write default\n"
+                + "// tintcolor : Color that base texture is tinted\n"
+                + "// lay item : Item that chicken produce\n"
+                + "// color border : Spawn egg color\n"
+                + "// color center : Spawn egg color\n"
+                + "// spawn type : Choose NONE, NORMAL, ICE, HELL\n"
+                + "// parent : Parent chickens name\n"
+                + "// lang : If you use language other than english, you can add\n"
+                + "// ===============================================================================\n"
+                + "/*\n"
+                + "[\n"
                 + "  {\n"
                 + "    \"name\": \"ExampleRedChicken\",\n"
                 + "    \"texture\": \"base_chicken.png\",\n"
@@ -219,7 +233,10 @@ public class OriginalChickens extends BaseChickenHandler {
                 + "      \"en_US\": \"Red Chicken\",\n"
                 + "    }\n"
                 + "  }\n"
-                + "  */\n"
+                + "]\n"
+                + "*/\n"
+                + "// ===============================================================================\n"
+                + "[\n"
                 + "]";
             writer.write(defaultConfig);
             Logger.info("Created default " + CONFIG_FILE_NAME);
