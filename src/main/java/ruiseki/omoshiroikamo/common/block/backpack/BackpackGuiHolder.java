@@ -99,6 +99,15 @@ public abstract class BackpackGuiHolder {
             addCommonWidgets(panel, data.getPlayer());
             panel.modifyPlayerSlot(syncManager, data.getInventoryType(), data.getSlotIndex(), data.getPlayer());
 
+            syncManager.onCommonTick(() -> {
+                ItemStack used = data.getUsedItemStack();
+                if (used != null) {
+                    used.setTagCompound(
+                        handler.getBackpack()
+                            .getTagCompound());
+                }
+            });
+
             syncManager.addCloseListener(player -> {
                 if (!(player instanceof EntityPlayerMP)) {
                     return;

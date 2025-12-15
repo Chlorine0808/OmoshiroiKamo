@@ -120,13 +120,12 @@ public class BackpackEventHandler {
             return;
         }
 
-        ItemStack held = player.getHeldItem();
-        if (held != null && held.getItem() instanceof BlockBackpack.ItemBackpack) {
-            feedTickCounter = -100;
+        if (player.openContainer instanceof BackPackContainer) {
             return;
         }
 
-        if (player.openContainer instanceof BackPackContainer) {
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof BlockBackpack.ItemBackpack) {
             feedTickCounter = -100;
             return;
         }
