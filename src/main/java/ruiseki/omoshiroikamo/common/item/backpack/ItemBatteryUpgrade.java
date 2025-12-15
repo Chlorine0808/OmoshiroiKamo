@@ -6,11 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
-import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.BatteryUpgradeUpgrade;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
-public class ItemBatteryUpgrade extends ItemUpgrade<UpgradeWrapper> {
+public class ItemBatteryUpgrade extends ItemUpgrade<BatteryUpgradeUpgrade> {
 
     public ItemBatteryUpgrade() {
         super(ModObject.itemBatteryUpgrade.unlocalisedName);
@@ -19,12 +19,12 @@ public class ItemBatteryUpgrade extends ItemUpgrade<UpgradeWrapper> {
     }
 
     @Override
-    public boolean hasTab() {
-        return true;
+    public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "battery_upgrade"));
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "battery_upgrade"));
+    public BatteryUpgradeUpgrade createWrapper(ItemStack stack) {
+        return new BatteryUpgradeUpgrade(stack);
     }
 }

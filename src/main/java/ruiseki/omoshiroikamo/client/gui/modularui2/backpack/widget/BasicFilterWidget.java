@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import lombok.Getter;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.FilterSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.UpgradeSlotSH;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 
@@ -24,7 +25,7 @@ public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
     @Getter
     private final CyclicVariantButtonWidget filterTypeButton;
     @Getter
-    private final List<ItemSlot> filterSlots;
+    private final List<FilterSlot> filterSlots;
     @Getter
     private UpgradeSlotSH slotSyncHandler = null;
 
@@ -55,7 +56,7 @@ public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
 
         this.filterSlots = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            ItemSlot slot = new ItemSlot();
+            FilterSlot slot = new FilterSlot();
             slot.name(syncKey + "_" + slotIndex)
                 .syncHandler(syncKey + "_" + slotIndex, i)
                 .pos(i % 3 * 18, i / 3 * 18);

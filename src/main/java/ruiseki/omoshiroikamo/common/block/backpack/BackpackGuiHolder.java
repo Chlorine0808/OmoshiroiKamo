@@ -2,6 +2,7 @@ package ruiseki.omoshiroikamo.common.block.backpack;
 
 import static ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler.ceilDiv;
 
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,10 +39,10 @@ public abstract class BackpackGuiHolder {
         TileEntity tileEntity, InventoryType type, Integer backpackSlotIndex) {
 
         int screenWidth = Minecraft.getMinecraft().displayWidth;
-        int minWidth = 14 + 9 * SLOT_SIZE;
-        int maxWidth = 14 + rowSize * SLOT_SIZE;
+        int minWidth = 14 + 9 * ItemSlot.SIZE;
+        int maxWidth = 14 + rowSize * ItemSlot.SIZE;
         int width = 6 + Math.max(minWidth, Math.min(maxWidth, screenWidth / 4));
-        int height = 115 + colSize * SLOT_SIZE;
+        int height = 115 + colSize * ItemSlot.SIZE;
 
         return BackpackPanel.defaultPanel(
             syncManager,
@@ -62,7 +63,7 @@ public abstract class BackpackGuiHolder {
         panel.addUpgradeSlots();
         panel.addSettingTab();
         panel.addUpgradeTabs();
-        panel.addTexts(player);
+        panel.addTexts();
     }
 
     public static final class TileEntityGuiHolder extends BackpackGuiHolder implements IGuiHolder<PosGuiData> {

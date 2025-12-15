@@ -44,6 +44,9 @@ public abstract class OKCreativeTab extends CreativeTabs {
             addItem(ModItems.INCEPTION_UPGRADE.get());
             addItem(ModItems.FILTER_UPGRADE.get());
             addItem(ModItems.ADVANCED_FILTER_UPGRADE.get());
+            addItem(ModItems.VOID_UPGRADE.get());
+            addItem(ModItems.ADVANCED_VOID_UPGRADE.get());
+            addItem(ModItems.CRAFTING_UPGRADE.get());
         }
     };
 

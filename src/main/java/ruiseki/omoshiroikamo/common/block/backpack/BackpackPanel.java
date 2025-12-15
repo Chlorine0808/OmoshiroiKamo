@@ -1,11 +1,12 @@
 package ruiseki.omoshiroikamo.common.block.backpack;
 
-import static ruiseki.omoshiroikamo.common.block.backpack.BackpackGuiHolder.SLOT_SIZE;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import com.cleanroommc.modularui.widgets.layout.Row;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,6 +50,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedMagne
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.AdvancedVoidUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BackpackList;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BasicExpandedTabWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.BatterySlotWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CraftingUpgradeWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.CyclicVariantButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.FeedingUpgradeWidget;
@@ -58,6 +60,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.SearchBarWidg
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.SettingTabWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.ShiftButtonWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TabWidget;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TankSlotWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.TileWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotGroupWidget;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.widget.UpgradeSlotUpdateGroup;
@@ -72,6 +75,8 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.BasicUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.CraftingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FeedingUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.FilterUpgradeWrapper;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBatteryUpgrade;
+import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ITankUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IToggleable;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.UpgradeWrapper;
@@ -85,14 +90,6 @@ public class BackpackPanel extends ModularPanel {
         .location(LibMisc.MOD_ID, "gui/gui_controls")
         .imageSize(256, 256)
         .xy(132, 0, 124, 256)
-        .adaptable(4)
-        .tiled()
-        .build();
-
-    public static final AdaptableUITexture TILE_TAB_TEXTURE = (AdaptableUITexture) UITexture.builder()
-        .location(LibMisc.MOD_ID, "gui/gui_controls")
-        .imageSize(256, 256)
-        .xy(128, 0, 128, 10)
         .adaptable(4)
         .tiled()
         .build();
@@ -140,7 +137,7 @@ public class BackpackPanel extends ModularPanel {
     private final int height;
     private final int backpackSlotsHeight;
     @Getter
-    private final int rowSize;
+    private int rowSize;
 
     @Getter
     public final BackpackSH backpackSyncHandler;
@@ -153,12 +150,16 @@ public class BackpackPanel extends ModularPanel {
     private final IPanelHandler settingPanel;
     @Getter
     private Column backpackInvCol;
+    @Getter
+    private Row backpackInvRow;
     private SearchBarWidget searchBarWidget;
 
     public boolean isMemorySettingTabOpened = false;
     public boolean shouldMemorizeRespectNBT = false;
     public boolean isSortingSettingTabOpened = false;
     public boolean isResetOpenedTabs = false;
+
+    private boolean lastHasBattery = false;
 
     public BackpackPanel(EntityPlayer player, TileEntity tileEntity, PanelSyncManager syncManager, UISettings settings,
         BackpackHandler handler, int width, int height) {
@@ -173,8 +174,6 @@ public class BackpackPanel extends ModularPanel {
         this.height = height;
         this.size(this.width, this.height);
         this.backpackSlotsHeight = this.height - 115;
-        int calculated = (this.width - 14) / SLOT_SIZE;
-        this.rowSize = Math.max(9, Math.min(12, calculated));
 
         this.backpackSyncHandler = new BackpackSH(new PlayerMainInvWrapper(player.inventory), this.handler);
         this.syncManager.syncValue("backpack_wrapper", this.backpackSyncHandler);
@@ -358,11 +357,33 @@ public class BackpackPanel extends ModularPanel {
     }
 
     public void addBackpackInventorySlots() {
+        int slotSize = ItemSlot.SIZE;
+        int calculated = (this.width - 14) / slotSize;
+        this.rowSize = Math.max(9, Math.min(12, calculated));
+
+        Map<Integer, IBatteryUpgrade> batteryUpgrades =
+            handler.gatherCapabilityUpgrades(IBatteryUpgrade.class);
+
+        Map<Integer, ITankUpgrade> tankUpgrades =
+            handler.gatherCapabilityUpgrades(ITankUpgrade.class);
+
+        List<Integer> extraIndexes = new ArrayList<>();
+        if (!batteryUpgrades.isEmpty()) {
+            extraIndexes.add(batteryUpgrades.keySet().iterator().next());
+        }
+        if (!tankUpgrades.isEmpty()) {
+            extraIndexes.add(tankUpgrades.keySet().iterator().next());
+        }
+
+        Collections.sort(extraIndexes);
+
+        this.rowSize = Math.max(1, this.rowSize - (extraIndexes.size() * 2));
+
+        backpackInvRow = (Row) new Row().coverChildren().alignX(0.5f)
+            .top(18).childPadding(2);
+
         BackpackList backpackList = new BackpackList().name("backpack_slots")
-            .coverChildrenWidth()
-            .top(18)
-            .alignX(0.5f)
-            .scrollDirection(GuiAxis.Y)
+            .scrollDirection(GuiAxis.Y).coverChildrenWidth()
             .maxSize(backpackSlotsHeight);
 
         backpackInvCol = (Column) new Column().coverChildren();
@@ -372,16 +393,32 @@ public class BackpackPanel extends ModularPanel {
             int row = i / rowSize;
 
             BackpackSlot slot = (BackpackSlot) new BackpackSlot(this, handler).syncHandler("backpack", i)
-                .size(18)
+                .size(slotSize)
                 .name("slot_" + i)
-                .left(col * (18))
-                .top(row * (18));
+                .left(col * slotSize)
+                .top(row * slotSize);
 
             backpackInvCol.child(slot);
         }
 
         backpackList.child(backpackInvCol);
-        this.child(backpackList);
+        backpackInvRow.child(backpackList);
+
+        for (int idx : extraIndexes) {
+            if (batteryUpgrades.containsKey(idx)) {
+                backpackInvRow.child(
+                    new BatterySlotWidget(batteryUpgrades.get(idx))
+                        .height(backpackSlotsHeight)
+                );
+            } else if (tankUpgrades.containsKey(idx)) {
+                backpackInvRow.child(
+                    new TankSlotWidget(tankUpgrades.get(idx))
+                        .height(backpackSlotsHeight)
+                );
+            }
+        }
+
+        this.child(backpackInvRow);
     }
 
     public void addSearchBar() {
@@ -398,11 +435,11 @@ public class BackpackPanel extends ModularPanel {
     public void addUpgradeSlots() {
         upgradeSlotGroupWidget.name("upgrade_inventory");
         upgradeSlotGroupWidget.flex()
-            .size(23, 10 + handler.getUpgradeSlots() * 18)
+            .size(23, 10 + handler.getUpgradeSlots() * ItemSlot.SIZE)
             .left(-21);
         for (int i = 0; i < handler.getUpgradeSlots(); i++) {
             ItemSlot itemSlot = new ItemSlot().syncHandler("upgrades", i)
-                .pos(5, 5 + i * 18)
+                .pos(5, 5 + i * ItemSlot.SIZE)
                 .name("slot_" + i);
             upgradeSlotWidgets.add(itemSlot);
             upgradeSlotGroupWidget.child(itemSlot);
@@ -426,10 +463,10 @@ public class BackpackPanel extends ModularPanel {
         child(new SettingTabWidget());
     }
 
-    public void addTexts(EntityPlayer player) {
+    public void addTexts() {
         child(new TileWidget(this));
         child(
-            IKey.lang(player.inventory.getInventoryName())
+            IKey.lang(this.player.inventory.getInventoryName())
                 .asWidget()
                 .pos(8, 20 + backpackSlotsHeight));
     }
@@ -583,6 +620,14 @@ public class BackpackPanel extends ModularPanel {
 
         syncToggles();
         disableUnusedTabWidgets(tabIndex);
+
+
+        boolean hasBatteryNow = hasBatteryUpgrade();
+        if (hasBatteryNow != lastHasBattery) {
+            lastHasBattery = hasBatteryNow;
+            rebuildBackpackInventory();
+        }
+
         this.scheduleResize();
     }
 
@@ -648,6 +693,21 @@ public class BackpackPanel extends ModularPanel {
             }
             isResetOpenedTabs = true;
         }
+    }
+
+    private void rebuildBackpackInventory() {
+
+        if (backpackInvRow != null) {
+            remove(backpackInvRow);
+            backpackInvRow = null;
+            backpackInvCol = null;
+        }
+
+        addBackpackInventorySlots();
+    }
+
+    private boolean hasBatteryUpgrade() {
+        return !handler.gatherCapabilityUpgrades(IBatteryUpgrade.class).isEmpty();
     }
 
     @Override

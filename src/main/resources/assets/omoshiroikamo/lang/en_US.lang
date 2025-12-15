@@ -325,11 +325,11 @@ element.dendro.name=Dendro
 
 #Item
 
-tile.backpackLeather.name=Leather Backpack (WIP)
-tile.backpackIron.name=Iron Backpack (WIP)
-tile.backpackGold.name=Gold Backpack (WIP)
-tile.backpackDiamond.name=Diamond Backpack (WIP)
-tile.backpackObsidian.name=Obsidian Backpack (WIP)
+tile.backpackLeather.name=Leather Backpack
+tile.backpackIron.name=Iron Backpack
+tile.backpackGold.name=Gold Backpack
+tile.backpackDiamond.name=Diamond Backpack
+tile.backpackObsidian.name=Obsidian Backpack
 
 item.backPack.Starter.name=Starter Backpack (Will Remove Next Update)
 item.backPack.Copper.name=Copper Backpack (Will Remove Next Update)
