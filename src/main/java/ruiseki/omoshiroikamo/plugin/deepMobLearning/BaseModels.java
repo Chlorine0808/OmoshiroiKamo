@@ -15,6 +15,7 @@ public class BaseModels extends BaseModelHandler {
     @Override
     public List<ModelRegistryItem> registerModels(List<ModelRegistryItem> allModels) {
         addModel(allModels, "Creeper", this.nextID(), "creeper");
+        addModel(allModels, "Skeleton", this.nextID(), "skeleton");
 
         return allModels;
     }

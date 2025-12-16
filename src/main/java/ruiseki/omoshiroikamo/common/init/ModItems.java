@@ -38,6 +38,8 @@ import ruiseki.omoshiroikamo.common.item.cow.ItemCowHalter;
 import ruiseki.omoshiroikamo.common.item.cow.ItemCowSpawnEgg;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemCreativeModelLearner;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModel;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModelBlank;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDeepLearner;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.trait.ItemAnalyzer;
@@ -82,7 +84,9 @@ public enum ModItems {
     SYRINGE(useCow, new ItemSyringe()),
 
     CREATIVE_MODEL_LEARNER(useDeepMobLearning, new ItemCreativeModelLearner()),
+    DEEP_LEARNER(useDeepMobLearning, new ItemDeepLearner()),
     DATA_MODEL(useDeepMobLearning, new ItemDataModel()),
+    DATA_MODEL_BLANK(useDeepMobLearning, new ItemDataModelBlank()),
     //
     ;
 

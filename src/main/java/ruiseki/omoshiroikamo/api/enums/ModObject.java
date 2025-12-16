@@ -87,7 +87,9 @@ public enum ModObject {
     itemSyringe,
 
     itemCreativeModelLearner,
-    itemDataModel
+    itemDeepLearner,
+    itemDataModel,
+    itemDataModelBlank
     //
     ;
 
