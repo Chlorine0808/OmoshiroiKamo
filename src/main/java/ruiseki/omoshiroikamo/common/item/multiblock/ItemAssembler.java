@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.item;
+package ruiseki.omoshiroikamo.common.item.multiblock;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ConstructableUtilit
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IMBBlock;
+import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.util.TooltipUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 

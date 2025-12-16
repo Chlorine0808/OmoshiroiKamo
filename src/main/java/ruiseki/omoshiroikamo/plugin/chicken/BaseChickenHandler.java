@@ -66,8 +66,6 @@ public abstract class BaseChickenHandler {
 
     public abstract void registerAllParents(List<ChickensRegistryItem> allChickens);
 
-    boolean first = true;
-
     protected int nextID() {
         return this.startID++;
     }

@@ -3,6 +3,7 @@ package ruiseki.omoshiroikamo.common.init;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useBackpack;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useChicken;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useCow;
+import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useDeepMobLearning;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useEnvironmentalTech;
 
 import net.minecraft.item.Item;
@@ -11,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
-import ruiseki.omoshiroikamo.common.item.ItemAssembler;
-import ruiseki.omoshiroikamo.common.item.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedFeedingUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemAdvancedFilterUpgrade;
@@ -37,6 +36,10 @@ import ruiseki.omoshiroikamo.common.item.chicken.ItemLiquidEgg;
 import ruiseki.omoshiroikamo.common.item.chicken.ItemSolidXp;
 import ruiseki.omoshiroikamo.common.item.cow.ItemCowHalter;
 import ruiseki.omoshiroikamo.common.item.cow.ItemCowSpawnEgg;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemCreativeModelLearner;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModel;
+import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
+import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.trait.ItemAnalyzer;
 import ruiseki.omoshiroikamo.common.item.trait.ItemSyringe;
 import ruiseki.omoshiroikamo.common.util.Logger;
@@ -75,7 +78,11 @@ public enum ModItems {
     SOLID_XP(useChicken, new ItemSolidXp()),
     COW_HALTER(useCow, new ItemCowHalter()),
     COW_SPAWN_EGG(useCow, new ItemCowSpawnEgg()),
+
     SYRINGE(useCow, new ItemSyringe()),
+
+    CREATIVE_MODEL_LEARNER(useDeepMobLearning, new ItemCreativeModelLearner()),
+    DATA_MODEL(useDeepMobLearning, new ItemDataModel()),
     //
     ;
 

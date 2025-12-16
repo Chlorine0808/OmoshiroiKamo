@@ -1,6 +1,7 @@
 package ruiseki.omoshiroikamo.common.block.deepMobLearning;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -12,6 +13,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractStorageTE;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
 
 public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
 
@@ -36,6 +38,13 @@ public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
         return new TELootFabricator();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+        super.onBlockPlacedBy(world, x, y, z, player, stack);
+        AbstractTE te = (AbstractTE) world.getTileEntity(x, y, z);
+        world.setBlockMetadataWithNotify(x, y, z, te.getFacing(), 2);
     }
 
     @Override

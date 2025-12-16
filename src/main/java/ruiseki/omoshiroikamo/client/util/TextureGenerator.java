@@ -20,7 +20,7 @@ public class TextureGenerator {
 
     public static void generateCustomChickenTextures() {
         for (DataChicken data : DataChicken.getAllChickens()) {
-            ChickensRegistryItem item = data.getItems();
+            ChickensRegistryItem item = data.getItem();
             if (item.getTextureOverlay() != null) {
                 ResourceLocation baseLoc = item.getTexture();
                 ResourceLocation overlayLoc = item.getTextureOverlay();

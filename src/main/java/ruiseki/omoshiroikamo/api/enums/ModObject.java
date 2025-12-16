@@ -83,7 +83,13 @@ public enum ModObject {
     itemAnalyzer,
     itemSolidXp,
     itemCowSpawnEgg,
-    itemSyringe,;
+
+    itemSyringe,
+
+    itemCreativeModelLearner,
+    itemDataModel
+    //
+    ;
 
     public final String unlocalisedName;
     private Block blockInstance;

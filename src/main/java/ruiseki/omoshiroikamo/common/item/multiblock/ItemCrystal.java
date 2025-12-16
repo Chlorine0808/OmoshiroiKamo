@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.item;
+package ruiseki.omoshiroikamo.common.item.multiblock;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.common.item.ItemOK;
 
 public class ItemCrystal extends ItemOK {
 

@@ -12,6 +12,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Loader;
+import lombok.Getter;
+import lombok.Setter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistry;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
@@ -20,10 +22,13 @@ import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
 public abstract class BaseCowHandler {
 
+    @Getter
     protected String modID;
+    @Getter
     protected String modName;
     protected String texturesLocation;
 
+    @Setter
     private int startID = 2000;
 
     private boolean needsMod = true;
@@ -34,20 +39,8 @@ public abstract class BaseCowHandler {
         this.texturesLocation = texturesLocation;
     }
 
-    public String getModID() {
-        return this.modID;
-    }
-
-    public String getModName() {
-        return this.modName;
-    }
-
     public void setNeedsModPresent(boolean bool) {
         this.needsMod = bool;
-    }
-
-    public void setStartID(int startID) {
-        this.startID = startID;
     }
 
     public List<CowsRegistryItem> tryRegisterChickens(List<CowsRegistryItem> allCows) {
@@ -66,8 +59,6 @@ public abstract class BaseCowHandler {
     public abstract List<CowsRegistryItem> registerCows(List<CowsRegistryItem> allCows);
 
     public abstract void registerAllParents(List<CowsRegistryItem> allCows);
-
-    boolean first = true;
 
     protected int nextID() {
         return this.startID++;

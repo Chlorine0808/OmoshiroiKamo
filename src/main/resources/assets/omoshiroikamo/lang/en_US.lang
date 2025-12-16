@@ -158,10 +158,6 @@ fluid.empty=Empty
 
 #TOOLTIPS
 
-gui.energy.tooltip=RF: %s / %s
-tooltip.lvs=lvs
-tooltip.effPowered=Efficiency when powered
-
 tooltip.backpack.inventory_size=Inventory size: %d
 tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
 tooltip.backpack.stack_multiplier=-> Stack multiplier: %d%s
@@ -232,14 +228,6 @@ tooltip.colored_egg.l1=Throw it to have a chance to spawn the chicken.
 
 tooltip.analyzer.l1=Use it on chickens to determine their stats.
 tooltip.analyzer.l2= - "Which day of the week do chickens hate most? Fry-day!"
-
-#ANVIL UPGRADE
-
-upgrade.energy_one.name=Energy Tier One
-upgrade.energy_two.name=Energy Tier Two
-upgrade.energy_three.name=Energy Tier Three
-upgrade.energy_four.name=Energy Tier Four
-upgrade.energy_five.name=Energy Tier Five
 
 #ACHIEVEMENT
 
@@ -389,6 +377,8 @@ item.coloredEgg.brown.name=Cocoa Brown Chicken Egg
 item.coloredEgg.green.name=Cactus Green Chicken Egg
 item.coloredEgg.red.name=Red Chicken Egg
 item.coloredEgg.black.name=Ink Black Chicken Egg
+
+item.creativeModelLearner.name=Creative Model Learner
 
 #Block
 
