@@ -25,9 +25,9 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
 
     @Setter
     private InventoryCraftingWrapper craftMatrix;
+    private int amountCrafted;
     private final BackpackHandler handler;
     private final int slotIndex;
-    private int amountCrafted;
 
     public ModularCraftingSlot(IItemHandler itemHandler, int index, BackpackHandler handler, int slotIndex) {
         super(itemHandler, index);
@@ -119,7 +119,9 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
 
     @Override
     public void onCraftShiftClick(EntityPlayer player, ItemStack stack) {
-        if (!Platform.isStackEmpty(stack)) {
+        if (Platform.isStackEmpty(stack)) return;
+
+        if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropPlayerItemWithRandomChoice(stack, false);
         }
     }
@@ -139,6 +141,7 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
             ItemStack slotStack = craftMatrix.getStackInSlot(i);
             if (slotStack == null) continue;
 
+            ItemStack original = slotStack.copy();
             boolean extractedFromHandler = false;
 
             if (wrapper != null && wrapper.isUseBackpack()) {
@@ -154,21 +157,17 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
                 craftMatrix.setInventorySlotContents(i, slotStack);
             }
 
-            if (slotStack != null && slotStack.getItem()
-                .hasContainerItem(slotStack)) {
-                ItemStack cont = slotStack.getItem()
-                    .getContainerItem(slotStack);
+            if (original.getItem()
+                .hasContainerItem(original)) {
+                ItemStack cont = original.getItem()
+                    .getContainerItem(original);
                 if (cont != null && cont.isItemStackDamageable() && cont.getItemDamage() > cont.getMaxDamage()) {
                     MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, cont));
-                } else {
-                    if (cont != null && (!slotStack.getItem()
-                        .doesContainerItemLeaveCraftingGrid(slotStack)
-                        || !player.inventory.addItemStackToInventory(cont))) {
-                        if (craftMatrix.getStackInSlot(i) == null) {
-                            craftMatrix.setInventorySlotContents(i, cont);
-                        } else {
-                            player.dropPlayerItemWithRandomChoice(cont, false);
-                        }
+                } else if (cont != null) {
+                    if (craftMatrix.getStackInSlot(i) == null) {
+                        craftMatrix.setInventorySlotContents(i, cont);
+                    } else if (!player.inventory.addItemStackToInventory(cont)) {
+                        player.dropPlayerItemWithRandomChoice(cont, false);
                     }
                 }
             }
@@ -178,7 +177,9 @@ public class ModularCraftingSlot extends ModularCraftingMatrixSlot {
     }
 
     public void updateResult(ItemStack stack) {
-        putStack(stack);
-        getSyncHandler().forceSyncItem();
+        if (!getPlayer().worldObj.isRemote) {
+            putStack(stack);
+            getSyncHandler().forceSyncItem();
+        }
     }
 }

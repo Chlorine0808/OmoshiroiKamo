@@ -28,7 +28,6 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import lombok.Getter;
@@ -74,7 +73,7 @@ public class AdvancedFilterWidget extends ParentWidget<AdvancedFilterWidget> {
     @Getter
     private final Column oreDictBasedConfigurationGroup;
     @Getter
-    private final List<ItemSlot> filterSlots;
+    private final List<FilterSlot> filterSlots;
 
     private final TextFieldWidget oreDictTextField;
     private final OreDictRegexListWidget oreDictList;
@@ -201,7 +200,7 @@ public class AdvancedFilterWidget extends ParentWidget<AdvancedFilterWidget> {
 
         this.filterSlots = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
-            ItemSlot slot = new FilterSlot();
+            FilterSlot slot = new FilterSlot();
             slot.name(syncKey + "_" + slotIndex)
                 .syncHandler(syncKey + "_" + slotIndex, i)
                 .pos(i % 4 * 18, i / 4 * 18);

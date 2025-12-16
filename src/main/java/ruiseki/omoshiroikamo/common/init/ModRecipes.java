@@ -6,7 +6,6 @@ import ruiseki.omoshiroikamo.common.recipe.BlockRecipes;
 import ruiseki.omoshiroikamo.common.recipe.ItemRecipes;
 import ruiseki.omoshiroikamo.common.recipe.NBTShapedOreRecipe;
 import ruiseki.omoshiroikamo.common.recipe.NBTShapelessOreRecipe;
-import ruiseki.omoshiroikamo.common.recipe.machine.MachineRecipeRegistry;
 import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 
@@ -31,15 +30,5 @@ public class ModRecipes {
             NBTShapelessOreRecipe.class,
             RecipeSorter.Category.SHAPELESS,
             "after:minecraft:shapeless");
-    }
-
-    public static void loadAllRecipes() {}
-
-    public static void reloadRecipes() {
-        MachineRecipeRegistry.clearAll();
-
-        loadAllRecipes();
-
-        System.out.println("[RecipeLoader] Recipes reloaded.");
     }
 }

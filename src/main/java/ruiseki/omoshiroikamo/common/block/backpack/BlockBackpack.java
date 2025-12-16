@@ -181,6 +181,9 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
             if (!stack.hasTagCompound()) {
                 BackpackHandler cap = new BackpackHandler(stack.copy(), null, this);
                 cap.writeToItem();
+                stack.setTagCompound(
+                    cap.getBackpack()
+                        .getTagCompound());
             }
         }
 
@@ -190,38 +193,33 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
             if (!stack.hasTagCompound()) {
                 BackpackHandler cap = new BackpackHandler(stack.copy(), null, this);
                 cap.writeToItem();
+                stack.setTagCompound(
+                    cap.getBackpack()
+                        .getTagCompound());
             }
         }
 
         @Override
         public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
             float hitX, float hitY, float hitZ) {
-            if (world.isRemote) return true;
 
-            TileEntity te = world.getTileEntity(x, y, z);
-
-            if (player.isSneaking() && te == null) {
+            if (player.isSneaking() && stack != null && stack.getTagCompound() != null) {
                 return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
             }
-            BackpackHandler cap = new BackpackHandler(stack.copy(), null, this);
-            if (cap.canPlayerAccess(player.getUniqueID())) {
-                MGuiFactories.playerInventory()
-                    .openFromMainHand(player);
-            }
 
-            return true;
+            return false;
         }
 
         @Override
         public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-            if (!world.isRemote) {
+            if (!world.isRemote && stack != null && stack.getTagCompound() != null) {
                 BackpackHandler cap = new BackpackHandler(stack.copy(), null, this);
                 if (cap.canPlayerAccess(player.getUniqueID())) {
                     MGuiFactories.playerInventory()
                         .openFromMainHand(player);
                 }
             }
-            return super.onItemRightClick(stack, world, player);
+            return stack;
         }
 
         @Override

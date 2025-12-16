@@ -16,10 +16,10 @@ I’d be thrilled to see them!
 
 Each backport module can be individually enabled or disabled in the config.
 
-- Environmental Tech (Backport Rewrite)
+- Environmental Tech (Clean-Room Rewrite)
 - Chickens, More Chickens and Roost (Backport)
 - Fluid Cows (Backport WIP)
-- Sophisticated Backpacks (Backport Base on RetroSophisticated Backpacks)
+- RetroSophisticated Backpacks (Backport)
 
 ![Backport Config](https://media.forgecdn.net/attachments/1389/517/z7214707883928_63d047db4be5142074322b35573e34d4.jpg)
 
@@ -71,7 +71,7 @@ All code has been rewritten, and all textures are original.
 ![Cows](https://media.forgecdn.net/attachments/1388/696/2025-11-11_12-45-23-png.png)
 ![Cows](https://media.forgecdn.net/attachments/1397/915/2025-11-19_19-23-22-png.png)
 
-### RetroSophisticated Backpacks (Backport Rewrite WIP)
+### RetroSophisticated Backpacks (Backport)
 
 #### Backpack
 
@@ -113,9 +113,8 @@ their original licenses:
 - This mod IS NOT OFFICIAL WORK of original author P3pp3rF1y & CleanroomMC,
   please do not report any issue to original author.
 - RetroSophisticated Backpacks (textures/models) — original license applies.
-- Any GPLv3 components used in this project remain under GPLv3 and must be
-respected accordingly, all assets are forked before
-Sophisticated Backpack changes license to All Right Reserve.
+- Any GPLv3/LGPL-3.0 components used in this project remain under GPLv3/LGPL-3.0 and must be
+respected accordingly, all assets are forked before Sophisticated Backpack changes license to All Right Reserve.
 
 You are free to use, modify, and distribute the MIT-licensed portions of this
 project, but must comply with the original licenses of the included third-party

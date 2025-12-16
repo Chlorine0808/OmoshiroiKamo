@@ -18,6 +18,7 @@ import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiFactories;
 import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibMods;
+import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 
 public class KeyHandler {
 
@@ -50,7 +51,7 @@ public class KeyHandler {
     }
 
     private void handleOpenBackpack() {
-        if (keyOpenBackpack.isPressed()) {
+        if (keyOpenBackpack.isPressed() && BackportConfigs.useBackpack) {
             EntityPlayer player = Platform.getClientPlayer();
 
             for (int armorIndex = 0; armorIndex < 4; armorIndex++) {

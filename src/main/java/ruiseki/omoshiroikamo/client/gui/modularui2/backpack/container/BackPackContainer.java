@@ -23,7 +23,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularBackpackSlot;
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingMatrixSlot;
+import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularCraftingSlot;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.slot.ModularFilterSlot;
 import ruiseki.omoshiroikamo.common.block.backpack.BackpackHandler;
 import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
@@ -94,7 +94,7 @@ public class BackPackContainer extends ModularContainer {
 
                         if (slot == null || !slot.getHasStack()) continue;
                         if (slot instanceof ModularFilterSlot) continue;
-                        if (slot instanceof ModularCraftingMatrixSlot) continue;
+                        if (slot instanceof ModularCraftingSlot) continue;
 
                         ItemStack slotStack = slot.getStack();
 
@@ -150,6 +150,7 @@ public class BackPackContainer extends ModularContainer {
                 Slot clickedSlot = getSlot(slotId);
                 boolean isBackpackSlot = clickedSlot instanceof ModularBackpackSlot;
                 boolean isFilterSlot = clickedSlot instanceof ModularFilterSlot;
+                boolean isCraftingSlot = clickedSlot instanceof ModularCraftingSlot;
 
                 if (clickedSlot != null) {
                     ItemStack slotStack = clickedSlot.getStack();
@@ -171,6 +172,10 @@ public class BackPackContainer extends ModularContainer {
                     // If slot is empty & player holds something -> try place
                     if (slotStack == null) {
                         if (heldStack != null && clickedSlot.isItemValid(heldStack)) {
+                            if (isCraftingSlot) {
+                                return Platform.EMPTY_STACK;
+                            }
+
                             if (isBackpackSlot && handler != null
                                 && handler.canVoid(heldStack, IVoidUpgrade.VoidType.ANY, IVoidUpgrade.VoidInput.ALL)) {
 
@@ -187,7 +192,7 @@ public class BackPackContainer extends ModularContainer {
 
                                 clickedSlot.putStack(null);
                                 clickedSlot.onSlotChanged();
-                                return null;
+                                return Platform.EMPTY_STACK;
                             }
 
                             if (isBackpackSlot && handler != null
@@ -199,7 +204,7 @@ public class BackPackContainer extends ModularContainer {
                                     if (remainder == null || remainder.stackSize <= 0) {
                                         inventoryplayer.setItemStack(null);
                                         clickedSlot.onSlotChanged();
-                                        return null;
+                                        return Platform.EMPTY_STACK;
                                     }
                                     heldStack = remainder;
                                     inventoryplayer.setItemStack(heldStack);
@@ -214,7 +219,7 @@ public class BackPackContainer extends ModularContainer {
                                             inventoryplayer.setItemStack(heldStack);
                                         }
                                         clickedSlot.onSlotChanged();
-                                        return null;
+                                        return Platform.EMPTY_STACK;
                                     } else {
                                         heldStack.stackSize += remainder.stackSize;
                                         inventoryplayer.setItemStack(heldStack);
@@ -223,7 +228,7 @@ public class BackPackContainer extends ModularContainer {
                             }
 
                             int lim = stackLimit(clickedSlot, heldStack);
-                            if (lim <= 0) return null;
+                            if (lim <= 0) return Platform.EMPTY_STACK;
                             int placeCount = mouseButton == LEFT_MOUSE ? heldStack.stackSize : 1;
                             if (placeCount > lim) placeCount = lim;
 
@@ -255,6 +260,10 @@ public class BackPackContainer extends ModularContainer {
                         }
                         // Player holding something
                         else {
+                            if (isCraftingSlot) {
+                                return Platform.EMPTY_STACK;
+                            }
+
                             // If same item type and tags -> try merge into slot
                             if (slotStack.getItem() == heldStack.getItem()
                                 && slotStack.getItemDamage() == heldStack.getItemDamage()
@@ -347,11 +356,12 @@ public class BackPackContainer extends ModularContainer {
             && (heldStack == null || heldStack.stackSize <= 0)
             && slotId >= 0) {
 
-                ModularSlot slot = (ModularSlot) getSlot(slotId);
-                if (slot != null && slot.getStack() != null) {
-                    player.inventory.setItemStack(
-                        slot.getStack()
-                            .copy());
+                Slot slot = getSlot(slotId);
+                if (slot != null && slot.getHasStack()) {
+                    ItemStack stack = slot.getStack()
+                        .copy();
+                    stack.stackSize = stack.getMaxStackSize();
+                    player.inventory.setItemStack(stack);
                 }
                 return Platform.EMPTY_STACK;
             }
@@ -363,7 +373,7 @@ public class BackPackContainer extends ModularContainer {
                 return Platform.EMPTY_STACK;
             }
 
-        return returnable;
+        return superSlotClick(slotId, mouseButton, mode, player);
     }
 
     @Override

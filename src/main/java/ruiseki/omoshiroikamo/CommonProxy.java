@@ -17,9 +17,7 @@ import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.init.ModCommands;
 import ruiseki.omoshiroikamo.common.init.ModEntity;
-import ruiseki.omoshiroikamo.common.init.ModFluids;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.init.ModRecipes;
 import ruiseki.omoshiroikamo.common.init.OKWorldGenerator;
@@ -52,7 +50,6 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
 
-        ModFluids.preInit();
         ModBlocks.preInit();
         ModItems.preInit();
         ModEntity.preInit();
@@ -87,9 +84,7 @@ public class CommonProxy {
         BaubleExpandedCompat.postInit();
     }
 
-    public void serverLoad(FMLServerStartingEvent event) {
-        ModCommands.init(event);
-    }
+    public void serverLoad(FMLServerStartingEvent event) {}
 
     public void serverStarted(FMLServerStartedEvent event) {}
 
