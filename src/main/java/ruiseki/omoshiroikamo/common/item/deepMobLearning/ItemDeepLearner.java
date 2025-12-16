@@ -1,23 +1,25 @@
 package ruiseki.omoshiroikamo.common.item.deepMobLearning;
 
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.GuiFactories;
-import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
-
-import java.util.List;
 
 public class ItemDeepLearner extends ItemOK implements IGuiHolder<PlayerInventoryGuiData> {
 
@@ -95,49 +97,48 @@ public class ItemDeepLearner extends ItemOK implements IGuiHolder<PlayerInventor
             GuiFactories.playerInventory()
                 .openFromMainHand(player);
         }
-        return super.onItemRightClick(stack,world,player);
+        return super.onItemRightClick(stack, world, player);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
-//        NonNullList<ItemStack> internalDataModels = DataModel.getValidFromList(getContainedItems(stack));
-//
-//        list.add(new ChatComponentText("Will display a §bHUD§7 when in mainhand or offhand"));
-//        list.add(new ChatComponentText("and populated with data models"));
-//
-//        if(internalDataModels.size() > 0) {
-//            if(!KeyboardHelper.isHoldingShift()) {
-//                list.add(new ChatComponentText(I18n.format("deepmoblearning.holdshift")));
-//            } else {
-//                list.add(new ChatComponentText("Contains the following models"));
-//                for (ItemStack dataModel : internalDataModels) {
-//                    if (dataModel.getItem() instanceof ItemDataModel) {
-//                        list.add(new ChatComponentText(DataModel.getTierName(dataModel, false) + " " + dataModel.getDisplayName()));
-//                    }
-//                }
-//            }
-//        }
+        // NonNullList<ItemStack> internalDataModels = DataModel.getValidFromList(getContainedItems(stack));
+        //
+        // list.add(new ChatComponentText("Will display a §bHUD§7 when in mainhand or offhand"));
+        // list.add(new ChatComponentText("and populated with data models"));
+        //
+        // if(internalDataModels.size() > 0) {
+        // if(!KeyboardHelper.isHoldingShift()) {
+        // list.add(new ChatComponentText(I18n.format("deepmoblearning.holdshift")));
+        // } else {
+        // list.add(new ChatComponentText("Contains the following models"));
+        // for (ItemStack dataModel : internalDataModels) {
+        // if (dataModel.getItem() instanceof ItemDataModel) {
+        // list.add(new ChatComponentText(DataModel.getTierName(dataModel, false) + " " + dataModel.getDisplayName()));
+        // }
+        // }
+        // }
+        // }
     }
 
-//    @SuppressWarnings("ConstantConditions")
-//    public static NonNullList<ItemStack> getContainedItems(ItemStack deepLearner) {
-//        NonNullList<ItemStack> list = NonNullList.withSize(numOfInternalSlots(), ItemStack.EMPTY);
-//
-//        // Load the inventory if the ItemStack has a NBTTagcompound
-//        if(deepLearner.hasTag()) {
-//            NBTTagCompound currentTag = deepLearner.getTag();
-//            if(currentTag.hasKey("inventory")) {
-//                NBTTagList inventory = deepLearner.getTag().getList("inventory", Constants.NBT.TAG_COMPOUND);
-//
-//                for(int i = 0; i < inventory.size(); i++) {
-//                    NBTTagCompound tag = inventory.getCompound(i);
-//                    list.set(i, ItemStack.read(tag));
-//                }
-//            }
-//        }
-//        return list;
-//    }
-
+    // @SuppressWarnings("ConstantConditions")
+    // public static NonNullList<ItemStack> getContainedItems(ItemStack deepLearner) {
+    // NonNullList<ItemStack> list = NonNullList.withSize(numOfInternalSlots(), ItemStack.EMPTY);
+    //
+    // // Load the inventory if the ItemStack has a NBTTagcompound
+    // if(deepLearner.hasTag()) {
+    // NBTTagCompound currentTag = deepLearner.getTag();
+    // if(currentTag.hasKey("inventory")) {
+    // NBTTagList inventory = deepLearner.getTag().getList("inventory", Constants.NBT.TAG_COMPOUND);
+    //
+    // for(int i = 0; i < inventory.size(); i++) {
+    // NBTTagCompound tag = inventory.getCompound(i);
+    // list.set(i, ItemStack.read(tag));
+    // }
+    // }
+    // }
+    // return list;
+    // }
 
 }

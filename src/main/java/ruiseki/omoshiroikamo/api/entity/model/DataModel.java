@@ -10,9 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.Nullable;
+
 import ruiseki.omoshiroikamo.common.init.ModItems;
 
 public class DataModel {
+
     private final ModelRegistryItem model;
 
     private int tier;
@@ -94,27 +96,27 @@ public class DataModel {
 
     @Nullable
     public Class<? extends Entity> getEntityClass() {
-        return (Class<? extends Entity>)
-            EntityList.stringToClassMapping.get(model.getEntityName());
+        return (Class<? extends Entity>) EntityList.stringToClassMapping.get(model.getEntityName());
     }
 
     public void increaseMobKillCount(EntityPlayerMP player) {
         int tier = getTier();
         int i = getKillCount();
 
-//        TODO Add GlitchSword and Trial
+        // TODO Add GlitchSword and Trial
         i = i + 1;
         setKillCount(i);
         setTotalKillCount(getTotalKillCount() + 1);
 
-//        TODO Add LevelUp Tier
-//        if(DataModelExperience.shouldIncreaseTier(tier, i, getCurrentTierSimulationCount(stack))) {
-//            PlayerHelper.sendMessage(player, new TextComponentString(stack.getDisplayName().getFormattedText() + " reached the " + getTierName(stack, true) + " tier"));
-//
-//            setCurrentTierKillCount(stack, 0);
-//            setCurrentTierSimulationCount(stack, 0);
-//            setTier(stack, tier + 1);
-//        }
+        // TODO Add LevelUp Tier
+        // if(DataModelExperience.shouldIncreaseTier(tier, i, getCurrentTierSimulationCount(stack))) {
+        // PlayerHelper.sendMessage(player, new TextComponentString(stack.getDisplayName().getFormattedText() + "
+        // reached the " + getTierName(stack, true) + " tier"));
+        //
+        // setCurrentTierKillCount(stack, 0);
+        // setCurrentTierSimulationCount(stack, 0);
+        // setTier(stack, tier + 1);
+        // }
     }
 
     public void increaseSimulationCount() {
@@ -126,12 +128,12 @@ public class DataModel {
         // Update the totals
         setTotalSimulationCount(getTotalSimulationCount() + 1);
 
-//        TODO Add LevelUp Tier
-//        if(DataModelExperience.shouldIncreaseTier(tier, getCurrentTierKillCount(stack), i)) {
-//            setCurrentTierKillCount(stack, 0);
-//            setCurrentTierSimulationCount(stack, 0);
-//            setTier(stack, tier + 1);
-//        }
+        // TODO Add LevelUp Tier
+        // if(DataModelExperience.shouldIncreaseTier(tier, getCurrentTierKillCount(stack), i)) {
+        // setCurrentTierKillCount(stack, 0);
+        // setCurrentTierSimulationCount(stack, 0);
+        // setTier(stack, tier + 1);
+        // }
     }
 
     public void writeToNBT(NBTTagCompound tag) {

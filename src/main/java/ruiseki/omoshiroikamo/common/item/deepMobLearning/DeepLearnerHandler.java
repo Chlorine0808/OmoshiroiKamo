@@ -1,11 +1,14 @@
 package ruiseki.omoshiroikamo.common.item.deepMobLearning;
 
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+
+import lombok.Getter;
 import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
 public class DeepLearnerHandler implements IItemHandlerModifiable {
@@ -21,6 +24,7 @@ public class DeepLearnerHandler implements IItemHandlerModifiable {
     public DeepLearnerHandler(ItemStack deepLearner) {
         this.deepLearner = deepLearner;
         handler = new ItemStackHandler(4) {
+
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
@@ -60,12 +64,12 @@ public class DeepLearnerHandler implements IItemHandlerModifiable {
 
     @Override
     public @Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
-        return handler.insertItem(slot,stack,simulate);
+        return handler.insertItem(slot, stack, simulate);
     }
 
     @Override
     public @Nullable ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return handler.extractItem(slot,amount,simulate);
+        return handler.extractItem(slot, amount, simulate);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2;
 
-import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
 

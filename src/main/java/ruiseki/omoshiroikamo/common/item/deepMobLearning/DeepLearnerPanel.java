@@ -1,5 +1,14 @@
 package ruiseki.omoshiroikamo.common.item.deepMobLearning;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -7,7 +16,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.PlayerInvWrapper;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
@@ -21,23 +29,12 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import ruiseki.omoshiroikamo.api.entity.model.DataModel;
-import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiTextures;
-import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.syncHandler.BackpackSH;
 import ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.container.DeepLearnerContainer;
-import ruiseki.omoshiroikamo.common.block.backpack.BackpackInventoryHelper;
-import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DeepLearnerPanel extends ModularPanel {
 
@@ -100,11 +97,11 @@ public class DeepLearnerPanel extends ModularPanel {
     public static final UITexture DEEP_LEARNER_SLOT = UITexture.builder()
         .location(LibMisc.MOD_ID, "gui/deepMobLearning/deeplearner_base")
         .imageSize(256, 256)
-        .xy(215 , 98, 18, 18)
+        .xy(215, 98, 18, 18)
         .build();
 
     public static DeepLearnerPanel defaultPanel(PanelSyncManager syncManager, UISettings settings, EntityPlayer player,
-                                                DeepLearnerHandler handler, Integer slotIndex) {
+        DeepLearnerHandler handler, Integer slotIndex) {
         DeepLearnerPanel panel = new DeepLearnerPanel(player, syncManager, settings, handler);
 
         panel.settings.customContainer(() -> new DeepLearnerContainer(slotIndex));
@@ -140,7 +137,8 @@ public class DeepLearnerPanel extends ModularPanel {
 
     private final ItemSlotSH[] itemSlotSyncHandlers;
 
-    public DeepLearnerPanel(EntityPlayer player, PanelSyncManager syncManager, UISettings settings, DeepLearnerHandler handler) {
+    public DeepLearnerPanel(EntityPlayer player, PanelSyncManager syncManager, UISettings settings,
+        DeepLearnerHandler handler) {
         super("deep_learner_gui");
         this.player = player;
         this.syncManager = syncManager;
@@ -162,12 +160,11 @@ public class DeepLearnerPanel extends ModularPanel {
                     updateModelDisplay();
                 }
             })
-            .filter(stack -> stack.getItem() instanceof ItemDataModel);
+                .filter(stack -> stack.getItem() instanceof ItemDataModel);
             this.syncManager.syncValue("learner", i, syncHandler);
             this.itemSlotSyncHandlers[i] = syncHandler;
         }
         this.syncManager.registerSlotGroup(new SlotGroup("inventory", 1, 99, true));
-
 
     }
 
@@ -185,7 +182,8 @@ public class DeepLearnerPanel extends ModularPanel {
 
     public void addInventorySlots() {
         SlotGroupWidget widget = SlotGroupWidget.builder()
-            .row("II").row("II")
+            .row("II")
+            .row("II")
             .key('I', index -> {
                 ItemSlot slot = new ItemSlot().syncHandler("learner", index)
                     .background(DEEP_LEARNER_SLOT)
@@ -194,7 +192,7 @@ public class DeepLearnerPanel extends ModularPanel {
                 return slot;
             })
             .build();
-        widget.pos(215,98);
+        widget.pos(215, 98);
         child(widget);
     }
 
@@ -208,8 +206,10 @@ public class DeepLearnerPanel extends ModularPanel {
     }
 
     public void addChangeModelButton() {
-        ButtonWidget<?> right = new ButtonWidget<>().size(24).right(13)
-            .background(RIGHT_BUTTON).hoverBackground(HOVER_RIGHT_BUTTON)
+        ButtonWidget<?> right = new ButtonWidget<>().size(24)
+            .right(13)
+            .background(RIGHT_BUTTON)
+            .hoverBackground(HOVER_RIGHT_BUTTON)
             .onMousePressed(button -> {
                 if (button == 0) {
                     Interactable.playButtonClickSound();
@@ -218,8 +218,10 @@ public class DeepLearnerPanel extends ModularPanel {
                 }
                 return false;
             });
-        ButtonWidget<?> left = new ButtonWidget<>().size(24).left(13)
-            .background(LEFT_BUTTON).hoverBackground(HOVER_LEFT_BUTTON)
+        ButtonWidget<?> left = new ButtonWidget<>().size(24)
+            .left(13)
+            .background(LEFT_BUTTON)
+            .hoverBackground(HOVER_LEFT_BUTTON)
             .onMousePressed(button -> {
                 if (button == 0) {
                     Interactable.playButtonClickSound();
@@ -229,8 +231,11 @@ public class DeepLearnerPanel extends ModularPanel {
                 return false;
             });
 
-        modelButtonRow = (Row) new Row().size(75,24).pos(-80, 106);
-        modelButtonRow.child(left).child(right).setEnabled(false);
+        modelButtonRow = (Row) new Row().size(75, 24)
+            .pos(-80, 106);
+        modelButtonRow.child(left)
+            .child(right)
+            .setEnabled(false);
         child(modelButtonRow);
     }
 
@@ -251,7 +256,8 @@ public class DeepLearnerPanel extends ModularPanel {
         }
 
         ItemSlot slotWidget = itemSlots.get(modelIndex);
-        ItemStack stack = slotWidget.getSlot().getStack();
+        ItemStack stack = slotWidget.getSlot()
+            .getStack();
 
         if (stack == null || !(stack.getItem() instanceof ItemDataModel)) {
             return;
@@ -265,8 +271,7 @@ public class DeepLearnerPanel extends ModularPanel {
 
         Entity entity;
         try {
-            entity = entityClass
-                .getConstructor(World.class)
+            entity = entityClass.getConstructor(World.class)
                 .newInstance(player.worldObj);
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,8 +283,7 @@ public class DeepLearnerPanel extends ModularPanel {
         ModelDisplay display = modelDisplayList.get(modelIndex);
         display.setEnabled(true);
 
-        Widget<?> widget = new EntityDisplayWidget(() -> livingBase)
-            .doesLookAtMouse(true)
+        Widget<?> widget = new EntityDisplayWidget(() -> livingBase).doesLookAtMouse(true)
             .asWidget()
             .size(50, 75)
             .pos(15, 10);
@@ -304,7 +308,9 @@ public class DeepLearnerPanel extends ModularPanel {
         List<Integer> valid = new ArrayList<>();
 
         for (int i = 0; i < itemSlots.size(); i++) {
-            ItemStack stack = itemSlots.get(i).getSlot().getStack();
+            ItemStack stack = itemSlots.get(i)
+                .getSlot()
+                .getStack();
             if (stack == null) continue;
             if (!(stack.getItem() instanceof ItemDataModel)) continue;
 
@@ -347,8 +353,8 @@ public class DeepLearnerPanel extends ModularPanel {
 
     @Override
     public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        INVENTORY_TEXTURE.draw(40, this.getArea().height - 90,  176, 90);
-        BASE_TEXTURE.draw(0, 0,  256, 140);
+        INVENTORY_TEXTURE.draw(40, this.getArea().height - 90, 176, 90);
+        BASE_TEXTURE.draw(0, 0, 256, 140);
     }
 
     public static class ModelDisplay extends ParentWidget<ModelDisplay> {

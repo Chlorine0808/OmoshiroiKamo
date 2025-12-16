@@ -1,12 +1,14 @@
 package ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.container;
 
-import com.cleanroommc.modularui.api.inventory.ClickType;
-import com.cleanroommc.modularui.screen.ModularContainer;
-import com.cleanroommc.modularui.utils.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import com.cleanroommc.modularui.api.inventory.ClickType;
+import com.cleanroommc.modularui.screen.ModularContainer;
+import com.cleanroommc.modularui.utils.Platform;
+
 public class DeepLearnerContainer extends ModularContainer {
+
     private final Integer backpackSlotIndex;
 
     public DeepLearnerContainer(Integer backpackSlotIndex) {
