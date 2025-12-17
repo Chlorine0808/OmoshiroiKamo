@@ -237,12 +237,12 @@ public class DeepLearnerPanel extends ModularPanel {
         boolean isMaxTier = tier >= DataModelExperience.getMaxTier();
 
         TextWidget<?> heartTile = IKey.lang("gui.learner_heart_tile")
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget();
 
         TextWidget<?> hearts = IKey.str(String.valueOf(numberOfHearts))
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFFFFFFFF)
             .asWidget();
 
@@ -256,20 +256,20 @@ public class DeepLearnerPanel extends ModularPanel {
             .child(hearts);
 
         Column heartCol = (Column) new Column().name("info_display_" + modelIndex)
-            .pos(180, 10)
+            .pos(195, 10)
             .coverChildren()
             .childPadding(2)
             .child(heartTile)
             .child(heartRow);
 
         TextWidget<?> nameTile = IKey.lang("gui.learner_name_tile")
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget()
             .left(0);
 
         TextWidget<?> nameText = IKey.lang(name)
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFFFFFFFF)
             .asWidget()
             .left(0);
@@ -282,7 +282,7 @@ public class DeepLearnerPanel extends ModularPanel {
             .child(nameText);
 
         TextWidget<?> infoTile = IKey.lang("gui.learner_info_tile")
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget()
             .left(0);
@@ -292,7 +292,7 @@ public class DeepLearnerPanel extends ModularPanel {
 
         for (String string : trivia) {
             TextWidget<?> text = IKey.str(string)
-                .scale(1.2f)
+                .scale(1f)
                 .color(0xFFFFFFFF)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
@@ -305,13 +305,13 @@ public class DeepLearnerPanel extends ModularPanel {
             .maxSize(45);
 
         TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang("gui.learner_tier_" + tier))
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFFFFFFFF)
             .asWidget()
             .left(0);
 
         TextWidget<?> totalKillText = IKey.lang("gui.learner_model_defeated", totalKillCount)
-            .scale(1.2f)
+            .scale(1f)
             .color(0xFFFFFFFF)
             .asWidget()
             .left(0);
@@ -323,16 +323,16 @@ public class DeepLearnerPanel extends ModularPanel {
 
             defeatedMoreText = IKey
                 .lang("gui.learner_model_defeated_more", killsRemaining, IKey.lang("gui.learner_tier_" + (tier + 1)))
-                .scale(1.2f)
+                .scale(1f)
                 .color(0xFFAAAAAA)
                 .asWidget()
                 .left(0);
         }
 
-        Column killInfo = (Column) new Column().pos(0, 64)
+        Column killInfo = (Column) new Column().pos(0, 60)
             .name("info_display_" + modelIndex)
             .childPadding(2)
-            .coverChildrenWidth()
+            .width(200)
             .child(tierText)
             .child(totalKillText);
         if (defeatedMoreText != null) {
