@@ -71,7 +71,12 @@ public abstract class BaseChickenHandler {
     }
 
     protected ChickensRegistryItem addChicken(List<ChickensRegistryItem> chickenList, String chickenName, int chickenID,
-        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype) {
+                                              String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype) {
+        return addChicken(chickenList, chickenName, chickenID, texture, layItem, bgColor, fgColor, spawntype, new String[]{});
+    }
+
+    protected ChickensRegistryItem addChicken(List<ChickensRegistryItem> chickenList, String chickenName, int chickenID,
+        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
         if (layItem == null || layItem.getItem() == null) {
             Logger.error("Error Registering (" + this.modID + ") Chicken: '" + chickenName + "' It's LayItem was null");
             return null;
@@ -92,7 +97,7 @@ public abstract class BaseChickenHandler {
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
             layItem.copy(),
             bgColor,
-            fgColor).setSpawnType(spawntype);
+            fgColor, lang).setSpawnType(spawntype);
 
         chickenList.add(chicken);
 

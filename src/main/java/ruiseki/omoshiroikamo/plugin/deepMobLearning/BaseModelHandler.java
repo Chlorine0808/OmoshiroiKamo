@@ -19,7 +19,6 @@ import com.google.gson.stream.JsonReader;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import lombok.Getter;
-import lombok.Setter;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
@@ -33,9 +32,8 @@ public abstract class BaseModelHandler {
     protected String modName;
     protected String texturesLocation;
 
-    @Setter
     private int startID = 0;
-    private int id;
+    private int id = 0;
     protected String configFileName;
 
     private boolean needsMod = true;
@@ -45,6 +43,10 @@ public abstract class BaseModelHandler {
         this.modName = modName;
         this.texturesLocation = texturesLocation;
         this.configFileName = modID.toLowerCase() + "_models.json";
+    }
+
+    public void setStartID(int startID) {
+        this.startID = startID;
         this.id = startID;
     }
 
@@ -56,7 +58,6 @@ public abstract class BaseModelHandler {
 
         String name;
         String texture;
-        boolean enable;
         float numberOfHearts;
         float interfaceScale;
         int interfaceOffsetX;
@@ -108,8 +109,6 @@ public abstract class BaseModelHandler {
                         data.lang);
 
                     if (model != null) {
-                        model.setEnabled(data.enable);
-
                         if (data.lang != null) {
                             String langKey = "item.model." + data.name + ".name";
                             for (String entry : data.lang) {
@@ -126,6 +125,8 @@ public abstract class BaseModelHandler {
                         }
 
                         Logger.debug("Registering (" + this.modID + ") Model: '" + data.name + "':" + model.getId());
+
+                        ModCompatInformation.addInformation(model.getId(), new ModCompatInformation(this.getModID(), "", this.getModName()));
                     }
 
                     allModels.add(model);
@@ -152,20 +153,16 @@ public abstract class BaseModelHandler {
     public ModelRegistryItem addModel(String registryName, int id, String texture, float numberOfHearts,
         float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia, String[] lang) {
 
-        ModelRegistryItem model = new ModelRegistryItem(
+        return new ModelRegistryItem(
             id,
             registryName,
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
-            true,
             numberOfHearts,
             interfaceScale,
             interfaceOffsetX,
             interfaceOffsetY,
             mobTrivia,
             lang);
-
-        ModCompatInformation.addInformation(id, new ModCompatInformation(this.getModID(), "", this.getModName()));
-        return model;
     }
 
     public void createDefaultConfig(File file, List<ModelRegistryItem> allModels) {
@@ -177,7 +174,6 @@ public abstract class BaseModelHandler {
                 String fullPath = model.getTexture()
                     .getResourcePath();
                 m.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
-                m.enable = model.isEnabled();
                 m.numberOfHearts = model.getNumberOfHearts();
                 m.interfaceScale = model.getInterfaceScale();
                 m.interfaceOffsetX = model.getInterfaceOffsetX();

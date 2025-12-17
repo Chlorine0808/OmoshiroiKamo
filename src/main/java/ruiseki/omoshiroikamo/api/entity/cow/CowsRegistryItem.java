@@ -43,8 +43,8 @@ public class CowsRegistryItem extends BaseRegistryItem<CowsRegistryItem> {
      * @param fgColor    foreground color for GUIs/JEI
      */
     public CowsRegistryItem(int id, String entityName, ResourceLocation texture, FluidStack fluid, int bgColor,
-        int fgColor) {
-        this(id, entityName, texture, fluid, bgColor, fgColor, null, null);
+        int fgColor, String[] lang) {
+        this(id, entityName, texture, fluid, bgColor, fgColor, null, null, lang);
     }
 
     /**
@@ -54,8 +54,8 @@ public class CowsRegistryItem extends BaseRegistryItem<CowsRegistryItem> {
      * @param parent2 optional second parent
      */
     public CowsRegistryItem(int id, String entityName, ResourceLocation texture, FluidStack fluid, int bgColor,
-        int fgColor, @Nullable CowsRegistryItem parent1, @Nullable CowsRegistryItem parent2) {
-        super(id, entityName, texture, bgColor, fgColor, parent1, parent2);
+        int fgColor, @Nullable CowsRegistryItem parent1, @Nullable CowsRegistryItem parent2, String[] lang) {
+        super(id, entityName, texture, bgColor, fgColor, parent1, parent2, lang);
         this.fluid = fluid;
     }
 

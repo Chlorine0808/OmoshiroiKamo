@@ -78,13 +78,7 @@ public abstract class BaseRegistry<T extends BaseRegistryItem<T>> {
      * @return Collection of enabled items.
      */
     public Collection<T> getItems() {
-        List<T> result = new ArrayList<>();
-        for (T t : items.values()) {
-            if (t.isEnabled()) {
-                result.add(t);
-            }
-        }
-        return result;
+        return new ArrayList<>(items.values());
     }
 
     /**
@@ -97,15 +91,11 @@ public abstract class BaseRegistry<T extends BaseRegistryItem<T>> {
      */
     public List<T> getChildren(T parent1, T parent2) {
         List<T> result = new ArrayList<>();
-        if (parent1.isEnabled()) {
-            result.add(parent1);
-        }
-        if (parent2.isEnabled()) {
-            result.add(parent2);
-        }
+        result.add(parent1);
+        result.add(parent2);
 
         for (T item : items.values()) {
-            if (item.isEnabled() && item.isChildOf(parent1, parent2)) {
+            if (item.isChildOf(parent1, parent2)) {
                 result.add(item);
             }
         }
@@ -143,7 +133,7 @@ public abstract class BaseRegistry<T extends BaseRegistryItem<T>> {
     public List<T> getPossibleToSpawn(SpawnType spawnType) {
         List<T> result = new ArrayList<>();
         for (T t : items.values()) {
-            if (t.canSpawn() && t.getSpawnType() == spawnType && t.isEnabled()) {
+            if (t.canSpawn() && t.getSpawnType() == spawnType) {
                 result.add(t);
             }
         }
@@ -232,25 +222,10 @@ public abstract class BaseRegistry<T extends BaseRegistryItem<T>> {
      */
     public boolean isAnyIn(SpawnType spawnType) {
         for (T t : items.values()) {
-            if (t.canSpawn() && t.isEnabled() && t.getSpawnType() == spawnType) {
+            if (t.canSpawn() && t.getSpawnType() == spawnType) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * Returns items that are explicitly disabled.
-     *
-     * @return a list of disabled registry items.
-     */
-    public Collection<T> getDisabledItems() {
-        List<T> result = new ArrayList<>();
-        for (T t : items.values()) {
-            if (!t.isEnabled()) {
-                result.add(t);
-            }
-        }
-        return result;
     }
 }

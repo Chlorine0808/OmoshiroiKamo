@@ -45,7 +45,6 @@ public class OriginalModels extends BaseModelHandler {
                 + "  {\n"
                 + "    \"name\": \"Creeper\",\n"
                 + "    \"texture\": \"creeper\",\n"
-                + "    \"enable\": true,\n"
                 + "    \"numberOfHearts\": 10.0,\n"
                 + "    \"interfaceScale\": 1.0,\n"
                 + "    \"interfaceOffsetX\": 0,\n"

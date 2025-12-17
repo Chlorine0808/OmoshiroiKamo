@@ -16,9 +16,6 @@ public class ModelRegistryItem {
     protected ResourceLocation texture;
     @Getter
     @Setter
-    protected boolean enabled;
-    @Getter
-    @Setter
     protected float numberOfHearts;
     @Getter
     @Setter
@@ -42,12 +39,11 @@ public class ModelRegistryItem {
     @Setter
     protected String[] lang;
 
-    public ModelRegistryItem(int id, String entityName, ResourceLocation texture, boolean enabled, float numberOfHearts,
+    public ModelRegistryItem(int id, String entityName, ResourceLocation texture, float numberOfHearts,
         float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia, String[] lang) {
         this.id = id;
         this.entityName = entityName;
         this.texture = texture;
-        this.enabled = enabled;
         this.numberOfHearts = numberOfHearts;
         this.interfaceScale = interfaceScale;
         this.interfaceOffsetX = interfaceOffsetX;

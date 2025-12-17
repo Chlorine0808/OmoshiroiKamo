@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.cow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -23,45 +24,99 @@ public class MineFactoryReloadedCows extends BaseCowHandler {
     }
 
     @Override
-    public List<CowsRegistryItem> registerCows(List<CowsRegistryItem> allCows) {
+    public List<CowsRegistryItem> registerCows() {
+        List<CowsRegistryItem> allCows = new ArrayList<>();
 
-        steamCow = tryAddCow(allCows, "SteamCow", 600, "steam", 0xCCCCCC, 0xFFFFFF, SpawnType.NORMAL);
+        steamCow = tryAddCow(
+            "SteamCow",
+            600,
+            "steam",
+            0xCCCCCC,
+            0xFFFFFF,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Steam Cow", "ja_JP:スチーム牛" });
+        allCows.add(steamCow);
 
-        sludgeCow = tryAddCow(allCows, "SludgeCow", 601, "sludge", 0x2d2d2d, 0x555555, SpawnType.HELL);
+        sludgeCow = tryAddCow(
+            "SludgeCow",
+            601,
+            "sludge",
+            0x2d2d2d,
+            0x555555,
+            SpawnType.HELL,
+            new String[] { "en_US:Sludge Cow", "ja_JP:スラッジ牛" });
+        allCows.add(sludgeCow);
 
-        sewageCow = tryAddCow(allCows, "SewageCow", 602, "sewage", 0x665500, 0xccaa33, SpawnType.NORMAL);
+        sewageCow = tryAddCow(
+            "SewageCow",
+            602,
+            "sewage",
+            0x665500,
+            0xccaa33,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Sewage Cow", "ja_JP:下水牛" });
+        allCows.add(sewageCow);
 
-        mobEssenceCow = tryAddCow(allCows, "MobEssenceCow", 603, "mobessence", 0x33ff33, 0x99ff99, SpawnType.NORMAL);
+        mobEssenceCow = tryAddCow(
+            "MobEssenceCow",
+            603,
+            "mobessence",
+            0x33ff33,
+            0x99ff99,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Mob Essence Cow", "ja_JP:モブエッセンス牛" });
+        allCows.add(mobEssenceCow);
 
-        biofuelCow = tryAddCow(allCows, "BiofuelCow", 604, "biofuel", 0x99cc00, 0xccff66, SpawnType.NORMAL);
+        biofuelCow = tryAddCow(
+            "BiofuelCow",
+            604,
+            "biofuel",
+            0x99cc00,
+            0xccff66,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Biofuel Cow", "ja_JP:バイオ燃料牛" });
+        allCows.add(biofuelCow);
 
-        meatCow = tryAddCow(allCows, "MeatCow", 605, "meat", 0xcc6666, 0xff9999, SpawnType.NORMAL);
+        meatCow = tryAddCow(
+            "MeatCow",
+            605,
+            "meat",
+            0xcc6666,
+            0xff9999,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Meat Cow", "ja_JP:肉牛" });
+        allCows.add(meatCow);
 
-        pinkSlimeCow = tryAddCow(allCows, "PinkSlimeCow", 606, "pinkslime", 0xff66cc, 0xff99dd, SpawnType.NORMAL);
+        pinkSlimeCow = tryAddCow(
+            "PinkSlimeCow",
+            606,
+            "pinkslime",
+            0xff66cc,
+            0xff99dd,
+            SpawnType.NORMAL,
+            new String[] { "en_US:Pink Slime Cow", "ja_JP:ピンクスライム牛" });
+        allCows.add(pinkSlimeCow);
 
         chocolateMilkCow = tryAddCow(
-            allCows,
             "ChocolateMilkCow",
             607,
             "chocolatemilk",
             0x663300,
             0xcc9966,
-            SpawnType.NORMAL);
+            SpawnType.NORMAL,
+            new String[] { "en_US:Chocolate Milk Cow", "ja_JP:チョコレートミルク牛" });
+        allCows.add(chocolateMilkCow);
 
         mushroomSoupCow = tryAddCow(
-            allCows,
             "MushroomSoupCow",
             608,
             "mushroomsoup",
             0xccaa88,
             0xffddbb,
-            SpawnType.NORMAL);
+            SpawnType.NORMAL,
+            new String[] { "en_US:Mushroom Soup Cow", "ja_JP:マッシュルームスープ牛" });
+        allCows.add(mushroomSoupCow);
 
         return allCows;
-    }
-
-    @Override
-    public void registerAllParents(List<CowsRegistryItem> allCows) {
-
     }
 }

@@ -1,23 +1,32 @@
 package ruiseki.omoshiroikamo.plugin.cow;
 
-import java.util.Collection;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Loader;
 import lombok.Getter;
-import lombok.Setter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
-import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistry;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
 public abstract class BaseCowHandler {
@@ -28,8 +37,9 @@ public abstract class BaseCowHandler {
     protected String modName;
     protected String texturesLocation;
 
-    @Setter
-    private int startID = 2000;
+    private int startID = 0;
+    private int id = 0;
+    protected String configFileName;
 
     private boolean needsMod = true;
 
@@ -37,13 +47,34 @@ public abstract class BaseCowHandler {
         this.modID = modID;
         this.modName = modName;
         this.texturesLocation = texturesLocation;
+        this.configFileName = modID.toLowerCase() + "_cows.json";
+    }
+
+    public void setStartID(int startID) {
+        this.startID = startID;
+        this.id = startID;
     }
 
     public void setNeedsModPresent(boolean bool) {
         this.needsMod = bool;
     }
 
-    public List<CowsRegistryItem> tryRegisterChickens(List<CowsRegistryItem> allCows) {
+    private static class CowJson {
+
+        String name;
+        FluidJson fluid;
+        String fgColor; // Hex string
+        String bgColor; // Hex string
+        String spawnType;
+        String[] lang;
+    }
+
+    private static class FluidJson {
+        String name;
+        int amount;
+    }
+
+    public List<CowsRegistryItem> tryRegisterCows(List<CowsRegistryItem> allCows) {
         Logger.info("Looking for " + modName + " cows...");
 
         if (needsMod && !Loader.isModLoaded(modID)) {
@@ -53,147 +84,170 @@ public abstract class BaseCowHandler {
 
         Logger.info("Loading " + modName + " cows...");
 
-        return allCows = registerCows(allCows);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/cow/" + configFileName);
+        if (!configFile.exists()) {
+            List<CowsRegistryItem> defaultCows = registerCows();
+            createDefaultConfig(configFile, defaultCows);
+        }
+
+        try (FileReader fileReader = new FileReader(configFile)) {
+            JsonReader reader = new JsonReader(fileReader);
+            reader.setLenient(true);
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<CowJson>>() {}.getType();
+            List<CowJson> cows = gson.fromJson(reader, listType);
+            if (cows == null) {
+                Logger.info(configFileName + " is empty or invalid.");
+                return allCows;
+            }
+
+            this.id = startID;
+
+            for (CowJson data : cows) {
+                try {
+                    FluidStack milk = resolveFluidStack(data.fluid);
+                    if (milk == null) {
+                        Logger.error("Error Registering (" + this.modID + ") Cow: '" + data.name + "' It's fluid was null");
+                        continue;
+                    }
+                    int bgColor = parseColor(data.bgColor, 0xFFFFFF);
+                    int fgColor = parseColor(data.fgColor, 0xAAAAAA);
+
+                    SpawnType type = SpawnType.NORMAL;
+                    try {
+                        if (data.spawnType != null && !data.spawnType.isEmpty()) {
+                            type = SpawnType.valueOf(data.spawnType.toUpperCase());
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Logger.error("Invalid spawn type for " + data.name + ": " + data.spawnType);
+                    }
+
+                    CowsRegistryItem cow = addCow(
+                        data.name,
+                        this.nextID(),
+                        milk,
+                        bgColor,
+                        fgColor,
+                        type,
+                        data.lang
+                    );
+
+                    if (cow != null) {
+                        if (data.lang != null) {
+                            String langKey = "entity." + data.name + ".name";
+                            for (String entry : data.lang) {
+                                int splitIndex = entry.indexOf(':');
+                                if (splitIndex > 0) {
+                                    String lang = entry.substring(0, splitIndex)
+                                        .trim();
+                                    String value = entry.substring(splitIndex + 1)
+                                        .trim();
+                                    LanguageRegistry.instance()
+                                        .addStringLocalization(langKey, lang, value);
+                                }
+                            }
+                        }
+
+                        Logger.debug("Registering (" + this.modID + ") Cow: '" + data.name + "'");
+
+                        ModCompatInformation.addInformation(cow.getId(), new ModCompatInformation(this.getModID(), "", this.getModName()));
+                    }
+
+                    allCows.add(cow);
+
+                } catch (Exception e) {
+                    Logger.error("Error registering cow " + data.name + ": " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (IOException e) {
+            Logger.error("Failed to read " + configFileName + ": " + e.getMessage());
+        }
+
+        return allCows;
     }
 
-    public abstract List<CowsRegistryItem> registerCows(List<CowsRegistryItem> allCows);
-
-    public abstract void registerAllParents(List<CowsRegistryItem> allCows);
+    public abstract List<CowsRegistryItem> registerCows();
 
     protected int nextID() {
-        return this.startID++;
+        return this.id++;
     }
 
-    protected CowsRegistryItem addCow(List<CowsRegistryItem> cowList, String cowName, int cowID, FluidStack fluid,
-        int bgColor, int fgColor, SpawnType spawntype) {
+    protected CowsRegistryItem addCow(String cowName, int cowID, FluidStack fluid,
+        int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
         if (fluid == null || fluid.getFluid() == null) {
             Logger.error("Error Registering (" + this.modID + ") Cow: '" + cowName + "' It's fluid was null");
             return null;
         }
 
-        Logger
-            .debug("Registering (" + this.modID + ") Cow: '" + cowName + "':" + cowID + ":" + fluid.getLocalizedName());
-
-        CowsRegistryItem cow = new CowsRegistryItem(
+        return new CowsRegistryItem(
             cowID,
             cowName,
-            new ResourceLocation("textures/entity/cow/cow.png"),
+            new ResourceLocation("minecraft", "textures/entity/cow/cow.png"),
             fluid.copy(),
             bgColor,
-            fgColor).setSpawnType(spawntype);
-
-        cowList.add(cow);
-
-        ModCompatInformation.addInformation(cowID, new ModCompatInformation(this.getModID(), "", this.getModName()));
-
-        return cow;
+            fgColor, lang).setSpawnType(spawntype);
     }
 
-    protected CowsRegistryItem tryAddCow(List<CowsRegistryItem> allCows, String name, int id, String fluidName,
-        int primary, int secondary, SpawnType type) {
+    protected CowsRegistryItem tryAddCow(String name, int id, String fluidName,
+        int primary, int secondary, SpawnType type, String[] lang) {
         if (FluidRegistry.getFluid(fluidName) != null) {
             return addCow(
-                allCows,
                 name,
                 id,
                 new FluidStack(FluidRegistry.getFluid(fluidName), 1000),
                 primary,
                 secondary,
-                type);
+                type, lang);
         }
         return null;
     }
 
-    protected CowsRegistryItem tryAddCow(List<CowsRegistryItem> allCows, String name, int id, String fluidName,
-        int fluidAmount, int primary, int secondary, SpawnType type) {
-        if (FluidRegistry.getFluid(fluidName) != null) {
-            return addCow(
-                allCows,
-                name,
-                id,
-                new FluidStack(FluidRegistry.getFluid(fluidName), fluidAmount),
-                primary,
-                secondary,
-                type);
+    private int parseColor(String hex, int def) {
+        if (hex == null || hex.isEmpty()) return def;
+        try {
+            return Integer.decode(hex);
+        } catch (NumberFormatException e) {
+            return def;
         }
+    }
+
+    private FluidStack resolveFluidStack(FluidJson data) {
+        if (data == null || data.name == null) return null;
+        if (FluidRegistry.isFluidRegistered(data.name)) {
+            return new FluidStack(FluidRegistry.getFluid(data.name), data.amount > 0 ? data.amount : 1000);
+        }
+        Logger.error("Fluid not found: " + data.name);
         return null;
     }
 
-    protected void setParents(CowsRegistryItem child, Object parent1, Object parent2) {
-        CowsRegistryItem parentCow1 = null;
-        CowsRegistryItem parentCow2 = null;
-
-        if (child == null || parent1 == null || parent2 == null) {
-            String msg = "Setting Parents ";
-            if (child == null) {
-                msg += ": Child Missing";
-            } else {
-                msg += ": " + child.getEntityName();
+    public void createDefaultConfig(File file, List<CowsRegistryItem> allCows) {
+        try (Writer writer = new FileWriter(file)) {
+            List<CowJson> jsonModels = new ArrayList<>();
+            for (CowsRegistryItem cow : allCows) {
+                CowJson m = new CowJson();
+                m.name = cow.getEntityName();
+                m.bgColor = String.format("0x%06X", cow.getBgColor() & 0xFFFFFF);
+                m.fgColor = String.format("0x%06X", cow.getFgColor() & 0xFFFFFF);
+                m.spawnType = cow.getSpawnType() != null ? cow.getSpawnType().name() : "NORMAL";
+                if (cow.createMilkFluid() != null) {
+                    FluidJson f = new FluidJson();
+                    f.name = cow.createMilkFluid().getFluid().getName();
+                    f.amount = cow.createMilkFluid().amount;
+                    m.fluid = f;
+                }
+                m.lang = cow.getLang();
+                jsonModels.add(m);
             }
-            if (parent1 == null) {
-                msg += ": Parent 1 Missing ";
-            }
-            if (parent2 == null) {
-                msg += ": Parent 2 Missing";
-            }
+            Gson gson = new GsonBuilder().setPrettyPrinting()
+                .create();
+            writer.write(gson.toJson(jsonModels));
 
-            Logger.debug(msg);
-            return;
+            Logger.info("Created default " + configFileName);
+        } catch (IOException e) {
+            Logger.error("Failed to create default config: " + e.getMessage());
         }
-
-        if (parent1 instanceof String) {
-            parentCow1 = findCowCowsMod((String) parent1);
-        } else if (parent1 instanceof CowsRegistryItem) {
-            parentCow1 = (CowsRegistryItem) parent1;
-        }
-
-        if (parent2 instanceof String) {
-            parentCow2 = findCowCowsMod((String) parent2);
-        } else if (parent2 instanceof CowsRegistryItem) {
-            parentCow2 = (CowsRegistryItem) parent2;
-        }
-
-        if (parentCow1 == null) {
-            Logger.error("Could not find Parent 1 for " + child.getEntityName());
-            return;
-        }
-
-        if (parentCow2 == null) {
-            Logger.error("Could not find Parent 2 for " + child.getEntityName());
-            return;
-        }
-
-        child.setParents(parentCow1, parentCow2);
-
-    }
-
-    public static CowsRegistryItem findCow(Collection<CowsRegistryItem> cows, String name) {
-
-        for (CowsRegistryItem cow : cows) {
-            if (cow.getEntityName()
-                .compareToIgnoreCase(name) == 0) {
-                return cow;
-            }
-        }
-
-        return findCowCowsMod(name);
-    }
-
-    public static CowsRegistryItem findCowCowsMod(String name) {
-        for (CowsRegistryItem cow : CowsRegistry.INSTANCE.getItems()) {
-            if (cow.getEntityName()
-                .compareToIgnoreCase(name) == 0) {
-
-                return cow;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public ItemStack getFirstOreDictionary(String oreID) {
-        List<ItemStack> itemstacks = OreDictionary.getOres(oreID);
-        return !itemstacks.isEmpty() ? itemstacks.get(0) : null;
     }
 }

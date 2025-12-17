@@ -158,10 +158,6 @@ public class ModChickens {
                 continue;
             }
 
-            boolean enabled = configuration
-                .getBoolean("enabled", chicken.getEntityName(), chicken.isEnabled(), "Is chicken enabled?");
-            chicken.setEnabled(enabled);
-
             float coefficient = configuration
                 .getFloat("coefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
             chicken.setCoefficient(coefficient);

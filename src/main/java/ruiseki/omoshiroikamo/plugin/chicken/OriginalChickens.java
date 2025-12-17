@@ -54,7 +54,7 @@ public class OriginalChickens extends BaseChickenHandler {
         String parent2;
         boolean enabled = true;
         float coefficient = 1.0f;
-        Map<String, String> lang;
+        String[] lang;
     }
 
     private static class CustomItemData {
@@ -121,26 +121,27 @@ public class OriginalChickens extends BaseChickenHandler {
                         layItem,
                         bgColor,
                         fgColor,
-                        type);
+                        type,
+                        data.lang);
 
                     if (chicken != null) {
-                        chicken.setEnabled(data.enabled);
                         chicken.setCoefficient(data.coefficient);
                         if (dropItem != null) {
                             chicken.setDropItem(dropItem);
                         }
 
-                        // Register Localization
-                        String locKey = "entity." + data.name + ".name";
-                        // Register 'name' as en_US default
-                        LanguageRegistry.instance()
-                            .addStringLocalization(locKey, "en_US", data.name);
-
-                        // Register other languages if present
                         if (data.lang != null) {
-                            for (Entry<String, String> entry : data.lang.entrySet()) {
-                                LanguageRegistry.instance()
-                                    .addStringLocalization(locKey, entry.getKey(), entry.getValue());
+                            String langKey = "entity." + data.name + ".name";
+                            for (String entry : data.lang) {
+                                int splitIndex = entry.indexOf(':');
+                                if (splitIndex > 0) {
+                                    String lang = entry.substring(0, splitIndex)
+                                        .trim();
+                                    String value = entry.substring(splitIndex + 1)
+                                        .trim();
+                                    LanguageRegistry.instance()
+                                        .addStringLocalization(langKey, lang, value);
+                                }
                             }
                         }
 
@@ -289,14 +290,14 @@ public class OriginalChickens extends BaseChickenHandler {
     public static class OriginalChickensRegistryItem extends ChickensRegistryItem {
 
         public OriginalChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem,
-            int bgColor, int fgColor) {
-            super(id, entityName, texture, layItem, bgColor, fgColor);
+            int bgColor, int fgColor, String[] lang) {
+            super(id, entityName, texture, layItem, bgColor, fgColor, lang);
         }
     }
 
     @Override
     protected ChickensRegistryItem addChicken(List<ChickensRegistryItem> chickenList, String chickenName, int chickenID,
-        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype) {
+        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
         if (layItem == null || layItem.getItem() == null) {
             Logger.error("Error Registering (" + this.modID + ") Chicken: '" + chickenName + "' It's LayItem was null");
             return null;
@@ -317,7 +318,8 @@ public class OriginalChickens extends BaseChickenHandler {
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
             layItem.copy(),
             bgColor,
-            fgColor).setSpawnType(spawntype);
+            fgColor,
+            lang).setSpawnType(spawntype);
 
         chickenList.add(chicken);
 

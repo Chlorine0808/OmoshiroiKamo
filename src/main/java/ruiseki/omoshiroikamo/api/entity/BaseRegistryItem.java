@@ -33,8 +33,9 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
     protected T parent2;
 
     protected SpawnType spawnType;
-    protected boolean isEnabled = true;
     protected float coefficient = 1.0f;
+
+    protected String[] lang;
 
     /**
      * Creates a new registry item.
@@ -48,7 +49,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      * @param parent2    Second parent, or null if this is a base tier item.
      */
     public BaseRegistryItem(int id, String entityName, ResourceLocation texture, int bgColor, int fgColor,
-        @Nullable T parent1, @Nullable T parent2) {
+        @Nullable T parent1, @Nullable T parent2, String[] lang) {
         this.id = id;
         this.entityName = entityName;
         this.bgColor = bgColor;
@@ -57,6 +58,7 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
         this.parent1 = parent1;
         this.parent2 = parent2;
         this.spawnType = SpawnType.NORMAL;
+        this.lang = lang;
     }
 
     /**
@@ -131,16 +133,6 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
     @Nullable
     public T getParent2() {
         return parent2;
-    }
-
-    /**
-     * Enables or disables this registry item.
-     * Disabled items cannot spawn or be used in breeding chains.
-     *
-     * @param enabled true to enable, false to disable.
-     */
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
     }
 
     /**
@@ -234,19 +226,11 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
 
     /**
      * Sets the texture reference.
-     * 
+     *
      * @param texture The new texture.
      */
     public void setTexture(ResourceLocation texture) {
         this.texture = texture;
-    }
-
-    /**
-     * @return true if this entry is enabled AND both its parents (if any) are
-     *         enabled.
-     */
-    public boolean isEnabled() {
-        return !(!isEnabled || (parent1 != null && !parent1.isEnabled()) || (parent2 != null && !parent2.isEnabled()));
     }
 
     /**
@@ -283,5 +267,9 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
      */
     public boolean canSpawn() {
         return getTier() == 1 && spawnType != SpawnType.NONE;
+    }
+
+    public String[] getLang() {
+        return lang;
     }
 }

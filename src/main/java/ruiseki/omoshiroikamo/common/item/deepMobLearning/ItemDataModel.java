@@ -60,7 +60,6 @@ public class ItemDataModel extends ItemOK {
             ResourceLocation tex = item.getTexture();
             String path = tex.getResourcePath();
             String iconName = tex.getResourceDomain() + ":" + path;
-            Logger.info("Registering icon: " + iconName);
 
             IIcon icon = reg.registerIcon(iconName);
             icons.put(type, icon);

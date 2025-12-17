@@ -64,7 +64,6 @@ public class DataModel {
         for (ModelRegistryItem item : ModelRegistry.INSTANCE.getItems()) {
             models.add(new DataModel(item, null));
         }
-        Logger.info(models);
         return models;
     }
 

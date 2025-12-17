@@ -56,23 +56,6 @@ public class ModelRegistry {
     }
 
     public Collection<ModelRegistryItem> getItems() {
-        List<ModelRegistryItem> result = new ArrayList<>();
-        for (ModelRegistryItem t : items.values()) {
-            if (t.isEnabled()) {
-                result.add(t);
-            }
-        }
-        Logger.info(result);
-        return result;
-    }
-
-    public Collection<ModelRegistryItem> getDisabledItems() {
-        List<ModelRegistryItem> result = new ArrayList<>();
-        for (ModelRegistryItem t : items.values()) {
-            if (!t.isEnabled()) {
-                result.add(t);
-            }
-        }
-        return result;
+        return new ArrayList<>(items.values());
     }
 }

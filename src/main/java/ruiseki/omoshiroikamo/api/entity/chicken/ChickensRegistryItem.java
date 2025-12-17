@@ -45,8 +45,8 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      * @param fgColor    foreground color for JEI/GUI
      */
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor,
-        int fgColor) {
-        this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
+        int fgColor, String[] lang) {
+        this(id, entityName, texture, layItem, bgColor, fgColor, null, null, lang);
     }
 
     private int tintColor = 0xFFFFFF;
@@ -67,8 +67,8 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      * @param parent2 chicken parent 2 (nullable)
      */
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor,
-        int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
-        super(id, entityName, texture, bgColor, fgColor, parent1, parent2);
+        int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2, String[] lang) {
+        super(id, entityName, texture, bgColor, fgColor, parent1, parent2, lang);
         this.layItem = layItem;
     }
 
