@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.common.init.ModItems;
+import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class DataModel {
 
@@ -63,6 +64,7 @@ public class DataModel {
         for (ModelRegistryItem item : ModelRegistry.INSTANCE.getItems()) {
             models.add(new DataModel(item, null));
         }
+        Logger.info(models);
         return models;
     }
 

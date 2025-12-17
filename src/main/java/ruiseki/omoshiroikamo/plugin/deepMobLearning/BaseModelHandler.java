@@ -1,7 +1,19 @@
 package ruiseki.omoshiroikamo.plugin.deepMobLearning;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.Loader;
@@ -22,6 +34,8 @@ public abstract class BaseModelHandler {
 
     @Setter
     private int startID = 0;
+    private int id;
+    private String configFileName;
 
     private boolean needsMod = true;
 
@@ -29,48 +43,168 @@ public abstract class BaseModelHandler {
         this.modID = modID;
         this.modName = modName;
         this.texturesLocation = texturesLocation;
+        this.configFileName = modID.toLowerCase() + "_models.json";
+        this.id = startID;
     }
 
     public void setNeedsModPresent(boolean bool) {
         this.needsMod = bool;
     }
 
+    private static class ModelJson {
+        String name;
+        String texture;
+        boolean enable;
+        float numberOfHearts;
+        float interfaceScale;
+        int interfaceOffsetX;
+        int interfaceOffsetY;
+        String[] mobTrivia;
+        String[] lang;
+    }
+
     public List<ModelRegistryItem> tryRegisterModels(List<ModelRegistryItem> allModels) {
         Logger.info("Looking for " + modName + " models...");
-
         if (needsMod && !Loader.isModLoaded(modID)) {
             Logger.info("Skipped " + modName + " models → required mod \"" + modID + "\" is not loaded.");
             return allModels;
         }
-
         Logger.info("Loading " + modName + " models...");
 
-        return allModels = registerModels(allModels);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
+        if (!configFile.exists()) {
+            List<ModelRegistryItem> defaultModels = registerModels();
+            createDefaultConfig(configFile, defaultModels);
+        }
+
+        this.id = startID;
+
+        try (FileReader fileReader = new FileReader(configFile)) {
+            JsonReader reader = new JsonReader(fileReader);
+            reader.setLenient(true); // Allow comments
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<ModelJson>>() {}.getType();
+            List<ModelJson> models = gson.fromJson(reader, listType);
+            if (models == null) {
+                Logger.info( configFileName + " is empty or invalid.");
+                return allModels;
+            }
+
+            for (ModelJson data : models) {
+                try {
+
+                    ModelRegistryItem model = addModel(
+                        data.name,
+                        this.nextID(),
+                        data.texture,
+                        data.numberOfHearts,
+                        data.interfaceScale,
+                        data.interfaceOffsetX,
+                        data.interfaceOffsetY,
+                        data.mobTrivia,
+                        data.lang);
+
+                    if (model != null) {
+                        model.setEnabled(data.enable);
+
+                        if (data.lang != null) {
+                            String langKey = "item.model." + data.name + ".name";
+                            for (String entry : data.lang) {
+                                int splitIndex = entry.indexOf(':');
+                                if (splitIndex > 0) {
+                                    String lang = entry.substring(0, splitIndex).trim();
+                                    String value = entry.substring(splitIndex + 1).trim();
+                                    LanguageRegistry.instance().addStringLocalization(langKey, lang, value);
+                                }
+                            }
+                        }
+
+                        Logger.debug("Registering (" + this.modID + ") Model: '" + data.name + "':" + model.getId());
+                    }
+
+                    allModels.add(model);
+
+                } catch (Exception e) {
+                    Logger.error("Error registering model " + data.name + ": " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+
+        } catch (IOException e) {
+            Logger.error("Failed to read " + configFileName + ": " + e.getMessage());
+        }
+
+        return allModels;
     }
 
-    public abstract List<ModelRegistryItem> registerModels(List<ModelRegistryItem> allModels);
+    public abstract List<ModelRegistryItem> registerModels();
 
     protected int nextID() {
-        return this.startID++;
+        return this.id++;
     }
 
-    protected ModelRegistryItem addModel(List<ModelRegistryItem> modelList, String registryName, int id, String texture,
-        float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
+    public ModelRegistryItem addModel(String registryName, int id, String texture,
+                                         float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY,
+                                         String[] mobTrivia, String[] lang) {
 
         ModelRegistryItem model = new ModelRegistryItem(
             id,
             registryName,
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
+            true,
             numberOfHearts,
             interfaceScale,
             interfaceOffsetX,
             interfaceOffsetY,
-            mobTrivia);
-
-        modelList.add(model);
+            mobTrivia,
+            lang
+        );
 
         ModCompatInformation.addInformation(id, new ModCompatInformation(this.getModID(), "", this.getModName()));
-
         return model;
+    }
+
+    public void createDefaultConfig(File file, List<ModelRegistryItem> allModels) {
+        try (Writer writer = new FileWriter(file)) {
+            writer.write("/*\n");
+            writer.write("This file is for custom model settings.\n");
+            writer.write("You can add your own models by writing the format below.\n");
+            writer.write("Fields:\n");
+            writer.write("  id              : Model's id\n");
+            writer.write("  name            : Model's name\n");
+            writer.write("  texture         : Texture path (same file for model and item)\n");
+            writer.write("  enable          : Enable or disable this model\n");
+            writer.write("  numberOfHearts  : Number of hearts for the model\n");
+            writer.write("  interfaceScale  : UI scale\n");
+            writer.write("  interfaceOffsetX: UI X offset\n");
+            writer.write("  interfaceOffsetY: UI Y offset\n");
+            writer.write("  mobTrivia       : Array of info about the mob\n");
+            writer.write("  lang            : Array of strings 'lang:value' for localization\n");
+            writer.write("*/\n\n");
+
+            List<ModelJson> jsonModels = new ArrayList<>();
+            for (ModelRegistryItem model : allModels) {
+                ModelJson m = new ModelJson();
+                m.name = model.getEntityName();
+                String fullPath = model.getTexture().getResourcePath();
+                m.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+                m.enable = model.isEnabled();
+                m.numberOfHearts = model.getNumberOfHearts();
+                m.interfaceScale = model.getInterfaceScale();
+                m.interfaceOffsetX = model.getInterfaceOffsetX();
+                m.interfaceOffsetY = model.getInterfaceOffsetY();
+                m.mobTrivia = model.getMobTrivia();
+                m.lang = model.getLang();
+                jsonModels.add(m);
+            }
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            writer.write(gson.toJson(jsonModels));
+
+            Logger.info("Created default " + configFileName);
+        } catch (IOException e) {
+            Logger.error("Failed to create default config: " + e.getMessage());
+        }
     }
 }

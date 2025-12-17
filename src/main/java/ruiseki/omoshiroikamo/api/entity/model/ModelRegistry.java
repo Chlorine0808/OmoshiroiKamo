@@ -1,5 +1,7 @@
 package ruiseki.omoshiroikamo.api.entity.model;
 
+import ruiseki.omoshiroikamo.common.util.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +62,7 @@ public class ModelRegistry {
                 result.add(t);
             }
         }
+        Logger.info(result);
         return result;
     }
 

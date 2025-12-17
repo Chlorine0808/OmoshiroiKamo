@@ -13,11 +13,13 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.ResourceLocation;
 import ruiseki.omoshiroikamo.api.entity.model.DataModel;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
 import ruiseki.omoshiroikamo.common.util.KeyboardUtils;
+import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class ItemDataModel extends ItemOK {
@@ -55,8 +57,11 @@ public class ItemDataModel extends ItemOK {
             int type = model.getId();
             ModelRegistryItem item = model.getItem();
 
-            String iconName = item.getTexture()
-                .toString();
+            ResourceLocation tex = item.getTexture();
+            String path = tex.getResourcePath();
+            String iconName = tex.getResourceDomain() + ":" + path;
+            Logger.info("Registering icon: " + iconName);
+
             IIcon icon = reg.registerIcon(iconName);
             icons.put(type, icon);
         }
