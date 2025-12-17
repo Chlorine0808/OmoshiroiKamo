@@ -1,16 +1,14 @@
 package ruiseki.omoshiroikamo.plugin.cow;
 
-import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
-import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
-import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.plugin.deepMobLearning.BaseModelHandler;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
+import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class OriginalCows extends BaseCowHandler {
 

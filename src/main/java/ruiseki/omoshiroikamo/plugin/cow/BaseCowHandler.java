@@ -1,6 +1,5 @@
 package ruiseki.omoshiroikamo.plugin.cow;
 
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,18 +9,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
@@ -70,6 +68,7 @@ public abstract class BaseCowHandler {
     }
 
     private static class FluidJson {
+
         String name;
         int amount;
     }
@@ -108,7 +107,8 @@ public abstract class BaseCowHandler {
                 try {
                     FluidStack milk = resolveFluidStack(data.fluid);
                     if (milk == null) {
-                        Logger.error("Error Registering (" + this.modID + ") Cow: '" + data.name + "' It's fluid was null");
+                        Logger.error(
+                            "Error Registering (" + this.modID + ") Cow: '" + data.name + "' It's fluid was null");
                         continue;
                     }
                     int bgColor = parseColor(data.bgColor, 0xFFFFFF);
@@ -123,15 +123,7 @@ public abstract class BaseCowHandler {
                         Logger.error("Invalid spawn type for " + data.name + ": " + data.spawnType);
                     }
 
-                    CowsRegistryItem cow = addCow(
-                        data.name,
-                        this.nextID(),
-                        milk,
-                        bgColor,
-                        fgColor,
-                        type,
-                        data.lang
-                    );
+                    CowsRegistryItem cow = addCow(data.name, this.nextID(), milk, bgColor, fgColor, type, data.lang);
 
                     if (cow != null) {
                         if (data.lang != null) {
@@ -151,7 +143,9 @@ public abstract class BaseCowHandler {
 
                         Logger.debug("Registering (" + this.modID + ") Cow: '" + data.name + "'");
 
-                        ModCompatInformation.addInformation(cow.getId(), new ModCompatInformation(this.getModID(), "", this.getModName()));
+                        ModCompatInformation.addInformation(
+                            cow.getId(),
+                            new ModCompatInformation(this.getModID(), "", this.getModName()));
                     }
 
                     allCows.add(cow);
@@ -175,8 +169,8 @@ public abstract class BaseCowHandler {
         return this.id++;
     }
 
-    protected CowsRegistryItem addCow(String cowName, int cowID, FluidStack fluid,
-        int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
+    protected CowsRegistryItem addCow(String cowName, int cowID, FluidStack fluid, int bgColor, int fgColor,
+        SpawnType spawntype, String[] lang) {
         if (fluid == null || fluid.getFluid() == null) {
             Logger.error("Error Registering (" + this.modID + ") Cow: '" + cowName + "' It's fluid was null");
             return null;
@@ -188,11 +182,12 @@ public abstract class BaseCowHandler {
             new ResourceLocation("minecraft", "textures/entity/cow/cow.png"),
             fluid.copy(),
             bgColor,
-            fgColor, lang).setSpawnType(spawntype);
+            fgColor,
+            lang).setSpawnType(spawntype);
     }
 
-    protected CowsRegistryItem tryAddCow(String name, int id, String fluidName,
-        int primary, int secondary, SpawnType type, String[] lang) {
+    protected CowsRegistryItem tryAddCow(String name, int id, String fluidName, int primary, int secondary,
+        SpawnType type, String[] lang) {
         if (FluidRegistry.getFluid(fluidName) != null) {
             return addCow(
                 name,
@@ -200,7 +195,8 @@ public abstract class BaseCowHandler {
                 new FluidStack(FluidRegistry.getFluid(fluidName), 1000),
                 primary,
                 secondary,
-                type, lang);
+                type,
+                lang);
         }
         return null;
     }
@@ -231,10 +227,13 @@ public abstract class BaseCowHandler {
                 m.name = cow.getEntityName();
                 m.bgColor = String.format("0x%06X", cow.getBgColor() & 0xFFFFFF);
                 m.fgColor = String.format("0x%06X", cow.getFgColor() & 0xFFFFFF);
-                m.spawnType = cow.getSpawnType() != null ? cow.getSpawnType().name() : "NORMAL";
+                m.spawnType = cow.getSpawnType() != null ? cow.getSpawnType()
+                    .name() : "NORMAL";
                 if (cow.createMilkFluid() != null) {
                     FluidJson f = new FluidJson();
-                    f.name = cow.createMilkFluid().getFluid().getName();
+                    f.name = cow.createMilkFluid()
+                        .getFluid()
+                        .getName();
                     f.amount = cow.createMilkFluid().amount;
                     m.fluid = f;
                 }

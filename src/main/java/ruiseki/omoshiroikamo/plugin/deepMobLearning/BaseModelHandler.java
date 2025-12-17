@@ -126,7 +126,9 @@ public abstract class BaseModelHandler {
 
                         Logger.debug("Registering (" + this.modID + ") Model: '" + data.name + "':" + model.getId());
 
-                        ModCompatInformation.addInformation(model.getId(), new ModCompatInformation(this.getModID(), "", this.getModName()));
+                        ModCompatInformation.addInformation(
+                            model.getId(),
+                            new ModCompatInformation(this.getModID(), "", this.getModName()));
                     }
 
                     allModels.add(model);

@@ -482,7 +482,8 @@ public class BaseChickens extends BaseChickenHandler {
             new ResourceLocation(LibMisc.MOD_ID, "textures/entity/chicken/base/" + name + ".png"),
             new ItemStack(Items.dye, 1, color.ordinal()),
             0xf2f2f2,
-            color.getColor(), new String[]{}).setSpawnType(SpawnType.NONE);
+            color.getColor(),
+            new String[] {}).setSpawnType(SpawnType.NONE);
 
         all.add(item);
         return item;

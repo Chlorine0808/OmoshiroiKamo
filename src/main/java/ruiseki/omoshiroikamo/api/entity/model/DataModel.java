@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.common.init.ModItems;
-import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class DataModel {
 

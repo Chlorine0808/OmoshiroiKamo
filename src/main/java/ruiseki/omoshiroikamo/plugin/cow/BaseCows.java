@@ -31,7 +31,7 @@ public class BaseCows extends BaseCowHandler {
             0x000099,
             0x8080ff,
             SpawnType.NORMAL,
-            new String[] { "en_US:Water Cow", "ja_JP:ウォーター牛" } );
+            new String[] { "en_US:Water Cow", "ja_JP:ウォーター牛" });
         allCows.add(waterCow);
 
         lavaCow = addCow(
