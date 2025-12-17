@@ -151,4 +151,8 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
     public boolean isDye(int dyeMetadata) {
         return layItem.getItem() == Items.dye && layItem.getItemDamage() == dyeMetadata;
     }
+
+    public ItemStack getLayItem() {
+        return layItem;
+    }
 }

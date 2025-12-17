@@ -1,23 +1,17 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameData;
 import ruiseki.omoshiroikamo.OmoshiroiKamo;
-import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.api.entity.chicken.LiquidEggRegistry;
@@ -25,7 +19,6 @@ import ruiseki.omoshiroikamo.api.entity.chicken.LiquidEggRegistryItem;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.handler.NetherPopulateHandler;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 public class ModChickens {
@@ -117,150 +110,20 @@ public class ModChickens {
         }
 
         // SetParents
-
         for (BaseChickenHandler addon : registeredModAddons) {
             Logger.debug("Register " + addon.getModName() + " Parents");
-            addon.registerAllParents(chickens);
+            addon.loadParents(chickens);
         }
 
         return chickens;
 
     }
 
-    private static String getChickenParent(Configuration configuration, String propertyName,
-        Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent,
-        String comment) {
-        String Category = chicken.getEntityName();
-        return configuration.getString(propertyName, Category, parent != null ? parent.getEntityName() : "", comment);
-    }
-
     private static void loadConfiguration() {
-
-        File configDirectory = new File("config/" + LibMisc.MOD_ID + "/chicken");
-        if (!configDirectory.exists()) {
-            configDirectory.mkdir();
-        }
-
-        File configFile = new File(configDirectory, "base.cfg");
-        Configuration configuration = new Configuration(configFile);
-
         Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
-
-        configuration.addCustomCategoryComment(
-            "0",
-            "It is Ideal to regenerate this file after updates as your config files may overwrite changes made to core.");
-
         Logger.info("Chickens Loading Config...");
         for (ChickensRegistryItem chicken : allChickens) {
-
-            if (chicken instanceof OriginalChickens.OriginalChickensRegistryItem) {
-                ChickensRegistry.INSTANCE.register(chicken);
-                continue;
-            }
-
-            float coefficient = configuration
-                .getFloat("coefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
-            chicken.setCoefficient(coefficient);
-
-            ItemStack itemStack = loadItemStack(configuration, chicken, "egg", chicken.createLayItem());
-            chicken.setLayItem(itemStack);
-
-            ItemStack dropItemStack = loadItemStack(configuration, chicken, "drop", chicken.createDropItem());
-            chicken.setDropItem(dropItemStack);
-
-            String parent1ID = getChickenParent(
-                configuration,
-                "parent1",
-                allChickens,
-                chicken,
-                chicken.getParent1(),
-                "First parent, empty if it's base chicken.");
-            String parent2ID = getChickenParent(
-                configuration,
-                "parent2",
-                allChickens,
-                chicken,
-                chicken.getParent2(),
-                "Second parent, empty if it's base chicken.");
-
-            ChickensRegistryItem parent1 = findChicken(allChickens, parent1ID);
-            ChickensRegistryItem parent2 = findChicken(allChickens, parent2ID);
-
-            if (parent1 != null && parent2 != null) {
-                chicken.setParents(parent1, parent2);
-            } else {
-                chicken.setNoParents();
-            }
-
-            SpawnType spawnType = SpawnType.valueOf(
-                configuration.getString(
-                    "spawnType",
-                    chicken.getEntityName(),
-                    chicken.getSpawnType()
-                        .toString(),
-                    "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
-            chicken.setSpawnType(spawnType);
-
             ChickensRegistry.INSTANCE.register(chicken);
         }
-        configuration.save();
-
     }
-
-    @SuppressWarnings("unused")
-    private static ItemStack loadItemStack(Configuration configuration, ChickensRegistryItem chicken, String prefix,
-        ItemStack defaultItemStack) {
-
-        String defaultName = Item.itemRegistry.getNameForObject(defaultItemStack.getItem());
-        if (defaultName == null) {
-            defaultName = "minecraft:fire";
-        }
-        String itemName = configuration
-            .get(
-                chicken.getEntityName(),
-                prefix + "ItemName",
-                defaultName,
-                prefix.equals("egg") ? "Item registry name to be laid (ex: minecraft:egg)"
-                    : "Item registry name to be dropped (ex: minecraft:bone)")
-            .getString();
-
-        int itemAmount = configuration.getInt(
-            prefix + "ItemAmount",
-            chicken.getEntityName(),
-            defaultItemStack.stackSize,
-            1,
-            64,
-            prefix.equals("egg") ? "Item amount to be laid." : "Item amount to be dropped.");
-        int itemMeta = configuration.getInt(
-            prefix + "ItemMeta",
-            chicken.getEntityName(),
-            defaultItemStack.getItemDamage(),
-            Integer.MIN_VALUE,
-            Integer.MAX_VALUE,
-            prefix.equals("egg") ? "Item meta to be laid." : "Item meta to be dropped.");
-
-        Item item = GameData.getItemRegistry()
-            .getObject(itemName);
-        if (item == null) {
-            if (defaultItemStack != null) {
-                return defaultItemStack;
-            } else {
-                throw new RuntimeException("Cannot find egg item with name: " + itemName);
-            }
-        }
-        return new ItemStack(item, itemAmount, itemMeta);
-    }
-
-    public static ChickensRegistryItem findChicken(Collection<ChickensRegistryItem> chickens, String name) {
-
-        for (ChickensRegistryItem chicken : chickens) {
-            if (chicken.getEntityName()
-                .compareToIgnoreCase(name) == 0) {
-                return chicken;
-            }
-        }
-
-        return null;
-    }
-
 }

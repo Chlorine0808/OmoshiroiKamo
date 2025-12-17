@@ -27,6 +27,7 @@ import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
+// Refactor base on OriginalChicken by Chlorine0808
 public abstract class BaseCowHandler {
 
     @Getter
@@ -126,6 +127,8 @@ public abstract class BaseCowHandler {
                     CowsRegistryItem cow = addCow(data.name, this.nextID(), milk, bgColor, fgColor, type, data.lang);
 
                     if (cow != null) {
+                        Logger.debug("Registering (" + this.modID + ") Cow: '" + data.name + "'");
+
                         if (data.lang != null) {
                             String langKey = "entity." + data.name + ".name";
                             for (String entry : data.lang) {
@@ -141,14 +144,12 @@ public abstract class BaseCowHandler {
                             }
                         }
 
-                        Logger.debug("Registering (" + this.modID + ") Cow: '" + data.name + "'");
-
                         ModCompatInformation.addInformation(
                             cow.getId(),
                             new ModCompatInformation(this.getModID(), "", this.getModName()));
-                    }
 
-                    allCows.add(cow);
+                        allCows.add(cow);
+                    }
 
                 } catch (Exception e) {
                     Logger.error("Error registering cow " + data.name + ": " + e.getMessage());

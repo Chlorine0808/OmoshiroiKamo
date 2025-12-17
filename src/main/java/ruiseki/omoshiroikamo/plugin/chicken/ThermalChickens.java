@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -22,86 +23,96 @@ public class ThermalChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
+
         basalzRodChicken = addChicken(
-            allChickens,
             "BasalzRodChicken",
             this.nextID(),
             "BasalzRodChicken.png",
             this.getFirstOreDictionary("rodBasalz"),
             0x980000,
             0x6E6664,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Basalz Rod Chicken", "ja_JP:バサルズロッドのニワトリ" });
+        allChickens.add(basalzRodChicken);
 
         blitzRodChicken = addChicken(
-            allChickens,
             "BlitzRodChicken",
             this.nextID(),
             "BlitzRodChicken.png",
             this.getFirstOreDictionary("rodBlitz"),
             0xECE992,
             0x66E5EF,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Blitz Rod Chicken", "ja_JP:ブリッツロッドのニワトリ" });
+        allChickens.add(blitzRodChicken);
 
         blizzRodChicken = addChicken(
-            allChickens,
             "BlizzRodChicken",
             this.nextID(),
             "BlizzRodChicken.png",
             this.getFirstOreDictionary("rodBlizz"),
             0x88E0FF,
             0x1D3B95,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Blizz Rod Chicken", "ja_JP:ブリズロッドのニワトリ" });
+        allChickens.add(blizzRodChicken);
 
         cinnabarChicken = addChicken(
-            allChickens,
             "CinnabarChicken",
             this.nextID(),
             "CinnabarChicken.png",
             this.getFirstOreDictionary("crystalCinnabar"),
             0xE49790,
             0x9B3229,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Cinnabar Chicken", "ja_JP:辰砂のニワトリ" });
+        allChickens.add(cinnabarChicken);
 
         enderiumChicken = addChicken(
-            allChickens,
             "EnderiumChicken",
             this.nextID(),
             "EnderiumChicken.png",
             this.getFirstOreDictionary("nuggetEnderium"),
             0x127575,
             0x0A4849,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Enderium Chicken", "ja_JP:エンダリウムのニワトリ" });
+        allChickens.add(enderiumChicken);
 
         lumiumChicken = addChicken(
-            allChickens,
             "LumiumChicken",
             this.nextID(),
             "LumiumChicken.png",
             this.getFirstOreDictionary("ingotLumium"),
             0xEEF4DF,
             0xF4B134,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Lumium Chicken", "ja_JP:ルミウムのニワトリ" });
+        allChickens.add(lumiumChicken);
 
         mithrilChicken = addChicken(
-            allChickens,
             "MithrilChicken",
             this.nextID(),
             "MithrilChicken.png",
             this.getFirstOreDictionary("ingotMithril"),
             0x5A89A8,
             0xA7FFFF,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Mithril Chicken", "ja_JP:ミスリルのニワトリ" });
+        allChickens.add(mithrilChicken);
 
         signalumChicken = addChicken(
-            allChickens,
             "SignalumChicken",
             this.nextID(),
             "SignalumChicken.png",
             this.getFirstOreDictionary("ingotSignalum"),
             0xFFA424,
             0xC63200,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Signalum Chicken", "ja_JP:シグナルムのニワトリ" });
+        allChickens.add(signalumChicken);
 
         return allChickens;
     }

@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -17,36 +18,41 @@ public class BotaniaChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
+
         terrasteelChicken = addChicken(
-            allChickens,
             "TerrasteelChicken",
             this.nextID(),
             "TerrasteelChicken.png",
             this.getFirstOreDictionary("ingotTerrasteel"),
             0x3ff123,
             0xf5fcf1,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Terrasteel Chicken", "ja_JP:テラースチールのニワトリ" });
+        allChickens.add(terrasteelChicken);
 
         manasteelChicken = addChicken(
-            allChickens,
             "ManasteelChicken",
             this.nextID(),
             "ManasteelChicken.png",
             this.getFirstOreDictionary("ingotManasteel"),
             0x69d7ff,
             0x002c4b,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Manasteel Chicken", "ja_JP:マナスチールのニワトリ" });
+        allChickens.add(manasteelChicken);
 
         elementiumChicken = addChicken(
-            allChickens,
             "ElementiumChicken",
             this.nextID(),
             "ElementiumChicken.png",
             this.getFirstOreDictionary("nuggetElvenElementium"),
             0xf655f3,
             0xb407b7,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Elementium Chicken", "ja_JP:エレメンティウムのニワトリ" });
+        allChickens.add(elementiumChicken);
 
         return allChickens;
     }

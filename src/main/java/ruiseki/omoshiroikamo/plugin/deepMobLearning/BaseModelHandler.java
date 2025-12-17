@@ -24,6 +24,7 @@ import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
+// Refactor base on OriginalChicken by Chlorine0808
 public abstract class BaseModelHandler {
 
     @Getter
@@ -109,6 +110,8 @@ public abstract class BaseModelHandler {
                         data.lang);
 
                     if (model != null) {
+                        Logger.debug("Registering (" + this.modID + ") Model: '" + data.name + "':" + model.getId());
+
                         if (data.lang != null) {
                             String langKey = "item.model." + data.name + ".name";
                             for (String entry : data.lang) {
@@ -124,14 +127,12 @@ public abstract class BaseModelHandler {
                             }
                         }
 
-                        Logger.debug("Registering (" + this.modID + ") Model: '" + data.name + "':" + model.getId());
-
                         ModCompatInformation.addInformation(
                             model.getId(),
                             new ModCompatInformation(this.getModID(), "", this.getModName()));
-                    }
 
-                    allModels.add(model);
+                        allModels.add(model);
+                    }
 
                 } catch (Exception e) {
                     Logger.error("Error registering model " + data.name + ": " + e.getMessage());

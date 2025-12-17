@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.init.Blocks;
@@ -79,349 +80,427 @@ public class BaseChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> all) {
-
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
         // DYE CHICKENS
-        whiteChicken = addDye(all, EnumDye.WHITE, "WhiteChicken").setDropItem(new ItemStack(Items.bone))
+        whiteChicken = addDye(EnumDye.WHITE, "WhiteChicken", new String[] { "en_US:White Chicken", "ja_JP:白いニワトリ" })
+            .setDropItem(new ItemStack(Items.bone))
             .setSpawnType(SpawnType.NORMAL);
+        allChickens.add(whiteChicken);
 
-        yellowChicken = addDye(all, EnumDye.YELLOW, "YellowChicken");
-        blueChicken = addDye(all, EnumDye.BLUE, "BlueChicken");
-        greenChicken = addDye(all, EnumDye.GREEN, "GreenChicken");
-        redChicken = addDye(all, EnumDye.RED, "RedChicken");
-        blackChicken = addDye(all, EnumDye.BLACK, "BlackChicken");
+        yellowChicken = addDye(
+            EnumDye.YELLOW,
+            "YellowChicken",
+            new String[] { "en_US:Yellow Chicken", "ja_JP:黄色いニワトリ" });
+        allChickens.add(yellowChicken);
 
-        pinkChicken = addDye(all, EnumDye.PINK, "PinkChicken");
-        purpleChicken = addDye(all, EnumDye.PURPLE, "PurpleChicken");
-        orangeChicken = addDye(all, EnumDye.ORANGE, "OrangeChicken");
-        lightBlueChicken = addDye(all, EnumDye.LIGHT_BLUE, "LightBlueChicken");
-        limeChicken = addDye(all, EnumDye.LIME, "LimeChicken");
-        grayChicken = addDye(all, EnumDye.GRAY, "GrayChicken");
-        cyanChicken = addDye(all, EnumDye.CYAN, "CyanChicken");
-        silverChicken = addDye(all, EnumDye.SILVER, "SilverDyeChicken");
-        magentaChicken = addDye(all, EnumDye.MAGENTA, "MagentaChicken");
+        blueChicken = addDye(EnumDye.BLUE, "BlueChicken", new String[] { "en_US:Blue Chicken", "ja_JP:青いニワトリ" });
+        allChickens.add(blueChicken);
+
+        greenChicken = addDye(EnumDye.GREEN, "GreenChicken", new String[] { "en_US:Green Chicken", "ja_JP:緑のニワトリ" });
+        allChickens.add(greenChicken);
+
+        redChicken = addDye(EnumDye.RED, "RedChicken", new String[] { "en_US:Red Chicken", "ja_JP:赤いニワトリ" });
+        allChickens.add(redChicken);
+
+        blackChicken = addDye(EnumDye.BLACK, "BlackChicken", new String[] { "en_US:Black Chicken", "ja_JP:黒いニワトリ" });
+        allChickens.add(blackChicken);
+
+        pinkChicken = addDye(EnumDye.PINK, "PinkChicken", new String[] { "en_US:Pink Chicken", "ja_JP:ピンクのニワトリ" });
+        allChickens.add(pinkChicken);
+
+        purpleChicken = addDye(
+            EnumDye.PURPLE,
+            "PurpleChicken",
+            new String[] { "en_US:Purple Chicken", "ja_JP:紫のニワトリ" });
+        allChickens.add(purpleChicken);
+
+        orangeChicken = addDye(
+            EnumDye.ORANGE,
+            "OrangeChicken",
+            new String[] { "en_US:Orange Chicken", "ja_JP:オレンジのニワトリ" });
+        allChickens.add(orangeChicken);
+
+        lightBlueChicken = addDye(
+            EnumDye.LIGHT_BLUE,
+            "LightBlueChicken",
+            new String[] { "en_US:Light Blue Chicken", "ja_JP:水色のニワトリ" });
+        allChickens.add(lightBlueChicken);
+
+        limeChicken = addDye(EnumDye.LIME, "LimeChicken", new String[] { "en_US:Lime Chicken", "ja_JP:黄緑のニワトリ" });
+        allChickens.add(limeChicken);
+
+        grayChicken = addDye(EnumDye.GRAY, "GrayChicken", new String[] { "en_US:Gray Chicken", "ja_JP:灰色のニワトリ" });
+        allChickens.add(grayChicken);
+
+        cyanChicken = addDye(EnumDye.CYAN, "CyanChicken", new String[] { "en_US:Cyan Chicken", "ja_JP:シアンのニワトリ" });
+        allChickens.add(cyanChicken);
+
+        silverChicken = addDye(
+            EnumDye.SILVER,
+            "SilverDyeChicken",
+            new String[] { "en_US:Silver Chicken", "ja_JP:薄灰色のニワトリ" });
+        allChickens.add(silverChicken);
+
+        magentaChicken = addDye(
+            EnumDye.MAGENTA,
+            "MagentaChicken",
+            new String[] { "en_US:Magenta Chicken", "ja_JP:マゼンタのニワトリ" });
+        allChickens.add(magentaChicken);
+
+        brownChicken = addDye(EnumDye.BROWN, "BrownChicken", new String[] { "en_US:Brown Chicken", "ja_JP:茶色のニワトリ" });
+        allChickens.add(brownChicken);
 
         // SMART CHICKEN
         smartChicken = addChicken(
-            all,
             "SmartChicken",
             this.nextID(),
             "SmartChicken.png",
             new ItemStack(Items.egg),
             0xffffff,
             0xffff00,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Smart Chicken", "ja_JP:スマートニワトリ" });
+        allChickens.add(smartChicken);
 
         // BASE CHICKENS
         flintChicken = addChicken(
-            all,
             "FlintChicken",
             this.nextID(),
             "FlintChicken.png",
             new ItemStack(Items.flint),
             0x6b6b47,
             0xa3a375,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Flint Chicken", "ja_JP:火打石のニワトリ" });
+        allChickens.add(flintChicken);
 
         quartzChicken = addChicken(
-            all,
             "QuartzChicken",
             this.nextID(),
             "QuartzChicken.png",
             new ItemStack(Items.quartz),
             0x4d0000,
             0x1a0000,
-            SpawnType.HELL);
+            SpawnType.HELL,
+            new String[] { "en_US:Quartz Chicken", "ja_JP:ネザークォーツのニワトリ" });
+        allChickens.add(quartzChicken);
 
         logChicken = addChicken(
-            all,
             "LogChicken",
             this.nextID(),
             "LogChicken.png",
             new ItemStack(Blocks.log),
             0x98846d,
             0x528358,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Log Chicken", "ja_JP:原木のニワトリ" });
+        allChickens.add(logChicken);
 
         sandChicken = addChicken(
-            all,
             "SandChicken",
             this.nextID(),
             "SandChicken.png",
             new ItemStack(Blocks.sand),
             0xece5b1,
             0xa7a06c,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Sand Chicken", "ja_JP:砂のニワトリ" });
+        allChickens.add(sandChicken);
 
         // TIER 2
         stringChicken = addChicken(
-            all,
             "StringChicken",
             this.nextID(),
             "StringChicken.png",
             new ItemStack(Items.string),
             0x331a00,
             0x800000,
-            SpawnType.NONE).setDropItem(new ItemStack(Items.spider_eye));
+            SpawnType.NONE,
+            new String[] { "en_US:String Chicken", "ja_JP:糸のニワトリ" }).setDropItem(new ItemStack(Items.spider_eye));
+        allChickens.add(stringChicken);
 
         glowstoneChicken = addChicken(
-            all,
             "GlowstoneChicken",
             this.nextID(),
             "GlowstoneChicken.png",
             new ItemStack(Items.glowstone_dust),
             0xffff66,
             0xffff00,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Glowstone Chicken", "ja_JP:グロウストーンのニワトリ" });
+        allChickens.add(glowstoneChicken);
 
         gunpowderChicken = addChicken(
-            all,
             "GunpowderChicken",
             this.nextID(),
             "GunpowderChicken.png",
             new ItemStack(Items.gunpowder),
             0x999999,
             0x404040,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Gunpowder Chicken", "ja_JP:火薬のニワトリ" });
+        allChickens.add(gunpowderChicken);
 
         redstoneChicken = addChicken(
-            all,
             "RedstoneChicken",
             this.nextID(),
             "RedstoneChicken.png",
             new ItemStack(Items.redstone),
             0xe60000,
             0x800000,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Redstone Chicken", "ja_JP:レッドストーンのニワトリ" });
+        allChickens.add(redstoneChicken);
 
         glassChicken = addChicken(
-            all,
             "GlassChicken",
             this.nextID(),
             "GlassChicken.png",
             new ItemStack(Blocks.glass),
             0xffffff,
             0xeeeeff,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Glass Chicken", "ja_JP:ガラスのニワトリ" });
+        allChickens.add(glassChicken);
 
         ironChicken = addChicken(
-            all,
             "IronChicken",
             this.nextID(),
             "IronChicken.png",
             new ItemStack(Items.iron_ingot),
             0xffffcc,
             0xffcccc,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Iron Chicken", "ja_JP:鉄のニワトリ" });
+        allChickens.add(ironChicken);
 
         coalChicken = addChicken(
-            all,
             "CoalChicken",
             this.nextID(),
             "CoalChicken.png",
             new ItemStack(Items.coal),
             0x262626,
             0x000000,
-            SpawnType.NONE);
-
-        brownChicken = addDye(all, EnumDye.BROWN, "BrownChicken");
+            SpawnType.NONE,
+            new String[] { "en_US:Coal Chicken", "ja_JP:石炭のニワトリ" });
+        allChickens.add(coalChicken);
 
         // TIER 3
         goldChicken = addChicken(
-            all,
             "GoldChicken",
             this.nextID(),
             "GoldChicken.png",
             new ItemStack(Items.gold_ingot),
             0xcccc00,
             0xffff80,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Gold Chicken", "ja_JP:金のニワトリ" });
+        allChickens.add(goldChicken);
 
         snowballChicken = addChicken(
-            all,
             "SnowballChicken",
             this.nextID(),
             "SnowballChicken.png",
             new ItemStack(Items.snowball),
             0x33bbff,
             0x0088cc,
-            SpawnType.SNOW);
+            SpawnType.SNOW,
+            new String[] { "en_US:Snowball Chicken", "ja_JP:雪玉のニワトリ" });
+        allChickens.add(snowballChicken);
 
         waterChicken = addChicken(
-            all,
             "WaterChicken",
             this.nextID(),
             "WaterChicken.png",
             ModItems.LIQUID_EGG.newItemStack(1, 0),
             0x000099,
             0x8080ff,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Water Chicken", "ja_JP:水のニワトリ" });
+        allChickens.add(waterChicken);
 
         lavaChicken = addChicken(
-            all,
             "LavaChicken",
             this.nextID(),
             "LavaChicken.png",
             ModItems.LIQUID_EGG.newItemStack(1, 1),
             0xcc3300,
             0xffff00,
-            SpawnType.HELL);
+            SpawnType.HELL,
+            new String[] { "en_US:Lava Chicken", "ja_JP:溶岩のニワトリ" });
+        allChickens.add(lavaChicken);
 
         clayChicken = addChicken(
-            all,
             "ClayChicken",
             this.nextID(),
             "ClayChicken.png",
             new ItemStack(Items.clay_ball),
             0xcccccc,
             0xbfbfbf,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Clay Chicken", "ja_JP:粘土のニワトリ" });
+        allChickens.add(clayChicken);
 
         leatherChicken = addChicken(
-            all,
             "LeatherChicken",
             this.nextID(),
             "LeatherChicken.png",
             new ItemStack(Items.leather),
             0xA7A06C,
             0x919191,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Leather Chicken", "ja_JP:革のニワトリ" });
+        allChickens.add(leatherChicken);
 
         netherwartChicken = addChicken(
-            all,
             "NetherwartChicken",
             this.nextID(),
             "NetherwartChicken.png",
             new ItemStack(Items.nether_wart),
             0x800000,
             0x331a00,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Nether Wart Chicken", "ja_JP:ネザーウォートのニワトリ" });
+        allChickens.add(netherwartChicken);
 
         // TIER 4
         diamondChicken = addChicken(
-            all,
             "DiamondChicken",
             this.nextID(),
             "DiamondChicken.png",
             new ItemStack(Items.diamond),
             0x99ccff,
             0xe6f2ff,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Diamond Chicken", "ja_JP:ダイヤモンドのニワトリ" });
+        allChickens.add(diamondChicken);
 
         blazeChicken = addChicken(
-            all,
             "BlazeChicken",
             this.nextID(),
             "BlazeChicken.png",
             new ItemStack(Items.blaze_rod),
             0xffff66,
             0xff3300,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Blaze Chicken", "ja_JP:ブレイズのニワトリ" });
+        allChickens.add(blazeChicken);
 
         slimeChicken = addChicken(
-            all,
             "SlimeChicken",
             this.nextID(),
             "SlimeChicken.png",
             new ItemStack(Items.slime_ball),
             0x009933,
             0x99ffbb,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Slime Chicken", "ja_JP:スライムのニワトリ" });
+        allChickens.add(slimeChicken);
 
         // TIER 5
         enderChicken = addChicken(
-            all,
             "EnderChicken",
             this.nextID(),
             "EnderChicken.png",
             new ItemStack(Items.ender_pearl),
             0x001a00,
             0x001a33,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Ender Chicken", "ja_JP:エンダーのニワトリ" });
+        allChickens.add(enderChicken);
 
         ghastChicken = addChicken(
-            all,
             "GhastChicken",
             this.nextID(),
             "GhastChicken.png",
             new ItemStack(Items.ghast_tear),
             0xffffcc,
             0xffffff,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Ghast Chicken", "ja_JP:ガストのニワトリ" });
+        allChickens.add(ghastChicken);
 
         emeraldChicken = addChicken(
-            all,
             "EmeraldChicken",
             this.nextID(),
             "EmeraldChicken.png",
             new ItemStack(Items.emerald),
             0x00cc00,
             0x003300,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Emerald Chicken", "ja_JP:エメラルドのニワトリ" });
+        allChickens.add(emeraldChicken);
 
         magmaChicken = addChicken(
-            all,
             "MagmaChicken",
             this.nextID(),
             "MagmaChicken.png",
             new ItemStack(Items.magma_cream),
             0x1a0500,
             0x000000,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Magma Chicken", "ja_JP:マグマのニワトリ" });
+        allChickens.add(magmaChicken);
 
         xpChicken = addChicken(
-            all,
             "XpChicken",
             this.nextID(),
             "XpChicken.png",
             new ItemStack(ModItems.SOLID_XP.getItem(), 1, 0),
             0x3dff1e,
             0x3ff123,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:XP Chicken", "ja_JP:経験値のニワトリ" });
+        allChickens.add(xpChicken);
 
         if (LibMods.EtFuturum.isLoaded()) {
             pShardChicken = addChicken(
-                all,
                 "PShardChicken",
                 this.nextID(),
                 "PShardChicken.png",
                 new ItemStack(ganymedes01.etfuturum.ModItems.PRISMARINE_SHARD.get(), 1, 0),
                 0x43806e,
                 0x9fcbbc,
-                SpawnType.NONE);
+                SpawnType.NONE,
+                new String[] { "en_US:Prismarine Shard Chicken", "ja_JP:プリズマリンシャードのニワトリ" });
+            allChickens.add(pShardChicken);
 
             pCrystalChicken = addChicken(
-                all,
                 "PCrystalChicken",
                 this.nextID(),
                 "PCrystalChicken.png",
                 new ItemStack(ganymedes01.etfuturum.ModItems.PRISMARINE_CRYSTALS.get(), 1, 0),
                 0x4e6961,
                 0xdfe9dc,
-                SpawnType.NONE);
+                SpawnType.NONE,
+                new String[] { "en_US:Prismarine Crystal Chicken", "ja_JP:プリズマリンクリスタルのニワトリ" });
+            allChickens.add(pCrystalChicken);
         }
 
         soulsandChicken = addChicken(
-            all,
             "SoulSandChicken",
             this.nextID(),
             "SoulSandChicken.png",
             new ItemStack(Blocks.soul_sand, 1, 0),
             0x453125,
             0xd52f08,
-            SpawnType.HELL);
+            SpawnType.HELL,
+            new String[] { "en_US:Soul Sand Chicken", "ja_JP:ソウルサンドのニワトリ" });
+        allChickens.add(soulsandChicken);
 
         obsidianChicken = addChicken(
-            all,
             "ObsidianChicken",
             this.nextID(),
             "ObsidianChicken.png",
             new ItemStack(Blocks.obsidian, 1, 0),
             0x08080e,
             0x463a60,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Obsidian Chicken", "ja_JP:黒曜石のニワトリ" });
+        allChickens.add(obsidianChicken);
 
-        return all;
+        return allChickens;
     }
 
     @Override
@@ -475,18 +554,15 @@ public class BaseChickens extends BaseChickenHandler {
         setParents(pCrystalChicken, waterChicken, emeraldChicken);
     }
 
-    private ChickensRegistryItem addDye(List<ChickensRegistryItem> all, EnumDye color, String name) {
-        ChickensRegistryItem item = new ChickensRegistryItem(
+    private ChickensRegistryItem addDye(EnumDye color, String name, String[] lang) {
+        return new ChickensRegistryItem(
             this.nextID(),
             name,
-            new ResourceLocation(LibMisc.MOD_ID, "textures/entity/chicken/base/" + name + ".png"),
+            new ResourceLocation(LibMisc.MOD_ID, texturesLocation + name + ".png"),
             new ItemStack(Items.dye, 1, color.ordinal()),
             0xf2f2f2,
             color.getColor(),
-            new String[] {}).setSpawnType(SpawnType.NONE);
-
-        all.add(item);
-        return item;
+            lang).setSpawnType(SpawnType.NONE);
     }
 
 }

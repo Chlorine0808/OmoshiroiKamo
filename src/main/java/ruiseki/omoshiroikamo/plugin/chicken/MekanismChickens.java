@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -15,17 +16,19 @@ public class MekanismChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
 
         osmiumChicken = addChicken(
-            allChickens,
             "OsmiumChicken",
             this.nextID(),
             "OsmiumChicken.png",
             this.getFirstOreDictionary("ingotOsmium"),
             0x989585,
             0xd1ccb6,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Osmium Chicken", "ja_JP:オスミウムのニワトリ" });
+        allChickens.add(osmiumChicken);
 
         return allChickens;
     }

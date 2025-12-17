@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -19,56 +20,63 @@ public class BigReactorsChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
+
         yelloriumChicken = addChicken(
-            allChickens,
             "YelloriumChicken",
             this.nextID(),
             "YelloriumChicken.png",
             this.getFirstOreDictionary("ingotYellorium"),
             0xA5B700,
             0xD7EF00,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Yellorium Chicken", "ja_JP:イエロリウムのニワトリ" });
+        allChickens.add(yelloriumChicken);
 
         graphiteChicken = addChicken(
-            allChickens,
             "GraphiteChicken",
             this.nextID(),
             "GraphiteChicken.png",
             this.getFirstOreDictionary("ingotGraphite"),
             0x41453F,
             0x595959,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Graphite Chicken", "ja_JP:グラファイトのニワトリ" });
+        allChickens.add(graphiteChicken);
 
         cyaniteChicken = addChicken(
-            allChickens,
             "CyaniteChicken",
             this.nextID(),
             "CyaniteChicken.png",
             this.getFirstOreDictionary("ingotCyanite"),
             0x0068B4,
             0x5CAFDB,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Cyanite Chicken", "ja_JP:シアナイトのニワトリ" });
+        allChickens.add(cyaniteChicken);
 
         blutoniumChicken = addChicken(
-            allChickens,
             "BlutoniumChicken",
             this.nextID(),
             "BlutoniumChicken.png",
             this.getFirstOreDictionary("ingotBlutonium"),
             0x4642D6,
             0xf5fcf1,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Blutonium Chicken", "ja_JP:ブルトニウムのニワトリ" });
+        allChickens.add(blutoniumChicken);
 
         ludicriteChicken = addChicken(
-            allChickens,
             "LudicriteChicken",
             this.nextID(),
             "LudicriteChicken.png",
             this.getFirstOreDictionary("ingotLudicrite"),
             0xC63BE5,
             0xF27CFF,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Ludicrite Chicken", "ja_JP:ルディクライトのニワトリ" });
+        allChickens.add(ludicriteChicken);
 
         return allChickens;
     }

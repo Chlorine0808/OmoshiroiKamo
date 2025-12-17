@@ -272,4 +272,12 @@ public abstract class BaseRegistryItem<T extends BaseRegistryItem<T>> {
     public String[] getLang() {
         return lang;
     }
+
+    public ItemStack getDropItem() {
+        return dropItem;
+    }
+
+    public float getCoefficient() {
+        return coefficient;
+    }
 }

@@ -1,29 +1,51 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import lombok.Getter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
+// Refactor base on OriginalChicken by Chlorine0808
 public abstract class BaseChickenHandler {
 
+    @Getter
     protected String modID;
+    @Getter
     protected String modName;
     protected String texturesLocation;
 
-    private int startID = 2000;
+    private int startID = 0;
+    private int id = 0;
+    protected String configFileName;
 
     private boolean needsMod = true;
 
@@ -31,23 +53,43 @@ public abstract class BaseChickenHandler {
         this.modID = modID;
         this.modName = modName;
         this.texturesLocation = texturesLocation;
+        this.configFileName = modID.toLowerCase() + "_chickens.json";
     }
 
-    public String getModID() {
-        return this.modID;
-    }
-
-    public String getModName() {
-        return this.modName;
+    public void setStartID(int startID) {
+        this.startID = startID;
+        this.id = startID;
     }
 
     public void setNeedsModPresent(boolean bool) {
         this.needsMod = bool;
     }
 
-    public void setStartID(int startID) {
-        this.startID = startID;
+    public static class ChickenJson {
+
+        String name;
+        String texture;
+        String textureOverlay;
+        String tintColor; // Hex string e.g. "0xFF0000"
+        ItemJson layItem;
+        ItemJson dropItem;
+        String bgColor; // Hex string
+        String fgColor; // Hex string
+        String spawnType;
+        String parent1;
+        String parent2;
+        float coefficient = 1.0f;
+        String[] lang;
     }
+
+    public static class ItemJson {
+
+        String name;
+        int amount;
+        int meta;
+    }
+
+    private List<ChickenJson> loadedCustomChickens = new ArrayList<>();
 
     public List<ChickensRegistryItem> tryRegisterChickens(List<ChickensRegistryItem> allChickens) {
         Logger.info("Looking for " + modName + " chickens...");
@@ -59,48 +101,181 @@ public abstract class BaseChickenHandler {
 
         Logger.info("Loading " + modName + " chickens...");
 
-        return allChickens = registerChickens(allChickens);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/chicken/" + configFileName);
+        if (!configFile.exists()) {
+            List<ChickensRegistryItem> defaultModels = registerChickens();
+            registerAllParents(defaultModels);
+            createDefaultConfig(configFile, defaultModels);
+        }
+
+        this.id = startID;
+
+        try (FileReader fileReader = new FileReader(configFile)) {
+            JsonReader reader = new JsonReader(fileReader);
+            reader.setLenient(true); // Allow comments
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<ChickenJson>>() {}.getType();
+            List<ChickenJson> customChickens = gson.fromJson(reader, listType);
+
+            if (customChickens == null) {
+                Logger.info(configFileName + " is empty or invalid.");
+                return allChickens;
+            }
+
+            this.loadedCustomChickens = customChickens;
+
+            for (ChickenJson data : customChickens) {
+                try {
+                    ItemStack layItem = resolveItemStack(data.layItem);
+                    if (layItem == null) {
+                        Logger.error("Failed to resolve lay item for custom chicken: " + data.name);
+                        continue;
+                    }
+
+                    ItemStack dropItem = resolveItemStack(data.dropItem);
+
+                    int bgColor = parseColor(data.bgColor, 0xFFFFFF);
+                    int fgColor = parseColor(data.fgColor, 0xFF0000);
+                    int tint = parseColor(data.tintColor, 0xFFFFFF);
+
+                    SpawnType type = SpawnType.NORMAL;
+                    try {
+                        if (data.spawnType != null && !data.spawnType.isEmpty()) {
+                            type = SpawnType.valueOf(data.spawnType.toUpperCase());
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Logger.error("Invalid spawn type for " + data.name + ": " + data.spawnType);
+                    }
+
+                    ChickensRegistryItem chicken = addChicken(
+                        data.name,
+                        this.nextID(),
+                        data.texture,
+                        layItem,
+                        bgColor,
+                        fgColor,
+                        type,
+                        data.lang);
+
+                    if (chicken != null) {
+                        Logger.debug(
+                            "Registering (" + this.modID
+                                + ") Chicken: '"
+                                + chicken.getEntityName()
+                                + "':"
+                                + chicken.getId()
+                                + ":"
+                                + layItem.getDisplayName());
+
+                        chicken.setCoefficient(data.coefficient);
+                        if (dropItem != null) {
+                            chicken.setDropItem(dropItem);
+                        }
+
+                        if (data.lang != null) {
+                            String langKey = "entity." + data.name + ".name";
+                            for (String entry : data.lang) {
+                                int splitIndex = entry.indexOf(':');
+                                if (splitIndex > 0) {
+                                    String lang = entry.substring(0, splitIndex)
+                                        .trim();
+                                    String value = entry.substring(splitIndex + 1)
+                                        .trim();
+                                    LanguageRegistry.instance()
+                                        .addStringLocalization(langKey, lang, value);
+                                }
+                            }
+                        }
+
+                        if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {
+                            chicken.setTintColor(tint);
+                            chicken.setTextureOverlay(
+                                new ResourceLocation(
+                                    LibResources.PREFIX_MOD + "textures/entity/chicken/custom/" + data.textureOverlay));
+                        }
+
+                        // Set Item Icons explicitly
+                        // User path: assets/omoshiroikamo/textures/items/chicken/filename.png
+                        // ResourceLocation expected: omoshiroikamo:chicken/filename
+                        if (data.texture != null && !data.texture.isEmpty()) {
+                            String iconName = data.texture;
+                            if (iconName.endsWith(".png")) iconName = iconName.substring(0, iconName.length() - 4);
+                            chicken.setIconName(LibResources.PREFIX_MOD + "chicken/" + iconName);
+                        }
+
+                        if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {
+                            String iconOverlayName = data.textureOverlay;
+                            if (iconOverlayName.endsWith(".png"))
+                                iconOverlayName = iconOverlayName.substring(0, iconOverlayName.length() - 4);
+                            chicken.setIconOverlayName(LibResources.PREFIX_MOD + "chicken/" + iconOverlayName);
+                        }
+
+                        ModCompatInformation.addInformation(
+                            chicken.getId(),
+                            new ModCompatInformation(this.getModID(), "", this.getModName()));
+
+                        allChickens.add(chicken);
+                    }
+
+                } catch (Exception e) {
+                    Logger.error("Error registering custom chicken " + data.name + ": " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (IOException e) {
+            Logger.error("Failed to read " + configFileName + ": " + e.getMessage());
+        }
+
+        return allChickens;
     }
 
-    public abstract List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens);
+    public void loadParents(List<ChickensRegistryItem> allChickens) {
+        if (loadedCustomChickens == null) return;
+
+        for (ChickenJson data : loadedCustomChickens) {
+            if (data.parent1 == null || data.parent1.isEmpty() || data.parent2 == null || data.parent2.isEmpty())
+                continue;
+
+            ChickensRegistryItem child = findChicken(allChickens, data.name);
+            if (child == null) continue;
+
+            ChickensRegistryItem p1 = findChicken(allChickens, data.parent1);
+            ChickensRegistryItem p2 = findChicken(allChickens, data.parent2);
+
+            if (p1 != null && p2 != null) {
+                child.setParents(p1, p2);
+            } else {
+                Logger.error(
+                    "Could not find parents for custom chicken " + data.name
+                        + ": "
+                        + data.parent1
+                        + ", "
+                        + data.parent2);
+            }
+        }
+
+        // Clear memory
+        loadedCustomChickens.clear();
+    }
+
+    public abstract List<ChickensRegistryItem> registerChickens();
 
     public abstract void registerAllParents(List<ChickensRegistryItem> allChickens);
 
     protected int nextID() {
-        return this.startID++;
+        return this.id++;
     }
 
-    protected ChickensRegistryItem addChicken(List<ChickensRegistryItem> chickenList, String chickenName, int chickenID,
-        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype) {
-        return addChicken(
-            chickenList,
-            chickenName,
-            chickenID,
-            texture,
-            layItem,
-            bgColor,
-            fgColor,
-            spawntype,
-            new String[] {});
-    }
-
-    protected ChickensRegistryItem addChicken(List<ChickensRegistryItem> chickenList, String chickenName, int chickenID,
-        String texture, ItemStack layItem, int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
+    protected ChickensRegistryItem addChicken(String chickenName, int chickenID, String texture, ItemStack layItem,
+        int bgColor, int fgColor, SpawnType spawntype, String[] lang) {
         if (layItem == null || layItem.getItem() == null) {
             Logger.error("Error Registering (" + this.modID + ") Chicken: '" + chickenName + "' It's LayItem was null");
             return null;
         }
 
-        Logger.debug(
-            "Registering (" + this.modID
-                + ") Chicken: '"
-                + chickenName
-                + "':"
-                + chickenID
-                + ":"
-                + layItem.getDisplayName());
-
-        ChickensRegistryItem chicken = new ChickensRegistryItem(
+        return new ChickensRegistryItem(
             chickenID,
             chickenName,
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
@@ -108,13 +283,6 @@ public abstract class BaseChickenHandler {
             bgColor,
             fgColor,
             lang).setSpawnType(spawntype);
-
-        chickenList.add(chicken);
-
-        ModCompatInformation
-            .addInformation(chickenID, new ModCompatInformation(this.getModID(), "", this.getModName()));
-
-        return chicken;
     }
 
     protected void setParents(ChickensRegistryItem child, Object parent1, Object parent2) {
@@ -194,5 +362,76 @@ public abstract class BaseChickenHandler {
     public ItemStack getFirstOreDictionary(String oreID) {
         List<ItemStack> itemstacks = OreDictionary.getOres(oreID);
         return !itemstacks.isEmpty() ? itemstacks.get(0) : null;
+    }
+
+    public void createDefaultConfig(File file, List<ChickensRegistryItem> chickens) {
+        try (Writer writer = new FileWriter(file)) {
+            List<ChickenJson> jsonList = new ArrayList<>();
+
+            for (ChickensRegistryItem chicken : chickens) {
+                if (chicken == null) {
+                    Logger.warn("Skipping null chicken while creating default config");
+                    continue;
+                }
+
+                ChickenJson json = new ChickenJson();
+                json.name = chicken.getEntityName();
+                ResourceLocation tex = chicken.getTexture();
+                json.texture = tex.getResourcePath()
+                    .substring(
+                        tex.getResourcePath()
+                            .lastIndexOf("/") + 1);
+                json.bgColor = String.format("0x%06X", chicken.getBgColor());
+                json.fgColor = String.format("0x%06X", chicken.getFgColor());
+                json.parent1 = chicken.getParent1() != null ? chicken.getParent1()
+                    .getEntityName() : null;
+                json.parent2 = chicken.getParent2() != null ? chicken.getParent2()
+                    .getEntityName() : null;
+                json.spawnType = chicken.getSpawnType()
+                    .name();
+                json.coefficient = chicken.getCoefficient();
+                json.layItem = toItemJson(chicken.getLayItem());
+                if (chicken.getDropItem() != null) {
+                    json.dropItem = toItemJson(chicken.getDropItem());
+                }
+                json.lang = chicken.getLang();
+                jsonList.add(json);
+            }
+            Gson gson = new GsonBuilder().setPrettyPrinting()
+                .create();
+            writer.write(gson.toJson(jsonList));
+
+            Logger.info("Created default " + configFileName);
+        } catch (IOException e) {
+            Logger.error("Failed to create default config: " + e.getMessage());
+        }
+    }
+
+    private ItemStack resolveItemStack(ItemJson data) {
+        if (data == null || data.name == null) return null;
+        Item item = GameData.getItemRegistry()
+            .getObject(data.name);
+        if (item == null) return null;
+        return new ItemStack(item, data.amount > 0 ? data.amount : 1, data.meta);
+    }
+
+    private ItemJson toItemJson(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return null;
+
+        ItemJson json = new ItemJson();
+        json.name = GameData.getItemRegistry()
+            .getNameForObject(stack.getItem());
+        json.amount = stack.stackSize;
+        json.meta = stack.getItemDamage();
+        return json;
+    }
+
+    private int parseColor(String hex, int def) {
+        if (hex == null || hex.isEmpty()) return def;
+        try {
+            return Integer.decode(hex);
+        } catch (NumberFormatException e) {
+            return def;
+        }
     }
 }

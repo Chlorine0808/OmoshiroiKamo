@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -15,17 +16,19 @@ public class MineFactoryReloadedChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
 
         pinkSlimeChicken = addChicken(
-            allChickens,
             "PinkSlimeChicken",
             this.nextID(),
             "PinkSlimeChicken.png",
             this.getFirstOreDictionary("slimeballPink"),
             0xC8738A,
             0x804954,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Pink Slime Chicken", "ja_JP:ピンクスライムのニワトリ" });
+        allChickens.add(pinkSlimeChicken);
 
         return allChickens;
     }

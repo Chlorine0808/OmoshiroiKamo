@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.plugin.chicken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
@@ -17,26 +18,30 @@ public class DraconicEvolutionChickens extends BaseChickenHandler {
     }
 
     @Override
-    public List<ChickensRegistryItem> registerChickens(List<ChickensRegistryItem> allChickens) {
+    public List<ChickensRegistryItem> registerChickens() {
+        List<ChickensRegistryItem> allChickens = new ArrayList<>();
+
         draconiumChicken = addChicken(
-            allChickens,
             "DraconiumChicken",
             this.nextID(),
             "DraconiumChicken.png",
             this.getFirstOreDictionary("ingotDraconium"),
             0x301549,
             0x1a0c27,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Draconium Chicken", "ja_JP:ドラコニウムのニワトリ" });
+        allChickens.add(draconiumChicken);
 
         draconiumAwakenedChicken = addChicken(
-            allChickens,
             "DraconiumAwakenedChicken",
             this.nextID(),
             "DraconiumAwakenedChicken.png",
             this.getFirstOreDictionary("nuggetDraconiumAwakened"),
             0xcc440c,
             0x9c691a,
-            SpawnType.NONE);
+            SpawnType.NONE,
+            new String[] { "en_US:Awakened Draconium Chicken", "ja_JP:覚醒ドラコニウムのニワトリ" });
+        allChickens.add(draconiumAwakenedChicken);
 
         return allChickens;
     }
