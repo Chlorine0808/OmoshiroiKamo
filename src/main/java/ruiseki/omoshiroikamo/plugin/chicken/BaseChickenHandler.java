@@ -350,7 +350,6 @@ public abstract class BaseChickenHandler {
         for (ChickensRegistryItem chicken : ChickensRegistry.INSTANCE.getItems()) {
             if (chicken.getEntityName()
                 .compareToIgnoreCase(name) == 0) {
-
                 return chicken;
             }
         }
@@ -381,6 +380,7 @@ public abstract class BaseChickenHandler {
                     .substring(
                         tex.getResourcePath()
                             .lastIndexOf("/") + 1);
+                json.tintColor = String.format("0x%06X", chicken.getTintColor());
                 json.bgColor = String.format("0x%06X", chicken.getBgColor());
                 json.fgColor = String.format("0x%06X", chicken.getFgColor());
                 json.parent1 = chicken.getParent1() != null ? chicken.getParent1()
