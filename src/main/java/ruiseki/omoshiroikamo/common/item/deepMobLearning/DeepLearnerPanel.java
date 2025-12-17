@@ -305,7 +305,8 @@ public class DeepLearnerPanel extends ModularPanel {
             .maxSize(45);
 
         ListWidget<Column, ?> kill = new ListWidget<>();
-        Column killInfo = (Column) new Column().coverChildren().childPadding(2);
+        Column killInfo = (Column) new Column().coverChildren()
+            .childPadding(2);
         TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang("gui.learner_tier_" + tier))
             .scale(1f)
             .color(0xFFFFFFFF)
@@ -336,12 +337,16 @@ public class DeepLearnerPanel extends ModularPanel {
                 .left(0)
                 .width(200);
         }
-        killInfo.child(tierText).child(totalKillText);
+        killInfo.child(tierText)
+            .child(totalKillText);
 
         if (defeatedMoreText != null) {
             killInfo.child(defeatedMoreText);
         }
-        kill.child(killInfo).pos(0, 60).width(200).maxSize(32);
+        kill.child(killInfo)
+            .pos(0, 60)
+            .width(200)
+            .maxSize(32);
 
         Column infoCol = (Column) new Column().name("info_display_" + modelIndex)
             .pos(10, 36)
