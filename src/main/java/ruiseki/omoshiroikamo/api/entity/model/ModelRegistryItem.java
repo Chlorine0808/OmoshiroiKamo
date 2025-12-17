@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.api.entity.model;
 
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 

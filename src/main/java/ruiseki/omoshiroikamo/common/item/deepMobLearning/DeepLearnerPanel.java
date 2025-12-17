@@ -304,17 +304,23 @@ public class DeepLearnerPanel extends ModularPanel {
             .width(200)
             .maxSize(45);
 
+        ListWidget<Column, ?> kill = new ListWidget<>();
+        Column killInfo = (Column) new Column().coverChildren().childPadding(2);
         TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang("gui.learner_tier_" + tier))
             .scale(1f)
             .color(0xFFFFFFFF)
+            .alignment(Alignment.CenterLeft)
             .asWidget()
-            .left(0);
+            .left(0)
+            .width(200);
 
         TextWidget<?> totalKillText = IKey.lang("gui.learner_model_defeated", totalKillCount)
             .scale(1f)
             .color(0xFFFFFFFF)
+            .alignment(Alignment.CenterLeft)
             .asWidget()
-            .left(0);
+            .left(0)
+            .width(200);
 
         TextWidget<?> defeatedMoreText = null;
         if (!isMaxTier) {
@@ -325,19 +331,17 @@ public class DeepLearnerPanel extends ModularPanel {
                 .lang("gui.learner_model_defeated_more", killsRemaining, IKey.lang("gui.learner_tier_" + (tier + 1)))
                 .scale(1f)
                 .color(0xFFAAAAAA)
+                .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .left(0);
+                .left(0)
+                .width(200);
         }
+        killInfo.child(tierText).child(totalKillText);
 
-        Column killInfo = (Column) new Column().pos(0, 60)
-            .name("info_display_" + modelIndex)
-            .childPadding(2)
-            .width(200)
-            .child(tierText)
-            .child(totalKillText);
         if (defeatedMoreText != null) {
             killInfo.child(defeatedMoreText);
         }
+        kill.child(killInfo).pos(0, 60).width(200).maxSize(32);
 
         Column infoCol = (Column) new Column().name("info_display_" + modelIndex)
             .pos(10, 36)
@@ -345,7 +349,7 @@ public class DeepLearnerPanel extends ModularPanel {
             .childPadding(2)
             .child(infoTile)
             .child(info)
-            .child(killInfo);
+            .child(kill);
 
         infoDisplay = new ParentWidget<>();
         infoDisplay.child(nameCol);

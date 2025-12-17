@@ -22,6 +22,7 @@ public class ModModels {
 
     private static void registerModAddons() {
         addModAddon(new BaseModels());
+        addModAddon(new OriginalModels());
     }
 
     public static void addModAddon(BaseModelHandler addon) {

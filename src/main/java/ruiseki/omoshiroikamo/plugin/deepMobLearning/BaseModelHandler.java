@@ -9,14 +9,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import lombok.Getter;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
@@ -35,7 +36,7 @@ public abstract class BaseModelHandler {
     @Setter
     private int startID = 0;
     private int id;
-    private String configFileName;
+    protected String configFileName;
 
     private boolean needsMod = true;
 
@@ -52,6 +53,7 @@ public abstract class BaseModelHandler {
     }
 
     private static class ModelJson {
+
         String name;
         String texture;
         boolean enable;
@@ -87,7 +89,7 @@ public abstract class BaseModelHandler {
             Type listType = new TypeToken<ArrayList<ModelJson>>() {}.getType();
             List<ModelJson> models = gson.fromJson(reader, listType);
             if (models == null) {
-                Logger.info( configFileName + " is empty or invalid.");
+                Logger.info(configFileName + " is empty or invalid.");
                 return allModels;
             }
 
@@ -113,9 +115,12 @@ public abstract class BaseModelHandler {
                             for (String entry : data.lang) {
                                 int splitIndex = entry.indexOf(':');
                                 if (splitIndex > 0) {
-                                    String lang = entry.substring(0, splitIndex).trim();
-                                    String value = entry.substring(splitIndex + 1).trim();
-                                    LanguageRegistry.instance().addStringLocalization(langKey, lang, value);
+                                    String lang = entry.substring(0, splitIndex)
+                                        .trim();
+                                    String value = entry.substring(splitIndex + 1)
+                                        .trim();
+                                    LanguageRegistry.instance()
+                                        .addStringLocalization(langKey, lang, value);
                                 }
                             }
                         }
@@ -131,7 +136,6 @@ public abstract class BaseModelHandler {
                 }
             }
 
-
         } catch (IOException e) {
             Logger.error("Failed to read " + configFileName + ": " + e.getMessage());
         }
@@ -145,9 +149,8 @@ public abstract class BaseModelHandler {
         return this.id++;
     }
 
-    public ModelRegistryItem addModel(String registryName, int id, String texture,
-                                         float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY,
-                                         String[] mobTrivia, String[] lang) {
+    public ModelRegistryItem addModel(String registryName, int id, String texture, float numberOfHearts,
+        float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia, String[] lang) {
 
         ModelRegistryItem model = new ModelRegistryItem(
             id,
@@ -159,8 +162,7 @@ public abstract class BaseModelHandler {
             interfaceOffsetX,
             interfaceOffsetY,
             mobTrivia,
-            lang
-        );
+            lang);
 
         ModCompatInformation.addInformation(id, new ModCompatInformation(this.getModID(), "", this.getModName()));
         return model;
@@ -168,27 +170,12 @@ public abstract class BaseModelHandler {
 
     public void createDefaultConfig(File file, List<ModelRegistryItem> allModels) {
         try (Writer writer = new FileWriter(file)) {
-            writer.write("/*\n");
-            writer.write("This file is for custom model settings.\n");
-            writer.write("You can add your own models by writing the format below.\n");
-            writer.write("Fields:\n");
-            writer.write("  id              : Model's id\n");
-            writer.write("  name            : Model's name\n");
-            writer.write("  texture         : Texture path (same file for model and item)\n");
-            writer.write("  enable          : Enable or disable this model\n");
-            writer.write("  numberOfHearts  : Number of hearts for the model\n");
-            writer.write("  interfaceScale  : UI scale\n");
-            writer.write("  interfaceOffsetX: UI X offset\n");
-            writer.write("  interfaceOffsetY: UI Y offset\n");
-            writer.write("  mobTrivia       : Array of info about the mob\n");
-            writer.write("  lang            : Array of strings 'lang:value' for localization\n");
-            writer.write("*/\n\n");
-
             List<ModelJson> jsonModels = new ArrayList<>();
             for (ModelRegistryItem model : allModels) {
                 ModelJson m = new ModelJson();
                 m.name = model.getEntityName();
-                String fullPath = model.getTexture().getResourcePath();
+                String fullPath = model.getTexture()
+                    .getResourcePath();
                 m.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
                 m.enable = model.isEnabled();
                 m.numberOfHearts = model.getNumberOfHearts();
@@ -199,7 +186,8 @@ public abstract class BaseModelHandler {
                 m.lang = model.getLang();
                 jsonModels.add(m);
             }
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting()
+                .create();
             writer.write(gson.toJson(jsonModels));
 
             Logger.info("Created default " + configFileName);
