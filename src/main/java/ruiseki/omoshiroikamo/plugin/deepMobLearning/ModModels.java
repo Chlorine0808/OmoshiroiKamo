@@ -89,11 +89,11 @@ public class ModModels {
             model.setInterfaceScale(interfaceScale);
 
             int interfaceOffsetX = configuration
-                .getInt("interfaceOffsetX", model.getEntityName(), model.getInterfaceOffsetX(), 0, 75, "");
+                .getInt("interfaceOffsetX", model.getEntityName(), model.getInterfaceOffsetX(), 0, 74, "");
             model.setInterfaceOffsetX(interfaceOffsetX);
 
             int interfaceOffsetY = configuration
-                .getInt("interfaceOffsetY", model.getEntityName(), model.getInterfaceOffsetY(), 0, 101, "");
+                .getInt("interfaceOffsetY", model.getEntityName(), model.getInterfaceOffsetY(), 0, 100, "");
             model.setInterfaceOffsetY(interfaceOffsetY);
 
             String[] mobTrivia = configuration

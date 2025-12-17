@@ -440,15 +440,10 @@ public class DeepLearnerPanel extends ModularPanel {
         int offsetY = model.getItem()
             .getInterfaceOffsetY();
 
-        int baseWidth = 50;
-        int baseHeight = 75;
-        int baseX = 15;
-        int baseY = 20;
-
         Widget<?> widget = new EntityDisplayWidget(() -> livingBase).doesLookAtMouse(true)
             .asWidget()
-            .size(Math.round(baseWidth * scale), Math.round(baseHeight * scale))
-            .pos(baseX + offsetX, baseY + offsetY);
+            .size(Math.round(74 * scale))
+            .pos(offsetX, 20 + offsetY);
 
         display.setWidget(widget);
         addInfoDisplay();
@@ -549,7 +544,7 @@ public class DeepLearnerPanel extends ModularPanel {
 
         @Override
         public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-            EXTRA_TEXTURE.draw(0, 0, 75, 101);
+            EXTRA_TEXTURE.draw(0, 0, 74, 100);
         }
     }
 }
