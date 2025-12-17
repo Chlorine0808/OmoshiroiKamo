@@ -38,5 +38,6 @@ public class BackportConfigs {
         ConfigurationManager.registerConfig(ChickenConfig.class);
         ConfigurationManager.registerConfig(CowConfig.class);
         ConfigurationManager.registerConfig(BackpackConfig.class);
+        ConfigurationManager.registerConfig(DeepMobLearningConfig.class);
     }
 }

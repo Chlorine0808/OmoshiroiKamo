@@ -34,19 +34,6 @@ public class DeepLearnerHandler implements IItemHandlerModifiable {
         readFromItem();
     }
 
-    public boolean hasModel() {
-
-        for (ItemStack stack : handler.getStacks()) {
-            if (stack == null) continue;
-
-            if (stack.getItem() instanceof ItemDataModel) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     @Override
     public void setStackInSlot(int slot, @Nullable ItemStack stack) {
         handler.setStackInSlot(slot, stack);

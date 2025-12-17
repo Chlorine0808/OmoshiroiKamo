@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.item.Item;
@@ -53,7 +54,7 @@ public class OriginalChickens extends BaseChickenHandler {
         String parent2;
         boolean enabled = true;
         float coefficient = 1.0f;
-        java.util.Map<String, String> lang;
+        Map<String, String> lang;
     }
 
     private static class CustomItemData {

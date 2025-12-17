@@ -67,8 +67,38 @@ public class ModModels {
         Logger.info("Models Loading Config...");
         for (ModelRegistryItem model : allModels) {
 
-            boolean enabled = configuration.getBoolean("enabled", model.getEntityName(), true, "Is chicken enabled?");
+            boolean enabled = configuration.getBoolean("enabled", model.getEntityName(), true, "Is model enabled?");
             model.setEnabled(enabled);
+
+            float numberOfHearts = configuration.getFloat(
+                "numberOfHearts",
+                model.getEntityName(),
+                model.getNumberOfHearts(),
+                0.0f,
+                Float.MAX_VALUE,
+                "Number of hearts");
+            model.setNumberOfHearts(numberOfHearts);
+
+            float interfaceScale = configuration.getFloat(
+                "interfaceScale",
+                model.getEntityName(),
+                model.getInterfaceScale(),
+                0.0f,
+                Float.MAX_VALUE,
+                "Scale size");
+            model.setInterfaceScale(interfaceScale);
+
+            int interfaceOffsetX = configuration
+                .getInt("interfaceOffsetX", model.getEntityName(), model.getInterfaceOffsetX(), 0, 75, "");
+            model.setInterfaceOffsetX(interfaceOffsetX);
+
+            int interfaceOffsetY = configuration
+                .getInt("interfaceOffsetY", model.getEntityName(), model.getInterfaceOffsetY(), 0, 101, "");
+            model.setInterfaceOffsetY(interfaceOffsetY);
+
+            String[] mobTrivia = configuration
+                .getStringList("mobTrivia", model.getEntityName(), model.getMobTrivia(), "Mob Information");
+            model.setMobTrivia(mobTrivia);
 
             ModelRegistry.INSTANCE.register(model);
         }

@@ -203,7 +203,7 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE {
 
     @Override
     public boolean processTasks(boolean redstoneCheckPassed) {
-        if (!redstoneCheckPassed) {
+        if (redstoneCheckPassed) {
             if (this.isFormed) {
                 this.machineTick();
             } else {

@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -16,6 +17,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.PlayerInvWrapper;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
@@ -24,7 +26,10 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.EntityDisplayWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -33,6 +38,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import lombok.Getter;
 import lombok.Setter;
 import ruiseki.omoshiroikamo.api.entity.model.DataModel;
+import ruiseki.omoshiroikamo.api.entity.model.DataModelExperience;
 import ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.container.DeepLearnerContainer;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
@@ -100,6 +106,12 @@ public class DeepLearnerPanel extends ModularPanel {
         .xy(215, 98, 18, 18)
         .build();
 
+    public static final UITexture HEART = UITexture.builder()
+        .location(LibMisc.MOD_ID, "gui/deepMobLearning/deeplearner_base")
+        .imageSize(256, 256)
+        .xy(0, 140, 9, 9)
+        .build();
+
     public static DeepLearnerPanel defaultPanel(PanelSyncManager syncManager, UISettings settings, EntityPlayer player,
         DeepLearnerHandler handler, Integer slotIndex) {
         DeepLearnerPanel panel = new DeepLearnerPanel(player, syncManager, settings, handler);
@@ -128,6 +140,7 @@ public class DeepLearnerPanel extends ModularPanel {
 
     @Getter
     private final List<ModelDisplay> modelDisplayList;
+    private ParentWidget<?> infoDisplay;
     private Row modelButtonRow;
     private final List<ItemSlot> itemSlots = new ArrayList<>();
 
@@ -203,6 +216,143 @@ public class DeepLearnerPanel extends ModularPanel {
             modelDisplayList.add(tab);
             child(tab);
         }
+    }
+
+    public void addInfoDisplay() {
+        ItemStack stack = getHandler().getHandler()
+            .getStackInSlot(modelIndex);
+        if (stack == null) return;
+        DataModel model = DataModel.getDataFromStack(stack);
+        if (model == null) return;
+        float numberOfHearts = model.getItem()
+            .getNumberOfHearts();
+        String name = model.getItem()
+            .getDisplayName();
+        String[] trivia = model.getItem()
+            .getMobTrivia();
+        int tier = model.getTier();
+        int totalKillCount = model.getTotalKillCount();
+        int killsThisTier = model.getKillCount();
+        int simulationsThisTier = model.getSimulationCount();
+        boolean isMaxTier = tier >= DataModelExperience.getMaxTier();
+
+        TextWidget<?> heartTile = IKey.lang("gui.learner_heart_tile")
+            .scale(1.2f)
+            .color(0xFF7CCDDB)
+            .asWidget();
+
+        TextWidget<?> hearts = IKey.str(String.valueOf(numberOfHearts))
+            .scale(1.2f)
+            .color(0xFFFFFFFF)
+            .asWidget();
+
+        Widget<?> heart = new Widget<>().background(HEART)
+            .size(12);
+
+        Row heartRow = (Row) new Row().coverChildren()
+            .left(0)
+            .childPadding(2)
+            .child(heart)
+            .child(hearts);
+
+        Column heartCol = (Column) new Column().name("info_display_" + modelIndex)
+            .pos(180, 10)
+            .coverChildren()
+            .childPadding(2)
+            .child(heartTile)
+            .child(heartRow);
+
+        TextWidget<?> nameTile = IKey.lang("gui.learner_name_tile")
+            .scale(1.2f)
+            .color(0xFF7CCDDB)
+            .asWidget()
+            .left(0);
+
+        TextWidget<?> nameText = IKey.lang(name)
+            .scale(1.2f)
+            .color(0xFFFFFFFF)
+            .asWidget()
+            .left(0);
+
+        Column nameCol = (Column) new Column().name("info_display_" + modelIndex)
+            .pos(10, 10)
+            .coverChildren()
+            .childPadding(2)
+            .child(nameTile)
+            .child(nameText);
+
+        TextWidget<?> infoTile = IKey.lang("gui.learner_info_tile")
+            .scale(1.2f)
+            .color(0xFF7CCDDB)
+            .asWidget()
+            .left(0);
+
+        ListWidget<Column, ?> info = new ListWidget<>();
+        Column mobTrivia = (Column) new Column().coverChildren();
+
+        for (String string : trivia) {
+            TextWidget<?> text = IKey.str(string)
+                .scale(1.2f)
+                .color(0xFFFFFFFF)
+                .alignment(Alignment.CenterLeft)
+                .asWidget()
+                .left(0)
+                .width(200);
+            mobTrivia.child(text);
+        }
+        info.child(mobTrivia)
+            .width(200)
+            .maxSize(45);
+
+        TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang("gui.learner_tier_" + tier))
+            .scale(1.2f)
+            .color(0xFFFFFFFF)
+            .asWidget()
+            .left(0);
+
+        TextWidget<?> totalKillText = IKey.lang("gui.learner_model_defeated", totalKillCount)
+            .scale(1.2f)
+            .color(0xFFFFFFFF)
+            .asWidget()
+            .left(0);
+
+        TextWidget<?> defeatedMoreText = null;
+        if (!isMaxTier) {
+            int killsRemaining = (int) Math
+                .ceil(DataModelExperience.getKillsToNextTier(tier, killsThisTier, simulationsThisTier));
+
+            defeatedMoreText = IKey
+                .lang("gui.learner_model_defeated_more", killsRemaining, IKey.lang("gui.learner_tier_" + (tier + 1)))
+                .scale(1.2f)
+                .color(0xFFAAAAAA)
+                .asWidget()
+                .left(0);
+        }
+
+        Column killInfo = (Column) new Column().pos(0, 64)
+            .name("info_display_" + modelIndex)
+            .childPadding(2)
+            .coverChildrenWidth()
+            .child(tierText)
+            .child(totalKillText);
+        if (defeatedMoreText != null) {
+            killInfo.child(defeatedMoreText);
+        }
+
+        Column infoCol = (Column) new Column().name("info_display_" + modelIndex)
+            .pos(10, 36)
+            .coverChildren()
+            .childPadding(2)
+            .child(infoTile)
+            .child(info)
+            .child(killInfo);
+
+        infoDisplay = new ParentWidget<>();
+        infoDisplay.child(nameCol);
+        infoDisplay.child(infoCol);
+        infoDisplay.child(heartCol);
+
+        child(infoDisplay);
     }
 
     public void addChangeModelButton() {
@@ -283,13 +433,25 @@ public class DeepLearnerPanel extends ModularPanel {
         ModelDisplay display = modelDisplayList.get(modelIndex);
         display.setEnabled(true);
 
+        float scale = model.getItem()
+            .getInterfaceScale();
+        int offsetX = model.getItem()
+            .getInterfaceOffsetX();
+        int offsetY = model.getItem()
+            .getInterfaceOffsetY();
+
+        int baseWidth = 50;
+        int baseHeight = 75;
+        int baseX = 15;
+        int baseY = 20;
+
         Widget<?> widget = new EntityDisplayWidget(() -> livingBase).doesLookAtMouse(true)
             .asWidget()
-            .size(50, 75)
-            .pos(15, 10);
+            .size(Math.round(baseWidth * scale), Math.round(baseHeight * scale))
+            .pos(baseX + offsetX, baseY + offsetY);
 
         display.setWidget(widget);
-
+        addInfoDisplay();
         this.scheduleResize();
     }
 
@@ -299,6 +461,7 @@ public class DeepLearnerPanel extends ModularPanel {
             if (display != null) {
                 display.setEnabled(false);
                 display.removeAll();
+                this.remove(infoDisplay);
             }
         }
         this.scheduleResize();

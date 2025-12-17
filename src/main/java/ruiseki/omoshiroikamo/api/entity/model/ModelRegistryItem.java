@@ -18,22 +18,37 @@ public class ModelRegistryItem {
     @Setter
     protected boolean enabled;
     @Getter
-    protected int numberOfHearts;
+    @Setter
+    protected float numberOfHearts;
     @Getter
-    protected int interfaceScale;
+    @Setter
+    protected float interfaceScale;
     @Getter
+    @Setter
     protected int interfaceOffsetX;
     @Getter
+    @Setter
     protected int interfaceOffsetY;
     @Getter
+    @Setter
+    protected String[] mobTrivia;
+    @Getter
+    @Setter
     protected ItemStack livingMatter;
     @Getter
+    @Setter
     protected ItemStack pristineMatter;
 
-    public ModelRegistryItem(int id, String entityName, ResourceLocation texture) {
+    public ModelRegistryItem(int id, String entityName, ResourceLocation texture, float numberOfHearts,
+        float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
         this.id = id;
         this.entityName = entityName;
         this.texture = texture;
+        this.numberOfHearts = numberOfHearts;
+        this.interfaceScale = interfaceScale;
+        this.interfaceOffsetX = interfaceOffsetX;
+        this.interfaceOffsetY = interfaceOffsetY;
+        this.mobTrivia = mobTrivia;
     }
 
     public String getDisplayName() {

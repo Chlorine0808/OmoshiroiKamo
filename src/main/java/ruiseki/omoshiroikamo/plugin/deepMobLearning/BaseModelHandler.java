@@ -54,13 +54,18 @@ public abstract class BaseModelHandler {
         return this.startID++;
     }
 
-    protected ModelRegistryItem addModel(List<ModelRegistryItem> modelList, String registryName, int id,
-        String texture) {
+    protected ModelRegistryItem addModel(List<ModelRegistryItem> modelList, String registryName, int id, String texture,
+        float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
 
         ModelRegistryItem model = new ModelRegistryItem(
             id,
             registryName,
-            new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture));
+            new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
+            numberOfHearts,
+            interfaceScale,
+            interfaceOffsetX,
+            interfaceOffsetY,
+            mobTrivia);
 
         modelList.add(model);
 

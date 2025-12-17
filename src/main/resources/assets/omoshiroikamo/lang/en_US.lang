@@ -21,6 +21,8 @@ config.cowConfig=Cow Settings
 config.backpackConfig=Backpack Settings
 config.feedingConfig=Feeding Settings
 config.magnetConfig=Magnet Settings
+config.deepMobLearningConfig=Deep Mob Learning Settings
+config.dataModelConfig=Data Model Settings
 
 config.energyConfig=Energy Settings
 
@@ -149,6 +151,18 @@ gui.void_overflow=Void Overflow
 
 gui.void_all=Works in Gui as well
 gui.void_automation=Only works with other upgrade/automation
+
+# Deep Mob Learning
+
+gui.learner_heart_tile=Life Points
+gui.learner_name_tile=Name
+gui.learner_info_tile=Information
+gui.learner_model_tier=Model Tier: %s
+gui.learner_model_defeated=Defeated: %d
+gui.learner_model_defeated_more=Defeated %d more to reach %s
+
+gui.learner_tier_0=§7Faulty
+gui.learner_tier_1=§aBasic
 
 #Display
 

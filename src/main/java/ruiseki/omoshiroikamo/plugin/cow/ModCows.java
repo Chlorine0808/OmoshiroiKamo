@@ -140,7 +140,8 @@ public class ModCows {
         Logger.info("Chickens Loading Config...");
         for (CowsRegistryItem cow : allChickens) {
 
-            boolean enabled = configuration.getBoolean("enabled", cow.getEntityName(), true, "Is cow enabled?");
+            boolean enabled = configuration
+                .getBoolean("enabled", cow.getEntityName(), cow.isEnabled(), "Is cow enabled?");
             cow.setEnabled(enabled);
 
             float coefficient = configuration

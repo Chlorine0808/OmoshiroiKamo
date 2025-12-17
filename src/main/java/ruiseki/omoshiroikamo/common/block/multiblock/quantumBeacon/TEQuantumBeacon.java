@@ -64,7 +64,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
     @Override
     public boolean processTasks(boolean redstoneCheckPassed) {
-        if (!worldObj.isRemote && player != null && redstoneCheckPassed) {
+        if (!worldObj.isRemote && player != null && !redstoneCheckPassed) {
             disablePlayerFlight();
         }
         return super.processTasks(redstoneCheckPassed);
