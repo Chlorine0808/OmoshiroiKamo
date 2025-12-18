@@ -3,14 +3,12 @@ package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static ruiseki.omoshiroikamo.plugin.structureLib.StructureLibUtils.ofBlockAdderWithPos;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoContainer;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ruiseki.omoshiroikamo.common.block.multiblock.TieredMultiblockInfoContainer;
+import ruiseki.omoshiroikamo.common.block.multiblock.StructureRegistrationUtils;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.Logger;
@@ -24,185 +22,76 @@ public class QuantumResExtractorStructure {
     public static IStructureDefinition<TEQuantumResExtractorT5> STRUCTURE_DEFINITION_TIER_5;
     public static IStructureDefinition<TEQuantumResExtractorT6> STRUCTURE_DEFINITION_TIER_6;
 
-    @SuppressWarnings("unchecked")
     public static void registerStructureInfo() {
-        StructureDefinition.Builder<TEQuantumResExtractorT1> builder1 = StructureDefinition.builder();
-        StructureDefinition.Builder<TEQuantumResExtractorT2> builder2 = StructureDefinition.builder();
-        StructureDefinition.Builder<TEQuantumResExtractorT3> builder3 = StructureDefinition.builder();
-        StructureDefinition.Builder<TEQuantumResExtractorT4> builder4 = StructureDefinition.builder();
-        StructureDefinition.Builder<TEQuantumResExtractorT5> builder5 = StructureDefinition.builder();
-        StructureDefinition.Builder<TEQuantumResExtractorT6> builder6 = StructureDefinition.builder();
+        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT1.class,
+            QuantumResExtractorShapes.SHAPE_TIER_1,
+            QuantumResExtractorShapes.STRUCTURE_TIER_1,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            1,
+            builder -> addCommonElements(builder));
 
-        builder1.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_1, transpose(QuantumResExtractorShapes.SHAPE_TIER_1))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 0))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 0),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 0),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 0)));
+        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT2.class,
+            QuantumResExtractorShapes.SHAPE_TIER_2,
+            QuantumResExtractorShapes.STRUCTURE_TIER_2,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            2,
+            builder -> addCommonElements(builder));
 
-        builder2.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_2, transpose(QuantumResExtractorShapes.SHAPE_TIER_2))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 1))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 1),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 1),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 1)));
+        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT3.class,
+            QuantumResExtractorShapes.SHAPE_TIER_3,
+            QuantumResExtractorShapes.STRUCTURE_TIER_3,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            3,
+            builder -> addCommonElements(builder));
 
-        builder3.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_3, transpose(QuantumResExtractorShapes.SHAPE_TIER_3))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 2))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 2),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 2),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 2)));
+        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT4.class,
+            QuantumResExtractorShapes.SHAPE_TIER_4,
+            QuantumResExtractorShapes.STRUCTURE_TIER_4,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            4,
+            builder -> addCommonElements(builder));
 
-        builder4.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_4, transpose(QuantumResExtractorShapes.SHAPE_TIER_4))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 3))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 3),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 3),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 3)));
+        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT5.class,
+            QuantumResExtractorShapes.SHAPE_TIER_5,
+            QuantumResExtractorShapes.STRUCTURE_TIER_5,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            5,
+            builder -> addCommonElements(builder));
 
-        builder5.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_5, transpose(QuantumResExtractorShapes.SHAPE_TIER_5))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 4))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 4),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 4),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 4)));
-
-        builder6.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_6, transpose(QuantumResExtractorShapes.SHAPE_TIER_6))
-            .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 5))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
-            .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'L',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
-                    ofBlock(ModBlocks.LENS.get(), 0),
-                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
-            .addElement(
-                'A',
-                ofChain(
-                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
-                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)))
-            .addElement(
-                'F',
-                ofChain(
-                    ofBlock(ModBlocks.BASALT_STRUCTURE.get(), 5),
-                    ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 5),
-                    ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 5)));
-
-        IStructureDefinition<TEQuantumResExtractorT1> definition1 = builder1.build();
-        STRUCTURE_DEFINITION_TIER_1 = definition1;
-        IStructureDefinition<TEQuantumResExtractorT2> definition2 = builder2.build();
-        STRUCTURE_DEFINITION_TIER_2 = definition2;
-        IStructureDefinition<TEQuantumResExtractorT3> definition3 = builder3.build();
-        STRUCTURE_DEFINITION_TIER_3 = definition3;
-        IStructureDefinition<TEQuantumResExtractorT4> definition4 = builder4.build();
-        STRUCTURE_DEFINITION_TIER_4 = definition4;
-        IStructureDefinition<TEQuantumResExtractorT5> definition5 = builder5.build();
-        STRUCTURE_DEFINITION_TIER_5 = definition5;
-        IStructureDefinition<TEQuantumResExtractorT6> definition6 = builder6.build();
-        STRUCTURE_DEFINITION_TIER_6 = definition6;
-
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT1.class, new TieredMultiblockInfoContainer<>(definition1));
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT2.class, new TieredMultiblockInfoContainer<>(definition2));
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT3.class, new TieredMultiblockInfoContainer<>(definition3));
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT4.class, new TieredMultiblockInfoContainer<>(definition4));
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT5.class, new TieredMultiblockInfoContainer<>(definition5));
-        IMultiblockInfoContainer
-            .registerTileClass(TEQuantumResExtractorT6.class, new TieredMultiblockInfoContainer<>(definition6));
+        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
+            TEQuantumResExtractorT6.class,
+            QuantumResExtractorShapes.SHAPE_TIER_6,
+            QuantumResExtractorShapes.STRUCTURE_TIER_6,
+            ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
+            6,
+            builder -> addCommonElements(builder));
 
         Logger.info("Register Quantum Res Extractor Structure Info");
+    }
+
+    private static <T extends TEQuantumExtractor> void addCommonElements(StructureDefinition.Builder<T> builder) {
+        builder.addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
+            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
+            .addElement(
+                'L',
+                ofChain(
+                    ofBlockAdderWithPos(TEQuantumExtractor::addToMachine, ModBlocks.LENS.get(), 0),
+                    ofBlock(ModBlocks.LENS.get(), 0),
+                    ofBlockAnyMeta(ModBlocks.COLORED_LENS.get(), 0)))
+            .addElement(
+                'A',
+                ofChain(
+                    ofBlockAdderWithPos(
+                        (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                        ModBlocks.MODIFIER_NULL.get(),
+                        0),
+                    ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
+                    ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
+                    ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)));
     }
 }
