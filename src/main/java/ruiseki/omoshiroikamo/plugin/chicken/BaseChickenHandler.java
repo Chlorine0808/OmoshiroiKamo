@@ -29,12 +29,10 @@ import lombok.Getter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
-import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
-import ruiseki.omoshiroikamo.plugin.model.BaseModelHandler;
 
 // Refactor base on OriginalChicken by Chlorine0808
 public abstract class BaseChickenHandler {
@@ -403,13 +401,19 @@ public abstract class BaseChickenHandler {
         json.name = chicken.getEntityName();
         json.enabled = true;
         ResourceLocation tex = chicken.getTexture();
-        json.texture = tex.getResourcePath().substring(tex.getResourcePath().lastIndexOf("/") + 1);
+        json.texture = tex.getResourcePath()
+            .substring(
+                tex.getResourcePath()
+                    .lastIndexOf("/") + 1);
         json.tintColor = String.format("0x%06X", chicken.getTintColor());
         json.bgColor = String.format("0x%06X", chicken.getBgColor());
         json.fgColor = String.format("0x%06X", chicken.getFgColor());
-        json.parent1 = chicken.getParent1() != null ? chicken.getParent1().getEntityName() : null;
-        json.parent2 = chicken.getParent2() != null ? chicken.getParent2().getEntityName() : null;
-        json.spawnType = chicken.getSpawnType().name();
+        json.parent1 = chicken.getParent1() != null ? chicken.getParent1()
+            .getEntityName() : null;
+        json.parent2 = chicken.getParent2() != null ? chicken.getParent2()
+            .getEntityName() : null;
+        json.spawnType = chicken.getSpawnType()
+            .name();
         json.coefficient = chicken.getCoefficient();
         json.layItem = toItemJson(chicken.getLayItem());
         if (chicken.getDropItem() != null) json.dropItem = toItemJson(chicken.getDropItem());
@@ -430,7 +434,9 @@ public abstract class BaseChickenHandler {
             }
 
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(jsonList, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(jsonList, writer);
                 Logger.info("Created default " + configFileName);
             }
         } catch (Exception e) {
@@ -469,7 +475,9 @@ public abstract class BaseChickenHandler {
 
         if (updated) {
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(existing, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
                 Logger.info("Updated model config with missing chickens: " + file.getName());
             } catch (IOException e) {
                 Logger.error("Failed to update chicken config: " + e.getMessage());

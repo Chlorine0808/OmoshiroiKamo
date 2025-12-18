@@ -134,7 +134,7 @@ public abstract class BaseCowHandler {
                         Logger.error("Invalid spawn type for " + data.name + ": " + data.spawnType);
                     }
 
-//                   Migrate
+                    // Migrate
                     int cowID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.name);
                     if (data.id == null || data.id < 0) {
                         data.id = cowID;
@@ -264,11 +264,14 @@ public abstract class BaseCowHandler {
         json.enabled = true;
         json.bgColor = String.format("0x%06X", cow.getBgColor() & 0xFFFFFF);
         json.fgColor = String.format("0x%06X", cow.getFgColor() & 0xFFFFFF);
-        json.spawnType = cow.getSpawnType() != null ? cow.getSpawnType().name() : "NORMAL";
+        json.spawnType = cow.getSpawnType() != null ? cow.getSpawnType()
+            .name() : "NORMAL";
 
         if (cow.createMilkFluid() != null) {
             FluidJson f = new FluidJson();
-            f.name = cow.createMilkFluid().getFluid().getName();
+            f.name = cow.createMilkFluid()
+                .getFluid()
+                .getName();
             f.amount = cow.createMilkFluid().amount;
             json.fluid = f;
         }
@@ -289,7 +292,9 @@ public abstract class BaseCowHandler {
             }
 
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(jsonModels, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(jsonModels, writer);
             }
 
             Logger.info("Created default " + file.getPath());
@@ -330,7 +335,9 @@ public abstract class BaseCowHandler {
 
         if (updated) {
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(existing, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
                 Logger.info("Updated cow config with missing cows: " + file.getName());
             } catch (IOException e) {
                 Logger.error("Failed to update cow config: " + e.getMessage());

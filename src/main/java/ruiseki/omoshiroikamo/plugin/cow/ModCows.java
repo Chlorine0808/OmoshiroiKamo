@@ -15,11 +15,13 @@ import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.handler.NetherPopulateHandler;
+import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.backport.CowConfig;
 
 public class ModCows {
 
     public static void preInit() {
+        if (!BackportConfigs.useCow) return;
 
         EntityRegistry
             .registerModEntity(EntityCowsCow.class, "cow", CowConfig.cowEntityId, OmoshiroiKamo.instance, 64, 1, true);
@@ -28,6 +30,8 @@ public class ModCows {
     }
 
     public static void init() {
+        if (!BackportConfigs.useCow) return;
+
         loadConfiguration();
 
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();

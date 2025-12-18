@@ -7,14 +7,19 @@ import java.util.List;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistry;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
+import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 
 public class ModModels {
 
     public static void preInit() {
+        if (!BackportConfigs.useDeepMobLearning) return;
+
         registerModAddons();
     }
 
     public static void init() {
+        if (!BackportConfigs.useDeepMobLearning) return;
+
         loadConfiguration();
     }
 

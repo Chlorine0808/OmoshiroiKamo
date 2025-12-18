@@ -108,7 +108,7 @@ public abstract class BaseModelHandler {
             for (ModelJson data : models) {
                 try {
 
-//                   Migrate
+                    // Migrate
                     int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.name);
                     if (data.id == null || data.id < 0) {
                         data.id = modelID;
@@ -211,7 +211,8 @@ public abstract class BaseModelHandler {
         json.name = model.getEntityName();
         json.enabled = true;
 
-        String fullPath = model.getTexture().getResourcePath();
+        String fullPath = model.getTexture()
+            .getResourcePath();
         json.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
 
         json.numberOfHearts = model.getNumberOfHearts();
@@ -236,7 +237,9 @@ public abstract class BaseModelHandler {
             }
 
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(jsonModels, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(jsonModels, writer);
             }
 
             Logger.info("Created default " + file.getPath());
@@ -277,7 +280,9 @@ public abstract class BaseModelHandler {
 
         if (updated) {
             try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting().create().toJson(existing, writer);
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
                 Logger.info("Updated model config with missing models: " + file.getName());
             } catch (IOException e) {
                 Logger.error("Failed to update model config: " + e.getMessage());

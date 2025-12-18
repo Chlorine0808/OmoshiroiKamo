@@ -19,11 +19,13 @@ import ruiseki.omoshiroikamo.api.entity.chicken.LiquidEggRegistryItem;
 import ruiseki.omoshiroikamo.common.entity.chicken.EntityChickensChicken;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.handler.NetherPopulateHandler;
+import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 
 public class ModChickens {
 
     public static void preInit() {
+        if (!BackportConfigs.useChicken) return;
 
         EntityRegistry.registerModEntity(
             EntityChickensChicken.class,
@@ -41,6 +43,8 @@ public class ModChickens {
     }
 
     public static void init() {
+        if (!BackportConfigs.useChicken) return;
+
         loadConfiguration();
 
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
