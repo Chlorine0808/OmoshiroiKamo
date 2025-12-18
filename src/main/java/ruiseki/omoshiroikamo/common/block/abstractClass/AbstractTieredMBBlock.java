@@ -5,13 +5,13 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public abstract class AbstractTieredMBBlock extends AbstractMBBlock<AbstractMBModifierTE> {
+public abstract class AbstractTieredMBBlock<T extends AbstractMBModifierTE> extends AbstractMBBlock<T> {
 
     private final Class<? extends TileEntity>[] teClasses;
 
     @SafeVarargs
     protected AbstractTieredMBBlock(String name, Class<? extends TileEntity>... teClasses) {
-        super(name, (Class<AbstractMBModifierTE>) teClasses[0]);
+        super(name, (Class<T>) teClasses[0]);
         this.teClasses = teClasses;
     }
 
