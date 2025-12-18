@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class ModelRegistry {
 
@@ -17,8 +16,6 @@ public class ModelRegistry {
     public ModelRegistry() {}
 
     protected final Map<Integer, ModelRegistryItem> items = new HashMap<>();
-
-    protected final Random rand = new Random();
 
     public void register(ModelRegistryItem entity) {
         validate(entity);

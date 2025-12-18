@@ -128,6 +128,26 @@ public abstract class OKCreativeTab extends CreativeTabs {
         }
     };
 
+    public static final CreativeTabs DEEP_MOB_LEARNING = new OKCreativeTab("okDeepMobLearner") {
+
+        @Override
+        public ItemStack getIconItemStack() {
+            return new ItemStack(ModItems.DEEP_LEARNER.getItem());
+        }
+
+        @Override
+        public void displayAllReleventItems(List<ItemStack> list) {
+            this.list = list;
+
+            addBlock(ModBlocks.LOOT_FABRICATOR.get());
+
+            addItem(ModItems.CREATIVE_MODEL_LEARNER.getItem());
+            addItem(ModItems.DEEP_LEARNER.getItem());
+            addItem(ModItems.DATA_MODEL.getItem());
+            addItem(ModItems.DATA_MODEL_BLANK.getItem());
+        }
+    };
+
     List<ItemStack> list;
 
     public OKCreativeTab(String label) {

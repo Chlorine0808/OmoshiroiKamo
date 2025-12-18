@@ -11,10 +11,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.entity.model.DataModel;
+import ruiseki.omoshiroikamo.api.entity.model.DataModelExperience;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.item.ItemOK;
@@ -38,6 +40,14 @@ public class ItemDataModel extends ItemOK {
     }
 
     @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+        DataModel model = DataModel.getDataFromStack(stack);
+        if (model != null) {
+            model.createTagCompound(stack);
+        }
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         DataModel model = DataModel.getDataFromStack(stack);
@@ -46,7 +56,7 @@ public class ItemDataModel extends ItemOK {
         }
         return LibMisc.LANG.localize(
             model.getItem()
-                .getDisplayName());
+                .getItemName());
     }
 
     @Override
@@ -85,22 +95,27 @@ public class ItemDataModel extends ItemOK {
             list.add(LibMisc.LANG.localize("tooltip.holdshift"));
         } else {
             DataModel model = DataModel.getDataFromStack(stack);
-            // list.add(LibMisc.LANG.localize("deepmoblearning.data_model.tier", DataModel.getTierName(stack, false)));
-            int tier = model.getTier();
-            // if (tier != DeepConstants.DATA_MODEL_MAXIMUM_TIER) {
+            int tier = model.getTier(stack);
+            list.add(
+                LibMisc.LANG
+                    .localize("tooltip.data_model.tier", LibMisc.LANG.localize(DataModelExperience.getTierName(tier))));
+            if (tier != DataModelExperience.getMaxTier()) {
+                list.add(
+                    LibMisc.LANG.localize(
+                        "tooltip.data_model.data.collected",
+                        DataModelExperience.getCurrentTierSimulationCountWithKills(
+                            tier,
+                            model.getKillCount(stack),
+                            model.getSimulationCount(stack)),
+                        DataModelExperience.getTierRoof(tier, true)));
+                list.add(
+                    LibMisc.LANG.localize(
+                        "tooltip.data_model.data.killmultiplier",
+                        DataModelExperience.getKillMultiplier(tier)));
+            }
             // list.add(
-            // LibMisc.LANG.localize(
-            // "deepmoblearning.data_model.data.collected",
-            // DataModel.getCurrentTierSimulationCountWithKills(stack),
-            // DataModel.getTierRoof(stack)));
-            // list.add(
-            // LibMisc.LANG.localize(
-            // "deepmoblearning.data_model.data.killmultiplier",
-            // DataModelExperience.getKillMultiplier(DataModel.getTier(stack))));
-            // }
-            // list.add(
-            // LibMisc.LANG.localize("deepmoblearning.data_model.rfcost", model.getSimulationTickCost(stack)));
-            // list.add(LibMisc.LANG.localize("deepmoblearning.data_model.type", model.getMatterTypeName(stack)));
+            // LibMisc.LANG.localize("data_model.rfcost", model.getSimulationTickCost(stack)));
+            // list.add(LibMisc.LANG.localize("data_model.type", model.getMatterTypeName(stack)));
         }
     }
 }

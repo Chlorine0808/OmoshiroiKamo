@@ -8,20 +8,16 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.common.init.ModItems;
+import ruiseki.omoshiroikamo.common.util.item.ItemNBTUtils;
 
 public class DataModel {
 
     private final ModelRegistryItem model;
-
-    private int tier;
-    private int killCount;
-    private int simulationCount;
-    private int totalKillCount;
-    private int totalSimulationCount;
 
     protected final String TIER_TAG = "tier";
     protected final String KILL_COUNT_TAG = "killCount";
@@ -29,15 +25,8 @@ public class DataModel {
     protected final String TOTAL_KILL_COUNT_TAG = "totalKillCount";
     protected final String TOTAL_SIMULATION_COUNT_TAG = "totalSimulationCount";
 
-    private DataModel(ModelRegistryItem model, NBTTagCompound compound) {
+    private DataModel(ModelRegistryItem model) {
         this.model = model;
-        if (compound != null) {
-            this.tier = compound.getInteger(TIER_TAG);
-            this.killCount = compound.getInteger(KILL_COUNT_TAG);
-            this.simulationCount = compound.getInteger(SIMULATION_COUNT_TAG);
-            this.totalKillCount = compound.getInteger(TOTAL_KILL_COUNT_TAG);
-            this.totalSimulationCount = compound.getInteger(TOTAL_SIMULATION_COUNT_TAG);
-        }
     }
 
     public static boolean isModel(ItemStack stack) {
@@ -47,7 +36,7 @@ public class DataModel {
     public static DataModel getDataFromStack(ItemStack stack) {
         if (!isModel(stack)) return null;
         ModelRegistryItem model = ModelRegistry.INSTANCE.getByType(stack.getItemDamage());
-        return model != null ? new DataModel(model, stack.getTagCompound()) : null;
+        return model != null ? new DataModel(model) : null;
     }
 
     public static DataModel getDataFromKey(String key, ItemStack stack) {
@@ -55,13 +44,13 @@ public class DataModel {
             return null;
         }
         ModelRegistryItem model = ModelRegistry.INSTANCE.getByName(key);
-        return model != null ? new DataModel(model, stack.getTagCompound()) : null;
+        return model != null ? new DataModel(model) : null;
     }
 
     public static List<DataModel> getAllModels() {
         List<DataModel> models = new LinkedList<>();
         for (ModelRegistryItem item : ModelRegistry.INSTANCE.getItems()) {
-            models.add(new DataModel(item, null));
+            models.add(new DataModel(item));
         }
         return models;
     }
@@ -74,94 +63,91 @@ public class DataModel {
         return model;
     }
 
-    public int getTier() {
-        return tier;
-    }
-
-    public int getKillCount() {
-        return killCount;
-    }
-
-    public int getTotalKillCount() {
-        return totalKillCount;
-    }
-
-    public int getSimulationCount() {
-        return simulationCount;
-    }
-
-    public int getTotalSimulationCount() {
-        return totalSimulationCount;
-    }
-
     @Nullable
     public Class<? extends Entity> getEntityClass() {
         return (Class<? extends Entity>) EntityList.stringToClassMapping.get(model.getEntityName());
     }
 
-    public void increaseMobKillCount(EntityPlayerMP player) {
-        int tier = getTier();
-        int i = getKillCount();
+    public void increaseMobKillCount(EntityPlayerMP player, ItemStack stack) {
+        int tier = getTier(stack);
+        int i = getKillCount(stack);
 
         // TODO Add GlitchSword and Trial
         i = i + 1;
-        setKillCount(i);
-        setTotalKillCount(getTotalKillCount() + 1);
+        setKillCount(i, stack);
+        setTotalKillCount(getTotalKillCount(stack) + 1, stack);
 
-        // TODO Add LevelUp Tier
-        // if(DataModelExperience.shouldIncreaseTier(tier, i, getCurrentTierSimulationCount(stack))) {
-        // PlayerHelper.sendMessage(player, new TextComponentString(stack.getDisplayName().getFormattedText() + "
-        // reached the " + getTierName(stack, true) + " tier"));
-        //
-        // setCurrentTierKillCount(stack, 0);
-        // setCurrentTierSimulationCount(stack, 0);
-        // setTier(stack, tier + 1);
-        // }
+        if (DataModelExperience.shouldIncreaseTier(tier, i, getSimulationCount(stack))) {
+            String nextTierName = DataModelExperience.getTierName(tier + 1);
+            String message = model.getDisplayName() + " reached the " + nextTierName + " tier";
+            player.addChatMessage(new ChatComponentText(message));
+            setKillCount(0, stack);
+            setSimulationCount(0, stack);
+            setTier(tier + 1, stack);
+        }
     }
 
-    public void increaseSimulationCount() {
-        int tier = getTier();
-        int i = getSimulationCount();
+    public void increaseSimulationCount(ItemStack stack) {
+        int tier = getTier(stack);
+        int i = getSimulationCount(stack);
         i = i + 1;
-        setSimulationCount(i);
+        setSimulationCount(i, stack);
 
-        // Update the totals
-        setTotalSimulationCount(getTotalSimulationCount() + 1);
+        setTotalSimulationCount(getTotalSimulationCount(stack) + 1, stack);
 
-        // TODO Add LevelUp Tier
-        // if(DataModelExperience.shouldIncreaseTier(tier, getCurrentTierKillCount(stack), i)) {
-        // setCurrentTierKillCount(stack, 0);
-        // setCurrentTierSimulationCount(stack, 0);
-        // setTier(stack, tier + 1);
-        // }
+        if (DataModelExperience.shouldIncreaseTier(tier, getKillCount(stack), i)) {
+            setKillCount(0, stack);
+            setSimulationCount(0, stack);
+            setTier(tier + 1, stack);
+        }
     }
 
-    public void writeToNBT(NBTTagCompound tag) {
-        tag.setInteger(TIER_TAG, tier);
-        tag.setInteger(KILL_COUNT_TAG, killCount);
-        tag.setInteger(SIMULATION_COUNT_TAG, simulationCount);
-        tag.setInteger(TOTAL_KILL_COUNT_TAG, totalKillCount);
-        tag.setInteger(TOTAL_SIMULATION_COUNT_TAG, totalSimulationCount);
+    public void createTagCompound(ItemStack stack) {
+        NBTTagCompound tag = ItemNBTUtils.getNBT(stack);
+        tag.setInteger(TIER_TAG, getTier(stack));
+        tag.setInteger(KILL_COUNT_TAG, getKillCount(stack));
+        tag.setInteger(SIMULATION_COUNT_TAG, getSimulationCount(stack));
+        tag.setInteger(TOTAL_KILL_COUNT_TAG, getTotalKillCount(stack));
+        tag.setInteger(TOTAL_SIMULATION_COUNT_TAG, getTotalSimulationCount(stack));
     }
 
-    public void setTier(int tier) {
-        this.tier = tier;
+    public int getTier(ItemStack stack) {
+        return ItemNBTUtils.getInt(stack, TIER_TAG, 0);
     }
 
-    public void setKillCount(int count) {
-        this.killCount = count;
+    public int getKillCount(ItemStack stack) {
+        return ItemNBTUtils.getInt(stack, KILL_COUNT_TAG, 0);
     }
 
-    public void setSimulationCount(int count) {
-        this.simulationCount = count;
+    public int getSimulationCount(ItemStack stack) {
+        return ItemNBTUtils.getInt(stack, SIMULATION_COUNT_TAG, 0);
     }
 
-    public void setTotalKillCount(int count) {
-        this.totalKillCount = count;
+    public int getTotalKillCount(ItemStack stack) {
+        return ItemNBTUtils.getInt(stack, TOTAL_KILL_COUNT_TAG, 0);
     }
 
-    public void setTotalSimulationCount(int count) {
-        this.totalSimulationCount = count;
+    public int getTotalSimulationCount(ItemStack stack) {
+        return ItemNBTUtils.getInt(stack, TOTAL_SIMULATION_COUNT_TAG, 0);
     }
 
+    public void setTier(int tier, ItemStack stack) {
+        ItemNBTUtils.setInt(stack, TIER_TAG, tier);
+    }
+
+    public void setKillCount(int count, ItemStack stack) {
+        ItemNBTUtils.setInt(stack, KILL_COUNT_TAG, count);
+    }
+
+    public void setSimulationCount(int count, ItemStack stack) {
+        ItemNBTUtils.setInt(stack, SIMULATION_COUNT_TAG, count);
+    }
+
+    public void setTotalKillCount(int count, ItemStack stack) {
+        ItemNBTUtils.setInt(stack, TOTAL_KILL_COUNT_TAG, count);
+    }
+
+    public void setTotalSimulationCount(int count, ItemStack stack) {
+        ItemNBTUtils.setInt(stack, TOTAL_SIMULATION_COUNT_TAG, count);
+    }
 }

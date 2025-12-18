@@ -6,6 +6,8 @@ import java.util.List;
 
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistry;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
+import ruiseki.omoshiroikamo.api.entity.model.ModelTierRegistry;
+import ruiseki.omoshiroikamo.api.entity.model.ModelTierRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 
@@ -55,6 +57,11 @@ public class ModModels {
         Logger.info("Models Loading Config...");
         for (ModelRegistryItem model : allModels) {
             ModelRegistry.INSTANCE.register(model);
+        }
+
+        Collection<ModelTierRegistryItem> allTiers = new ModelTier().registerTiers();
+        for (ModelTierRegistryItem tier : allTiers) {
+            ModelTierRegistry.INSTANCE.register(tier);
         }
     }
 }

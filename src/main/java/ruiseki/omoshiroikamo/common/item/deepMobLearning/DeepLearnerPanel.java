@@ -230,10 +230,10 @@ public class DeepLearnerPanel extends ModularPanel {
             .getDisplayName();
         String[] trivia = model.getItem()
             .getMobTrivia();
-        int tier = model.getTier();
-        int totalKillCount = model.getTotalKillCount();
-        int killsThisTier = model.getKillCount();
-        int simulationsThisTier = model.getSimulationCount();
+        int tier = model.getTier(stack);
+        int totalKillCount = model.getTotalKillCount(stack);
+        int killsThisTier = model.getKillCount(stack);
+        int simulationsThisTier = model.getSimulationCount(stack);
         boolean isMaxTier = tier >= DataModelExperience.getMaxTier();
 
         TextWidget<?> heartTile = IKey.lang("gui.learner_heart_tile")
@@ -307,7 +307,7 @@ public class DeepLearnerPanel extends ModularPanel {
         ListWidget<Column, ?> kill = new ListWidget<>();
         Column killInfo = (Column) new Column().coverChildren()
             .childPadding(2);
-        TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang("gui.learner_tier_" + tier))
+        TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang(DataModelExperience.getTierName(tier)))
             .scale(1f)
             .color(0xFFFFFFFF)
             .alignment(Alignment.CenterLeft)
@@ -329,9 +329,12 @@ public class DeepLearnerPanel extends ModularPanel {
                 .ceil(DataModelExperience.getKillsToNextTier(tier, killsThisTier, simulationsThisTier));
 
             defeatedMoreText = IKey
-                .lang("gui.learner_model_defeated_more", killsRemaining, IKey.lang("gui.learner_tier_" + (tier + 1)))
+                .lang(
+                    "gui.learner_model_defeated_more",
+                    killsRemaining,
+                    IKey.lang(DataModelExperience.getTierName(tier + 1)))
                 .scale(1f)
-                .color(0xFFAAAAAA)
+                .color(0xFFFFFFFF)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
                 .left(0)

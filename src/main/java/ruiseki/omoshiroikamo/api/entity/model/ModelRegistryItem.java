@@ -15,29 +15,23 @@ public class ModelRegistryItem {
     @Getter
     protected ResourceLocation texture;
     @Getter
-    @Setter
     protected float numberOfHearts;
     @Getter
-    @Setter
     protected float interfaceScale;
     @Getter
-    @Setter
     protected int interfaceOffsetX;
     @Getter
-    @Setter
     protected int interfaceOffsetY;
     @Getter
-    @Setter
     protected String[] mobTrivia;
+    @Getter
+    protected String[] lang;
     @Getter
     @Setter
     protected ItemStack livingMatter;
     @Getter
     @Setter
     protected ItemStack pristineMatter;
-    @Getter
-    @Setter
-    protected String[] lang;
     @Getter
     @Setter
     protected boolean enabled;
@@ -55,7 +49,11 @@ public class ModelRegistryItem {
         this.lang = lang;
     }
 
-    public String getDisplayName() {
+    public String getItemName() {
         return "item.model." + entityName + ".name";
+    }
+
+    public String getDisplayName() {
+        return "entity." + entityName + ".name";
     }
 }

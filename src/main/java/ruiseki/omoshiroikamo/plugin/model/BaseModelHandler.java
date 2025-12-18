@@ -63,12 +63,17 @@ public abstract class BaseModelHandler {
         String name;
         boolean enabled;
         String texture;
+        DeepLearnerDisplay deepLearnerDisplay;
+        String[] lang;
+    }
+
+    private static class DeepLearnerDisplay {
+
         float numberOfHearts;
         float interfaceScale;
         int interfaceOffsetX;
         int interfaceOffsetY;
         String[] mobTrivia;
-        String[] lang;
     }
 
     private List<ModelJson> loadedCustomModels;
@@ -122,11 +127,11 @@ public abstract class BaseModelHandler {
                         data.name,
                         modelID,
                         data.texture,
-                        data.numberOfHearts,
-                        data.interfaceScale,
-                        data.interfaceOffsetX,
-                        data.interfaceOffsetY,
-                        data.mobTrivia,
+                        data.deepLearnerDisplay.numberOfHearts,
+                        data.deepLearnerDisplay.interfaceScale,
+                        data.deepLearnerDisplay.interfaceOffsetX,
+                        data.deepLearnerDisplay.interfaceOffsetY,
+                        data.deepLearnerDisplay.mobTrivia,
                         data.lang);
 
                     if (model != null) {
@@ -217,12 +222,16 @@ public abstract class BaseModelHandler {
         String fullPath = model.getTexture()
             .getResourcePath();
         json.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+        if (json.deepLearnerDisplay == null) {
+            json.deepLearnerDisplay = new DeepLearnerDisplay();
+        }
 
-        json.numberOfHearts = model.getNumberOfHearts();
-        json.interfaceScale = model.getInterfaceScale();
-        json.interfaceOffsetX = model.getInterfaceOffsetX();
-        json.interfaceOffsetY = model.getInterfaceOffsetY();
-        json.mobTrivia = model.getMobTrivia();
+        json.deepLearnerDisplay.numberOfHearts = model.getNumberOfHearts();
+        json.deepLearnerDisplay.interfaceScale = model.getInterfaceScale();
+        json.deepLearnerDisplay.interfaceOffsetX = model.getInterfaceOffsetX();
+        json.deepLearnerDisplay.interfaceOffsetY = model.getInterfaceOffsetY();
+        json.deepLearnerDisplay.mobTrivia = model.getMobTrivia();
+
         json.lang = model.getLang();
 
         return json;
