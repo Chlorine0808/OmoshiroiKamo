@@ -13,6 +13,10 @@ public class DeepMobLearningConfig {
     @Config.Comment("Main Data Model Settings")
     public static final DataModelConfig dataModelConfig = new DataModelConfig();
 
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean updateMissing;
+
     @Config.LangKey(LibResources.CONFIG + "dataModelConfig")
     public static class DataModelConfig {
 

@@ -25,6 +25,9 @@ import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.cow.CowsRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.config.ConfigUpdater;
+import ruiseki.omoshiroikamo.config.backport.CowConfig;
+import ruiseki.omoshiroikamo.config.backport.DeepMobLearningConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
 // Refactor base on OriginalChicken by Chlorine0808
@@ -92,6 +95,11 @@ public abstract class BaseCowHandler {
         if (!configFile.exists()) {
             List<CowsRegistryItem> defaultCows = registerCows();
             createDefaultConfig(configFile, defaultCows);
+        }
+
+        if (CowConfig.updateMissing) {
+            updateConfigWithMissing(configFile, registerCows());
+            ConfigUpdater.updateBoolean(CowConfig.class, "updateMissing", false);
         }
 
         try (FileReader fileReader = new FileReader(configFile)) {
@@ -296,6 +304,48 @@ public abstract class BaseCowHandler {
             Logger.info("Created default " + file.getPath());
         } catch (IOException e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
+        }
+    }
+
+    private void updateConfigWithMissing(File file, List<CowsRegistryItem> allCows) {
+        List<CowJson> existing = new ArrayList<>();
+
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<CowJson>>() {}.getType();
+                List<CowJson> loaded = new Gson().fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing cow config: " + e.getMessage());
+            }
+        }
+
+        boolean updated = false;
+        for (CowsRegistryItem cow : allCows) {
+            if (cow == null) continue;
+
+            boolean exists = existing.stream()
+                .anyMatch(c -> c != null && c.name != null && c.name.equalsIgnoreCase(cow.getEntityName()));
+            if (!exists) {
+                CowJson json = toCowJson(cow);
+                if (json != null) {
+                    existing.add(json);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated) {
+            try (Writer writer = new FileWriter(file)) {
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
+                Logger.info("Updated cow config with missing cows: " + file.getName());
+            } catch (IOException e) {
+                Logger.error("Failed to update cow config: " + e.getMessage());
+            }
         }
     }
 }

@@ -32,6 +32,9 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
+import ruiseki.omoshiroikamo.config.ConfigUpdater;
+import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
+import ruiseki.omoshiroikamo.config.backport.CowConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
 // Refactor base on OriginalChicken by Chlorine0808
@@ -107,6 +110,11 @@ public abstract class BaseChickenHandler {
         if (!configFile.exists()) {
             List<ChickensRegistryItem> defaultChickens = registerChickens();
             createDefaultConfig(configFile, defaultChickens);
+        }
+
+        if (ChickenConfig.updateMissing) {
+            updateConfigWithMissing(configFile, registerChickens());
+            ConfigUpdater.updateBoolean(ChickenConfig.class, "updateMissing", false);
         }
 
         this.id = startID;
@@ -465,6 +473,47 @@ public abstract class BaseChickenHandler {
             return Integer.decode(hex);
         } catch (NumberFormatException e) {
             return def;
+        }
+    }
+
+    private void updateConfigWithMissing(File file, List<ChickensRegistryItem> allChickens) {
+        List<ChickenJson> existing = new ArrayList<>();
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<ChickenJson>>() {}.getType();
+                List<ChickenJson> loaded = new Gson().fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing chicken config: " + e.getMessage());
+            }
+        }
+
+        boolean updated = false;
+        for (ChickensRegistryItem chicken : allChickens) {
+            if (chicken == null) continue;
+
+            boolean exists = existing.stream()
+                .anyMatch(c -> c.name.equalsIgnoreCase(chicken.getEntityName()));
+            if (!exists) {
+                ChickenJson json = toChickenJson(chicken);
+                if (json != null) {
+                    existing.add(json);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated) {
+            try (Writer writer = new FileWriter(file)) {
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
+                Logger.info("Updated model config with missing chickens: " + file.getName());
+            } catch (IOException e) {
+                Logger.error("Failed to update chicken config: " + e.getMessage());
+            }
         }
     }
 }

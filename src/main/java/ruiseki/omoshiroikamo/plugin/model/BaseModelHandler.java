@@ -22,6 +22,8 @@ import lombok.Getter;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.config.ConfigUpdater;
+import ruiseki.omoshiroikamo.config.backport.DeepMobLearningConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
 
 // Refactor base on OriginalChicken by Chlorine0808
@@ -83,6 +85,11 @@ public abstract class BaseModelHandler {
         if (!configFile.exists()) {
             List<ModelRegistryItem> defaultModels = registerModels();
             createDefaultConfig(configFile, defaultModels);
+        }
+
+        if (DeepMobLearningConfig.updateMissing) {
+            updateConfigWithMissing(configFile, registerModels());
+            ConfigUpdater.updateBoolean(DeepMobLearningConfig.class, "updateMissing", false);
         }
 
         this.id = startID;
@@ -241,6 +248,48 @@ public abstract class BaseModelHandler {
             Logger.info("Created default " + file.getPath());
         } catch (IOException e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
+        }
+    }
+
+    private void updateConfigWithMissing(File file, List<ModelRegistryItem> allModels) {
+        List<BaseModelHandler.ModelJson> existing = new ArrayList<>();
+
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<BaseModelHandler.ModelJson>>() {}.getType();
+                List<BaseModelHandler.ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing model config: " + e.getMessage());
+            }
+        }
+
+        boolean updated = false;
+        for (ModelRegistryItem model : allModels) {
+            if (model == null) continue;
+
+            boolean exists = existing.stream()
+                .anyMatch(m -> m != null && m.name != null && m.name.equalsIgnoreCase(model.getEntityName()));
+            if (!exists) {
+                BaseModelHandler.ModelJson json = toModelJson(model);
+                if (json != null) {
+                    existing.add(json);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated) {
+            try (Writer writer = new FileWriter(file)) {
+                new GsonBuilder().setPrettyPrinting()
+                    .create()
+                    .toJson(existing, writer);
+                Logger.info("Updated model config with missing models: " + file.getName());
+            } catch (IOException e) {
+                Logger.error("Failed to update model config: " + e.getMessage());
+            }
         }
     }
 }
