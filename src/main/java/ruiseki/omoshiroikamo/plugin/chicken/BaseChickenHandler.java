@@ -287,7 +287,7 @@ public abstract class BaseChickenHandler {
     protected int fixedID(String name) {
         int hash = (modID + ":" + name).toLowerCase()
             .hashCode();
-        return 2000 + Math.abs(hash % 30000);
+        return startID + Math.abs(hash % (30000 - startID));
     }
 
     private void saveJsonMigration(File file, List<ChickenJson> chickens) {
@@ -495,7 +495,7 @@ public abstract class BaseChickenHandler {
         boolean updated = false;
         List<String> addedChickens = new ArrayList<>();
         for (ChickensRegistryItem chicken : allChickens) {
-            if (chicken == null || chicken.getEntityName() == null) continue;
+            if (chicken == null) continue;
 
             boolean exists = existing.stream()
                 .anyMatch(c -> c.name.equalsIgnoreCase(chicken.getEntityName()));

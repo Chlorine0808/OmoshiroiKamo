@@ -194,7 +194,7 @@ public abstract class BaseCowHandler {
     protected int fixedID(String name) {
         int hash = (modID + ":" + name).toLowerCase()
             .hashCode();
-        return 2000 + Math.abs(hash % 30000);
+        return startID + Math.abs(hash % (30000 - startID));
     }
 
     private void saveJsonMigration(File file, List<CowJson> cows) {
