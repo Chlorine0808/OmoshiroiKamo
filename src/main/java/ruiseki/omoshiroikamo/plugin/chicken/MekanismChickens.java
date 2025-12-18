@@ -8,7 +8,7 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class MekanismChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem osmiumChicken = null;
+    public static ChickensRegistryItem osmiumChicken;
 
     public MekanismChickens() {
         super("Mekanism", "Mekanism", "textures/entity/chicken/mekanism/");

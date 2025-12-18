@@ -8,11 +8,11 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class BigReactorsChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem yelloriumChicken = null;
-    public static ChickensRegistryItem cyaniteChicken = null;
-    public static ChickensRegistryItem blutoniumChicken = null;
-    public static ChickensRegistryItem ludicriteChicken = null;
-    public static ChickensRegistryItem graphiteChicken = null;
+    public static ChickensRegistryItem yelloriumChicken;
+    public static ChickensRegistryItem cyaniteChicken;
+    public static ChickensRegistryItem blutoniumChicken;
+    public static ChickensRegistryItem ludicriteChicken;
+    public static ChickensRegistryItem graphiteChicken;
 
     public BigReactorsChickens() {
         super("BigReactors", "Big Reactors", "textures/entity/chicken/bigreactors/");

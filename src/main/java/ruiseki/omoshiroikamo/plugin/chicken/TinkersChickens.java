@@ -11,12 +11,12 @@ import tconstruct.world.TinkerWorld;
 
 public class TinkersChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem arditeChicken = null;
-    public static ChickensRegistryItem colbaltChicken = null;
-    public static ChickensRegistryItem manyullynChicken = null;
-    public static ChickensRegistryItem pigIronChicken = null;
-    public static ChickensRegistryItem bloodSlimeChicken = null;
-    public static ChickensRegistryItem blueSlimeChicken = null;
+    public static ChickensRegistryItem arditeChicken;
+    public static ChickensRegistryItem colbaltChicken;
+    public static ChickensRegistryItem manyullynChicken;
+    public static ChickensRegistryItem pigIronChicken;
+    public static ChickensRegistryItem bloodSlimeChicken;
+    public static ChickensRegistryItem blueSlimeChicken;
 
     public TinkersChickens() {
         super("TConstruct", "Tinkers Construct", "textures/entity/chicken/tinkers/");

@@ -8,9 +8,9 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class BotaniaChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem elementiumChicken = null;
-    public static ChickensRegistryItem manasteelChicken = null;
-    public static ChickensRegistryItem terrasteelChicken = null;
+    public static ChickensRegistryItem elementiumChicken;
+    public static ChickensRegistryItem manasteelChicken;
+    public static ChickensRegistryItem terrasteelChicken;
 
     public BotaniaChickens() {
         super("Botania", "Botania", "textures/entity/chicken/botania/");

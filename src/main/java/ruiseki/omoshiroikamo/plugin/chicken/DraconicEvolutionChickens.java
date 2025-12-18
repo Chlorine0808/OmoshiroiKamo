@@ -9,8 +9,8 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMods;
 
 public class DraconicEvolutionChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem draconiumChicken = null;
-    public static ChickensRegistryItem draconiumAwakenedChicken = null;
+    public static ChickensRegistryItem draconiumChicken;
+    public static ChickensRegistryItem draconiumAwakenedChicken;
 
     public DraconicEvolutionChickens() {
         super("DraconicEvolution", "Draconic Evolution", "textures/entity/draconic/");

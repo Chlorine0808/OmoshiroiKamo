@@ -12,13 +12,13 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class ActuallyAdditionsChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem blackQuartzChicken = null;
-    public static ChickensRegistryItem voidCrystalChicken = null;
-    public static ChickensRegistryItem palisCrystalChicken = null;
-    public static ChickensRegistryItem enoriCrystalChicken = null;
-    public static ChickensRegistryItem restoniaCrystalChicken = null;
-    public static ChickensRegistryItem emeradicCrystalChicken = null;
-    public static ChickensRegistryItem diamantineCrystalChicken = null;
+    public static ChickensRegistryItem blackQuartzChicken;
+    public static ChickensRegistryItem voidCrystalChicken;
+    public static ChickensRegistryItem palisCrystalChicken;
+    public static ChickensRegistryItem enoriCrystalChicken;
+    public static ChickensRegistryItem restoniaCrystalChicken;
+    public static ChickensRegistryItem emeradicCrystalChicken;
+    public static ChickensRegistryItem diamantineCrystalChicken;
 
     public ActuallyAdditionsChickens() {
         super("ActuallyAdditions", "Actually Additions", "textures/entity/chicken/actuallyadditions/");

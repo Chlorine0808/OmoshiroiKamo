@@ -8,7 +8,7 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class MineFactoryReloadedChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem pinkSlimeChicken = null;
+    public static ChickensRegistryItem pinkSlimeChicken;
 
     public MineFactoryReloadedChickens() {
         super("MineFactoryReloaded", "MineFactory Reloaded", "textures/entity/chicken/minefactoryreloaded/");

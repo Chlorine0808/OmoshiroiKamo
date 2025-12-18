@@ -8,14 +8,14 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class ThermalChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem basalzRodChicken = null;
-    public static ChickensRegistryItem blitzRodChicken = null;
-    public static ChickensRegistryItem blizzRodChicken = null;
-    public static ChickensRegistryItem cinnabarChicken = null;
-    public static ChickensRegistryItem enderiumChicken = null;
-    public static ChickensRegistryItem lumiumChicken = null;
-    public static ChickensRegistryItem mithrilChicken = null;
-    public static ChickensRegistryItem signalumChicken = null;
+    public static ChickensRegistryItem basalzRodChicken;
+    public static ChickensRegistryItem blitzRodChicken;
+    public static ChickensRegistryItem blizzRodChicken;
+    public static ChickensRegistryItem cinnabarChicken;
+    public static ChickensRegistryItem enderiumChicken;
+    public static ChickensRegistryItem lumiumChicken;
+    public static ChickensRegistryItem mithrilChicken;
+    public static ChickensRegistryItem signalumChicken;
 
     public ThermalChickens() {
         super("ThermalFoundation", "Thermal Foundation", "textures/entity/chicken/thermal/");

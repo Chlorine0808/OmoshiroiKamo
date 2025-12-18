@@ -8,15 +8,15 @@ import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
 
 public class EnderIOChickens extends BaseChickenHandler {
 
-    public static ChickensRegistryItem electricalSteelChicken = null;
-    public static ChickensRegistryItem energeticAlloyChicken = null;
-    public static ChickensRegistryItem vibrantAlloyChicken = null;
-    public static ChickensRegistryItem redstoneAlloyChicken = null;
-    public static ChickensRegistryItem conductiveIronChicken = null;
-    public static ChickensRegistryItem pulsatingIronChicken = null;
-    public static ChickensRegistryItem darkSteelChicken = null;
-    public static ChickensRegistryItem endSteelChicken = null;
-    public static ChickensRegistryItem soulariumChicken = null;
+    public static ChickensRegistryItem electricalSteelChicken;
+    public static ChickensRegistryItem energeticAlloyChicken;
+    public static ChickensRegistryItem vibrantAlloyChicken;
+    public static ChickensRegistryItem redstoneAlloyChicken;
+    public static ChickensRegistryItem conductiveIronChicken;
+    public static ChickensRegistryItem pulsatingIronChicken;
+    public static ChickensRegistryItem darkSteelChicken;
+    public static ChickensRegistryItem endSteelChicken;
+    public static ChickensRegistryItem soulariumChicken;
 
     public EnderIOChickens() {
         super("EnderIO", "EnderIO", "textures/entity/chicken/enderio/");

@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.plugin.deepMobLearning;
+package ruiseki.omoshiroikamo.plugin.model;
 
 import java.io.File;
 import java.io.FileWriter;

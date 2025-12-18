@@ -16,35 +16,35 @@ public class MetalsChickens extends BaseChickenHandler {
         this.setStartID(200);
     }
 
-    public static ChickensRegistryItem brassChicken = null;
-    public static ChickensRegistryItem cupronickelChicken = null;
-    public static ChickensRegistryItem electrumChicken = null;
-    public static ChickensRegistryItem invarChicken = null;
-    public static ChickensRegistryItem bronzeChicken = null;
-    public static ChickensRegistryItem copperChicken = null;
-    public static ChickensRegistryItem leadChicken = null;
-    public static ChickensRegistryItem nickelChicken = null;
-    public static ChickensRegistryItem platinumChicken = null;
-    public static ChickensRegistryItem silverOreChicken = null;
-    public static ChickensRegistryItem tinChicken = null;
-    public static ChickensRegistryItem zincChicken = null;
-    public static ChickensRegistryItem steelChicken = null;
-    public static ChickensRegistryItem siliconChicken = null;
-    public static ChickensRegistryItem sulfurChicken = null;
-    public static ChickensRegistryItem saltpeterChicken = null;
-    public static ChickensRegistryItem aluminumChicken = null;
-    public static ChickensRegistryItem amberChicken = null;
-    public static ChickensRegistryItem amethystChicken = null;
-    public static ChickensRegistryItem malachiteChicken = null;
-    public static ChickensRegistryItem peridotChicken = null;
-    public static ChickensRegistryItem rubyChicken = null;
-    public static ChickensRegistryItem sapphireChicken = null;
-    public static ChickensRegistryItem tanzaniteChicken = null;
-    public static ChickensRegistryItem topazChicken = null;
-    public static ChickensRegistryItem garnetChicken = null;
-    public static ChickensRegistryItem saltChicken = null;
-    public static ChickensRegistryItem rubberChicken = null;
-    public static ChickensRegistryItem uraniumChicken = null;
+    public static ChickensRegistryItem brassChicken;
+    public static ChickensRegistryItem cupronickelChicken;
+    public static ChickensRegistryItem electrumChicken;
+    public static ChickensRegistryItem invarChicken;
+    public static ChickensRegistryItem bronzeChicken;
+    public static ChickensRegistryItem copperChicken;
+    public static ChickensRegistryItem leadChicken;
+    public static ChickensRegistryItem nickelChicken;
+    public static ChickensRegistryItem platinumChicken;
+    public static ChickensRegistryItem silverOreChicken;
+    public static ChickensRegistryItem tinChicken;
+    public static ChickensRegistryItem zincChicken;
+    public static ChickensRegistryItem steelChicken;
+    public static ChickensRegistryItem siliconChicken;
+    public static ChickensRegistryItem sulfurChicken;
+    public static ChickensRegistryItem saltpeterChicken;
+    public static ChickensRegistryItem aluminumChicken;
+    public static ChickensRegistryItem amberChicken;
+    public static ChickensRegistryItem amethystChicken;
+    public static ChickensRegistryItem malachiteChicken;
+    public static ChickensRegistryItem peridotChicken;
+    public static ChickensRegistryItem rubyChicken;
+    public static ChickensRegistryItem sapphireChicken;
+    public static ChickensRegistryItem tanzaniteChicken;
+    public static ChickensRegistryItem topazChicken;
+    public static ChickensRegistryItem garnetChicken;
+    public static ChickensRegistryItem saltChicken;
+    public static ChickensRegistryItem rubberChicken;
+    public static ChickensRegistryItem uraniumChicken;
 
     @Override
     public List<ChickensRegistryItem> registerChickens() {

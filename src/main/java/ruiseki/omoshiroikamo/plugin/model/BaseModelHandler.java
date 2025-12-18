@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.plugin.deepMobLearning;
+package ruiseki.omoshiroikamo.plugin.model;
 
 import java.io.File;
 import java.io.FileReader;
@@ -57,6 +57,7 @@ public abstract class BaseModelHandler {
 
     private static class ModelJson {
 
+        Integer id;
         String name;
         boolean enabled;
         String texture;
@@ -68,6 +69,8 @@ public abstract class BaseModelHandler {
         String[] lang;
     }
 
+    private List<ModelJson> loadedCustomModels;
+
     public List<ModelRegistryItem> tryRegisterModels(List<ModelRegistryItem> allModels) {
         Logger.info("Looking for " + modName + " models...");
         if (needsMod && !Loader.isModLoaded(modID)) {
@@ -77,9 +80,13 @@ public abstract class BaseModelHandler {
         Logger.info("Loading " + modName + " models...");
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
-        if (!configFile.exists()) {
-            List<ModelRegistryItem> defaultModels = registerModels();
+        List<ModelRegistryItem> defaultModels = registerModels();
+
+        boolean isNewFile = !configFile.exists();
+        if (isNewFile) {
             createDefaultConfig(configFile, defaultModels);
+        } else {
+            updateConfigWithMissing(configFile, defaultModels);
         }
 
         this.id = startID;
@@ -96,12 +103,21 @@ public abstract class BaseModelHandler {
                 return allModels;
             }
 
+            this.loadedCustomModels = models;
+
             for (ModelJson data : models) {
                 try {
 
+//                   Migrate
+                    int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.name);
+                    if (data.id == null || data.id < 0) {
+                        data.id = modelID;
+                        saveJsonMigration(configFile, loadedCustomModels);
+                    }
+
                     ModelRegistryItem model = addModel(
                         data.name,
-                        this.nextID(),
+                        modelID,
                         data.texture,
                         data.numberOfHearts,
                         data.interfaceScale,
@@ -141,7 +157,7 @@ public abstract class BaseModelHandler {
                     e.printStackTrace();
                 }
             }
-
+            this.loadedCustomModels = null;
         } catch (IOException e) {
             Logger.error("Failed to read " + configFileName + ": " + e.getMessage());
         }
@@ -153,6 +169,23 @@ public abstract class BaseModelHandler {
 
     protected int nextID() {
         return this.id++;
+    }
+
+    protected int fixedID(String name) {
+        int hash = (modID + ":" + name).toLowerCase()
+            .hashCode();
+        return 2000 + Math.abs(hash % 30000);
+    }
+
+    private void saveJsonMigration(File file, List<ModelJson> models) {
+        try (Writer writer = new FileWriter(file)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting()
+                .create();
+            writer.write(gson.toJson(models));
+            Logger.info("Migrated config with new IDs: " + file.getName());
+        } catch (IOException e) {
+            Logger.error("Failed to migrate config with IDs: " + e.getMessage());
+        }
     }
 
     public ModelRegistryItem addModel(String registryName, int id, String texture, float numberOfHearts,
@@ -170,45 +203,85 @@ public abstract class BaseModelHandler {
             lang);
     }
 
+    private ModelJson toModelJson(ModelRegistryItem model) {
+        if (model == null) return null;
+
+        ModelJson json = new ModelJson();
+        json.id = model.getId();
+        json.name = model.getEntityName();
+        json.enabled = true;
+
+        String fullPath = model.getTexture().getResourcePath();
+        json.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+
+        json.numberOfHearts = model.getNumberOfHearts();
+        json.interfaceScale = model.getInterfaceScale();
+        json.interfaceOffsetX = model.getInterfaceOffsetX();
+        json.interfaceOffsetY = model.getInterfaceOffsetY();
+        json.mobTrivia = model.getMobTrivia();
+        json.lang = model.getLang();
+
+        return json;
+    }
+
     public void createDefaultConfig(File file, List<ModelRegistryItem> allModels) {
         try {
             File parent = file.getParentFile();
-            if (parent != null && !parent.exists()) {
-                parent.mkdirs();
+            if (parent != null && !parent.exists()) parent.mkdirs();
+
+            List<BaseModelHandler.ModelJson> jsonModels = new ArrayList<>();
+            for (ModelRegistryItem model : allModels) {
+                BaseModelHandler.ModelJson json = toModelJson(model);
+                if (json != null) jsonModels.add(json);
             }
 
             try (Writer writer = new FileWriter(file)) {
-                List<ModelJson> jsonModels = new ArrayList<>();
-
-                for (ModelRegistryItem model : allModels) {
-                    if (model == null) continue;
-
-                    ModelJson m = new ModelJson();
-                    m.name = model.getEntityName();
-                    m.enabled = true;
-
-                    String fullPath = model.getTexture()
-                        .getResourcePath();
-                    m.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
-
-                    m.numberOfHearts = model.getNumberOfHearts();
-                    m.interfaceScale = model.getInterfaceScale();
-                    m.interfaceOffsetX = model.getInterfaceOffsetX();
-                    m.interfaceOffsetY = model.getInterfaceOffsetY();
-                    m.mobTrivia = model.getMobTrivia();
-                    m.lang = model.getLang();
-
-                    jsonModels.add(m);
-                }
-
-                Gson gson = new GsonBuilder().setPrettyPrinting()
-                    .create();
-                writer.write(gson.toJson(jsonModels));
+                new GsonBuilder().setPrettyPrinting().create().toJson(jsonModels, writer);
             }
 
             Logger.info("Created default " + file.getPath());
         } catch (IOException e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
+        }
+    }
+
+    private void updateConfigWithMissing(File file, List<ModelRegistryItem> allModels) {
+        List<BaseModelHandler.ModelJson> existing = new ArrayList<>();
+
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<BaseModelHandler.ModelJson>>() {}.getType();
+                List<BaseModelHandler.ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing model config: " + e.getMessage());
+            }
+        }
+
+        boolean updated = false;
+        for (ModelRegistryItem model : allModels) {
+            if (model == null) continue;
+
+            boolean exists = existing.stream()
+                .anyMatch(m -> m != null && m.name != null && m.name.equalsIgnoreCase(model.getEntityName()));
+            if (!exists) {
+                BaseModelHandler.ModelJson json = toModelJson(model);
+                if (json != null) {
+                    existing.add(json);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated) {
+            try (Writer writer = new FileWriter(file)) {
+                new GsonBuilder().setPrettyPrinting().create().toJson(existing, writer);
+                Logger.info("Updated model config with missing models: " + file.getName());
+            } catch (IOException e) {
+                Logger.error("Failed to update model config: " + e.getMessage());
+            }
         }
     }
 }

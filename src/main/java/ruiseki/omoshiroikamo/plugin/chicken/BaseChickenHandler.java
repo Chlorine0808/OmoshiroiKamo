@@ -29,10 +29,12 @@ import lombok.Getter;
 import ruiseki.omoshiroikamo.api.entity.SpawnType;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistry;
 import ruiseki.omoshiroikamo.api.entity.chicken.ChickensRegistryItem;
+import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
+import ruiseki.omoshiroikamo.plugin.model.BaseModelHandler;
 
 // Refactor base on OriginalChicken by Chlorine0808
 public abstract class BaseChickenHandler {
@@ -67,6 +69,7 @@ public abstract class BaseChickenHandler {
 
     public static class ChickenJson {
 
+        Integer id;
         String name;
         boolean enabled;
         String texture;
@@ -90,7 +93,7 @@ public abstract class BaseChickenHandler {
         int meta;
     }
 
-    private List<ChickenJson> loadedCustomChickens = new ArrayList<>();
+    private List<ChickenJson> loadedCustomChickens;
 
     public List<ChickensRegistryItem> tryRegisterChickens(List<ChickensRegistryItem> allChickens) {
         Logger.info("Looking for " + modName + " chickens...");
@@ -103,10 +106,13 @@ public abstract class BaseChickenHandler {
         Logger.info("Loading " + modName + " chickens...");
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/chicken/" + configFileName);
-        if (!configFile.exists()) {
-            List<ChickensRegistryItem> defaultModels = registerChickens();
-            registerAllParents(defaultModels);
-            createDefaultConfig(configFile, defaultModels);
+        List<ChickensRegistryItem> defaultChickens = registerChickens();
+
+        boolean isNewFile = !configFile.exists();
+        if (isNewFile) {
+            createDefaultConfig(configFile, defaultChickens);
+        } else {
+            updateConfigWithMissing(configFile, defaultChickens);
         }
 
         this.id = startID;
@@ -149,9 +155,16 @@ public abstract class BaseChickenHandler {
                         Logger.error("Invalid spawn type for " + data.name + ": " + data.spawnType);
                     }
 
+                    // Migrate
+                    int chickenID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.name);
+                    if (data.id == null || data.id < 0) {
+                        data.id = chickenID;
+                        saveJsonMigration(configFile, loadedCustomChickens);
+                    }
+
                     ChickensRegistryItem chicken = addChicken(
                         data.name,
-                        this.nextID(),
+                        chickenID,
                         data.texture,
                         layItem,
                         bgColor,
@@ -259,7 +272,7 @@ public abstract class BaseChickenHandler {
         }
 
         // Clear memory
-        loadedCustomChickens.clear();
+        loadedCustomChickens = null;
     }
 
     public abstract List<ChickensRegistryItem> registerChickens();
@@ -268,6 +281,23 @@ public abstract class BaseChickenHandler {
 
     protected int nextID() {
         return this.id++;
+    }
+
+    protected int fixedID(String name) {
+        int hash = (modID + ":" + name).toLowerCase()
+            .hashCode();
+        return 2000 + Math.abs(hash % 30000);
+    }
+
+    private void saveJsonMigration(File file, List<ChickenJson> chickens) {
+        try (Writer writer = new FileWriter(file)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting()
+                .create();
+            writer.write(gson.toJson(chickens));
+            Logger.info("Migrated config with new IDs: " + file.getName());
+        } catch (IOException e) {
+            Logger.error("Failed to migrate config with IDs: " + e.getMessage());
+        }
     }
 
     protected ChickensRegistryItem addChicken(String chickenName, int chickenID, String texture, ItemStack layItem,
@@ -281,7 +311,7 @@ public abstract class BaseChickenHandler {
             chickenID,
             chickenName,
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
-            layItem.copy(),
+            layItem,
             bgColor,
             fgColor,
             lang).setSpawnType(spawntype);
@@ -365,56 +395,85 @@ public abstract class BaseChickenHandler {
         return !itemstacks.isEmpty() ? itemstacks.get(0) : null;
     }
 
+    private ChickenJson toChickenJson(ChickensRegistryItem chicken) {
+        if (chicken == null) return null;
+
+        ChickenJson json = new ChickenJson();
+        json.id = chicken.getId();
+        json.name = chicken.getEntityName();
+        json.enabled = true;
+        ResourceLocation tex = chicken.getTexture();
+        json.texture = tex.getResourcePath().substring(tex.getResourcePath().lastIndexOf("/") + 1);
+        json.tintColor = String.format("0x%06X", chicken.getTintColor());
+        json.bgColor = String.format("0x%06X", chicken.getBgColor());
+        json.fgColor = String.format("0x%06X", chicken.getFgColor());
+        json.parent1 = chicken.getParent1() != null ? chicken.getParent1().getEntityName() : null;
+        json.parent2 = chicken.getParent2() != null ? chicken.getParent2().getEntityName() : null;
+        json.spawnType = chicken.getSpawnType().name();
+        json.coefficient = chicken.getCoefficient();
+        json.layItem = toItemJson(chicken.getLayItem());
+        if (chicken.getDropItem() != null) json.dropItem = toItemJson(chicken.getDropItem());
+        json.lang = chicken.getLang();
+
+        return json;
+    }
+
     public void createDefaultConfig(File file, List<ChickensRegistryItem> chickens) {
         try {
             File parent = file.getParentFile();
-            if (parent != null && !parent.exists()) {
-                parent.mkdirs();
+            if (parent != null && !parent.exists()) parent.mkdirs();
+
+            List<ChickenJson> jsonList = new ArrayList<>();
+            for (ChickensRegistryItem chicken : chickens) {
+                ChickenJson json = toChickenJson(chicken);
+                if (json != null) jsonList.add(json);
             }
 
             try (Writer writer = new FileWriter(file)) {
-                List<ChickenJson> jsonList = new ArrayList<>();
-
-                for (ChickensRegistryItem chicken : chickens) {
-                    if (chicken == null) {
-                        continue;
-                    }
-
-                    ChickenJson json = new ChickenJson();
-                    json.name = chicken.getEntityName();
-                    json.enabled = true;
-                    ResourceLocation tex = chicken.getTexture();
-                    json.texture = tex.getResourcePath()
-                        .substring(
-                            tex.getResourcePath()
-                                .lastIndexOf("/") + 1);
-                    json.tintColor = String.format("0x%06X", chicken.getTintColor());
-                    json.bgColor = String.format("0x%06X", chicken.getBgColor());
-                    json.fgColor = String.format("0x%06X", chicken.getFgColor());
-                    json.parent1 = chicken.getParent1() != null ? chicken.getParent1()
-                        .getEntityName() : null;
-                    json.parent2 = chicken.getParent2() != null ? chicken.getParent2()
-                        .getEntityName() : null;
-                    json.spawnType = chicken.getSpawnType()
-                        .name();
-                    json.coefficient = chicken.getCoefficient();
-                    json.layItem = toItemJson(chicken.getLayItem());
-                    if (chicken.getDropItem() != null) {
-                        json.dropItem = toItemJson(chicken.getDropItem());
-                    }
-                    json.lang = chicken.getLang();
-                    jsonList.add(json);
-                }
-                Gson gson = new GsonBuilder().setPrettyPrinting()
-                    .create();
-                writer.write(gson.toJson(jsonList));
-
+                new GsonBuilder().setPrettyPrinting().create().toJson(jsonList, writer);
                 Logger.info("Created default " + configFileName);
-            } catch (IOException e) {
-                Logger.error("Failed to create default config: " + e.getMessage());
             }
         } catch (Exception e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
+        }
+    }
+
+    private void updateConfigWithMissing(File file, List<ChickensRegistryItem> allChickens) {
+        List<ChickenJson> existing = new ArrayList<>();
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<ChickenJson>>() {}.getType();
+                List<ChickenJson> loaded = new Gson().fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing chicken config: " + e.getMessage());
+            }
+        }
+
+        boolean updated = false;
+        for (ChickensRegistryItem chicken : allChickens) {
+            if (chicken == null) continue;
+
+            boolean exists = existing.stream()
+                .anyMatch(c -> c.name.equalsIgnoreCase(chicken.getEntityName()));
+            if (!exists) {
+                ChickenJson json = toChickenJson(chicken);
+                if (json != null) {
+                    existing.add(json);
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated) {
+            try (Writer writer = new FileWriter(file)) {
+                new GsonBuilder().setPrettyPrinting().create().toJson(existing, writer);
+                Logger.info("Updated model config with missing chickens: " + file.getName());
+            } catch (IOException e) {
+                Logger.error("Failed to update chicken config: " + e.getMessage());
+            }
         }
     }
 
