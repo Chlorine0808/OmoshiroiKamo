@@ -89,13 +89,9 @@ public abstract class BaseCowHandler {
         Logger.info("Loading " + modName + " cows...");
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/cow/" + configFileName);
-        List<CowsRegistryItem> defaultCows = registerCows();
-
-        boolean isNewFile = !configFile.exists();
-        if (isNewFile) {
+        if (!configFile.exists()) {
+            List<CowsRegistryItem> defaultCows = registerCows();
             createDefaultConfig(configFile, defaultCows);
-        } else {
-            updateConfigWithMissing(configFile, defaultCows);
         }
 
         try (FileReader fileReader = new FileReader(configFile)) {
@@ -300,48 +296,6 @@ public abstract class BaseCowHandler {
             Logger.info("Created default " + file.getPath());
         } catch (IOException e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
-        }
-    }
-
-    private void updateConfigWithMissing(File file, List<CowsRegistryItem> allCows) {
-        List<CowJson> existing = new ArrayList<>();
-
-        if (file.exists()) {
-            try (FileReader reader = new FileReader(file)) {
-                JsonReader jsonReader = new JsonReader(reader);
-                jsonReader.setLenient(true);
-                Type listType = new TypeToken<ArrayList<CowJson>>() {}.getType();
-                List<CowJson> loaded = new Gson().fromJson(jsonReader, listType);
-                if (loaded != null) existing.addAll(loaded);
-            } catch (Exception e) {
-                Logger.error("Failed to read existing cow config: " + e.getMessage());
-            }
-        }
-
-        boolean updated = false;
-        for (CowsRegistryItem cow : allCows) {
-            if (cow == null) continue;
-
-            boolean exists = existing.stream()
-                .anyMatch(c -> c != null && c.name != null && c.name.equalsIgnoreCase(cow.getEntityName()));
-            if (!exists) {
-                CowJson json = toCowJson(cow);
-                if (json != null) {
-                    existing.add(json);
-                    updated = true;
-                }
-            }
-        }
-
-        if (updated) {
-            try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting()
-                    .create()
-                    .toJson(existing, writer);
-                Logger.info("Updated cow config with missing cows: " + file.getName());
-            } catch (IOException e) {
-                Logger.error("Failed to update cow config: " + e.getMessage());
-            }
         }
     }
 }

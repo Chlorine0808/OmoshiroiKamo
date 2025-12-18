@@ -104,13 +104,9 @@ public abstract class BaseChickenHandler {
         Logger.info("Loading " + modName + " chickens...");
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/chicken/" + configFileName);
-        List<ChickensRegistryItem> defaultChickens = registerChickens();
-
-        boolean isNewFile = !configFile.exists();
-        if (isNewFile) {
+        if (!configFile.exists()) {
+            List<ChickensRegistryItem> defaultChickens = registerChickens();
             createDefaultConfig(configFile, defaultChickens);
-        } else {
-            updateConfigWithMissing(configFile, defaultChickens);
         }
 
         this.id = startID;
@@ -441,47 +437,6 @@ public abstract class BaseChickenHandler {
             }
         } catch (Exception e) {
             Logger.error("Failed to create default config: " + file.getPath() + " (" + e.getMessage() + ")");
-        }
-    }
-
-    private void updateConfigWithMissing(File file, List<ChickensRegistryItem> allChickens) {
-        List<ChickenJson> existing = new ArrayList<>();
-        if (file.exists()) {
-            try (FileReader reader = new FileReader(file)) {
-                JsonReader jsonReader = new JsonReader(reader);
-                jsonReader.setLenient(true);
-                Type listType = new TypeToken<ArrayList<ChickenJson>>() {}.getType();
-                List<ChickenJson> loaded = new Gson().fromJson(jsonReader, listType);
-                if (loaded != null) existing.addAll(loaded);
-            } catch (Exception e) {
-                Logger.error("Failed to read existing chicken config: " + e.getMessage());
-            }
-        }
-
-        boolean updated = false;
-        for (ChickensRegistryItem chicken : allChickens) {
-            if (chicken == null) continue;
-
-            boolean exists = existing.stream()
-                .anyMatch(c -> c.name.equalsIgnoreCase(chicken.getEntityName()));
-            if (!exists) {
-                ChickenJson json = toChickenJson(chicken);
-                if (json != null) {
-                    existing.add(json);
-                    updated = true;
-                }
-            }
-        }
-
-        if (updated) {
-            try (Writer writer = new FileWriter(file)) {
-                new GsonBuilder().setPrettyPrinting()
-                    .create()
-                    .toJson(existing, writer);
-                Logger.info("Updated model config with missing chickens: " + file.getName());
-            } catch (IOException e) {
-                Logger.error("Failed to update chicken config: " + e.getMessage());
-            }
         }
     }
 
