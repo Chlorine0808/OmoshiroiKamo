@@ -10,506 +10,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoCont
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import ruiseki.omoshiroikamo.common.block.multiblock.TieredMultiblockInfoContainer;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
-import ruiseki.omoshiroikamo.common.block.multiblock.structure.TieredMultiblockInfoContainer;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class QuantumResExtractorStructure {
 
-    // spotless:off
-    public static final String STRUCTURE_TIER_1 = "tier1";
-    public static final String[][] SHAPE_TIER_1 = new String[][]{
-        {
-            "       ",
-            "       ",
-            "       ",
-            "   Q   ",
-            "       ",
-            "       ",
-            "       "
-        },
-        {
-            "       ",
-            "       ",
-            "   F   ",
-            "  FCF  ",
-            "   F   ",
-            "       ",
-            "       "
-        },
-        {
-            "       ",
-            "   F   ",
-            "       ",
-            " F L F ",
-            "       ",
-            "   F   ",
-            "       "
-        },
-        {
-            "  FFF  ",
-            " FPPPF ",
-            "FPPPPPF",
-            "FPPCPPF",
-            "FPPPPPF",
-            " FPPPF ",
-            "  FFF  "
-        }};
-    public static final String STRUCTURE_TIER_2 = "tier2";
-    public static final String[][] SHAPE_TIER_2 = new String[][]{
-        {
-            "       ",
-            "       ",
-            "       ",
-            "   Q   ",
-            "       ",
-            "       ",
-            "       "
-        },
-        {
-            "       ",
-            "   F   ",
-            "   F   ",
-            " FFCFF ",
-            "   F   ",
-            "   F   ",
-            "       "
-        },
-        {
-            "   F   ",
-            "       ",
-            "       ",
-            "F  C  F",
-            "       ",
-            "       ",
-            "   F   "
-        },
-        {
-            "   F   ",
-            "       ",
-            "       ",
-            "F  L  F",
-            "       ",
-            "       ",
-            "   F   "
-        },
-        {
-            "  FFF  ",
-            " FPAPF ",
-            "FPPPPPF",
-            "FAPCPAF",
-            "FPPPPPF",
-            " FPAPF ",
-            "  FFF  "
-        }};
-    public static final String STRUCTURE_TIER_3 = "tier3";
-    public static final String[][] SHAPE_TIER_3 = new String[][]{
-        {
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     Q     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-        },
-        {
-            "           ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            " FFFFCFFFF ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "           ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    L    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "    FFF    ",
-            "  FFPAPFF  ",
-            " FAPPPPPAF ",
-            " FPPPPPPPF ",
-            "FPPPPPPPPPF",
-            "FAPPPCPPPAF",
-            "FPPPPPPPPPF",
-            " FPPPPPPPF ",
-            " FAPPPPPAF ",
-            "  FFPAPFF  ",
-            "    FFF    ",
-        }};
-    public static final String STRUCTURE_TIER_4 = "tier4";
-    public static final String[][] SHAPE_TIER_4 = new String[][]{
-        {
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     Q     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-        },
-        {
-            "           ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            " FFFFCFFFF ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "           ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    L    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "   FFFFF   ",
-            "  FPAAAPF  ",
-            " FPPPPPPPF ",
-            "FPPPPPPPPPF",
-            "FAPPPPPPPAF",
-            "FAPPPCPPPAF",
-            "FAPPPPPPPAF",
-            "FPPPPPPPPPF",
-            " FPPPPPPPF ",
-            "  FPAAAPF  ",
-            "   FFFFF   ",
-        }};
-    public static final String STRUCTURE_TIER_5 = "tier5";
-    public static final String[][] SHAPE_TIER_5 = new String[][]{
-        {
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     Q     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-        },
-        {
-            "           ",
-            "           ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "  FFFCFFF  ",
-            "     F     ",
-            "     F     ",
-            "     F     ",
-            "           ",
-            "           ",
-        },
-        {
-            "           ",
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            " F   C   F ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-            "           ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "     F     ",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "F    C    F",
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "     F     ",
-        },
-        {
-            "   FFFFF   ",
-            "  F     F  ",
-            " F       F ",
-            "F         F",
-            "F         F",
-            "F    L    F",
-            "F         F",
-            "F         F",
-            " F       F ",
-            "  F     F  ",
-            "   FFFFF   ",
-        },
-
-        {
-            "           ",
-            "   PPFPP   ",
-            "  PPAFAPP  ",
-            " PPPAFAPPP ",
-            " PAAPFPAAP ",
-            " FFFFCFFFF ",
-            " PAAPFPAAP ",
-            " PPPAFAPPP ",
-            "  PPAFAPP  ",
-            "   PPFPP   ",
-            "           ",
-        }};
-    public static final String STRUCTURE_TIER_6 = "tier6";
-    public static final String[][] SHAPE_TIER_6 = new String[][]{
-        {
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "      Q      ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-        },
-        {
-            "             ",
-            "             ",
-            "      F      ",
-            "      F      ",
-            "      F      ",
-            "      F      ",
-            "  FFFFCFFFF  ",
-            "      F      ",
-            "      F      ",
-            "      F      ",
-            "      F      ",
-            "             ",
-            "             ",
-        },
-        {
-            "             ",
-            "      F      ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            " F    C    F ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "      F      ",
-            "             ",
-        },
-        {
-            "      F      ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "F     C     F",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "      F      ",
-        },
-        {
-            "      F      ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "F     C     F",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "      F      ",
-        },
-        {
-            "      F      ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "F     C     F",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "      F      ",
-        },
-        {
-            "    FFFFF    ",
-            "  FF     FF  ",
-            " F         F ",
-            " F         F ",
-            "F           F",
-            "F           F",
-            "F     L     F",
-            "F           F",
-            "F           F",
-            " F         F ",
-            " F         F ",
-            "  FF     FF  ",
-            "    FFFFF    ",
-        },
-
-        {
-            "             ",
-            "    PPFPP    ",
-            "  PPPPFPPPP  ",
-            "  PPPAFAPPP  ",
-            " PPPAAFAAPPP ",
-            " PPAAFFFAAPP ",
-            " FFFFFCFFFFF ",
-            " PPAAFFFAAPP ",
-            " PPPAAFAAPPP ",
-            "  PPPAFAPPP  ",
-            "  PPPPFPPPP  ",
-            "    PPFPP    ",
-            "             ",
-        }};
-    // spotless:on
-
-    public static final int[][] TIER_OFFSET = { { 3, 0, 3 }, { 3, 0, 3 }, { 5, 0, 5 }, { 5, 0, 5 }, { 5, 0, 5 },
-        { 6, 0, 6 } };
     public static IStructureDefinition<TEQuantumResExtractorT1> STRUCTURE_DEFINITION_TIER_1;
     public static IStructureDefinition<TEQuantumResExtractorT2> STRUCTURE_DEFINITION_TIER_2;
     public static IStructureDefinition<TEQuantumResExtractorT3> STRUCTURE_DEFINITION_TIER_3;
@@ -526,7 +33,7 @@ public class QuantumResExtractorStructure {
         StructureDefinition.Builder<TEQuantumResExtractorT5> builder5 = StructureDefinition.builder();
         StructureDefinition.Builder<TEQuantumResExtractorT6> builder6 = StructureDefinition.builder();
 
-        builder1.addShape(STRUCTURE_TIER_1, transpose(SHAPE_TIER_1))
+        builder1.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_1, transpose(QuantumResExtractorShapes.SHAPE_TIER_1))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 0))
             .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
@@ -550,7 +57,7 @@ public class QuantumResExtractorStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 0),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 0)));
 
-        builder2.addShape(STRUCTURE_TIER_2, transpose(SHAPE_TIER_2))
+        builder2.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_2, transpose(QuantumResExtractorShapes.SHAPE_TIER_2))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 1))
             .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
@@ -574,7 +81,7 @@ public class QuantumResExtractorStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 1),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 1)));
 
-        builder3.addShape(STRUCTURE_TIER_3, transpose(SHAPE_TIER_3))
+        builder3.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_3, transpose(QuantumResExtractorShapes.SHAPE_TIER_3))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 2))
             .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
@@ -598,7 +105,7 @@ public class QuantumResExtractorStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 2),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 2)));
 
-        builder4.addShape(STRUCTURE_TIER_4, transpose(SHAPE_TIER_4))
+        builder4.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_4, transpose(QuantumResExtractorShapes.SHAPE_TIER_4))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 3))
             .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
@@ -622,15 +129,10 @@ public class QuantumResExtractorStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 3),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 3)));
 
-        builder5.addShape(STRUCTURE_TIER_5, transpose(SHAPE_TIER_5))
+        builder5.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_5, transpose(QuantumResExtractorShapes.SHAPE_TIER_5))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 4))
+            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'P',
-                ofChain(
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 0),
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 1),
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 2)))
             .addElement(
                 'L',
                 ofChain(
@@ -651,15 +153,10 @@ public class QuantumResExtractorStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 4),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 4)));
 
-        builder6.addShape(STRUCTURE_TIER_6, transpose(SHAPE_TIER_6))
+        builder6.addShape(QuantumResExtractorShapes.STRUCTURE_TIER_6, transpose(QuantumResExtractorShapes.SHAPE_TIER_6))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_RES_EXTRACTOR.get(), 5))
+            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
             .addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement(
-                'P',
-                ofChain(
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 0),
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 1),
-                    ofBlock(ModBlocks.MACHINE_BASE.get(), 2)))
             .addElement(
                 'L',
                 ofChain(

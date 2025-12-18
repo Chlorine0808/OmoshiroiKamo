@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.block.multiblock.structure;
+package ruiseki.omoshiroikamo.common.block.multiblock;
 
 import net.minecraft.item.ItemStack;
 

@@ -9,459 +9,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoCont
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ruiseki.omoshiroikamo.common.block.multiblock.structure.TieredMultiblockInfoContainer;
+import ruiseki.omoshiroikamo.common.block.multiblock.TieredMultiblockInfoContainer;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
 
 public class QuantumBeaconStructure {
 
-    // spotless:off
-    public static final String STRUCTURE_TIER_1 = "tier1";
-    public static final String[][] SHAPE_TIER_1 = new String[][]{
-        {
-            "     ",
-            " F F ",
-            "  Q  ",
-            " F F ",
-            "     "
-        },
-        {
-            "F   F",
-            " AFA ",
-            " F F ",
-            " AFA ",
-            "F   F"
-        },
-        {
-            "PF FP",
-            "FPPPF",
-            " P P ",
-            "FPPPF",
-            "PF FP"
-        }};
-    public static final String STRUCTURE_TIER_2 = "tier2";
-    public static final String[][] SHAPE_TIER_2 = new String[][]{
-        {
-            "       ",
-            "       ",
-            "  F F  ",
-            "   Q   ",
-            "  F F  ",
-            "       ",
-            "       "
-        },
-        {
-            "       ",
-            " F   F ",
-            "  AFA  ",
-            "  F F  ",
-            "  AFA  ",
-            " F   F ",
-            "       "
-        },
-        {
-            "F     F",
-            " AF FA ",
-            " FPPPF ",
-            "  P P  ",
-            " FPPPF ",
-            " AF FA ",
-            "F     F"
-        },
-        {
-            "PF   FP",
-            "FPPFPPF",
-            " P   P ",
-            " F   F ",
-            " P   P ",
-            "FPPFPPF",
-            "PF   FP"
-        }};
-    public static final String STRUCTURE_TIER_3 = "tier3";
-    public static final String[][] SHAPE_TIER_3 = new String[][]{
-        {
-            "         ",
-            "         ",
-            "         ",
-            "   F F   ",
-            "    Q    ",
-            "   F F   ",
-            "         ",
-            "         ",
-            "         "
-        },
-        {
-            "         ",
-            "         ",
-            "  F   F  ",
-            "   AFA   ",
-            "   F F   ",
-            "   AFA   ",
-            "  F   F  ",
-            "         ",
-            "         "
-        },
-        {
-            "         ",
-            " F     F ",
-            "  AF FA  ",
-            "  FPPPF  ",
-            "   P P   ",
-            "  FPPPF  ",
-            "  AF FA  ",
-            " F     F ",
-            "         "
-        },
-        {
-            "F       F",
-            " AF   FA ",
-            " FPPFPPF ",
-            "  P   P  ",
-            "  F   F  ",
-            "  P   P  ",
-            " FPPFPPF ",
-            " AF   FA ",
-            "F       F"
-        },
-        {
-            "PF     FP",
-            "FPPF FPPF",
-            " P  P  P ",
-            " F     F ",
-            "  P   P  ",
-            " F     F ",
-            " P  P  P ",
-            "FPPF FPPF",
-            "PF     FP"
-        }};
-    public static final String STRUCTURE_TIER_4 = "tier4";
-    public static final String[][] SHAPE_TIER_4 = new String[][]{
-        {
-            "           ",
-            "           ",
-            "           ",
-            "           ",
-            "    F F    ",
-            "     Q     ",
-            "    F F    ",
-            "           ",
-            "           ",
-            "           ",
-            "           "
-        },
-        {
-            "           ",
-            "           ",
-            "           ",
-            "   F   F   ",
-            "    AFA    ",
-            "    F F    ",
-            "    AFA    ",
-            "   F   F   ",
-            "           ",
-            "           ",
-            "           "
-        },
-        {
-            "           ",
-            "           ",
-            "  F     F  ",
-            "   AF FA   ",
-            "   FPPPF   ",
-            "    P P    ",
-            "   FPPPF   ",
-            "   AF FA   ",
-            "  F     F  ",
-            "           ",
-            "           "
-        },
-        {
-            "           ",
-            " F       F ",
-            "  AF   FA  ",
-            "  FPPFPPF  ",
-            "   P   P   ",
-            "   F   F   ",
-            "   P   P   ",
-            "  FPPFPPF  ",
-            "  AF   FA  ",
-            " F       F ",
-            "           "
-        },
-        {
-            "F         F",
-            " AF     FA ",
-            " FPPF FPPF ",
-            "  P  P  P  ",
-            "  F     F  ",
-            "   P   P   ",
-            "  F     F  ",
-            "  P  P  P  ",
-            " FPPF FPPF ",
-            " AF     FA ",
-            "F         F"
-        },
-        {
-            "PF       FP",
-            "FPPF   FPPF",
-            " P  PFP  P ",
-            " F       F ",
-            "  P     P  ",
-            "  F     F  ",
-            "  P     P  ",
-            " F       F ",
-            " P  PFP  P ",
-            "FPPF   FPPF",
-            "PF       FP"
-        }};
-    public static final String STRUCTURE_TIER_5 = "tier5";
-    public static final String[][] SHAPE_TIER_5 = new String[][]{
-        {
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "     F F     ",
-            "      Q      ",
-            "     F F     ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             "
-        },
-        {
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "    F   F    ",
-            "     AFA     ",
-            "     F F     ",
-            "     AFA     ",
-            "    F   F    ",
-            "             ",
-            "             ",
-            "             ",
-            "             "
-        },
-        {
-            "             ",
-            "             ",
-            "             ",
-            "   F     F   ",
-            "    AF FA    ",
-            "    FPPPF    ",
-            "     P P     ",
-            "    FPPPF    ",
-            "    AF FA    ",
-            "   F     F   ",
-            "             ",
-            "             ",
-            "             "
-        },
-        {
-            "             ",
-            "             ",
-            "  F       F  ",
-            "   AF   FA   ",
-            "   FPPFPPF   ",
-            "    P   P    ",
-            "    F   F    ",
-            "    P   P    ",
-            "   FPPFPPF   ",
-            "   AF   FA   ",
-            "  F       F  ",
-            "             ",
-            "             "
-        },
-        {
-            "             ",
-            " F         F ",
-            "  AF     FA  ",
-            "  FPPF FPPF  ",
-            "   P  P  P   ",
-            "   F     F   ",
-            "    P   P    ",
-            "   F     F   ",
-            "   P  P  P   ",
-            "  FPPF FPPF  ",
-            "  AF     FA  ",
-            " F         F ",
-            "             "
-        },
-        {
-            "F           F",
-            " AF       FA ",
-            " FPPF   FPPF ",
-            "  P  PFP  P  ",
-            "  F       F  ",
-            "   P     P   ",
-            "   F     F   ",
-            "   P     P   ",
-            "  F       F  ",
-            "  P  PFP  P  ",
-            " FPPF   FPPF ",
-            " AF       FA ",
-            "F           F"
-        },
-        {
-            "PF         FP",
-            "FPPF     FPPF",
-            " P  PF FP  P ",
-            " F    P    F ",
-            "  P       P  ",
-            "  F       F  ",
-            "   P     P   ",
-            "  F       F  ",
-            "  P       P  ",
-            " F    P    F ",
-            " P  PF FP  P ",
-            "FPPF     FPPF",
-            "PF         FP"
-        }};
-    public static final String STRUCTURE_TIER_6 = "tier6";
-    public static final String[][] SHAPE_TIER_6 = new String[][]{
-        {
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "      F F      ",
-            "       Q       ",
-            "      F F      ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               "
-        },
-        {
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "     F   F     ",
-            "      AFA      ",
-            "      F F      ",
-            "      AFA      ",
-            "     F   F     ",
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "               "
-        },
-        {
-            "               ",
-            "               ",
-            "               ",
-            "               ",
-            "    F     F    ",
-            "     AF FA     ",
-            "     FPPPF     ",
-            "      P P      ",
-            "     FPPPF     ",
-            "     AF FA     ",
-            "    F     F    ",
-            "               ",
-            "               ",
-            "               ",
-            "               "
-        },
-        {
-            "               ",
-            "               ",
-            "               ",
-            "   F       F   ",
-            "    AF   FA    ",
-            "    FPPFPPF    ",
-            "     P   P     ",
-            "     F   F     ",
-            "     P   P     ",
-            "    FPPFPPF    ",
-            "    AF   FA    ",
-            "   F       F   ",
-            "               ",
-            "               ",
-            "               "
-        },
-        {
-            "               ",
-            "               ",
-            "  F         F  ",
-            "   AF     FA   ",
-            "   FPPF FPPF   ",
-            "    P  P  P    ",
-            "    F     F    ",
-            "     P   P     ",
-            "    F     F    ",
-            "    P  P  P    ",
-            "   FPPF FPPF   ",
-            "   AF     FA   ",
-            "  F         F  ",
-            "               ",
-            "               "
-        },
-        {
-            "               ",
-            " F           F ",
-            "  AF       FA  ",
-            "  FPPF   FPPF  ",
-            "   P  PFP  P   ",
-            "   F       F   ",
-            "    P     P    ",
-            "    F     F    ",
-            "    P     P    ",
-            "   F       F   ",
-            "   P  PFP  P   ",
-            "  FPPF   FPPF  ",
-            "  AF       FA  ",
-            " F           F ",
-            "               "
-        },
-        {
-            "F             F",
-            " AF         FA ",
-            " FPPF     FPPF ",
-            "  P  PF FP  P  ",
-            "  F    P    F  ",
-            "   P       P   ",
-            "   F       F   ",
-            "    P     P    ",
-            "   F       F   ",
-            "   P       P   ",
-            "  F    P    F  ",
-            "  P  PF FP  P  ",
-            " FPPF     FPPF ",
-            " AF         FA ",
-            "F             F"
-        },
-        {
-            "PF           FP",
-            "FPPF       FPPF",
-            " P  PF   FP  P ",
-            " F    PFP    F ",
-            "  P         P  ",
-            "  F         F  ",
-            "   P       P   ",
-            "   F       F   ",
-            "   P       P   ",
-            "  F         F  ",
-            "  P         P  ",
-            " F    PFP    F ",
-            " P  PF   FP  P ",
-            "FPPF       FPPF",
-            "PF           FP"
-        }};
-    // spotless:on
-
-    public static final int[][] TIER_OFFSET = { { 2, 0, 2 }, { 3, 0, 3 }, { 4, 0, 4 }, { 5, 0, 5 }, { 6, 0, 6 },
-        { 7, 0, 7 } };
     public static IStructureDefinition<TEQuantumBeaconT1> STRUCTURE_DEFINITION_TIER_1;
     public static IStructureDefinition<TEQuantumBeaconT2> STRUCTURE_DEFINITION_TIER_2;
     public static IStructureDefinition<TEQuantumBeaconT3> STRUCTURE_DEFINITION_TIER_3;
@@ -478,7 +30,7 @@ public class QuantumBeaconStructure {
         StructureDefinition.Builder<TEQuantumBeaconT5> builder5 = StructureDefinition.builder();
         StructureDefinition.Builder<TEQuantumBeaconT6> builder6 = StructureDefinition.builder();
 
-        builder1.addShape(STRUCTURE_TIER_1, transpose(SHAPE_TIER_1))
+        builder1.addShape(QuantumBeaconShapes.STRUCTURE_TIER_1, transpose(QuantumBeaconShapes.SHAPE_TIER_1))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 0))
             .addElement(
                 'P',
@@ -509,7 +61,7 @@ public class QuantumBeaconStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 0),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 0)));
 
-        builder2.addShape(STRUCTURE_TIER_2, transpose(SHAPE_TIER_2))
+        builder2.addShape(QuantumBeaconShapes.STRUCTURE_TIER_2, transpose(QuantumBeaconShapes.SHAPE_TIER_2))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 1))
             .addElement(
                 'P',
@@ -540,7 +92,7 @@ public class QuantumBeaconStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 1),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 1)));
 
-        builder3.addShape(STRUCTURE_TIER_3, transpose(SHAPE_TIER_3))
+        builder3.addShape(QuantumBeaconShapes.STRUCTURE_TIER_3, transpose(QuantumBeaconShapes.SHAPE_TIER_3))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 2))
             .addElement(
                 'P',
@@ -571,7 +123,7 @@ public class QuantumBeaconStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 2),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 2)));
 
-        builder4.addShape(STRUCTURE_TIER_4, transpose(SHAPE_TIER_4))
+        builder4.addShape(QuantumBeaconShapes.STRUCTURE_TIER_4, transpose(QuantumBeaconShapes.SHAPE_TIER_4))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 3))
             .addElement(
                 'P',
@@ -602,7 +154,7 @@ public class QuantumBeaconStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 3),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 3)));
 
-        builder5.addShape(STRUCTURE_TIER_5, transpose(SHAPE_TIER_5))
+        builder5.addShape(QuantumBeaconShapes.STRUCTURE_TIER_5, transpose(QuantumBeaconShapes.SHAPE_TIER_5))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 4))
             .addElement(
                 'P',
@@ -633,7 +185,7 @@ public class QuantumBeaconStructure {
                     ofBlock(ModBlocks.HARDENED_STRUCTURE.get(), 4),
                     ofBlock(ModBlocks.ALABASTER_STRUCTURE.get(), 4)));
 
-        builder6.addShape(STRUCTURE_TIER_6, transpose(SHAPE_TIER_6))
+        builder6.addShape(QuantumBeaconShapes.STRUCTURE_TIER_6, transpose(QuantumBeaconShapes.SHAPE_TIER_6))
             .addElement('Q', ofBlock(ModBlocks.QUANTUM_BEACON.get(), 5))
             .addElement(
                 'P',
