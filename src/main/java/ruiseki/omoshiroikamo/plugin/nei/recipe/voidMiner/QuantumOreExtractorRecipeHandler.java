@@ -16,12 +16,22 @@ public class QuantumOreExtractorRecipeHandler extends VoidMinerRecipeHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
+        ruiseki.omoshiroikamo.common.util.Logger
+                .info("[QuantumOreExtractorRecipeHandler.newInstance] this.tier=" + tier);
         return new QuantumOreExtractorRecipeHandler(tier);
     }
 
     @Override
     protected IFocusableRegistry getRegistry() {
         return QuantumExtractorRecipes.oreRegistry[tier];
+    }
+
+    @Override
+    protected IFocusableRegistry getRegistry(int tierArg) {
+        if (tierArg >= 0 && tierArg < QuantumExtractorRecipes.MAX_TIER) {
+            return QuantumExtractorRecipes.oreRegistry[tierArg];
+        }
+        return null;
     }
 
     @Override

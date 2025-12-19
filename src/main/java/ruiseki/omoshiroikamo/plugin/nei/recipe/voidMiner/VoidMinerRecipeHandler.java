@@ -17,6 +17,7 @@ import ruiseki.omoshiroikamo.common.util.item.ItemUtils;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.plugin.nei.PositionedStackAdv;
 import ruiseki.omoshiroikamo.plugin.nei.RecipeHandlerBase;
+import ruiseki.omoshiroikamo.common.util.Logger;
 
 public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
@@ -24,9 +25,12 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     public VoidMinerRecipeHandler(int tier) {
         this.tier = tier;
+        Logger.info("Chlorine VoidMinerRecipeHandler tier=" + tier);
     }
 
     protected abstract IFocusableRegistry getRegistry();
+
+    protected abstract IFocusableRegistry getRegistry(int tier);
 
     protected abstract Block getMinerBlock();
 
@@ -61,13 +65,23 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     @Override
     public void loadAllRecipes() {
+        Logger.info("[loadAllRecipes] tier=" + tier + " called");
         IFocusableRegistry registry = getRegistry();
         List<WeightedStackBase> unfocusedList = registry.getUnFocusedList();
-
+        Logger.info("[loadAllRecipes] tier=" + tier + " registry has " + unfocusedList.size() + " items");
         for (WeightedStackBase ws : unfocusedList) {
             ItemStack output = ws.getMainStack();
             if (output != null) {
                 arecipes.add(new CachedVoidRecipe(ws, registry, tier));
+            }
+        }
+        // arecipesの中身をログに出力
+        Logger.info("[loadAllRecipes] tier=" + tier + " arecipes count=" + arecipes.size());
+        for (int i = 0; i < arecipes.size(); i++) {
+            CachedRecipe recipe = arecipes.get(i);
+            if (recipe.getResult() != null && recipe.getResult().item != null) {
+                Logger.info("[loadAllRecipes] tier=" + tier + " recipe[" + i + "]="
+                        + recipe.getResult().item.getDisplayName());
             }
         }
     }
@@ -96,10 +110,25 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         boolean isLens = (item == clearLens || item == coloredLens);
         boolean isMiner = (item == Item.getItemFromBlock(getMinerBlock()));
 
+        Logger.info("[loadUsageRecipes] handler.tier=" + tier + ", ingredient.damage=" + ingredient.getItemDamage()
+                + ", isMiner=" + isMiner);
+
         if (isMiner) {
-            // Show all recipes for this tier
-            if (ingredient.getItemDamage() == tier) {
-                loadAllRecipes();
+            // Extract the tier from the ingredient's metadata and load recipes for that
+            // tier
+            int inputTier = ingredient.getItemDamage();
+            Logger.info("[loadUsageRecipes] isMiner: inputTier=" + inputTier);
+            IFocusableRegistry tierRegistry = getRegistry(inputTier);
+            if (tierRegistry != null) {
+                List<WeightedStackBase> unfocusedList = tierRegistry.getUnFocusedList();
+                Logger.info(
+                        "[loadUsageRecipes] tierRegistry has " + unfocusedList.size() + " items for tier=" + inputTier);
+                for (WeightedStackBase ws : unfocusedList) {
+                    ItemStack output = ws.getMainStack();
+                    if (output != null) {
+                        arecipes.add(new CachedVoidRecipe(ws, tierRegistry, inputTier));
+                    }
+                }
             }
         } else if (isLens) {
             // Filter by lens

@@ -25,7 +25,10 @@ public class NEIConfig implements IConfigureNEI {
     public void loadConfig() {
         Logger.info("Loading NeiConfig: " + getName());
         if (BackportConfigs.useEnvironmentalTech) {
+            Logger.info(
+                    "[NEIConfig] Registering QuantumExtractor handlers, MAX_TIER=" + QuantumExtractorRecipes.MAX_TIER);
             for (int i = 0; i < QuantumExtractorRecipes.MAX_TIER; i++) {
+                Logger.info("[NEIConfig] Registering tier " + i);
                 registerHandler(new QuantumOreExtractorRecipeHandler(i));
                 registerHandler(new QuantumResExtractorRecipeHandler(i));
             }

@@ -25,6 +25,14 @@ public class QuantumResExtractorRecipeHandler extends VoidMinerRecipeHandler {
     }
 
     @Override
+    protected IFocusableRegistry getRegistry(int tierArg) {
+        if (tierArg >= 0 && tierArg < QuantumExtractorRecipes.MAX_TIER) {
+            return QuantumExtractorRecipes.resRegistry[tierArg];
+        }
+        return null;
+    }
+
+    @Override
     protected Block getMinerBlock() {
         return ModBlocks.QUANTUM_RES_EXTRACTOR.get();
     }
