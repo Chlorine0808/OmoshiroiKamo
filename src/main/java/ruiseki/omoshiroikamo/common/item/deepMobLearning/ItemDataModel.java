@@ -90,9 +90,9 @@ public class ItemDataModel extends ItemOK {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
         TooltipUtils builder = TooltipUtils.builder();
 
-        // if(DataModel.hasExtraTooltip(stack)) {
-        // list.add(DataModel.getExtraTooltip(stack));
-        // }
+        if (DataModel.hasExtraTooltip(stack)) {
+            builder.add(DataModel.getExtraTooltip(stack));
+        }
 
         if (!KeyboardUtils.isHoldingShift()) {
             builder.addLang("tooltip.holdshift");
@@ -106,9 +106,8 @@ public class ItemDataModel extends ItemOK {
                     DataModel.getTierRoof(stack));
                 builder.addLang("tooltip.data_model.data.killmultiplier", DataModel.getKillMultiplier(stack));
             }
-            // list.add(
-            // LibMisc.LANG.localize("data_model.rfcost", model.getSimulationTickCost(stack)));
-            // list.add(LibMisc.LANG.localize("data_model.type", model.getMatterTypeName(stack)));
+            builder.addLang(LibMisc.LANG.localize("data_model.rfcost", DataModel.getSimulationTickCost(stack)));
+            // list.add(LibMisc.LANG.localize("data_model.type", DataModel.getMatterTypeName(stack)));
         }
 
         list.addAll(builder.build());

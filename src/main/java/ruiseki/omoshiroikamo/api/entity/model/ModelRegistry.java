@@ -27,11 +27,11 @@ public class ModelRegistry {
             if (entity.getId() == item.getId()) {
                 throw new RuntimeException(
                     "Duplicated ID [" + entity
-                        .getId() + "] of [" + entity.getEntityName() + "] with [" + item.getEntityName() + "]!");
+                        .getId() + "] of [" + entity.getDisplayName() + "] with [" + item.getDisplayName() + "]!");
             }
-            if (entity.getEntityName()
-                .equalsIgnoreCase(item.getEntityName())) {
-                throw new RuntimeException("Duplicated name [" + entity.getEntityName() + "]!");
+            if (entity.getDisplayName()
+                .equalsIgnoreCase(item.getDisplayName())) {
+                throw new RuntimeException("Duplicated name [" + entity.getDisplayName() + "]!");
             }
         }
     }
@@ -42,7 +42,7 @@ public class ModelRegistry {
 
     public ModelRegistryItem getByName(String key) {
         for (ModelRegistryItem item : items.values()) {
-            if (item.getEntityName()
+            if (item.getDisplayName()
                 .equalsIgnoreCase(key)) {
                 return item;
             }

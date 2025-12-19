@@ -9,12 +9,17 @@ public class ModEntity {
     public static void preInit() {
         ModChickens.preInit();
         ModCows.preInit();
-        ModModels.preInit();
     }
 
     public static void init() {
         ModChickens.init();
         ModCows.init();
         ModModels.init();
+    }
+
+    public static void postInit() {
+        ModChickens.postInit();
+        ModCows.postInit();
+        ModModels.postInit();
     }
 }

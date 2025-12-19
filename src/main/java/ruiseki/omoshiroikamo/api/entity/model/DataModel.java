@@ -1,5 +1,7 @@
 package ruiseki.omoshiroikamo.api.entity.model;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,7 +31,7 @@ public class DataModel {
 
     public static ModelRegistryItem getDataFromStack(ItemStack stack) {
         if (!isModel(stack)) return null;
-        return ModelRegistry.INSTANCE.getByType(stack.getItemDamage());
+        return ModelRegistry.INSTANCE.getByType(getId(stack));
     }
 
     @Nullable
@@ -41,7 +43,22 @@ public class DataModel {
     public static Class<? extends Entity> getEntityClass(int id) {
         ModelRegistryItem model = ModelRegistry.INSTANCE.getByType(id);
         if (model == null) return null;
-        return EntityList.stringToClassMapping.get(model.getEntityName());
+        return EntityList.stringToClassMapping.get(model.entityDisplay);
+    }
+
+    @Nullable
+    public static List<Class<? extends Entity>> getEntityClasses(ItemStack stack) {
+        if (stack == null) return null;
+        return getEntityClasses(getId(stack));
+    }
+
+    @Nullable
+    public static List<Class<? extends Entity>> getEntityClasses(int id) {
+        ModelRegistryItem model = ModelRegistry.INSTANCE.getByType(id);
+        if (model == null) return null;
+        List<Class<? extends Entity>> classes = model.getAssociatedEntityClasses();
+        if (classes == null) return null;
+        return classes.isEmpty() ? null : classes;
     }
 
     public static boolean entityLivingMatchesMob(ItemStack stack, Entity entity) {
@@ -50,12 +67,12 @@ public class DataModel {
 
     public static boolean entityLivingMatchesMob(int id, Entity entity) {
         if (entity == null) return false;
-        Class<? extends Entity> clazz = getEntityClass(id);
-        if (clazz != null && clazz.isInstance(entity)) return true;
-        ModelRegistryItem model = ModelRegistry.INSTANCE.getByType(id);
-        if (model != null) {
-            String name = EntityList.getEntityString(entity);
-            return name != null && name.equalsIgnoreCase(model.getEntityName());
+
+        List<Class<? extends Entity>> classes = getEntityClasses(id);
+        if (classes != null) {
+            for (Class<? extends Entity> clazz : classes) {
+                if (clazz.isInstance(entity)) return true;
+            }
         }
 
         return false;
@@ -150,6 +167,31 @@ public class DataModel {
 
     public static void setTotalSimulationCount(int count, ItemStack stack) {
         ItemNBTUtils.setInt(stack, TOTAL_SIMULATION_COUNT_TAG, count);
+    }
+
+    public static boolean hasExtraTooltip(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return false;
+        }
+
+        return model.getExtraTooltip() != null;
+    }
+
+    public static String getExtraTooltip(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return null;
+        }
+        return model.getExtraTooltip();
+    }
+
+    public static int getSimulationTickCost(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return 0;
+        }
+        return model.getSimulationRFCost();
     }
 
     public static int getCurrentTierSimulationCountWithKills(ItemStack stack) {

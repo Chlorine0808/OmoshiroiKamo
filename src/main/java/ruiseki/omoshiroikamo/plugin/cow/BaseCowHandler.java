@@ -61,7 +61,7 @@ public abstract class BaseCowHandler {
         this.needsMod = bool;
     }
 
-    private static class CowJson {
+    public static class CowJson {
 
         Integer id;
         String name;
@@ -181,7 +181,7 @@ public abstract class BaseCowHandler {
         return startID + Math.abs(hash % (30000 - startID));
     }
 
-    private void saveJsonMigration(File file, List<CowJson> cows) {
+    public void saveJsonMigration(File file, List<CowJson> cows) {
         try (Writer writer = new FileWriter(file)) {
             Gson gson = new GsonBuilder().setPrettyPrinting()
                 .create();

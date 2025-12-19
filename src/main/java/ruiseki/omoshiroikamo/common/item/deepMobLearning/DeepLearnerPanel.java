@@ -476,8 +476,8 @@ public class DeepLearnerPanel extends ModularPanel {
                 .getStack();
             if (stack == null) continue;
             if (!(stack.getItem() instanceof ItemDataModel)) continue;
-
-            if (DataModel.getEntityClass(stack) != null) {
+            Class<? extends Entity> entity = DataModel.getEntityClass(stack);
+            if (entity != null) {
                 valid.add(i);
             }
         }

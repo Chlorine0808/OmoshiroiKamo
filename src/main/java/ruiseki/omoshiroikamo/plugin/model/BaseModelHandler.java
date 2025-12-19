@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -60,19 +61,23 @@ public abstract class BaseModelHandler {
         this.needsMod = bool;
     }
 
-    private static class ModelJson {
+    public static class ModelJson {
 
         Integer id;
-        String name;
+        String displayName;
         boolean enabled;
         String texture;
+        int simulationRFCost;
         DeepLearnerDisplay deepLearnerDisplay;
         ItemJson[] lootItems;
+        String[] associatedMobs;
+        String extraTooltip;
         Map<String, String> lang;
     }
 
     private static class DeepLearnerDisplay {
 
+        String entityDisplay;
         float numberOfHearts;
         float interfaceScale;
         int interfaceOffsetX;
@@ -119,18 +124,30 @@ public abstract class BaseModelHandler {
 
             for (ModelJson data : models) {
                 try {
+                    if (data.associatedMobs == null) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : associatedMobs was null",
+                            this.modID,
+                            data.displayName);
+                        continue;
+                    }
+
+                    List<Class<? extends Entity>> associatedEntityClasses;
+                    associatedEntityClasses = JsonUtils.resolveEntityClasses(data.associatedMobs);
+                    if (associatedEntityClasses.isEmpty()) continue;
 
                     // Migrate
-                    int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.name);
+                    int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.displayName);
                     if (data.id == null || data.id < 0) {
                         data.id = modelID;
                         saveJsonMigration(configFile, loadedCustomModels);
                     }
 
                     ModelRegistryItem model = addModel(
-                        data.name,
+                        data.displayName,
                         modelID,
                         data.texture,
+                        data.deepLearnerDisplay.entityDisplay,
                         data.deepLearnerDisplay.numberOfHearts,
                         data.deepLearnerDisplay.interfaceScale,
                         data.deepLearnerDisplay.interfaceOffsetX,
@@ -138,7 +155,7 @@ public abstract class BaseModelHandler {
                         data.deepLearnerDisplay.mobTrivia);
 
                     if (model != null) {
-                        Logger.debug("Registering ({}) Model: '{}' : {}", this.modID, data.name, model.getId());
+                        Logger.debug("Registering ({}) Model: '{}' : {}", this.modID, data.displayName, model.getId());
 
                         model.setEnabled(data.enabled);
 
@@ -147,8 +164,17 @@ public abstract class BaseModelHandler {
                             model.setLootItems(loot);
                         }
 
+                        model.setAssociatedMobs(data.associatedMobs);
+                        model.setAssociatedMobsClasses(associatedEntityClasses);
+
+                        model.setSimulationRFCost(data.simulationRFCost);
+
+                        if (data.extraTooltip != null) {
+                            model.setExtraTooltip(data.extraTooltip);
+                        }
+
                         if (data.lang != null) {
-                            String langKey = "item.model." + data.name + ".name";
+                            String langKey = "item.model." + data.displayName + ".name";
                             JsonUtils.registerLang(langKey, data.lang);
                         }
 
@@ -160,7 +186,7 @@ public abstract class BaseModelHandler {
                     }
 
                 } catch (Exception e) {
-                    Logger.error("Error registering model {}: {}", data.name, e.getMessage());
+                    Logger.error("Error registering model {}: {}", data.displayName, e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -184,7 +210,7 @@ public abstract class BaseModelHandler {
         return startID + Math.abs(hash % (30000 - startID));
     }
 
-    private void saveJsonMigration(File file, List<ModelJson> models) {
+    public void saveJsonMigration(File file, List<ModelJson> models) {
         try (Writer writer = new FileWriter(file)) {
             Gson gson = new GsonBuilder().setPrettyPrinting()
                 .create();
@@ -195,13 +221,14 @@ public abstract class BaseModelHandler {
         }
     }
 
-    public ModelRegistryItem addModel(String registryName, int id, String texture, float numberOfHearts,
-        float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
+    public ModelRegistryItem addModel(String displayName, int id, String texture, String entityDisplay,
+        float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
 
         return new ModelRegistryItem(
             id,
-            registryName,
+            displayName,
             new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
+            entityDisplay,
             numberOfHearts,
             interfaceScale,
             interfaceOffsetX,
@@ -214,13 +241,16 @@ public abstract class BaseModelHandler {
 
         ModelJson json = new ModelJson();
         json.id = model.getId();
-        json.name = model.getEntityName();
+        json.displayName = model.getDisplayName();
         json.enabled = true;
         String fullPath = model.getTexture()
             .getResourcePath();
         json.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
 
+        json.simulationRFCost = model.getSimulationRFCost() > 0 ? model.getSimulationRFCost() : 256;
+
         json.deepLearnerDisplay = new DeepLearnerDisplay();
+        json.deepLearnerDisplay.entityDisplay = model.getEntityDisplay();
         json.deepLearnerDisplay.numberOfHearts = model.getNumberOfHearts();
         json.deepLearnerDisplay.interfaceScale = model.getInterfaceScale();
         json.deepLearnerDisplay.interfaceOffsetX = model.getInterfaceOffsetX();
@@ -248,6 +278,12 @@ public abstract class BaseModelHandler {
 
         if (!lootList.isEmpty()) {
             json.lootItems = lootList.toArray(new ItemJson[0]);
+        }
+
+        json.associatedMobs = model.getAssociatedMobs();
+
+        if (model.getExtraTooltip() != null) {
+            json.extraTooltip = model.getExtraTooltip();
         }
 
         json.lang = model.getLang();
@@ -301,12 +337,12 @@ public abstract class BaseModelHandler {
             if (model == null) continue;
 
             boolean exists = existing.stream()
-                .anyMatch(m -> m != null && m.name != null && m.name.equalsIgnoreCase(model.getEntityName()));
+                .anyMatch(m -> m != null && m.id != null && m.id == model.getId());
             if (!exists) {
                 BaseModelHandler.ModelJson json = toModelJson(model);
                 if (json != null) {
                     existing.add(json);
-                    addedModels.add(model.getEntityName());
+                    addedModels.add(model.getDisplayName());
                     updated = true;
                 }
             }

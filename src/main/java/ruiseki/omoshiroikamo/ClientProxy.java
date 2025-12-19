@@ -76,13 +76,12 @@ public class ClientProxy extends CommonProxy {
         if (ItemConfigs.renderPufferFish) {
             MinecraftForgeClient.registerItemRenderer(Items.fish, new PufferFishRenderer());
         }
-
-        TextureGenerator.generateCustomChickenTextures();
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+        TextureGenerator.generateCustomChickenTextures();
     }
 
     public EntityPlayer getClientPlayer() {

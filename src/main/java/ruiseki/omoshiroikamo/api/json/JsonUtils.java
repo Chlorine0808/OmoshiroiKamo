@@ -1,7 +1,12 @@
 package ruiseki.omoshiroikamo.api.json;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -59,5 +64,16 @@ public class JsonUtils {
 
     public static String parseColor(int color) {
         return String.format("0x%06X", color & 0xFFFFFF);
+    }
+
+    public static List<Class<? extends Entity>> resolveEntityClasses(String[] associatedMobs) {
+        List<Class<? extends Entity>> list = new ArrayList<>();
+        for (String mobName : associatedMobs) {
+            Class<? extends Entity> clazz = EntityList.stringToClassMapping.get(mobName);
+            if (clazz != null) {
+                list.add(clazz);
+            }
+        }
+        return list;
     }
 }

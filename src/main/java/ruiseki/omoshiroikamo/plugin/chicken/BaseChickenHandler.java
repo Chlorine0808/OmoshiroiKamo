@@ -268,7 +268,7 @@ public abstract class BaseChickenHandler {
         return startID + Math.abs(hash % (30000 - startID));
     }
 
-    private void saveJsonMigration(File file, List<ChickenJson> chickens) {
+    public void saveJsonMigration(File file, List<ChickenJson> chickens) {
         try (Writer writer = new FileWriter(file)) {
             Gson gson = new GsonBuilder().setPrettyPrinting()
                 .create();

@@ -39,16 +39,20 @@ public class ModChickens {
         LiquidEggRegistry.register(new LiquidEggRegistryItem(0, Blocks.flowing_water, 0x0000ff, FluidRegistry.WATER));
         LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000, FluidRegistry.LAVA));
 
-        registerModAddons();
     }
 
     public static void init() {
+        if (!BackportConfigs.useChicken) return;
+        registerModAddons();
+    }
+
+    public static void postInit() {
         if (!BackportConfigs.useChicken) return;
 
         loadConfiguration();
 
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
-        if (biomesForSpawning.size() > 0) {
+        if (!biomesForSpawning.isEmpty()) {
             EntityRegistry.addSpawn(
                 EntityChickensChicken.class,
                 ChickenConfig.spawnProbability,

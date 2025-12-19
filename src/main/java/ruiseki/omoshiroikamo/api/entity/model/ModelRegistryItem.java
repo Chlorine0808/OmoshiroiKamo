@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -15,40 +16,62 @@ public class ModelRegistryItem {
     @Getter
     protected final int id;
     @Getter
-    protected final String entityName;
+    protected final String displayName;
     @Getter
-    protected ResourceLocation texture;
+    protected final ResourceLocation texture;
+
     @Getter
-    protected float numberOfHearts;
+    @Setter
+    protected int simulationRFCost;
+
     @Getter
-    protected float interfaceScale;
+    protected final String entityDisplay;
     @Getter
-    protected int interfaceOffsetX;
+    protected final float numberOfHearts;
     @Getter
-    protected int interfaceOffsetY;
+    protected final float interfaceScale;
     @Getter
-    protected String[] mobTrivia;
+    protected final int interfaceOffsetX;
+    @Getter
+    protected final int interfaceOffsetY;
+    @Getter
+    protected final String[] mobTrivia;
+
     @Getter
     protected Map<String, String> lang;
+
+    @Getter
+    @Setter
+    protected String extraTooltip;
+
     @Getter
     @Setter
     protected ItemStack livingMatter;
     @Getter
     @Setter
     protected ItemStack pristineMatter;
+
+    @Getter
+    protected String[] associatedMobs;
+    @Getter
+    @Setter
+    private List<Class<? extends Entity>> associatedEntityClasses;
+
     @Getter
     protected List<ItemStack> lootItems;
     @Getter
     protected String[] lootStrings;
+
     @Getter
     @Setter
     protected boolean enabled;
 
-    public ModelRegistryItem(int id, String entityName, ResourceLocation texture, float numberOfHearts,
-        float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
+    public ModelRegistryItem(int id, String displayName, ResourceLocation texture, String entityDisplay,
+        float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
         this.id = id;
-        this.entityName = entityName;
+        this.displayName = displayName;
         this.texture = texture;
+        this.entityDisplay = entityDisplay;
         this.numberOfHearts = numberOfHearts;
         this.interfaceScale = interfaceScale;
         this.interfaceOffsetX = interfaceOffsetX;
@@ -57,11 +80,7 @@ public class ModelRegistryItem {
     }
 
     public String getItemName() {
-        return "item.model." + entityName + ".name";
-    }
-
-    public String getDisplayName() {
-        return "entity." + entityName + ".name";
+        return "item.model." + displayName + ".name";
     }
 
     public ModelRegistryItem setLootStrings(String[] lootStrings) {
@@ -71,6 +90,16 @@ public class ModelRegistryItem {
 
     public ModelRegistryItem setLootItems(List<ItemStack> lootItems) {
         this.lootItems = lootItems;
+        return this;
+    }
+
+    public ModelRegistryItem setAssociatedMobs(String[] associatedMobs) {
+        this.associatedMobs = associatedMobs;
+        return this;
+    }
+
+    public ModelRegistryItem setAssociatedMobsClasses(List<Class<? extends Entity>> associatedMobs) {
+        this.associatedEntityClasses = associatedMobs;
         return this;
     }
 

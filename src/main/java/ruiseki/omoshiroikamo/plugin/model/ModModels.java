@@ -13,15 +13,13 @@ import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 
 public class ModModels {
 
-    public static void preInit() {
+    public static void init() {
         if (!BackportConfigs.useDeepMobLearning) return;
-
         registerModAddons();
     }
 
-    public static void init() {
+    public static void postInit() {
         if (!BackportConfigs.useDeepMobLearning) return;
-
         loadConfiguration();
     }
 

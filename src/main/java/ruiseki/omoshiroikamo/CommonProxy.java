@@ -49,7 +49,7 @@ public class CommonProxy {
     }
 
     public void preInit(FMLPreInitializationEvent event) {
-
+        Logger.setPhase("PREINIT");
         ModBlocks.preInit();
         ModItems.preInit();
         ModEntity.preInit();
@@ -66,6 +66,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
+        Logger.setPhase("INIT");
         FMLCommonHandler.instance()
             .bus()
             .register(tickTimer);
@@ -80,6 +81,8 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+        Logger.setPhase("POSTINIT");
+        ModEntity.postInit();
         StructureCompat.postInit();
         BaubleExpandedCompat.postInit();
     }

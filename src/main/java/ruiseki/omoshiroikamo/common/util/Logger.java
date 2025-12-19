@@ -11,6 +11,8 @@ import ruiseki.omoshiroikamo.config.GeneralConfig;
 
 public class Logger {
 
+    public static String currentPhase = "UNKNOWN";
+
     private Logger() {}
 
     public static void log(Level level, String message) {
@@ -90,5 +92,13 @@ public class Logger {
 
     public static void debug(Supplier<String> supplier) {
         log(Level.DEBUG, supplier);
+    }
+
+    public static void setPhase(String phase) {
+        currentPhase = phase;
+    }
+
+    public static String getPhase() {
+        return currentPhase;
     }
 }

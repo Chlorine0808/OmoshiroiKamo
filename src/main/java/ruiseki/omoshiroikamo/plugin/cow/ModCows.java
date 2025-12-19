@@ -26,10 +26,14 @@ public class ModCows {
         EntityRegistry
             .registerModEntity(EntityCowsCow.class, "cow", CowConfig.cowEntityId, OmoshiroiKamo.instance, 64, 1, true);
 
-        registerModAddons();
     }
 
     public static void init() {
+        if (!BackportConfigs.useCow) return;
+        registerModAddons();
+    }
+
+    public static void postInit() {
         if (!BackportConfigs.useCow) return;
 
         loadConfiguration();

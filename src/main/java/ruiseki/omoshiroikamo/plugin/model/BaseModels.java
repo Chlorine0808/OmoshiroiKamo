@@ -21,11 +21,13 @@ public class BaseModels extends BaseModelHandler {
             "Creeper",
             this.nextID(),
             "creeper",
+            "Creeper",
             10f,
             1,
             0,
             0,
-            new String[] { "Will blow up your base if left unattended." }).setLang("en_US", "§bCreeper Data Model§r")
+            new String[] { "Will blow up your base if left unattended." }).setAssociatedMobs(new String[] { "Creeper" })
+                .setLang("en_US", "§bCreeper Data Model§r")
                 .setLang("ja_JP", "§bクリーパーデータモデル§r")
                 .setLootStrings(new String[] { "minecraft:gunpowder,64", "minecraft:skull,6,4" });
         allModels.add(creeper);
@@ -34,12 +36,15 @@ public class BaseModels extends BaseModelHandler {
             "Skeleton",
             this.nextID(),
             "skeleton",
+            "Skeleton",
             10f,
             1,
             0,
             0,
             new String[] { "A formidable archer, which seem to be running some sort of cheat engine",
-                "A shield could prove useful" }).setLang("en_US", "§bSkeleton Data Model§r")
+                "A shield could prove useful" })
+                    .setAssociatedMobs(new String[] { "Skeleton", "TwilightForest.Skeleton Druid" })
+                    .setLang("en_US", "§bSkeleton Data Model§r")
                     .setLang("ja_JP", "§bスケルトンデータモデル§r")
                     .setLootStrings(new String[] { "minecraft:bone,64", "minecraft:arrow,64", "minecraft:skull,6" });
         allModels.add(skeleton);

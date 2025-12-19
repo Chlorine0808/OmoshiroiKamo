@@ -2,8 +2,6 @@ package ruiseki.omoshiroikamo.common.util.lib;
 
 import java.util.function.Supplier;
 
-import net.minecraft.entity.EntityList;
-
 import cpw.mods.fml.common.Loader;
 
 public enum LibMods {
@@ -55,21 +53,5 @@ public enum LibMods {
             }
         }
         return loaded;
-    }
-
-    public static boolean isModLoaded(String modID) {
-        return modID.equals("minecraft") || Loader.isModLoaded(modID);
-    }
-
-    public static boolean isRegisteredEntity(String entityName) {
-        return EntityList.stringToClassMapping.containsKey(entityName);
-    }
-
-    public static String getRegistryString(String modID, String entryID) {
-        return modID + ":" + entryID;
-    }
-
-    public static boolean isValidRegistryString(String registryName) {
-        return registryName.contains(":");
     }
 }
