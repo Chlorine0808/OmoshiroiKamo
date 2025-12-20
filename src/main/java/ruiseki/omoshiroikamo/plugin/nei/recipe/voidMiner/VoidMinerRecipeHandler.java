@@ -40,12 +40,18 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     @Override
     public String getRecipeName() {
-        return getMinerNameBase();
+        return getMinerNameBase(); // No tier - one handler covers all
     }
 
     @Override
     public String getRecipeID() {
         return getRecipeIdBase() + ".tier" + tier;
+    }
+
+    @Override
+    public String getHandlerId() {
+        // Ensure NEI's handler uniqueness check sees each tier as distinct
+        return getRecipeID();
     }
 
     @Override
@@ -81,13 +87,15 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             CachedRecipe recipe = arecipes.get(i);
             if (recipe.getResult() != null && recipe.getResult().item != null) {
                 Logger.info(
-                    "[loadAllRecipes] tier=" + tier + " recipe[" + i + "]=" + recipe.getResult().item.getDisplayName());
+                        "[loadAllRecipes] tier=" + tier + " recipe[" + i + "]="
+                                + recipe.getResult().item.getDisplayName());
             }
         }
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack item) {
+        arecipes.clear();
         super.loadCraftingRecipes(item);
         IFocusableRegistry registry = getRegistry();
         List<WeightedStackBase> unfocusedList = registry.getUnFocusedList();
@@ -98,10 +106,12 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                 arecipes.add(new CachedVoidRecipe(ws, registry, tier));
             }
         }
+        Logger.info("[loadCraftingRecipes] tier=" + tier + " item=" + item.getDisplayName() + " added=" + arecipes.size());
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
+        arecipes.clear();
         super.loadUsageRecipes(ingredient);
         IFocusableRegistry registry = getRegistry();
         Item item = ingredient.getItem();
@@ -111,28 +121,39 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         boolean isMiner = (item == Item.getItemFromBlock(getMinerBlock()));
 
         Logger.info(
-            "[loadUsageRecipes] handler.tier=" + tier
-                + ", ingredient.damage="
-                + ingredient.getItemDamage()
-                + ", isMiner="
-                + isMiner);
+                "[loadUsageRecipes] handler.tier=" + tier
+                        + ", ingredient.damage="
+                        + ingredient.getItemDamage()
+                        + ", isMiner="
+                        + isMiner);
 
         if (isMiner) {
-            // Extract the tier from the ingredient's metadata and load recipes for that
-            // tier
             int inputTier = ingredient.getItemDamage();
-            Logger.info("[loadUsageRecipes] isMiner: inputTier=" + inputTier);
+            // Delegate miner usage handling to tier0 only, and switch registry by input tier
+            if (this.tier != 0) {
+                Logger.info(
+                        "[loadUsageRecipes] tier=" + tier + " delegate to primary handler for inputTier=" + inputTier);
+                return;
+            }
+            Logger.info(
+                    "[loadUsageRecipes] isMiner: inputTier=" + inputTier + ", handler.tier=" + this.tier);
             IFocusableRegistry tierRegistry = getRegistry(inputTier);
             if (tierRegistry != null) {
                 List<WeightedStackBase> unfocusedList = tierRegistry.getUnFocusedList();
                 Logger.info(
-                    "[loadUsageRecipes] tierRegistry has " + unfocusedList.size() + " items for tier=" + inputTier);
+                        "[loadUsageRecipes] tierRegistry has " + unfocusedList.size() + " items for tier=" + inputTier);
+                int before = arecipes.size();
                 for (WeightedStackBase ws : unfocusedList) {
                     ItemStack output = ws.getMainStack();
                     if (output != null) {
                         arecipes.add(new CachedVoidRecipe(ws, tierRegistry, inputTier));
                     }
                 }
+                int added = arecipes.size() - before;
+                Logger.info(
+                        "[loadUsageRecipes] tier=" + tier + " inputTier=" + inputTier + " added=" + added);
+            } else {
+                Logger.info("[loadUsageRecipes] tier=" + tier + " inputTier=" + inputTier + " registry=null");
             }
         } else if (isLens) {
             // Filter by lens
