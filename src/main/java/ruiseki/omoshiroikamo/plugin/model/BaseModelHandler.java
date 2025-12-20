@@ -20,9 +20,12 @@ import com.google.gson.stream.JsonReader;
 
 import cpw.mods.fml.common.Loader;
 import lombok.Getter;
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistry;
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistryItem;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.json.ItemJson;
 import ruiseki.omoshiroikamo.api.json.JsonUtils;
+import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.common.util.lib.LibResources;
@@ -69,6 +72,7 @@ public abstract class BaseModelHandler {
         String texture;
         String pristineMatterTexture;
         int simulationRFCost;
+        String livingMatter;
         DeepLearnerDisplay deepLearnerDisplay;
         ItemJson[] lootItems;
         String[] associatedMobs;
@@ -144,6 +148,17 @@ public abstract class BaseModelHandler {
                         continue;
                     }
 
+                    LivingRegistryItem livingMatter = null;
+                    if (data.livingMatter == null) {
+                        livingMatter = LivingRegistry.INSTANCE.getByName(data.displayName);
+                        if (livingMatter != null) {
+                            Logger.error(
+                                "Error registering ({}) Model '{}' : livingMatter was null",
+                                this.modID,
+                                data.displayName);
+                        }
+                    }
+
                     // Migrate
                     int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.displayName);
                     if (data.id == null || data.id < 0) {
@@ -184,6 +199,12 @@ public abstract class BaseModelHandler {
                             List<ItemStack> loot = ItemJson.resolveListItemStack(data.lootItems);
                             model.setLootItems(loot);
                         }
+
+                        if (livingMatter != null) {
+                            model.setLivingMatter(livingMatter);
+                        }
+
+                        model.setPristineMatter(ModItems.PRISTINE_MATTER.newItemStack(1, model.getId()));
 
                         model.setAssociatedMobs(data.associatedMobs);
                         model.setAssociatedMobsClasses(associatedEntityClasses);
@@ -274,6 +295,11 @@ public abstract class BaseModelHandler {
 
         json.simulationRFCost = model.getSimulationRFCost() > 0 ? model.getSimulationRFCost() : 256;
 
+        json.livingMatter = LivingRegistry.INSTANCE.getByType(
+            model.getLivingMatter()
+                .getItemDamage())
+            .getDisplayName();
+
         json.deepLearnerDisplay = new DeepLearnerDisplay();
         json.deepLearnerDisplay.entityDisplay = model.getEntityDisplay();
         json.deepLearnerDisplay.numberOfHearts = model.getNumberOfHearts();
@@ -321,9 +347,9 @@ public abstract class BaseModelHandler {
             File parent = file.getParentFile();
             if (parent != null && !parent.exists()) parent.mkdirs();
 
-            List<BaseModelHandler.ModelJson> jsonModels = new ArrayList<>();
+            List<ModelJson> jsonModels = new ArrayList<>();
             for (ModelRegistryItem model : allModels) {
-                BaseModelHandler.ModelJson json = toModelJson(model);
+                ModelJson json = toModelJson(model);
                 if (json != null) jsonModels.add(json);
             }
 
@@ -340,14 +366,14 @@ public abstract class BaseModelHandler {
     }
 
     private void updateConfigWithMissing(File file, List<ModelRegistryItem> allModels) {
-        List<BaseModelHandler.ModelJson> existing = new ArrayList<>();
+        List<ModelJson> existing = new ArrayList<>();
 
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
                 JsonReader jsonReader = new JsonReader(reader);
                 jsonReader.setLenient(true);
-                Type listType = new TypeToken<ArrayList<BaseModelHandler.ModelJson>>() {}.getType();
-                List<BaseModelHandler.ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
+                Type listType = new TypeToken<ArrayList<ModelJson>>() {}.getType();
+                List<ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
                 if (loaded != null) existing.addAll(loaded);
             } catch (Exception e) {
                 Logger.error("Failed to read existing model config: {}", e.getMessage());
@@ -365,7 +391,7 @@ public abstract class BaseModelHandler {
             boolean exists = existing.stream()
                 .anyMatch(m -> m != null && m.id != null && m.id == model.getId());
             if (!exists) {
-                BaseModelHandler.ModelJson json = toModelJson(model);
+                ModelJson json = toModelJson(model);
                 if (json != null) {
                     existing.add(json);
                     addedModels.add(model.getDisplayName());

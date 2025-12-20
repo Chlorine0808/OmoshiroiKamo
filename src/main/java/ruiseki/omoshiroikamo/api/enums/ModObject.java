@@ -92,7 +92,8 @@ public enum ModObject {
     itemDeepLearner,
     itemDataModel,
     itemDataModelBlank,
-    itemPristineMatter
+    itemPristineMatter,
+    itemLivingMatter
 
     ;
     // spotless: on

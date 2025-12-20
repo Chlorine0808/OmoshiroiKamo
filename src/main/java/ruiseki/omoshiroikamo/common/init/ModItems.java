@@ -40,6 +40,7 @@ import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemCreativeModelLearne
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModel;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModelBlank;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDeepLearner;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemLivingMatter;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemPristineMatter;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
@@ -91,6 +92,7 @@ public enum ModItems {
     DATA_MODEL(useDeepMobLearning, new ItemDataModel()),
     DATA_MODEL_BLANK(useDeepMobLearning, new ItemDataModelBlank()),
     PRISTINE_MATTER(useDeepMobLearning, new ItemPristineMatter()),
+    LIVING_MATTER(useDeepMobLearning, new ItemLivingMatter()),
 
     ;
     // spotless: on

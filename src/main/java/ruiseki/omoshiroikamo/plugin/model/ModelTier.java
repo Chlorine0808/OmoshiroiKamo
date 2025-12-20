@@ -49,17 +49,17 @@ public class ModelTier {
         int glitchChance;
     }
 
-    public List<ModelTierRegistryItem> registerTiers() {
+    public List<ModelTierRegistryItem> tryRegisterTiers() {
         List<ModelTierRegistryItem> allTiers = new ArrayList<>();
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
         if (!configFile.exists()) {
-            List<ModelTierRegistryItem> defaultModels = registerModels();
+            List<ModelTierRegistryItem> defaultModels = registerTiers();
             createDefaultConfig(configFile, defaultModels);
         }
 
         if (DeepMobLearningConfig.updateMissing) {
-            updateConfigWithMissing(configFile, registerModels());
+            updateConfigWithMissing(configFile, registerTiers());
             ConfigUpdater.updateBoolean(DeepMobLearningConfig.class, "updateMissing", false);
         }
 
@@ -111,7 +111,7 @@ public class ModelTier {
         return allTiers;
     }
 
-    public List<ModelTierRegistryItem> registerModels() {
+    public List<ModelTierRegistryItem> registerTiers() {
         List<ModelTierRegistryItem> allTiers = new ArrayList<>();
 
         ModelTierRegistryItem tier0 = addTier(0, 1, 6, false, 0, 2, 1, 0, 0).setLang("en_US", "§7Faulty")

@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import lombok.Getter;
 import lombok.Setter;
+import ruiseki.omoshiroikamo.common.init.ModItems;
 
 public class ModelRegistryItem {
 
@@ -58,6 +59,13 @@ public class ModelRegistryItem {
     protected List<ItemStack> lootItems;
     @Getter
     protected String[] lootStrings;
+
+    @Getter
+    @Setter
+    protected ItemStack pristineMatter;
+    @Getter
+    @Setter
+    protected ItemStack livingMatter;
 
     @Getter
     @Setter
@@ -125,6 +133,17 @@ public class ModelRegistryItem {
             this.pristineLang.put(langCode, value);
         }
 
+        return this;
+    }
+
+    public ModelRegistryItem setLivingMatter(LivingRegistryItem livingMatter) {
+        this.livingMatter = ModItems.LIVING_MATTER.newItemStack(1, livingMatter.getId());
+        return this;
+    }
+
+    public ModelRegistryItem setLivingMatter(String key) {
+        LivingRegistryItem livingMatter = LivingRegistry.INSTANCE.getByName(key);
+        setLivingMatter(livingMatter);
         return this;
     }
 }

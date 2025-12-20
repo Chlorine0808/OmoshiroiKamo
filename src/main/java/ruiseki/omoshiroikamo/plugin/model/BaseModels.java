@@ -28,6 +28,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Bring buckets of water, and watch in despair as it evaporates, and everything is on fire.",
                 "You are on fire." }).setAssociatedMobs(new String[] { "Blaze" })
+                    .setLivingMatter("hellish")
                     .setLang("en_US", "§bBlaze Data Model§r")
                     .setLang("ja_JP", "§bブレイズデータモデル§r")
                     .setPristineLang("en_US", "Pristine Blaze Matter")
@@ -45,6 +46,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             0,
             new String[] { "Will blow up your base if left unattended." }).setAssociatedMobs(new String[] { "Creeper" })
+                .setLivingMatter("overworldian")
                 .setLang("en_US", "§bCreeper Data Model§r")
                 .setLang("ja_JP", "§bクリーパーデータモデル§r")
                 .setPristineLang("en_US", "Pristine Creeper Matter")
@@ -63,6 +65,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Resides in the End, does not harbor treasure.",
                 "Destroy its crystals and break the cycle!" }).setAssociatedMobs(new String[] { "EnderDragon" })
+                    .setLivingMatter("extraterrestrial")
                     .setLang("en_US", "§bEnder Dragon Data Model§r")
                     .setLang("ja_JP", "§bエンダードラゴンデータモデル§r")
                     .setPristineLang("en_US", "Pristine Ender Dragon Matter")
@@ -83,6 +86,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Friendly unless provoked, dislikes rain.", "Teleports short distances." })
                 .setAssociatedMobs(new String[] { "Enderman", "etfuturum.endermite" })
+                .setLivingMatter("extraterrestrial")
                 .setLang("en_US", "§bEnderman Data Model§r")
                 .setLang("ja_JP", "§bエンダーマンデータモデル§r")
                 .setPristineLang("en_US", "Pristine Enderman Matter")
@@ -103,6 +107,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "If you hear something that sounds like a crying llama, you're probably hearing a ghast." })
                 .setAssociatedMobs(new String[] { "Ghast" })
+                .setLivingMatter("hellish")
                 .setLang("en_US", "§bGhast Data Model§r")
                 .setLang("ja_JP", "§bガストデータモデル§r")
                 .setPristineLang("en_US", "Pristine Ghast Matter")
@@ -122,6 +127,7 @@ public class BaseModels extends BaseModelHandler {
             new String[] { "A formidable archer, which seem to be running some sort of cheat engine",
                 "A shield could prove useful" })
                     .setAssociatedMobs(new String[] { "Skeleton", "TwilightForest.Skeleton Druid" })
+                    .setLivingMatter("overworldian")
                     .setLang("en_US", "§bSkeleton Data Model§r")
                     .setLang("ja_JP", "§bスケルトンデータモデル§r")
                     .setPristineLang("en_US", "Pristine Skeleton Matter")
@@ -141,6 +147,7 @@ public class BaseModels extends BaseModelHandler {
             new String[] { "The bouncing bouncer", "bounces, bounces and bounces",
                 "Bounces and bou- squish! -\"A new slime haiku\"" })
                     .setAssociatedMobs(new String[] { "Slime", "LavaSlime" })
+                    .setLivingMatter("overworldian")
                     .setLang("en_US", "§bSlime Data Model§r")
                     .setLang("ja_JP", "§bスライムデータモデル§r")
                     .setPristineLang("en_US", "Pristine Slime Matter")
@@ -161,6 +168,7 @@ public class BaseModels extends BaseModelHandler {
                 .setAssociatedMobs(
                     new String[] { "Spider", "CaveSpider", "TwilightForest.Swarm Spider", "TwilightForest.Hedge Spider",
                         "TwilightForest.King Spider" })
+                .setLivingMatter("overworldian")
                 .setLang("en_US", "§bSpider Data Model§r")
                 .setLang("ja_JP", "§bスパイダーデータモデル§r")
                 .setPristineLang("en_US", "Pristine Spider Matter")
@@ -179,6 +187,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Affinity with potions and concoctions.", "Likes cats.", "Beware!" })
                 .setAssociatedMobs(new String[] { "Witch" })
+                .setLivingMatter("overworldian")
                 .setLang("en_US", "§bWitch Data Model§r")
                 .setLang("ja_JP", "§bウィッチデータモデル§r")
                 .setPristineLang("en_US", "Pristine Witch Matter")
@@ -198,6 +207,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Do not approach this enemy. Run!", "I mean it has 3 heads, what could possibly go wrong?" })
                 .setAssociatedMobs(new String[] { "WitherBoss" })
+                .setLivingMatter("extraterrestrial")
                 .setLang("en_US", "§bWither Data Model§r")
                 .setLang("ja_JP", "§bウィザーデータモデル§r")
                 .setPristineLang("en_US", "Pristine Wither Matter")
@@ -216,6 +226,7 @@ public class BaseModels extends BaseModelHandler {
             0,
             new String[] { "Inflicts the Wither effect.", "Bring milk!" })
                 .setAssociatedMobs(new String[] { "witherSkeleton" })
+                .setLivingMatter("hellish")
                 .setLang("en_US", "§bWither Skeleton Data Model§r")
                 .setLang("ja_JP", "§bウィザースケルトンデータモデル§r")
                 .setPristineLang("en_US", "Pristine Wither Skeleton Matter")
@@ -236,6 +247,7 @@ public class BaseModels extends BaseModelHandler {
                 .setAssociatedMobs(
                     new String[] { "Zombie", "etfuturum.husk", "PigZombie", "TwilightForest.Loyal Zombie",
                         "etfuturum.villager_zombie" })
+                .setLivingMatter("overworldian")
                 .setLang("en_US", "§bZombie Data Model§r")
                 .setLang("ja_JP", "§bゾンビデータモデル§r")
                 .setPristineLang("en_US", "Pristine Zombie Matter")

@@ -142,10 +142,11 @@ public abstract class OKCreativeTab extends CreativeTabs {
             addBlock(ModBlocks.LOOT_FABRICATOR.get());
 
             addItem(ModItems.CREATIVE_MODEL_LEARNER.getItem());
-            addItem(ModItems.DEEP_LEARNER.getItem());
-            addItem(ModItems.DATA_MODEL.getItem());
             addItem(ModItems.DATA_MODEL_BLANK.getItem());
+            addItem(ModItems.DATA_MODEL.getItem());
+            addItem(ModItems.DEEP_LEARNER.getItem());
             addItem(ModItems.PRISTINE_MATTER.getItem());
+            addItem(ModItems.LIVING_MATTER.getItem());
         }
     };
 
