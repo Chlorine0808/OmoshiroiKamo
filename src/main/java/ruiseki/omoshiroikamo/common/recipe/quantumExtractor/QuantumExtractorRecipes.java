@@ -38,7 +38,6 @@ public class QuantumExtractorRecipes {
             FocusableHandler.saveRegistryDefaultsToJson(file, list);
         }
 
-        // 全Tierに対してlist内の各entryを登録
         for (int tier = 0; tier < MAX_TIER; tier++) {
             FocusableHandler.loadIntoRegistry(list, oreRegistry[tier], tier);
         }
@@ -55,7 +54,6 @@ public class QuantumExtractorRecipes {
             FocusableHandler.saveRegistryDefaultsToJson(file, list);
         }
 
-        // 全Tierに対してlist内の各entryを登録
         for (int tier = 0; tier < MAX_TIER; tier++) {
             FocusableHandler.loadIntoRegistry(list, resRegistry[tier], tier);
         }
@@ -251,13 +249,13 @@ public class QuantumExtractorRecipes {
         defaults.addEntry(
             new FocusableHandler.FocusableBlock("appliedenergistics2:tile.BlockSkyStone", 0, EnumDye.BLACK, 2));
 
-        // Mica (Tier-based weights) - 高Tierほど出やすい
+        // Mica (Tier-based weights)
         defaults.addEntry(
             new FocusableHandler.FocusableBlock(
                 LibResources.PREFIX_MOD + "mica",
                 0,
                 EnumDye.WHITE,
-                new double[] { 2, 3, 4, 5, 6, 7 }));
+                new double[] { 2, 4, 6, 8, 12, 16 }));
 
         return defaults;
     }
