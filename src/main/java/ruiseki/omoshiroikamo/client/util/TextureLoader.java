@@ -36,11 +36,13 @@ public class TextureLoader {
                 .setHasPackPng(jarClass);
 
             File assetsRoot = new File(configDir, "assets/" + modid + "/textures");
+            File langFolder = new File(configDir, "assets/" + modid + "/lang");
 
             if (!assetsRoot.exists()) {
                 new File(assetsRoot, "items").mkdirs();
                 new File(assetsRoot, "blocks").mkdirs();
                 new File(assetsRoot, "entity").mkdirs();
+                if (!langFolder.exists()) langFolder.mkdirs();
                 Logger.info("[TextureLoader] Created vanilla texture skeleton for {}", modid);
                 return;
             }
@@ -53,6 +55,17 @@ public class TextureLoader {
 
             ResourcePackUtils
                 .scanVanillaLike(assembler, new File(assetsRoot, "entity"), ResourcePackAssembler.IconTarget.ENTITY);
+
+            if (langFolder.exists() && langFolder.isDirectory()) {
+                File[] langFiles = langFolder.listFiles((dir, name) -> name.endsWith(".lang"));
+                if (langFiles != null) {
+                    for (File file : langFiles) {
+                        if (file.isFile()) {
+                            assembler.addCustomFile("assets/" + modid + "/lang", file);
+                        }
+                    }
+                }
+            }
 
             assembler.assemble()
                 .inject();

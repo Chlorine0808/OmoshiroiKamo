@@ -6,6 +6,8 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public enum ModObject {
 
+    // spotless: off
+
     blockBlockCrystal,
     blockQuantumOreExtractor,
     blockQuantumResExtractor,
@@ -89,9 +91,11 @@ public enum ModObject {
     itemCreativeModelLearner,
     itemDeepLearner,
     itemDataModel,
-    itemDataModelBlank
-    //
+    itemDataModelBlank,
+    itemPristineMatter
+
     ;
+    // spotless: on
 
     public final String unlocalisedName;
     private Block blockInstance;

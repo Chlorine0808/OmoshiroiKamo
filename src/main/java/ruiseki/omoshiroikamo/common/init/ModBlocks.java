@@ -50,6 +50,8 @@ import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 public enum ModBlocks {
 
+    // spotless: off
+
     BACKPACK_BASE(useBackpack,
         BlockBackpack.create(
             ModObject.backpackLeather.unlocalisedName,
@@ -118,8 +120,9 @@ public enum ModBlocks {
     ROOST_COLLECTOR(useChicken, BlockRoostCollector.create()),
 
     LOOT_FABRICATOR(useDeepMobLearning, BlockLootFabricator.create()),
-    //
+
     ;
+    // spotless: on
 
     public static final ModBlocks[] VALUES = values();
 
