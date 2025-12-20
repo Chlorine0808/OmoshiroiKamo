@@ -42,6 +42,7 @@ All code has been rewritten, and all textures are original.
 - Solar Array (Generate Energy From Sun)
 - Quantum Beacon (Give Multieffect by Energy)
 - Extractor NEI integration
+- Colored Laser
 
 ![Multiblock](https://media.forgecdn.net/attachments/1410/44/2025-12-01_12-32-24-png.png)
 

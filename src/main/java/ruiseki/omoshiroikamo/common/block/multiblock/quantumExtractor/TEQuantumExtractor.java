@@ -11,6 +11,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -152,6 +153,9 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             Block block = worldObj.getBlock(xCoord, y, zCoord);
 
             if (block.isAir(worldObj, xCoord, y, zCoord) || block == Blocks.glass
+                || block == Blocks.stained_glass
+                || block == Blocks.glass_pane
+                || block == Blocks.stained_glass_pane
                 || block == ModBlocks.LASER_CORE.get()
                 || block == ModBlocks.LENS.get()
                 || block == ModBlocks.COLORED_LENS.get()) {
@@ -191,6 +195,18 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             beamProgress = 1.0F;
         }
         return beamProgress;
+    }
+
+    /**
+     * Override the render bounding box to include the entire beam (from miner to
+     * Y=0).
+     * This prevents frustum culling from hiding the beam when the player is not
+     * looking at the miner.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(xCoord, 0, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
     }
 
     public abstract IFocusableRegistry getRegistry();
