@@ -15,12 +15,14 @@ import ruiseki.omoshiroikamo.plugin.nei.recipe.chicken.ChickenThrowsRecipeHandle
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowBreedingRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowMilkingRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.voidMiner.*;
+import ruiseki.omoshiroikamo.common.util.Logger;
 
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
+        Logger.info("Loading NeiConfig: {}", getName());
         if (BackportConfigs.useEnvironmentalTech) {
             // Register Ore/Res Extractors - single class parameterized by tier
             for (int i = 0; i < 6; i++) {
