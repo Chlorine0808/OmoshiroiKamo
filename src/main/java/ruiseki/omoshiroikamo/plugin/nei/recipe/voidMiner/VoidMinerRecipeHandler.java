@@ -68,7 +68,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         this.addTransferRect(0, 0, 0, 0);
     }
 
-
     @Override
     public void loadAllRecipes() {
         IFocusableRegistry registry = getRegistry();
