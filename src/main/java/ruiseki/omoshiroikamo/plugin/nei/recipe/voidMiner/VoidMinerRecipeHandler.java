@@ -22,7 +22,8 @@ import ruiseki.omoshiroikamo.plugin.nei.RecipeHandlerBase;
 public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     protected final int tier;
-    // Displayed tier can differ from handler tier when tier0 delegates usage for higher tiers
+    // Displayed tier can differ from handler tier when tier0 delegates usage for
+    // higher tiers
     private int displayTier;
 
     public VoidMinerRecipeHandler(int tier) {
@@ -34,6 +35,10 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     protected abstract IFocusableRegistry getRegistry();
 
     protected abstract IFocusableRegistry getRegistry(int tier);
+
+    // Factory for spawning the handler of a specific tier (used when delegating
+    // usage requests)
+    protected abstract VoidMinerRecipeHandler createForTier(int tier);
 
     protected abstract Block getMinerBlock();
 
@@ -113,7 +118,8 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                 arecipes.add(new CachedVoidRecipe(ws, registry, tier));
             }
         }
-        Logger.info("[loadCraftingRecipes] tier=" + tier + " item=" + item.getDisplayName() + " added=" + arecipes.size());
+        Logger.info(
+                "[loadCraftingRecipes] tier=" + tier + " item=" + item.getDisplayName() + " added=" + arecipes.size());
     }
 
     @Override
@@ -136,15 +142,14 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
         if (isMiner) {
             int inputTier = ingredient.getItemDamage();
-            // Delegate miner usage handling to tier0 only, and switch registry by input tier
-            if (this.tier != 0) {
+            // Only process when the handler tier matches the item tier so the correct
+            // tab/catalyst is used
+            if (inputTier != this.tier) {
                 Logger.info(
-                        "[loadUsageRecipes] tier=" + tier + " delegate to primary handler for inputTier=" + inputTier);
+                        "[loadUsageRecipes] tier=" + tier + " skip miner usage for inputTier=" + inputTier);
                 return;
             }
-            Logger.info(
-                    "[loadUsageRecipes] isMiner: inputTier=" + inputTier + ", handler.tier=" + this.tier);
-            // Use input tier for display so the tab shows the correct tier number
+            Logger.info("[loadUsageRecipes] isMiner: tier=" + this.tier + " handling inputTier=" + inputTier);
             this.displayTier = inputTier + 1;
             IFocusableRegistry tierRegistry = getRegistry(inputTier);
             if (tierRegistry != null) {
@@ -200,6 +205,26 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                 }
             }
         }
+    }
+
+    @Override
+    public codechicken.nei.recipe.IUsageHandler getUsageHandler(String inputId, Object... ingredients) {
+        if ("item".equals(inputId) && ingredients.length > 0 && ingredients[0] instanceof ItemStack stack) {
+            Item minerItem = Item.getItemFromBlock(getMinerBlock());
+            if (stack.getItem() == minerItem) {
+                int inputTier = stack.getItemDamage();
+                // If the current handler tier does not match, delegate to the correct tiered
+                // handler
+                if (inputTier != this.tier) {
+                    VoidMinerRecipeHandler handler = createForTier(inputTier);
+                    if (handler != null) {
+                        handler.loadUsageRecipes(stack);
+                        return handler.numRecipes() > 0 ? handler : null;
+                    }
+                }
+            }
+        }
+        return super.getUsageHandler(inputId, ingredients);
     }
 
     public class CachedVoidRecipe extends CachedBaseRecipe {

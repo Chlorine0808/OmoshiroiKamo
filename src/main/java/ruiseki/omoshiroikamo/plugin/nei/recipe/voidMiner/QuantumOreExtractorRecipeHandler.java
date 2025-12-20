@@ -17,7 +17,7 @@ public class QuantumOreExtractorRecipeHandler extends VoidMinerRecipeHandler {
     @Override
     public TemplateRecipeHandler newInstance() {
         ruiseki.omoshiroikamo.common.util.Logger
-            .info("[QuantumOreExtractorRecipeHandler.newInstance] this.tier=" + tier);
+                .info("[QuantumOreExtractorRecipeHandler.newInstance] this.tier=" + tier);
         return new QuantumOreExtractorRecipeHandler(tier);
     }
 
@@ -47,5 +47,10 @@ public class QuantumOreExtractorRecipeHandler extends VoidMinerRecipeHandler {
     @Override
     protected String getRecipeIdBase() {
         return String.valueOf(ModObject.blockQuantumOreExtractor.getRegistryName());
+    }
+
+    @Override
+    protected VoidMinerRecipeHandler createForTier(int tier) {
+        return new QuantumOreExtractorRecipeHandler(tier);
     }
 }
