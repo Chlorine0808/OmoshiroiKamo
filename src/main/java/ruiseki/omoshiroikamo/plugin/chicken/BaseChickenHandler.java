@@ -188,7 +188,9 @@ public abstract class BaseChickenHandler {
                         if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {
                             chicken.setTintColor(tint);
                             chicken.setTextureOverlay(
-                                new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + data.textureOverlay + ".png"));
+                                new ResourceLocation(
+                                    LibMisc.MOD_ID,
+                                    this.texturesLocation + data.textureOverlay + ".png"));
                         }
 
                         // Item
@@ -376,10 +378,11 @@ public abstract class BaseChickenHandler {
         json.name = chicken.getEntityName();
         json.enabled = true;
         ResourceLocation tex = chicken.getTexture();
-        json.texture = JsonUtils.stripPng(tex.getResourcePath()
-            .substring(
-                tex.getResourcePath()
-                    .lastIndexOf("/") + 1));
+        json.texture = JsonUtils.stripPng(
+            tex.getResourcePath()
+                .substring(
+                    tex.getResourcePath()
+                        .lastIndexOf("/") + 1));
         json.tintColor = JsonUtils.parseColor(chicken.getTintColor());
         json.bgColor = JsonUtils.parseColor(chicken.getBgColor());
         json.fgColor = JsonUtils.parseColor(chicken.getFgColor());

@@ -164,15 +164,10 @@ public class BaseChickens extends BaseChickenHandler {
             .setLang("ja_JP", "火打石のニワトリ");
         allChickens.add(flintChicken);
 
-        quartzChicken = addChicken(
-            "QuartzChicken",
-            this.nextID(),
-            "QuartzChicken",
-            0x4d0000,
-            0x1a0000,
-            SpawnType.HELL).setLayItem(new ItemStack(Items.quartz))
-                .setLang("en_US", "Quartz Chicken")
-                .setLang("ja_JP", "ネザークォーツのニワトリ");
+        quartzChicken = addChicken("QuartzChicken", this.nextID(), "QuartzChicken", 0x4d0000, 0x1a0000, SpawnType.HELL)
+            .setLayItem(new ItemStack(Items.quartz))
+            .setLang("en_US", "Quartz Chicken")
+            .setLang("ja_JP", "ネザークォーツのニワトリ");
         allChickens.add(quartzChicken);
 
         logChicken = addChicken("LogChicken", this.nextID(), "LogChicken", 0x98846d, 0x528358, SpawnType.NONE)
@@ -188,16 +183,11 @@ public class BaseChickens extends BaseChickenHandler {
         allChickens.add(sandChicken);
 
         // TIER 2
-        stringChicken = addChicken(
-            "StringChicken",
-            this.nextID(),
-            "StringChicken",
-            0x331a00,
-            0x800000,
-            SpawnType.NONE).setLayItem(new ItemStack(Items.string))
-                .setDropItem(new ItemStack(Items.spider_eye))
-                .setLang("en_US", "String Chicken")
-                .setLang("ja_JP", "糸のニワトリ");
+        stringChicken = addChicken("StringChicken", this.nextID(), "StringChicken", 0x331a00, 0x800000, SpawnType.NONE)
+            .setLayItem(new ItemStack(Items.string))
+            .setDropItem(new ItemStack(Items.spider_eye))
+            .setLang("en_US", "String Chicken")
+            .setLang("ja_JP", "糸のニワトリ");
         allChickens.add(stringChicken);
 
         glowstoneChicken = addChicken(

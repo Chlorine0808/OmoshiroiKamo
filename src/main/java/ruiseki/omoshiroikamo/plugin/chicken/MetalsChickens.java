@@ -78,26 +78,16 @@ public class MetalsChickens extends BaseChickenHandler {
             .setLang("ja_JP", "鋼鉄のニワトリ");
         allChickens.add(steelChicken);
 
-        silverOreChicken = addChicken(
-            "SilverChicken",
-            nextID(),
-            "SilverChicken",
-            0xbebebe,
-            0xffffff,
-            SpawnType.NONE).setLayString("ore:ingotSilver")
-                .setLang("en_US", "Silver Chicken")
-                .setLang("ja_JP", "銀のニワトリ");
+        silverOreChicken = addChicken("SilverChicken", nextID(), "SilverChicken", 0xbebebe, 0xffffff, SpawnType.NONE)
+            .setLayString("ore:ingotSilver")
+            .setLang("en_US", "Silver Chicken")
+            .setLang("ja_JP", "銀のニワトリ");
         allChickens.add(silverOreChicken);
 
-        platinumChicken = addChicken(
-            "PlatinumChicken",
-            nextID(),
-            "PlatinumChicken",
-            0xffffff,
-            0x8d9a96,
-            SpawnType.NONE).setLayString("ore:ingotPlatinum")
-                .setLang("en_US", "Platinum Chicken")
-                .setLang("ja_JP", "プラチナのニワトリ");
+        platinumChicken = addChicken("PlatinumChicken", nextID(), "PlatinumChicken", 0xffffff, 0x8d9a96, SpawnType.NONE)
+            .setLayString("ore:ingotPlatinum")
+            .setLang("en_US", "Platinum Chicken")
+            .setLang("ja_JP", "プラチナのニワトリ");
         allChickens.add(platinumChicken);
 
         nickelChicken = addChicken("NickelChicken", nextID(), "NickelChicken", 0xefffec, 0xa2b69f, SpawnType.NONE)
@@ -135,26 +125,16 @@ public class MetalsChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "白銅のニワトリ");
         allChickens.add(cupronickelChicken);
 
-        electrumChicken = addChicken(
-            "ElectrumChicken",
-            nextID(),
-            "ElectrumChicken",
-            0xfff2b1,
-            0xd4be50,
-            SpawnType.NONE).setLayString("ore:ingotElectrum")
-                .setLang("en_US", "Electrum Chicken")
-                .setLang("ja_JP", "エレクトラムのニワトリ");
+        electrumChicken = addChicken("ElectrumChicken", nextID(), "ElectrumChicken", 0xfff2b1, 0xd4be50, SpawnType.NONE)
+            .setLayString("ore:ingotElectrum")
+            .setLang("en_US", "Electrum Chicken")
+            .setLang("ja_JP", "エレクトラムのニワトリ");
         allChickens.add(electrumChicken);
 
-        siliconChicken = addChicken(
-            "SiliconChicken",
-            nextID(),
-            "SiliconChicken",
-            0x5f706b,
-            0x424242,
-            SpawnType.NONE).setLayString("ore:itemSilicon")
-                .setLang("en_US", "Silicon Chicken")
-                .setLang("ja_JP", "シリコンのニワトリ");
+        siliconChicken = addChicken("SiliconChicken", nextID(), "SiliconChicken", 0x5f706b, 0x424242, SpawnType.NONE)
+            .setLayString("ore:itemSilicon")
+            .setLang("en_US", "Silicon Chicken")
+            .setLang("ja_JP", "シリコンのニワトリ");
         allChickens.add(siliconChicken);
 
         sulfurChicken = addChicken("SulfurChicken", nextID(), "SulfurChicken", 0xFFE782, 0xAD9326, SpawnType.NONE)
@@ -191,15 +171,10 @@ public class MetalsChickens extends BaseChickenHandler {
             .setLang("ja_JP", "琥珀のニワトリ");
         allChickens.add(amberChicken);
 
-        amethystChicken = addChicken(
-            "AmethystChicken",
-            nextID(),
-            "AmethystChicken",
-            0xE051ED,
-            0x841D8E,
-            SpawnType.NONE).setLayString("ore:gemAmethyst")
-                .setLang("en_US", "Amethyst Chicken")
-                .setLang("ja_JP", "アメジストのニワトリ");
+        amethystChicken = addChicken("AmethystChicken", nextID(), "AmethystChicken", 0xE051ED, 0x841D8E, SpawnType.NONE)
+            .setLayString("ore:gemAmethyst")
+            .setLang("en_US", "Amethyst Chicken")
+            .setLang("ja_JP", "アメジストのニワトリ");
         allChickens.add(amethystChicken);
 
         malachiteChicken = addChicken(
@@ -213,15 +188,10 @@ public class MetalsChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "マラカイトのニワトリ");
         allChickens.add(malachiteChicken);
 
-        peridotChicken = addChicken(
-            "PeridotChicken",
-            nextID(),
-            "PeridotChicken",
-            0x6CA127,
-            0x29430B,
-            SpawnType.NONE).setLayString("ore:gemPeridot")
-                .setLang("en_US", "Peridot Chicken")
-                .setLang("ja_JP", "ペリドットのニワトリ");
+        peridotChicken = addChicken("PeridotChicken", nextID(), "PeridotChicken", 0x6CA127, 0x29430B, SpawnType.NONE)
+            .setLayString("ore:gemPeridot")
+            .setLang("en_US", "Peridot Chicken")
+            .setLang("ja_JP", "ペリドットのニワトリ");
         allChickens.add(peridotChicken);
 
         rubyChicken = addChicken("RubyChicken", nextID(), "RubyChicken", 0xB7002E, 0x5A0116, SpawnType.NONE)
@@ -230,15 +200,10 @@ public class MetalsChickens extends BaseChickenHandler {
             .setLang("ja_JP", "ルビーのニワトリ");
         allChickens.add(rubyChicken);
 
-        sapphireChicken = addChicken(
-            "SapphireChicken",
-            nextID(),
-            "SapphireChicken",
-            0x19689A,
-            0x0D4565,
-            SpawnType.NONE).setLayString("ore:gemSapphire")
-                .setLang("en_US", "Sapphire Chicken")
-                .setLang("ja_JP", "サファイアのニワトリ");
+        sapphireChicken = addChicken("SapphireChicken", nextID(), "SapphireChicken", 0x19689A, 0x0D4565, SpawnType.NONE)
+            .setLayString("ore:gemSapphire")
+            .setLang("en_US", "Sapphire Chicken")
+            .setLang("ja_JP", "サファイアのニワトリ");
         allChickens.add(sapphireChicken);
 
         tanzaniteChicken = addChicken(
@@ -276,15 +241,10 @@ public class MetalsChickens extends BaseChickenHandler {
             .setLang("ja_JP", "ゴムのニワトリ");
         allChickens.add(rubberChicken);
 
-        uraniumChicken = addChicken(
-            "UraniumChicken",
-            nextID(),
-            "UraniumChicken",
-            0x91d76d,
-            0x9ce26c,
-            SpawnType.NONE).setLayString("ore:ingotUranium")
-                .setLang("en_US", "Uranium Chicken")
-                .setLang("ja_JP", "ウランのニワトリ");
+        uraniumChicken = addChicken("UraniumChicken", nextID(), "UraniumChicken", 0x91d76d, 0x9ce26c, SpawnType.NONE)
+            .setLayString("ore:ingotUranium")
+            .setLang("en_US", "Uranium Chicken")
+            .setLang("ja_JP", "ウランのニワトリ");
         allChickens.add(uraniumChicken);
 
         return allChickens;

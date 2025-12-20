@@ -37,48 +37,28 @@ public class ThermalChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "バサルズロッドのニワトリ");
         allChickens.add(basalzRodChicken);
 
-        blitzRodChicken = addChicken(
-            "BlitzRodChicken",
-            nextID(),
-            "BlitzRodChicken",
-            0xECE992,
-            0x66E5EF,
-            SpawnType.NONE).setLayString("ore:rodBlitz")
-                .setLang("en_US", "Blitz Rod Chicken")
-                .setLang("ja_JP", "ブリッツロッドのニワトリ");
+        blitzRodChicken = addChicken("BlitzRodChicken", nextID(), "BlitzRodChicken", 0xECE992, 0x66E5EF, SpawnType.NONE)
+            .setLayString("ore:rodBlitz")
+            .setLang("en_US", "Blitz Rod Chicken")
+            .setLang("ja_JP", "ブリッツロッドのニワトリ");
         allChickens.add(blitzRodChicken);
 
-        blizzRodChicken = addChicken(
-            "BlizzRodChicken",
-            nextID(),
-            "BlizzRodChicken",
-            0x88E0FF,
-            0x1D3B95,
-            SpawnType.NONE).setLayString("ore:rodBlizz")
-                .setLang("en_US", "Blizz Rod Chicken")
-                .setLang("ja_JP", "ブリズロッドのニワトリ");
+        blizzRodChicken = addChicken("BlizzRodChicken", nextID(), "BlizzRodChicken", 0x88E0FF, 0x1D3B95, SpawnType.NONE)
+            .setLayString("ore:rodBlizz")
+            .setLang("en_US", "Blizz Rod Chicken")
+            .setLang("ja_JP", "ブリズロッドのニワトリ");
         allChickens.add(blizzRodChicken);
 
-        cinnabarChicken = addChicken(
-            "CinnabarChicken",
-            nextID(),
-            "CinnabarChicken",
-            0xE49790,
-            0x9B3229,
-            SpawnType.NONE).setLayString("ore:crystalCinnabar")
-                .setLang("en_US", "Cinnabar Chicken")
-                .setLang("ja_JP", "辰砂のニワトリ");
+        cinnabarChicken = addChicken("CinnabarChicken", nextID(), "CinnabarChicken", 0xE49790, 0x9B3229, SpawnType.NONE)
+            .setLayString("ore:crystalCinnabar")
+            .setLang("en_US", "Cinnabar Chicken")
+            .setLang("ja_JP", "辰砂のニワトリ");
         allChickens.add(cinnabarChicken);
 
-        enderiumChicken = addChicken(
-            "EnderiumChicken",
-            nextID(),
-            "EnderiumChicken",
-            0x127575,
-            0x0A4849,
-            SpawnType.NONE).setLayString("ore:nuggetEnderium")
-                .setLang("en_US", "Enderium Chicken")
-                .setLang("ja_JP", "エンダリウムのニワトリ");
+        enderiumChicken = addChicken("EnderiumChicken", nextID(), "EnderiumChicken", 0x127575, 0x0A4849, SpawnType.NONE)
+            .setLayString("ore:nuggetEnderium")
+            .setLang("en_US", "Enderium Chicken")
+            .setLang("ja_JP", "エンダリウムのニワトリ");
         allChickens.add(enderiumChicken);
 
         lumiumChicken = addChicken("LumiumChicken", nextID(), "LumiumChicken", 0xEEF4DF, 0xF4B134, SpawnType.NONE)
@@ -87,26 +67,16 @@ public class ThermalChickens extends BaseChickenHandler {
             .setLang("ja_JP", "ルミウムのニワトリ");
         allChickens.add(lumiumChicken);
 
-        mithrilChicken = addChicken(
-            "MithrilChicken",
-            nextID(),
-            "MithrilChicken",
-            0x5A89A8,
-            0xA7FFFF,
-            SpawnType.NONE).setLayString("ore:ingotMithril")
-                .setLang("en_US", "Mithril Chicken")
-                .setLang("ja_JP", "ミスリルのニワトリ");
+        mithrilChicken = addChicken("MithrilChicken", nextID(), "MithrilChicken", 0x5A89A8, 0xA7FFFF, SpawnType.NONE)
+            .setLayString("ore:ingotMithril")
+            .setLang("en_US", "Mithril Chicken")
+            .setLang("ja_JP", "ミスリルのニワトリ");
         allChickens.add(mithrilChicken);
 
-        signalumChicken = addChicken(
-            "SignalumChicken",
-            nextID(),
-            "SignalumChicken",
-            0xFFA424,
-            0xC63200,
-            SpawnType.NONE).setLayString("ore:ingotSignalum")
-                .setLang("en_US", "Signalum Chicken")
-                .setLang("ja_JP", "シグナルムのニワトリ");
+        signalumChicken = addChicken("SignalumChicken", nextID(), "SignalumChicken", 0xFFA424, 0xC63200, SpawnType.NONE)
+            .setLayString("ore:ingotSignalum")
+            .setLang("en_US", "Signalum Chicken")
+            .setLang("ja_JP", "シグナルムのニワトリ");
         allChickens.add(signalumChicken);
 
         return allChickens;

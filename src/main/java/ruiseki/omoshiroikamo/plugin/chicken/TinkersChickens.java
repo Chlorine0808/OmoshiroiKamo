@@ -50,15 +50,10 @@ public class TinkersChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "マニュリンのニワトリ");
         allChickens.add(manyullynChicken);
 
-        pigIronChicken = addChicken(
-            "PigIronChicken",
-            nextID(),
-            "PigIronChicken",
-            0xe6b8b8,
-            0xdba9a9,
-            SpawnType.NONE).setLayString("ore:ingotPigIron")
-                .setLang("en_US", "Pig Iron Chicken")
-                .setLang("ja_JP", "ピッグアイアンのニワトリ");
+        pigIronChicken = addChicken("PigIronChicken", nextID(), "PigIronChicken", 0xe6b8b8, 0xdba9a9, SpawnType.NONE)
+            .setLayString("ore:ingotPigIron")
+            .setLang("en_US", "Pig Iron Chicken")
+            .setLang("ja_JP", "ピッグアイアンのニワトリ");
         allChickens.add(pigIronChicken);
 
         bloodSlimeChicken = addChicken(
