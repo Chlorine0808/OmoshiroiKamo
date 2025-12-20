@@ -184,20 +184,27 @@ public abstract class BaseChickenHandler {
                             JsonUtils.registerLang(langKey, data.lang);
                         }
 
+                        // Entity
                         if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {
                             chicken.setTintColor(tint);
                             chicken.setTextureOverlay(
-                                new ResourceLocation(
-                                    LibResources.PREFIX_MOD + "textures/entity/chicken/custom/" + data.textureOverlay));
+                                new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + data.textureOverlay));
                         }
 
+                        // Item
                         // Set Item Icons explicitly
                         // User path: assets/omoshiroikamo/textures/items/chicken/filename.png
                         // ResourceLocation expected: omoshiroikamo:chicken/filename
                         if (data.texture != null && !data.texture.isEmpty()) {
+
                             String iconName = data.texture;
-                            if (iconName.endsWith(".png")) iconName = iconName.substring(0, iconName.length() - 4);
-                            chicken.setIconName(LibResources.PREFIX_MOD + "chicken/" + iconName);
+                            if (iconName.endsWith(".png")) {
+                                iconName = iconName.substring(0, iconName.length() - 4);
+                            }
+                            String itemSubPath = this.texturesLocation.replace("textures/entity/", "")
+                                .replaceAll("/$", "");
+
+                            chicken.setIconName(LibResources.PREFIX_MOD + itemSubPath + "/" + iconName);
                         }
 
                         if (data.textureOverlay != null && !data.textureOverlay.isEmpty()) {

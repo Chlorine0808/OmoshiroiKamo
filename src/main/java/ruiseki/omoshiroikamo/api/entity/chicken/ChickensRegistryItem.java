@@ -33,7 +33,11 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
     private ItemStack layItem;
     private String layString;
 
+    private int tintColor = 0xFFFFFF;
     private ResourceLocation textureOverlay;
+
+    private String iconName;
+    private String iconOverlayName;
 
     /**
      * Creates a new chicken registry item.
@@ -46,17 +50,6 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
      */
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, int bgColor, int fgColor) {
         this(id, entityName, texture, bgColor, fgColor, null, null);
-    }
-
-    private int tintColor = 0xFFFFFF;
-
-    public int getTintColor() {
-        return tintColor;
-    }
-
-    public ChickensRegistryItem setTintColor(int tintColor) {
-        this.tintColor = tintColor;
-        return this;
     }
 
     /**
@@ -95,8 +88,14 @@ public class ChickensRegistryItem extends BaseRegistryItem<ChickensRegistryItem>
         return this.textureOverlay;
     }
 
-    private String iconName;
-    private String iconOverlayName;
+    public int getTintColor() {
+        return tintColor;
+    }
+
+    public ChickensRegistryItem setTintColor(int tintColor) {
+        this.tintColor = tintColor;
+        return this;
+    }
 
     public ChickensRegistryItem setIconName(String iconName) {
         this.iconName = iconName;

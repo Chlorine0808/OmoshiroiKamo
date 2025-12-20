@@ -16,26 +16,33 @@ import org.apache.commons.io.FileUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
-/**
- * A class that can be used to inject resources from files/folders outside your mod resources. Useful for loading
- * textures and other assets from the config dir or elsewhere.
- * <p>
- * To use, first construct an instance of this class, then add all your assets using {@link #addIcon(File)},
- * {@link #addLang(File)}, and {@link #addCustomFile(String, File)}.
- * <p>
- * Once all files have been added, {@link #assemble()} Will create a zip of all the files in the {@link File directory}
- * passed into the constructor.
- * <p>
- * Finally, {@link #inject()} will insert this resource pack into the game.
- * <p>
- * Also, {@link #setHasPackPng(Class)} allows your resource pack to have a logo.
- */
-// Copy form EnderCore
+// Copy and modify from EnderCore
 public class ResourcePackAssembler {
 
-    private class CustomFile {
+    public static enum IconTarget {
+        ITEM,
+        BLOCK,
+        ENTITY,
+        BOTH
+    }
+
+    private static class IconEntry {
+
+        File file;
+        String subPath;
+        IconTarget target;
+
+        IconEntry(File file, String subPath, IconTarget target) {
+            this.file = file;
+            this.subPath = subPath;
+            this.target = target;
+        }
+    }
+
+    private List<IconEntry> icons = new ArrayList<IconEntry>();
+
+    private static class CustomFile {
 
         private String ext;
         private File file;
@@ -46,7 +53,6 @@ public class ResourcePackAssembler {
         }
     }
 
-    private List<File> icons = new ArrayList<File>();
     private List<File> langs = new ArrayList<File>();
     private List<CustomFile> customs = new ArrayList<CustomFile>();
 
@@ -56,123 +62,110 @@ public class ResourcePackAssembler {
 
     private File dir;
     private File zip;
-    private String name;
     private String mcmeta;
     private String modid;
     private boolean hasPackPng = false;
     private Class<?> jarClass;
 
-    /**
-     * @param directory The directory to assemble the resource pack in. The name of the zip created will be the same as
-     *                  this folder, and it will be created on the same level as the folder. This folder will be
-     *                  <strong>WIPED</strong> on every call of {@link #assemble()} .
-     * @param packName  The name of the resource pack.
-     * @param modid     Your mod's mod ID.
-     */
     public ResourcePackAssembler(File directory, String packName, String modid) {
         this.dir = directory;
-        this.zip = new File(dir.getAbsolutePath() + ".zip");
-        this.name = packName;
+        this.zip = new File(packName + ".zip");
         this.modid = modid.toLowerCase(Locale.US);
-        this.mcmeta = String.format(MC_META_BASE, this.name);
+        this.mcmeta = String.format(MC_META_BASE, packName);
     }
 
-    /**
-     * Enables the use of a pack.png.
-     * <p>
-     * Will cause your mod's jar to be searched for a resource pack logo at assets/[modid]/pack.png.
-     *
-     * @param jarClass A class in your jar file.
-     * @return The {@link ResourcePackAssembler} instance.
-     */
-    public ResourcePackAssembler setHasPackPng(Class<?> jarClass) {
-        this.jarClass = jarClass;
-        hasPackPng = true;
-        return this;
-    }
-
-    /**
-     * Adds an icon file. This file will be inserted into both the block and item texture folders.
-     *
-     * @param icon The icon file.
-     */
     public void addIcon(File icon) {
-        icons.add(icon);
+        icons.add(new IconEntry(icon, "", IconTarget.BOTH));
     }
 
-    /**
-     * Adds a language file. This file will be inserted into the lang dir only.
-     *
-     * @param lang A language file (e.g. en_US.lang)
-     */
+    public void addIcon(String subPath, File icon, IconTarget target) {
+        icons.add(new IconEntry(icon, normalize(subPath), target));
+    }
+
+    private String normalize(String path) {
+        if (path == null || path.isEmpty()) return "";
+        if (path.endsWith("/")) return path.substring(0, path.length() - 1);
+        return path;
+    }
+
     public void addLang(File lang) {
         langs.add(lang);
     }
 
-    /**
-     * Adds a custom file to the pack. This can be added into any folder in the pack you desire. Useful for one-off
-     * files such as sounds.json.
-     *
-     * @param path The path inside the resource pack to this file.
-     * @param file The file to add.
-     */
     public void addCustomFile(String path, File file) {
         customs.add(new CustomFile(path, file));
     }
 
-    /**
-     * Adds the custom file at the base directory.
-     *
-     * @see #addCustomFile(String, File)
-     *
-     * @param file The file to add.
-     */
     public void addCustomFile(File file) {
         addCustomFile(null, file);
     }
 
-    /**
-     * Assembles the resource pack. This creates a zip file with the name of the {@link File directory} that was passed
-     * into the constructor on the same level as that folder.
-     *
-     * @return The {@link ResourcePackAssembler} instance.
-     */
+    public ResourcePackAssembler setHasPackPng(Class<?> jarClass) {
+        this.jarClass = jarClass;
+        this.hasPackPng = true;
+        return this;
+    }
+
     public ResourcePackAssembler assemble() {
         OKFileUtils.safeDeleteDirectory(dir);
         dir.mkdirs();
 
-        String pathToDir = dir.getAbsolutePath();
-        File metaFile = new File(pathToDir + "/pack.mcmeta");
+        String root = dir.getAbsolutePath();
 
         try {
-            writeNewFile(metaFile, mcmeta);
-
+            writeNewFile(new File(root + "/pack.mcmeta"), mcmeta);
             if (hasPackPng) {
-                OKFileUtils
-                    .copyFromJar(jarClass, modid + "/" + "pack.png", new File(dir.getAbsolutePath() + "/pack.png"));
+                OKFileUtils.copyFromJar(jarClass, modid + "/pack.png", new File(root + "/pack.png"));
             }
 
-            String itemsDir = pathToDir + "/assets/" + modid + "/textures/items";
-            String blocksDir = pathToDir + "/assets/" + modid + "/textures/blocks";
-            String langDir = pathToDir + "/assets/" + modid + "/lang";
+            String itemsDir = root + "/assets/" + modid + "/textures/items";
+            String blocksDir = root + "/assets/" + modid + "/textures/blocks";
+            String entityDir = root + "/assets/" + modid + "/textures/entity";
+            String langDir = root + "/assets/" + modid + "/lang";
 
-            for (File icon : icons) {
-                FileUtils.copyFile(icon, new File(itemsDir + "/" + icon.getName()));
-                FileUtils.copyFile(icon, new File(blocksDir + "/" + icon.getName()));
+            /* ---- ICONS ---- */
+            for (IconEntry e : icons) {
+
+                if (e.target == IconTarget.ITEM || e.target == IconTarget.BOTH) {
+                    File dest = new File(
+                        itemsDir + "/" + (e.subPath.isEmpty() ? "" : e.subPath + "/") + e.file.getName());
+                    dest.getParentFile()
+                        .mkdirs();
+                    FileUtils.copyFile(e.file, dest);
+                }
+
+                if (e.target == IconTarget.BLOCK || e.target == IconTarget.BOTH) {
+                    File dest = new File(
+                        blocksDir + "/" + (e.subPath.isEmpty() ? "" : e.subPath + "/") + e.file.getName());
+                    dest.getParentFile()
+                        .mkdirs();
+                    FileUtils.copyFile(e.file, dest);
+                }
+
+                if (e.target == IconTarget.ENTITY || e.target == IconTarget.BOTH) {
+                    File dest = new File(
+                        entityDir + "/" + (e.subPath.isEmpty() ? "" : e.subPath + "/") + e.file.getName());
+                    dest.getParentFile()
+                        .mkdirs();
+                    FileUtils.copyFile(e.file, dest);
+                }
             }
 
+            /* ---- LANG ---- */
             for (File lang : langs) {
                 FileUtils.copyFile(lang, new File(langDir + "/" + lang.getName()));
             }
 
-            for (CustomFile custom : customs) {
-                File directory = new File(pathToDir + (custom.ext != null ? "/" + custom.ext : ""));
-                directory.mkdirs();
-                FileUtils.copyFile(custom.file, new File(directory.getAbsolutePath() + "/" + custom.file.getName()));
+            /* ---- CUSTOM ---- */
+            for (CustomFile c : customs) {
+                File outDir = new File(root + (c.ext != null ? "/" + c.ext : ""));
+                outDir.mkdirs();
+                FileUtils.copyFile(c.file, new File(outDir, c.file.getName()));
             }
 
             OKFileUtils.zipFolderContents(dir, zip);
             OKFileUtils.safeDeleteDirectory(dir);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -180,54 +173,39 @@ public class ResourcePackAssembler {
         return this;
     }
 
-    /**
-     * Inserts the resource pack into the game. Enabling the resource pack will not be required, it will load
-     * automatically.
-     * <p>
-     * A cache of the pack zip will be kept in "resourcepack/[pack name].zip" where "resourcepack" is a folder at the
-     * same level as the directory passed into the constructor.
-     */
     public void inject() {
-        if (FMLCommonHandler.instance()
+        if (!FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient()) {
-            try {
-                if (defaultResourcePacks == null) {
-                    defaultResourcePacks = ReflectionHelper.getPrivateValue(
-                        Minecraft.class,
-                        Minecraft.getMinecraft(),
-                        "defaultResourcePacks",
-                        "field_110449_ao",
-                        "ap");
-                }
+            .isClient()) return;
 
-                File dest = new File(dir.getParent() + "/resourcepack/" + zip.getName());
-                OKFileUtils.safeDelete(dest);
-                FileUtils.copyFile(zip, dest);
-                OKFileUtils.safeDelete(zip);
-                writeNewFile(
-                    new File(dest.getParent() + "/readme.txt"),
-                    LibMisc.LANG.localize("resourcepack.readme") + "\n\n"
-                        + LibMisc.LANG.localize("resourcepack.readme2"));
-                defaultResourcePacks.add(new FileResourcePack(dest));
-            } catch (Exception e) {
-                Logger.error("Failed to inject resource pack for mod {}", modid, e);
+        try {
+            if (defaultResourcePacks == null) {
+                defaultResourcePacks = ReflectionHelper.getPrivateValue(
+                    Minecraft.class,
+                    Minecraft.getMinecraft(),
+                    "defaultResourcePacks",
+                    "field_110449_ao",
+                    "ap");
             }
-        } else {
-            Logger.info("Skipping resource pack, we are on a dedicated server.");
+            File rpDir = new File(dir.getParent(), "resourcepack");
+            rpDir.mkdirs();
+            File dest = new File(rpDir, zip.getName());
+            OKFileUtils.safeDelete(dest);
+            FileUtils.copyFile(zip, dest);
+            OKFileUtils.safeDelete(zip);
+
+            defaultResourcePacks.add(new FileResourcePack(dest));
+        } catch (Exception e) {
+            Logger.error("Failed to inject resource pack {}", modid, e);
         }
     }
 
-    private void writeNewFile(File file, String defaultText) throws IOException {
+    private void writeNewFile(File file, String text) throws IOException {
         OKFileUtils.safeDelete(file);
-        file.delete();
         file.getParentFile()
             .mkdirs();
-        file.createNewFile();
-
         FileWriter fw = new FileWriter(file);
-        fw.write(defaultText);
-        fw.flush();
+        fw.write(text);
         fw.close();
     }
 }
