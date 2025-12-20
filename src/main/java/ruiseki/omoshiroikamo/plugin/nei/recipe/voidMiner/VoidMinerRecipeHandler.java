@@ -68,10 +68,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         this.addTransferRect(0, 0, 0, 0);
     }
 
-    @Override
-    public void drawExtras(int recipe) {
-        // No extra text drawing needed, PositionedStackAdv handles it
-    }
 
     @Override
     public void loadAllRecipes() {

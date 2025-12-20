@@ -90,8 +90,6 @@ public class FocusableRegistry implements IFocusableRegistry {
             if (stack == null) continue;
             // Calculate percentage (0-100)
             stack.realWeight = (stack.realFocusedWeight / totalWeight) * 100.0;
-            // Update int weight for compatibility (although likely unused by new Handler)
-            stack.itemWeight = (int) stack.realWeight;
         }
 
         return weightedCopy;
@@ -112,7 +110,6 @@ public class FocusableRegistry implements IFocusableRegistry {
             if (ws == null) continue;
             // Calculate percentage
             ws.realWeight = (ws.realWeight / totalWeight) * 100.0;
-            ws.itemWeight = (int) ws.realWeight;
         }
 
         return weightedCopy;
