@@ -213,18 +213,33 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             Item minerItem = Item.getItemFromBlock(getMinerBlock());
             if (stack.getItem() == minerItem) {
                 int inputTier = stack.getItemDamage();
-                // If the current handler tier does not match, delegate to the correct tiered
-                // handler
+                // Only the matching tier handler should respond; others return null to avoid
+                // duplicate tabs
                 if (inputTier != this.tier) {
-                    VoidMinerRecipeHandler handler = createForTier(inputTier);
-                    if (handler != null) {
-                        handler.loadUsageRecipes(stack);
-                        return handler.numRecipes() > 0 ? handler : null;
-                    }
+                    return null;
+                }
+                // Build a fresh handler instance for this tier and populate its usage recipes
+                VoidMinerRecipeHandler handler = createForTier(inputTier);
+                if (handler != null) {
+                    handler.loadUsageRecipes(stack);
+                    return handler.numRecipes() > 0 ? handler : null;
                 }
             }
         }
         return super.getUsageHandler(inputId, ingredients);
+    }
+
+    @Override
+    public codechicken.nei.recipe.IUsageHandler getUsageAndCatalystHandler(String inputId, Object... ingredients) {
+        // For miner blocks, skip catalyst short-circuit and use our tier-aware usage
+        // handler
+        if ("item".equals(inputId) && ingredients.length > 0 && ingredients[0] instanceof ItemStack stack) {
+            Item minerItem = Item.getItemFromBlock(getMinerBlock());
+            if (stack.getItem() == minerItem) {
+                return getUsageHandler(inputId, ingredients);
+            }
+        }
+        return super.getUsageAndCatalystHandler(inputId, ingredients);
     }
 
     public class CachedVoidRecipe extends CachedBaseRecipe {
