@@ -56,8 +56,8 @@ public class TextureLoader {
 
             assembler.assemble()
                 .inject();
-            Logger.info("[TextureLoader] Loaded config textures for {}", modid);
 
+            Logger.info("[TextureLoader] Loaded config textures");
         } catch (Exception e) {
             Logger.error("[TextureLoader] Failed to load textures", e);
         }

@@ -22,7 +22,7 @@ public class MineFactoryReloadedChickens extends BaseChickenHandler {
         pinkSlimeChicken = addChicken(
             "PinkSlimeChicken",
             this.nextID(),
-            "PinkSlimeChicken.png",
+            "PinkSlimeChicken",
             0xC8738A,
             0x804954,
             SpawnType.NONE).setLang("en_US", "Pink Slime Chicken")

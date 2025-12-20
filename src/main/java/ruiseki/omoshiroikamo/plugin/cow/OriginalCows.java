@@ -49,7 +49,7 @@ public class OriginalCows extends BaseCowHandler {
         + "// ===============================================================================\n";
 
     public OriginalCows() {
-        super("Original", "Original Models", "cow/custom/");
+        super("Original", "Original Models", "cow/original/");
         this.setStartID(5000);
         this.setNeedsModPresent(false);
     }

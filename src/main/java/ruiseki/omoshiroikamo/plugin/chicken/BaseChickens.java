@@ -151,14 +151,14 @@ public class BaseChickens extends BaseChickenHandler {
         allChickens.add(brownChicken);
 
         // SMART CHICKEN
-        smartChicken = addChicken("SmartChicken", this.nextID(), "SmartChicken.png", 0xffffff, 0xffff00, SpawnType.NONE)
+        smartChicken = addChicken("SmartChicken", this.nextID(), "SmartChicken", 0xffffff, 0xffff00, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.egg))
             .setLang("en_US", "Smart Chicken")
             .setLang("ja_JP", "スマートニワトリ");
         allChickens.add(smartChicken);
 
         // BASE CHICKENS
-        flintChicken = addChicken("FlintChicken", this.nextID(), "FlintChicken.png", 0x6b6b47, 0xa3a375, SpawnType.NONE)
+        flintChicken = addChicken("FlintChicken", this.nextID(), "FlintChicken", 0x6b6b47, 0xa3a375, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.flint))
             .setLang("en_US", "Flint Chicken")
             .setLang("ja_JP", "火打石のニワトリ");
@@ -167,7 +167,7 @@ public class BaseChickens extends BaseChickenHandler {
         quartzChicken = addChicken(
             "QuartzChicken",
             this.nextID(),
-            "QuartzChicken.png",
+            "QuartzChicken",
             0x4d0000,
             0x1a0000,
             SpawnType.HELL).setLayItem(new ItemStack(Items.quartz))
@@ -175,13 +175,13 @@ public class BaseChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "ネザークォーツのニワトリ");
         allChickens.add(quartzChicken);
 
-        logChicken = addChicken("LogChicken", this.nextID(), "LogChicken.png", 0x98846d, 0x528358, SpawnType.NONE)
+        logChicken = addChicken("LogChicken", this.nextID(), "LogChicken", 0x98846d, 0x528358, SpawnType.NONE)
             .setLayItem(new ItemStack(Blocks.log))
             .setLang("en_US", "Log Chicken")
             .setLang("ja_JP", "原木のニワトリ");
         allChickens.add(logChicken);
 
-        sandChicken = addChicken("SandChicken", this.nextID(), "SandChicken.png", 0xece5b1, 0xa7a06c, SpawnType.NONE)
+        sandChicken = addChicken("SandChicken", this.nextID(), "SandChicken", 0xece5b1, 0xa7a06c, SpawnType.NONE)
             .setLayItem(new ItemStack(Blocks.sand))
             .setLang("en_US", "Sand Chicken")
             .setLang("ja_JP", "砂のニワトリ");
@@ -191,7 +191,7 @@ public class BaseChickens extends BaseChickenHandler {
         stringChicken = addChicken(
             "StringChicken",
             this.nextID(),
-            "StringChicken.png",
+            "StringChicken",
             0x331a00,
             0x800000,
             SpawnType.NONE).setLayItem(new ItemStack(Items.string))
@@ -203,7 +203,7 @@ public class BaseChickens extends BaseChickenHandler {
         glowstoneChicken = addChicken(
             "GlowstoneChicken",
             this.nextID(),
-            "GlowstoneChicken.png",
+            "GlowstoneChicken",
             0xffff66,
             0xffff00,
             SpawnType.NONE).setLayItem(new ItemStack(Items.glowstone_dust))
@@ -214,7 +214,7 @@ public class BaseChickens extends BaseChickenHandler {
         gunpowderChicken = addChicken(
             "GunpowderChicken",
             this.nextID(),
-            "GunpowderChicken.png",
+            "GunpowderChicken",
             0x999999,
             0x404040,
             SpawnType.NONE).setLayItem(new ItemStack(Items.gunpowder))
@@ -225,7 +225,7 @@ public class BaseChickens extends BaseChickenHandler {
         redstoneChicken = addChicken(
             "RedstoneChicken",
             this.nextID(),
-            "RedstoneChicken.png",
+            "RedstoneChicken",
             0xe60000,
             0x800000,
             SpawnType.NONE).setLayItem(new ItemStack(Items.redstone))
@@ -233,26 +233,26 @@ public class BaseChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "レッドストーンのニワトリ");
         allChickens.add(redstoneChicken);
 
-        glassChicken = addChicken("GlassChicken", this.nextID(), "GlassChicken.png", 0xffffff, 0xeeeeff, SpawnType.NONE)
+        glassChicken = addChicken("GlassChicken", this.nextID(), "GlassChicken", 0xffffff, 0xeeeeff, SpawnType.NONE)
             .setLayItem(new ItemStack(Blocks.glass))
             .setLang("en_US", "Glass Chicken")
             .setLang("ja_JP", "ガラスのニワトリ");
         allChickens.add(glassChicken);
 
-        ironChicken = addChicken("IronChicken", this.nextID(), "IronChicken.png", 0xffffcc, 0xffcccc, SpawnType.NONE)
+        ironChicken = addChicken("IronChicken", this.nextID(), "IronChicken", 0xffffcc, 0xffcccc, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.iron_ingot))
             .setLang("en_US", "Iron Chicken")
             .setLang("ja_JP", "鉄のニワトリ");
         allChickens.add(ironChicken);
 
-        coalChicken = addChicken("CoalChicken", this.nextID(), "CoalChicken.png", 0x262626, 0x000000, SpawnType.NONE)
+        coalChicken = addChicken("CoalChicken", this.nextID(), "CoalChicken", 0x262626, 0x000000, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.coal))
             .setLang("en_US", "Coal Chicken")
             .setLang("ja_JP", "石炭のニワトリ");
         allChickens.add(coalChicken);
 
         // TIER 3
-        goldChicken = addChicken("GoldChicken", this.nextID(), "GoldChicken.png", 0xcccc00, 0xffff80, SpawnType.NONE)
+        goldChicken = addChicken("GoldChicken", this.nextID(), "GoldChicken", 0xcccc00, 0xffff80, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.gold_ingot))
             .setLang("en_US", "Gold Chicken")
             .setLang("ja_JP", "金のニワトリ");
@@ -261,7 +261,7 @@ public class BaseChickens extends BaseChickenHandler {
         snowballChicken = addChicken(
             "SnowballChicken",
             this.nextID(),
-            "SnowballChicken.png",
+            "SnowballChicken",
             0x33bbff,
             0x0088cc,
             SpawnType.SNOW).setLayItem(new ItemStack(Items.snowball))
@@ -269,19 +269,19 @@ public class BaseChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "雪玉のニワトリ");
         allChickens.add(snowballChicken);
 
-        waterChicken = addChicken("WaterChicken", this.nextID(), "WaterChicken.png", 0x000099, 0x8080ff, SpawnType.NONE)
+        waterChicken = addChicken("WaterChicken", this.nextID(), "WaterChicken", 0x000099, 0x8080ff, SpawnType.NONE)
             .setLayItem(ModItems.LIQUID_EGG.newItemStack(1, 0))
             .setLang("en_US", "Water Chicken")
             .setLang("ja_JP", "水のニワトリ");
         allChickens.add(waterChicken);
 
-        lavaChicken = addChicken("LavaChicken", this.nextID(), "LavaChicken.png", 0xcc3300, 0xffff00, SpawnType.HELL)
+        lavaChicken = addChicken("LavaChicken", this.nextID(), "LavaChicken", 0xcc3300, 0xffff00, SpawnType.HELL)
             .setLayItem(ModItems.LIQUID_EGG.newItemStack(1, 1))
             .setLang("en_US", "Lava Chicken")
             .setLang("ja_JP", "溶岩のニワトリ");
         allChickens.add(lavaChicken);
 
-        clayChicken = addChicken("ClayChicken", this.nextID(), "ClayChicken.png", 0xcccccc, 0xbfbfbf, SpawnType.NONE)
+        clayChicken = addChicken("ClayChicken", this.nextID(), "ClayChicken", 0xcccccc, 0xbfbfbf, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.clay_ball))
             .setLang("en_US", "Clay Chicken")
             .setLang("ja_JP", "粘土のニワトリ");
@@ -290,7 +290,7 @@ public class BaseChickens extends BaseChickenHandler {
         leatherChicken = addChicken(
             "LeatherChicken",
             this.nextID(),
-            "LeatherChicken.png",
+            "LeatherChicken",
             0xA7A06C,
             0x919191,
             SpawnType.NONE).setLayItem(new ItemStack(Items.leather))
@@ -301,7 +301,7 @@ public class BaseChickens extends BaseChickenHandler {
         netherwartChicken = addChicken(
             "NetherwartChicken",
             this.nextID(),
-            "NetherwartChicken.png",
+            "NetherwartChicken",
             0x800000,
             0x331a00,
             SpawnType.NONE).setLayItem(new ItemStack(Items.nether_wart))
@@ -313,7 +313,7 @@ public class BaseChickens extends BaseChickenHandler {
         diamondChicken = addChicken(
             "DiamondChicken",
             this.nextID(),
-            "DiamondChicken.png",
+            "DiamondChicken",
             0x99ccff,
             0xe6f2ff,
             SpawnType.NONE).setLayItem(new ItemStack(Items.diamond))
@@ -321,26 +321,26 @@ public class BaseChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "ダイヤモンドのニワトリ");
         allChickens.add(diamondChicken);
 
-        blazeChicken = addChicken("BlazeChicken", this.nextID(), "BlazeChicken.png", 0xffff66, 0xff3300, SpawnType.NONE)
+        blazeChicken = addChicken("BlazeChicken", this.nextID(), "BlazeChicken", 0xffff66, 0xff3300, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.blaze_rod))
             .setLang("en_US", "Blaze Chicken")
             .setLang("ja_JP", "ブレイズのニワトリ");
         allChickens.add(blazeChicken);
 
-        slimeChicken = addChicken("SlimeChicken", this.nextID(), "SlimeChicken.png", 0x009933, 0x99ffbb, SpawnType.NONE)
+        slimeChicken = addChicken("SlimeChicken", this.nextID(), "SlimeChicken", 0x009933, 0x99ffbb, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.slime_ball))
             .setLang("en_US", "Slime Chicken")
             .setLang("ja_JP", "スライムのニワトリ");
         allChickens.add(slimeChicken);
 
         // TIER 5
-        enderChicken = addChicken("EnderChicken", this.nextID(), "EnderChicken.png", 0x001a00, 0x001a33, SpawnType.NONE)
+        enderChicken = addChicken("EnderChicken", this.nextID(), "EnderChicken", 0x001a00, 0x001a33, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.ender_pearl))
             .setLang("en_US", "Ender Chicken")
             .setLang("ja_JP", "エンダーのニワトリ");
         allChickens.add(enderChicken);
 
-        ghastChicken = addChicken("GhastChicken", this.nextID(), "GhastChicken.png", 0xffffcc, 0xffffff, SpawnType.NONE)
+        ghastChicken = addChicken("GhastChicken", this.nextID(), "GhastChicken", 0xffffcc, 0xffffff, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.ghast_tear))
             .setLang("en_US", "Ghast Chicken")
             .setLang("ja_JP", "ガストのニワトリ");
@@ -349,7 +349,7 @@ public class BaseChickens extends BaseChickenHandler {
         emeraldChicken = addChicken(
             "EmeraldChicken",
             this.nextID(),
-            "EmeraldChicken.png",
+            "EmeraldChicken",
             0x00cc00,
             0x003300,
             SpawnType.NONE).setLayItem(new ItemStack(Items.emerald))
@@ -357,13 +357,13 @@ public class BaseChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "エメラルドのニワトリ");
         allChickens.add(emeraldChicken);
 
-        magmaChicken = addChicken("MagmaChicken", this.nextID(), "MagmaChicken.png", 0x1a0500, 0x000000, SpawnType.NONE)
+        magmaChicken = addChicken("MagmaChicken", this.nextID(), "MagmaChicken", 0x1a0500, 0x000000, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.magma_cream))
             .setLang("en_US", "Magma Chicken")
             .setLang("ja_JP", "マグマのニワトリ");
         allChickens.add(magmaChicken);
 
-        xpChicken = addChicken("XpChicken", this.nextID(), "XpChicken.png", 0x3dff1e, 0x3ff123, SpawnType.NONE)
+        xpChicken = addChicken("XpChicken", this.nextID(), "XpChicken", 0x3dff1e, 0x3ff123, SpawnType.NONE)
             .setLayItem(new ItemStack(ModItems.SOLID_XP.getItem(), 1, 0))
             .setLang("en_US", "XP Chicken")
             .setLang("ja_JP", "経験値のニワトリ");
@@ -374,7 +374,7 @@ public class BaseChickens extends BaseChickenHandler {
             pShardChicken = addChicken(
                 "PShardChicken",
                 this.nextID(),
-                "PShardChicken.png",
+                "PShardChicken",
                 0x43806e,
                 0x9fcbbc,
                 SpawnType.NONE).setLayString("etfuturum:prismarine_shard")
@@ -385,7 +385,7 @@ public class BaseChickens extends BaseChickenHandler {
             pCrystalChicken = addChicken(
                 "PCrystalChicken",
                 this.nextID(),
-                "PCrystalChicken.png",
+                "PCrystalChicken",
                 0x4e6961,
                 0xdfe9dc,
                 SpawnType.NONE).setLayString("etfuturum:prismarine_crystals")
@@ -397,7 +397,7 @@ public class BaseChickens extends BaseChickenHandler {
         soulsandChicken = addChicken(
             "SoulSandChicken",
             this.nextID(),
-            "SoulSandChicken.png",
+            "SoulSandChicken",
             0x453125,
             0xd52f08,
             SpawnType.HELL).setLayItem(new ItemStack(Blocks.soul_sand, 1, 0))
@@ -408,7 +408,7 @@ public class BaseChickens extends BaseChickenHandler {
         obsidianChicken = addChicken(
             "ObsidianChicken",
             this.nextID(),
-            "ObsidianChicken.png",
+            "ObsidianChicken",
             0x08080e,
             0x463a60,
             SpawnType.NONE).setLayItem(new ItemStack(Blocks.obsidian, 1, 0))

@@ -24,7 +24,7 @@ public class DraconicEvolutionChickens extends BaseChickenHandler {
         draconiumChicken = addChicken(
             "DraconiumChicken",
             this.nextID(),
-            "DraconiumChicken.png",
+            "DraconiumChicken",
             0x301549,
             0x1a0c27,
             SpawnType.NONE).setLayString("ore:ingotDraconium")
@@ -35,7 +35,7 @@ public class DraconicEvolutionChickens extends BaseChickenHandler {
         draconiumAwakenedChicken = addChicken(
             "DraconiumAwakenedChicken",
             this.nextID(),
-            "DraconiumAwakenedChicken.png",
+            "DraconiumAwakenedChicken",
             0xcc440c,
             0x9c691a,
             SpawnType.NONE).setLayString("ore:nuggetDraconiumAwakened")

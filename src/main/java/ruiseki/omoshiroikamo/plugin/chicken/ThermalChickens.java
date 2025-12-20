@@ -29,7 +29,7 @@ public class ThermalChickens extends BaseChickenHandler {
         basalzRodChicken = addChicken(
             "BasalzRodChicken",
             nextID(),
-            "BasalzRodChicken.png",
+            "BasalzRodChicken",
             0x980000,
             0x6E6664,
             SpawnType.NONE).setLayString("ore:rodBasalz")
@@ -40,7 +40,7 @@ public class ThermalChickens extends BaseChickenHandler {
         blitzRodChicken = addChicken(
             "BlitzRodChicken",
             nextID(),
-            "BlitzRodChicken.png",
+            "BlitzRodChicken",
             0xECE992,
             0x66E5EF,
             SpawnType.NONE).setLayString("ore:rodBlitz")
@@ -51,7 +51,7 @@ public class ThermalChickens extends BaseChickenHandler {
         blizzRodChicken = addChicken(
             "BlizzRodChicken",
             nextID(),
-            "BlizzRodChicken.png",
+            "BlizzRodChicken",
             0x88E0FF,
             0x1D3B95,
             SpawnType.NONE).setLayString("ore:rodBlizz")
@@ -62,7 +62,7 @@ public class ThermalChickens extends BaseChickenHandler {
         cinnabarChicken = addChicken(
             "CinnabarChicken",
             nextID(),
-            "CinnabarChicken.png",
+            "CinnabarChicken",
             0xE49790,
             0x9B3229,
             SpawnType.NONE).setLayString("ore:crystalCinnabar")
@@ -73,7 +73,7 @@ public class ThermalChickens extends BaseChickenHandler {
         enderiumChicken = addChicken(
             "EnderiumChicken",
             nextID(),
-            "EnderiumChicken.png",
+            "EnderiumChicken",
             0x127575,
             0x0A4849,
             SpawnType.NONE).setLayString("ore:nuggetEnderium")
@@ -81,7 +81,7 @@ public class ThermalChickens extends BaseChickenHandler {
                 .setLang("ja_JP", "エンダリウムのニワトリ");
         allChickens.add(enderiumChicken);
 
-        lumiumChicken = addChicken("LumiumChicken", nextID(), "LumiumChicken.png", 0xEEF4DF, 0xF4B134, SpawnType.NONE)
+        lumiumChicken = addChicken("LumiumChicken", nextID(), "LumiumChicken", 0xEEF4DF, 0xF4B134, SpawnType.NONE)
             .setLayString("ore:ingotLumium")
             .setLang("en_US", "Lumium Chicken")
             .setLang("ja_JP", "ルミウムのニワトリ");
@@ -90,7 +90,7 @@ public class ThermalChickens extends BaseChickenHandler {
         mithrilChicken = addChicken(
             "MithrilChicken",
             nextID(),
-            "MithrilChicken.png",
+            "MithrilChicken",
             0x5A89A8,
             0xA7FFFF,
             SpawnType.NONE).setLayString("ore:ingotMithril")
@@ -101,7 +101,7 @@ public class ThermalChickens extends BaseChickenHandler {
         signalumChicken = addChicken(
             "SignalumChicken",
             nextID(),
-            "SignalumChicken.png",
+            "SignalumChicken",
             0xFFA424,
             0xC63200,
             SpawnType.NONE).setLayString("ore:ingotSignalum")

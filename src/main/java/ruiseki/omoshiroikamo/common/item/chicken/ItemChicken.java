@@ -84,9 +84,7 @@ public class ItemChicken extends ItemOK {
             ChickensRegistryItem item = chicken.getItem();
 
             String iconName = item.getIconName();
-            if (iconName == null) {
-                iconName = LibResources.PREFIX_MOD + "chicken/" + chicken.getName();
-            }
+
             IIcon icon = reg.registerIcon(iconName);
             icons.put(type, icon);
 

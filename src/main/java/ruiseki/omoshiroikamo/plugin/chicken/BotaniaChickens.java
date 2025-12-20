@@ -24,7 +24,7 @@ public class BotaniaChickens extends BaseChickenHandler {
         terrasteelChicken = addChicken(
             "TerrasteelChicken",
             this.nextID(),
-            "TerrasteelChicken.png",
+            "TerrasteelChicken",
             0x3ff123,
             0xf5fcf1,
             SpawnType.NONE).setLayString("ore:ingotTerrasteel")
@@ -35,7 +35,7 @@ public class BotaniaChickens extends BaseChickenHandler {
         manasteelChicken = addChicken(
             "ManasteelChicken",
             this.nextID(),
-            "ManasteelChicken.png",
+            "ManasteelChicken",
             0x69d7ff,
             0x002c4b,
             SpawnType.NONE).setLayString("ore:ingotManasteel")
@@ -46,7 +46,7 @@ public class BotaniaChickens extends BaseChickenHandler {
         elementiumChicken = addChicken(
             "ElementiumChicken",
             this.nextID(),
-            "ElementiumChicken.png",
+            "ElementiumChicken",
             0xf655f3,
             0xb407b7,
             SpawnType.NONE).setLayString("ore:nuggetElvenElementium")

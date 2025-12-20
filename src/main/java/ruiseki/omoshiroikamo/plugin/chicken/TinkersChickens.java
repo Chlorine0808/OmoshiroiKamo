@@ -27,13 +27,13 @@ public class TinkersChickens extends BaseChickenHandler {
     public List<ChickensRegistryItem> registerChickens() {
         List<ChickensRegistryItem> allChickens = new ArrayList<>();
 
-        arditeChicken = addChicken("ArditeChicken", nextID(), "ArditeChicken.png", 0xdc3e00, 0xffb20b, SpawnType.NONE)
+        arditeChicken = addChicken("ArditeChicken", nextID(), "ArditeChicken", 0xdc3e00, 0xffb20b, SpawnType.NONE)
             .setLayString("ore:ingotArdite")
             .setLang("en_US", "Ardite Chicken")
             .setLang("ja_JP", "アルダイトのニワトリ");
         allChickens.add(arditeChicken);
 
-        colbaltChicken = addChicken("CobaltChicken", nextID(), "CobaltChicken.png", 0x0c5abe, 0x03d94f1, SpawnType.NONE)
+        colbaltChicken = addChicken("CobaltChicken", nextID(), "CobaltChicken", 0x0c5abe, 0x03d94f1, SpawnType.NONE)
             .setLayString("ore:ingotCobalt")
             .setLang("en_US", "Cobalt Chicken")
             .setLang("ja_JP", "コバルトのニワトリ");
@@ -42,7 +42,7 @@ public class TinkersChickens extends BaseChickenHandler {
         manyullynChicken = addChicken(
             "ManyullynChicken",
             nextID(),
-            "ManyullynChicken.png",
+            "ManyullynChicken",
             0x652e87,
             0xbc8fe7,
             SpawnType.NONE).setLayString("ore:ingotManyullyn")
@@ -53,7 +53,7 @@ public class TinkersChickens extends BaseChickenHandler {
         pigIronChicken = addChicken(
             "PigIronChicken",
             nextID(),
-            "PigIronChicken.png",
+            "PigIronChicken",
             0xe6b8b8,
             0xdba9a9,
             SpawnType.NONE).setLayString("ore:ingotPigIron")
@@ -64,7 +64,7 @@ public class TinkersChickens extends BaseChickenHandler {
         bloodSlimeChicken = addChicken(
             "BloodSlimeChicken",
             nextID(),
-            "BloodSlimeChicken.png",
+            "BloodSlimeChicken",
             0xc50616,
             0xee0316,
             SpawnType.NONE).setLayItem(new ItemStack(TinkerWorld.strangeFood, 1, 1))
@@ -75,7 +75,7 @@ public class TinkersChickens extends BaseChickenHandler {
         blueSlimeChicken = addChicken(
             "BlueSlimeChicken",
             nextID(),
-            "BlueSlimeChicken.png",
+            "BlueSlimeChicken",
             0x67b4c4,
             0x30717f,
             SpawnType.NONE).setLayItem(new ItemStack(TinkerWorld.strangeFood, 1, 0))

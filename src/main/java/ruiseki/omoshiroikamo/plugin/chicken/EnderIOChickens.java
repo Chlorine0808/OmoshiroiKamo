@@ -31,7 +31,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         electricalSteelChicken = addChicken(
             "ElectricalSteelChicken",
             this.nextID(),
-            "ElectricalSteelChicken.png",
+            "ElectricalSteelChicken",
             0x939393,
             0x474747,
             SpawnType.NONE).setLayString("ore:ingotElectricalSteel")
@@ -42,7 +42,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         energeticAlloyChicken = addChicken(
             "EnergeticAlloyChicken",
             this.nextID(),
-            "EnergeticAlloyChicken.png",
+            "EnergeticAlloyChicken",
             0xea6c05,
             0x65321b,
             SpawnType.NONE).setLayString("ore:ingotEnergeticAlloy")
@@ -53,7 +53,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         vibrantAlloyChicken = addChicken(
             "VibrantAlloyChicken",
             this.nextID(),
-            "VibrantAlloyChicken.png",
+            "VibrantAlloyChicken",
             0xbcf239,
             0x779c1d,
             SpawnType.NONE).setLayString("ore:ingotVibrantAlloy")
@@ -64,7 +64,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         redstoneAlloyChicken = addChicken(
             "RedstoneAlloyChicken",
             this.nextID(),
-            "RedstoneAlloyChicken.png",
+            "RedstoneAlloyChicken",
             0xd03939,
             0x621919,
             SpawnType.NONE).setLayString("ore:ingotRedstoneAlloy")
@@ -75,7 +75,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         conductiveIronChicken = addChicken(
             "ConductiveIronChicken",
             this.nextID(),
-            "ConductiveIronChicken.png",
+            "ConductiveIronChicken",
             0xCC9D96,
             0x7E6764,
             SpawnType.NONE).setLayString("ore:ingotConductiveIron")
@@ -86,7 +86,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         pulsatingIronChicken = addChicken(
             "PulsatingIronChicken",
             this.nextID(),
-            "PulsatingIronChicken.png",
+            "PulsatingIronChicken",
             0x6FE78B,
             0x406448,
             SpawnType.NONE).setLayString("ore:ingotPulsatingIron")
@@ -97,7 +97,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         darkSteelChicken = addChicken(
             "DarkSteelChicken",
             this.nextID(),
-            "DarkSteelChicken.png",
+            "DarkSteelChicken",
             0x4D4D4E,
             0x242424,
             SpawnType.NONE).setLayString("ore:ingotDarkSteel")
@@ -108,7 +108,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         endSteelChicken = addChicken(
             "EndSteelChicken",
             this.nextID(),
-            "EndSteelChicken.png",
+            "EndSteelChicken",
             0x6F6935,
             0xF5EFBB,
             SpawnType.NONE).setLayString("ore:ingotEndSteel")
@@ -119,7 +119,7 @@ public class EnderIOChickens extends BaseChickenHandler {
         soulariumChicken = addChicken(
             "SoulariumChicken",
             this.nextID(),
-            "SoulariumChicken.png",
+            "SoulariumChicken",
             0x6F5C36,
             0x4E371A,
             SpawnType.NONE).setLayString("ore:ingotSoularium")

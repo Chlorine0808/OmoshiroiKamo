@@ -22,7 +22,7 @@ public class MekanismChickens extends BaseChickenHandler {
         osmiumChicken = addChicken(
             "OsmiumChicken",
             this.nextID(),
-            "OsmiumChicken.png",
+            "OsmiumChicken",
             0x989585,
             0xd1ccb6,
             SpawnType.NONE).setLang("en_US", "Osmium Chicken")

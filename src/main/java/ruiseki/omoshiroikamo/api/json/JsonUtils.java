@@ -76,4 +76,10 @@ public class JsonUtils {
         }
         return list;
     }
+
+    public static String stripPng(String name) {
+        if (name == null) return null;
+        return name.endsWith(".png") ? name.substring(0, name.length() - 4) : name;
+    }
+
 }

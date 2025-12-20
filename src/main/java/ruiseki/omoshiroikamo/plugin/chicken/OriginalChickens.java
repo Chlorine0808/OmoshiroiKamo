@@ -35,15 +35,15 @@ public class OriginalChickens extends BaseChickenHandler {
         + "[\n"
         + "  {\n"
         + "    \"name\": \"ExampleRedChicken\",\n"
-        + "    \"texture\": \"base_chicken.png\",\n"
-        + "    \"textureOverlay\": \"base_chicken_overlay.png\",\n"
+        + "    \"texture\": \"base_chicken\",\n"
+        + "    \"textureOverlay\": \"base_chicken_overlay\",\n"
         + "    \"tintColor\": \"0xFF0000\",\n"
         + "    \"colorBorder\": \"0xFF0000\",\n"
         + "    \"colorCenter\": \"0x800000\",\n"
         + "    \"coefficient\": 1.0,\n"
         + "    \"layItem\": {\n"
         + "      \"ore\": \"dustRedstone\",\n"
-        + "      \"amount\": 1,\n"
+        + "      \"amount\": 1\n"
         + "    },\n"
         + "    \"dropItem\": {\n"
         + "      \"name\": \"minecraft:redstone\",\n"
@@ -63,7 +63,7 @@ public class OriginalChickens extends BaseChickenHandler {
         + "// ===============================================================================\n";
 
     public OriginalChickens() {
-        super("Original", "Original Chickens", "textures/entity/chicken/custom/");
+        super("Original", "Original Chickens", "textures/entity/chicken/original/");
         this.setStartID(5000);
         this.setNeedsModPresent(false); // Does not depend on external mods
     }

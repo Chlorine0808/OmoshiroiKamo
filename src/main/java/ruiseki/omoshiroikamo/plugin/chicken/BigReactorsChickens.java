@@ -26,7 +26,7 @@ public class BigReactorsChickens extends BaseChickenHandler {
         yelloriumChicken = addChicken(
             "YelloriumChicken",
             this.nextID(),
-            "YelloriumChicken.png",
+            "YelloriumChicken",
             0xA5B700,
             0xD7EF00,
             SpawnType.NONE).setLayString("ore:ingotYellorium")
@@ -37,7 +37,7 @@ public class BigReactorsChickens extends BaseChickenHandler {
         graphiteChicken = addChicken(
             "GraphiteChicken",
             this.nextID(),
-            "GraphiteChicken.png",
+            "GraphiteChicken",
             0x41453F,
             0x595959,
             SpawnType.NONE).setLayString("ore:ingotGraphite")
@@ -48,7 +48,7 @@ public class BigReactorsChickens extends BaseChickenHandler {
         cyaniteChicken = addChicken(
             "CyaniteChicken",
             this.nextID(),
-            "CyaniteChicken.png",
+            "CyaniteChicken",
             0x0068B4,
             0x5CAFDB,
             SpawnType.NONE).setLayString("ore:ingotCyanite")
@@ -59,7 +59,7 @@ public class BigReactorsChickens extends BaseChickenHandler {
         blutoniumChicken = addChicken(
             "BlutoniumChicken",
             this.nextID(),
-            "BlutoniumChicken.png",
+            "BlutoniumChicken",
             0x4642D6,
             0xf5fcf1,
             SpawnType.NONE).setLayString("ore:ingotBlutonium")
@@ -70,7 +70,7 @@ public class BigReactorsChickens extends BaseChickenHandler {
         ludicriteChicken = addChicken(
             "LudicriteChicken",
             this.nextID(),
-            "LudicriteChicken.png",
+            "LudicriteChicken",
             0xC63BE5,
             0xF27CFF,
             SpawnType.NONE).setLayString("ore:ingotLudicrite")

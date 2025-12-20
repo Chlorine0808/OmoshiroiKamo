@@ -34,7 +34,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         restoniaCrystalChicken = addChicken(
             "RestoniaCrystalChicken",
             this.nextID(),
-            "RestoniaCrystalChicken.png",
+            "RestoniaCrystalChicken",
             0xCA0000,
             0x8C0000,
             SpawnType.NONE).setLayItem(restoniaCrystal)
@@ -46,7 +46,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         palisCrystalChicken = addChicken(
             "PalisCrystalChicken",
             this.nextID(),
-            "PalisCrystalChicken.png",
+            "PalisCrystalChicken",
             0x0E0E84,
             0x000048,
             SpawnType.NONE).setLayItem(palisCrystal)
@@ -58,7 +58,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         diamantineCrystalChicken = addChicken(
             "DiamantineCrystalChicken",
             this.nextID(),
-            "DiamantineCrystalChicken.png",
+            "DiamantineCrystalChicken",
             0xAFB1FF,
             0x797CE5,
             SpawnType.NONE).setLayItem(diamantineCrystal)
@@ -70,7 +70,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         voidCrystalChicken = addChicken(
             "VoidCrystalChicken",
             this.nextID(),
-            "VoidCrystalChicken.png",
+            "VoidCrystalChicken",
             0x1F1F1F,
             0x000000,
             SpawnType.NONE).setLayItem(voidCrystal)
@@ -82,7 +82,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         emeradicCrystalChicken = addChicken(
             "EmeradicCrystalChicken",
             this.nextID(),
-            "EmeradicCrystalChicken.png",
+            "EmeradicCrystalChicken",
             0x06D306,
             0x159A0E,
             SpawnType.NONE).setLayItem(emeradicCrystal)
@@ -94,7 +94,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         enoriCrystalChicken = addChicken(
             "EnoriCrystalChicken",
             this.nextID(),
-            "EnoriCrystalChicken.png",
+            "EnoriCrystalChicken",
             0xECE3FF,
             0xB5B5B5,
             SpawnType.NONE).setLayItem(enoriCrystal)
@@ -105,7 +105,7 @@ public class ActuallyAdditionsChickens extends BaseChickenHandler {
         blackQuartzChicken = addChicken(
             "BlackQuartzChicken",
             this.nextID(),
-            "BlackQuartzChicken.png",
+            "BlackQuartzChicken",
             0x1F1F1F,
             0x535353,
             SpawnType.NONE).setLayString("ore:gemQuartzBlack")
