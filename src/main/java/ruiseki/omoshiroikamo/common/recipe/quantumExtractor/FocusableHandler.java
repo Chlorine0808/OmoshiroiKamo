@@ -195,10 +195,12 @@ public class FocusableHandler {
 
         public boolean isValidForTier(int tier) {
             if (!isValid()) return false;
-            if (weights != null && tier >= 0 && tier < weights.length) {
-                return weights[tier] > 0;
-            }
-            return false;
+            if (tier < 0) return false;
+
+            boolean hasWeight = weights != null && tier < weights.length && weights[tier] > 0;
+            boolean hasFocusedWeight = focusedWeights != null && tier < focusedWeights.length
+                && focusedWeights[tier] > 0;
+            return hasWeight || hasFocusedWeight;
         }
 
         protected double getWeightForTier(int tier) {

@@ -216,8 +216,8 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             clearLensStack.setTextColor(0x000000);
             this.input.add(clearLensStack);
 
-            // 3. Output Item (Center)
-            this.output = new PositionedStackAdv(outputStack, 84, 16);
+            // 3. Output Item (Center) skip percentage display
+            this.output = new PositionedStack(outputStack, 84, 16);
 
             // 4. Bonus Lens (Right) + Probability
             EnumDye preferred = registry.getPrioritizedLens(outputStack);

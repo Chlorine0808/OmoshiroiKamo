@@ -72,23 +72,28 @@ public class PositionedStackAdv extends PositionedStack {
     }
 
     public void drawChance() {
-        if (chance <= 0.0f || chance >= 1.0f) {
+        if (chance > 1.0f) {
             return;
         }
         float scale = 0.8f;
-
-        // Format chance with 2 significant figures
         double percent = chance * 100.0;
+
         String text;
-        if (percent >= 10.0) {
-            // 10% or higher: show as integer
-            text = String.format("%.0f%%", percent);
-        } else if (percent >= 1.0) {
-            // 1% - 10%: show 1 decimal place
+        if (chance <= 0.0f) {
+            // 0%: show as "-"
+            text = "-";
+        } else if (percent >= 10.0) {
+            // 10% - 99%: show 1 decimal place (3 sig figs)
             text = String.format("%.1f%%", percent);
-        } else {
-            // Less than 1%: show 2 decimal places
+        } else if (percent >= 1.0) {
+            // 1% - 10%: show 2 decimal places (3 sig figs)
             text = String.format("%.2f%%", percent);
+        } else if (percent >= 0.1) {
+            // 0.1% - 1%: show 3 decimal places (3 sig figs)
+            text = String.format("%.3f%%", percent);
+        } else {
+            // Less than 0.1%: show 4 decimal places
+            text = String.format("%.4f%%", percent);
         }
 
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
