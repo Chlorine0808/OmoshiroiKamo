@@ -15,7 +15,8 @@ import ruiseki.omoshiroikamo.plugin.nei.recipe.chicken.ChickenLayingRecipeHandle
 import ruiseki.omoshiroikamo.plugin.nei.recipe.chicken.ChickenThrowsRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowBreedingRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowMilkingRecipeHandler;
-import ruiseki.omoshiroikamo.plugin.nei.recipe.voidMiner.*;
+import ruiseki.omoshiroikamo.plugin.nei.recipe.voidMiner.QuantumOreExtractorRecipeHandler;
+import ruiseki.omoshiroikamo.plugin.nei.recipe.voidMiner.QuantumResExtractorRecipeHandler;
 
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
