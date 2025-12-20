@@ -4,6 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import ruiseki.omoshiroikamo.client.gui.modularui2.backpack.container.BackpackGuiContainer;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.plugin.nei.overlay.BackpackOverlay;
@@ -15,7 +16,6 @@ import ruiseki.omoshiroikamo.plugin.nei.recipe.chicken.ChickenThrowsRecipeHandle
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowBreedingRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.cow.CowMilkingRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.voidMiner.*;
-import ruiseki.omoshiroikamo.common.util.Logger;
 
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
