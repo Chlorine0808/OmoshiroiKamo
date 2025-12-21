@@ -379,6 +379,8 @@ item.crystal.tier_3.name=Abyssal Crystal
 item.crystal.tier_4.name=Aurora Crystal
 item.crystal.tier_5.name=Eclipse Crystal
 item.crystal.tier_6.name=Nebula Crystal
+item.crystal.tier_7.name=Prismatic Crystal
+item.crystal.tier_8.name=Celestial Crystal
 
 item.cowHalter.name=Cow Halter
 item.analyzer.name=Analyzer
@@ -493,6 +495,8 @@ tile.blockCrystal.tier_3.name=Block of Abyssal
 tile.blockCrystal.tier_4.name=Block of Aurora
 tile.blockCrystal.tier_5.name=Block of Eclipse
 tile.blockCrystal.tier_6.name=Block of Nebula
+tile.blockCrystal.tier_7.name=Block of Prismatic
+tile.blockCrystal.tier_8.name=Block of Celestial
 
 tile.solarArray.tier_1.name=Solar Array Tier 1
 tile.solarArray.tier_2.name=Solar Array Tier 2

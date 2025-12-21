@@ -236,6 +236,22 @@ public class QuantumExtractorRecipes {
                 EnumDye.CRYSTAL,
                 new double[] { 0, 0, 0, 0, 30, 30 }));
 
+        // Crystal 6
+        defaults.addEntry(
+            new FocusableHandler.FocusableItem(
+                LibResources.PREFIX_MOD + "crystal",
+                6,
+                EnumDye.CRYSTAL,
+                new double[] { 0, 0, 0, 0, 0, 50 }));
+
+        // Crystal 7
+        defaults.addEntry(
+            new FocusableHandler.FocusableItem(
+                LibResources.PREFIX_MOD + "crystal",
+                7,
+                EnumDye.CRYSTAL,
+                new double[] { 3, 3, 3, 3, 3, 3 }));
+
         return defaults;
     }
 
