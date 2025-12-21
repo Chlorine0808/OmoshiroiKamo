@@ -23,6 +23,7 @@ import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.init.ModRecipes;
 import ruiseki.omoshiroikamo.common.init.OKWorldGenerator;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
+import ruiseki.omoshiroikamo.common.structure.StructureManager;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
@@ -50,6 +51,13 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
         Logger.setPhase("PREINIT");
+
+        // カスタム構造体システムを初期化
+        StructureManager.getInstance()
+            .initialize(
+                event.getModConfigurationDirectory()
+                    .getParentFile());
+
         ModBlocks.preInit();
         ModItems.preInit();
         ModEntity.preInit();
