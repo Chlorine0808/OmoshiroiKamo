@@ -35,7 +35,7 @@ public class BlockQuantumOreExtractor extends AbstractTieredMBBlock<TEQuantumExt
             TEQuantumOreExtractorT4.class,
             TEQuantumOreExtractorT5.class,
             TEQuantumOreExtractorT6.class);
-        this.setLightLevel(0.5F);
+        this.setLightLevel(0.8F);
     }
 
     public static BlockQuantumOreExtractor create() {

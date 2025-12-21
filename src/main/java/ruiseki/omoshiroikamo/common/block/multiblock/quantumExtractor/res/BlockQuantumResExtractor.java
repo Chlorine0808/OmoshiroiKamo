@@ -35,7 +35,7 @@ public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExt
             TEQuantumResExtractorT4.class,
             TEQuantumResExtractorT5.class,
             TEQuantumResExtractorT6.class);
-        this.setLightLevel(0.5F);
+        this.setLightLevel(0.8F);
     }
 
     public static BlockQuantumResExtractor create() {

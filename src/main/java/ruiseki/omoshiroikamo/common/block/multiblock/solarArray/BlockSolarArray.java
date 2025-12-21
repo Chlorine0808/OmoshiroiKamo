@@ -33,6 +33,7 @@ public class BlockSolarArray extends AbstractTieredMBBlock<TESolarArray> impleme
             TESolarArrayT4.class,
             TESolarArrayT5.class,
             TESolarArrayT6.class);
+        this.setLightLevel(0.5F);
     }
 
     public static BlockSolarArray create() {
