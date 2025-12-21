@@ -1,8 +1,10 @@
 package ruiseki.omoshiroikamo.common.structure;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumBeacon.QuantumBeaconShapes;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.QuantumOreExtractorShapes;
@@ -18,7 +22,7 @@ import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.SolarArrayShapes
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 /**
- * デフォルト構造体JSONファイルを生成
+ * デフォルト構造体JSONファイルを生成・更新
  */
 public class DefaultStructureGenerator {
 
@@ -26,7 +30,7 @@ public class DefaultStructureGenerator {
         .create();
 
     /**
-     * 全てのデフォルト構造体JSONを生成
+     * 全ての構造体JSONを生成または更新（欠けているエントリを追加）
      */
     public static void generateAllIfMissing(File configDir) {
         File structuresDir = new File(configDir, "structures");
@@ -35,102 +39,159 @@ public class DefaultStructureGenerator {
         }
 
         // Ore Miner
-        File oreMinerFile = new File(structuresDir, "ore_miner.json");
-        if (!oreMinerFile.exists()) {
-            generateOreMinerJson(oreMinerFile);
-        }
+        updateOreMinerJson(new File(structuresDir, "ore_miner.json"));
 
         // Resource Miner
-        File resMinerFile = new File(structuresDir, "res_miner.json");
-        if (!resMinerFile.exists()) {
-            generateResMinerJson(resMinerFile);
-        }
+        updateResMinerJson(new File(structuresDir, "res_miner.json"));
 
         // Solar Array
-        File solarFile = new File(structuresDir, "solar_array.json");
-        if (!solarFile.exists()) {
-            generateSolarArrayJson(solarFile);
-        }
+        updateSolarArrayJson(new File(structuresDir, "solar_array.json"));
 
         // Quantum Beacon
-        File beaconFile = new File(structuresDir, "quantum_beacon.json");
-        if (!beaconFile.exists()) {
-            generateBeaconJson(beaconFile);
+        updateBeaconJson(new File(structuresDir, "quantum_beacon.json"));
+    }
+
+    /**
+     * Ore Miner JSONを更新（欠けているエントリを追加）
+     */
+    private static void updateOreMinerJson(File file) {
+        Map<String, Map<String, Object>> required = new LinkedHashMap<>();
+        required.put("default", createDefaultMappings("oreMiner"));
+        required.put(
+            "oreExtractorTier1",
+            createStructureEntry("oreExtractorTier1", QuantumOreExtractorShapes.SHAPE_TIER_1));
+        required.put(
+            "oreExtractorTier2",
+            createStructureEntry("oreExtractorTier2", QuantumOreExtractorShapes.SHAPE_TIER_2));
+        required.put(
+            "oreExtractorTier3",
+            createStructureEntry("oreExtractorTier3", QuantumOreExtractorShapes.SHAPE_TIER_3));
+        required.put(
+            "oreExtractorTier4",
+            createStructureEntry("oreExtractorTier4", QuantumOreExtractorShapes.SHAPE_TIER_4));
+        required.put(
+            "oreExtractorTier5",
+            createStructureEntry("oreExtractorTier5", QuantumOreExtractorShapes.SHAPE_TIER_5));
+        required.put(
+            "oreExtractorTier6",
+            createStructureEntry("oreExtractorTier6", QuantumOreExtractorShapes.SHAPE_TIER_6));
+
+        updateConfigWithMissing(file, required, "Ore Miner");
+    }
+
+    /**
+     * Resource Miner JSONを更新
+     */
+    private static void updateResMinerJson(File file) {
+        Map<String, Map<String, Object>> required = new LinkedHashMap<>();
+        required.put("default", createDefaultMappings("resMiner"));
+        required.put(
+            "resExtractorTier1",
+            createStructureEntry("resExtractorTier1", QuantumResExtractorShapes.SHAPE_TIER_1));
+        required.put(
+            "resExtractorTier2",
+            createStructureEntry("resExtractorTier2", QuantumResExtractorShapes.SHAPE_TIER_2));
+        required.put(
+            "resExtractorTier3",
+            createStructureEntry("resExtractorTier3", QuantumResExtractorShapes.SHAPE_TIER_3));
+        required.put(
+            "resExtractorTier4",
+            createStructureEntry("resExtractorTier4", QuantumResExtractorShapes.SHAPE_TIER_4));
+        required.put(
+            "resExtractorTier5",
+            createStructureEntry("resExtractorTier5", QuantumResExtractorShapes.SHAPE_TIER_5));
+        required.put(
+            "resExtractorTier6",
+            createStructureEntry("resExtractorTier6", QuantumResExtractorShapes.SHAPE_TIER_6));
+
+        updateConfigWithMissing(file, required, "Resource Miner");
+    }
+
+    /**
+     * Solar Array JSONを更新
+     */
+    private static void updateSolarArrayJson(File file) {
+        Map<String, Map<String, Object>> required = new LinkedHashMap<>();
+        required.put("default", createDefaultMappings("solarArray"));
+        required.put("solarArrayTier1", createStructureEntry("solarArrayTier1", SolarArrayShapes.SHAPE_TIER_1));
+        required.put("solarArrayTier2", createStructureEntry("solarArrayTier2", SolarArrayShapes.SHAPE_TIER_2));
+        required.put("solarArrayTier3", createStructureEntry("solarArrayTier3", SolarArrayShapes.SHAPE_TIER_3));
+        required.put("solarArrayTier4", createStructureEntry("solarArrayTier4", SolarArrayShapes.SHAPE_TIER_4));
+        required.put("solarArrayTier5", createStructureEntry("solarArrayTier5", SolarArrayShapes.SHAPE_TIER_5));
+        required.put("solarArrayTier6", createStructureEntry("solarArrayTier6", SolarArrayShapes.SHAPE_TIER_6));
+
+        updateConfigWithMissing(file, required, "Solar Array");
+    }
+
+    /**
+     * Quantum Beacon JSONを更新
+     */
+    private static void updateBeaconJson(File file) {
+        Map<String, Map<String, Object>> required = new LinkedHashMap<>();
+        required.put("default", createDefaultMappings("beacon"));
+        required.put("beaconTier1", createStructureEntry("beaconTier1", QuantumBeaconShapes.SHAPE_TIER_1));
+        required.put("beaconTier2", createStructureEntry("beaconTier2", QuantumBeaconShapes.SHAPE_TIER_2));
+        required.put("beaconTier3", createStructureEntry("beaconTier3", QuantumBeaconShapes.SHAPE_TIER_3));
+        required.put("beaconTier4", createStructureEntry("beaconTier4", QuantumBeaconShapes.SHAPE_TIER_4));
+        required.put("beaconTier5", createStructureEntry("beaconTier5", QuantumBeaconShapes.SHAPE_TIER_5));
+        required.put("beaconTier6", createStructureEntry("beaconTier6", QuantumBeaconShapes.SHAPE_TIER_6));
+
+        updateConfigWithMissing(file, required, "Quantum Beacon");
+    }
+
+    /**
+     * 既存JSONファイルを読み込み、欠けているエントリを追加
+     */
+    @SuppressWarnings("unchecked")
+    private static void updateConfigWithMissing(File file, Map<String, Map<String, Object>> required, String typeName) {
+        List<Map<String, Object>> existing = new ArrayList<>();
+
+        // 既存ファイルを読み込む
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                JsonReader jsonReader = new JsonReader(reader);
+                jsonReader.setLenient(true);
+                Type listType = new TypeToken<ArrayList<Map<String, Object>>>() {}.getType();
+                List<Map<String, Object>> loaded = GSON.fromJson(jsonReader, listType);
+                if (loaded != null) existing.addAll(loaded);
+            } catch (Exception e) {
+                Logger.error("Failed to read existing structure config: " + file.getName(), e);
+            }
+        } else {
+            // フォルダ作成
+            File parent = file.getParentFile();
+            if (parent != null && !parent.exists()) parent.mkdirs();
         }
-    }
 
-    /**
-     * Ore Miner JSONを生成
-     */
-    private static void generateOreMinerJson(File file) {
-        List<Object> entries = new ArrayList<>();
+        // 既存エントリの名前を取得
+        List<String> existingNames = new ArrayList<>();
+        for (Map<String, Object> entry : existing) {
+            Object name = entry.get("name");
+            if (name != null) existingNames.add(name.toString());
+        }
 
-        // デフォルトマッピング
-        entries.add(createDefaultMappings("oreMiner"));
+        // 欠けているエントリを追加
+        boolean updated = false;
+        List<String> addedEntries = new ArrayList<>();
+        for (Map.Entry<String, Map<String, Object>> req : required.entrySet()) {
+            if (!existingNames.contains(req.getKey())) {
+                existing.add(req.getValue());
+                addedEntries.add(req.getKey());
+                updated = true;
+            }
+        }
 
-        // 各Tierの構造体
-        entries.add(createStructureEntry("oreExtractorTier1", QuantumOreExtractorShapes.SHAPE_TIER_1));
-        entries.add(createStructureEntry("oreExtractorTier2", QuantumOreExtractorShapes.SHAPE_TIER_2));
-        entries.add(createStructureEntry("oreExtractorTier3", QuantumOreExtractorShapes.SHAPE_TIER_3));
-        entries.add(createStructureEntry("oreExtractorTier4", QuantumOreExtractorShapes.SHAPE_TIER_4));
-        entries.add(createStructureEntry("oreExtractorTier5", QuantumOreExtractorShapes.SHAPE_TIER_5));
-        entries.add(createStructureEntry("oreExtractorTier6", QuantumOreExtractorShapes.SHAPE_TIER_6));
-
-        writeJson(file, entries);
-    }
-
-    /**
-     * Resource Miner JSONを生成
-     */
-    private static void generateResMinerJson(File file) {
-        List<Object> entries = new ArrayList<>();
-
-        entries.add(createDefaultMappings("resMiner"));
-
-        entries.add(createStructureEntry("resExtractorTier1", QuantumResExtractorShapes.SHAPE_TIER_1));
-        entries.add(createStructureEntry("resExtractorTier2", QuantumResExtractorShapes.SHAPE_TIER_2));
-        entries.add(createStructureEntry("resExtractorTier3", QuantumResExtractorShapes.SHAPE_TIER_3));
-        entries.add(createStructureEntry("resExtractorTier4", QuantumResExtractorShapes.SHAPE_TIER_4));
-        entries.add(createStructureEntry("resExtractorTier5", QuantumResExtractorShapes.SHAPE_TIER_5));
-        entries.add(createStructureEntry("resExtractorTier6", QuantumResExtractorShapes.SHAPE_TIER_6));
-
-        writeJson(file, entries);
-    }
-
-    /**
-     * Solar Array JSONを生成
-     */
-    private static void generateSolarArrayJson(File file) {
-        List<Object> entries = new ArrayList<>();
-
-        entries.add(createDefaultMappings("solarArray"));
-
-        entries.add(createStructureEntry("solarArrayTier1", SolarArrayShapes.SHAPE_TIER_1));
-        entries.add(createStructureEntry("solarArrayTier2", SolarArrayShapes.SHAPE_TIER_2));
-        entries.add(createStructureEntry("solarArrayTier3", SolarArrayShapes.SHAPE_TIER_3));
-        entries.add(createStructureEntry("solarArrayTier4", SolarArrayShapes.SHAPE_TIER_4));
-        entries.add(createStructureEntry("solarArrayTier5", SolarArrayShapes.SHAPE_TIER_5));
-        entries.add(createStructureEntry("solarArrayTier6", SolarArrayShapes.SHAPE_TIER_6));
-
-        writeJson(file, entries);
-    }
-
-    /**
-     * Quantum Beacon JSONを生成
-     */
-    private static void generateBeaconJson(File file) {
-        List<Object> entries = new ArrayList<>();
-
-        entries.add(createDefaultMappings("beacon"));
-
-        entries.add(createStructureEntry("beaconTier1", QuantumBeaconShapes.SHAPE_TIER_1));
-        entries.add(createStructureEntry("beaconTier2", QuantumBeaconShapes.SHAPE_TIER_2));
-        entries.add(createStructureEntry("beaconTier3", QuantumBeaconShapes.SHAPE_TIER_3));
-        entries.add(createStructureEntry("beaconTier4", QuantumBeaconShapes.SHAPE_TIER_4));
-        entries.add(createStructureEntry("beaconTier5", QuantumBeaconShapes.SHAPE_TIER_5));
-        entries.add(createStructureEntry("beaconTier6", QuantumBeaconShapes.SHAPE_TIER_6));
-
-        writeJson(file, entries);
+        // 変更があれば書き込み
+        if (updated) {
+            writeJson(file, existing);
+            Logger.info("Updated " + typeName + " config with missing entries: " + String.join(", ", addedEntries));
+        } else if (!file.exists()) {
+            // 新規作成
+            writeJson(file, new ArrayList<>(required.values()));
+            Logger.info("Generated " + typeName + " structure file: " + file.getName());
+        } else {
+            Logger.info("No new entries to add to " + typeName + " config");
+        }
     }
 
     /**
