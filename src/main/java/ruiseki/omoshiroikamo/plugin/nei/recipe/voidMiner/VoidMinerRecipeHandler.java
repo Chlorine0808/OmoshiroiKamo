@@ -183,7 +183,8 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     @Override
     public IUsageHandler getUsageAndCatalystHandler(String inputId, Object... ingredients) {
-        // For miner blocks, skip catalyst short-circuit and use our tier-aware usage handler
+        // For miner blocks, skip catalyst short-circuit and use our tier-aware usage
+        // handler
         if ("item".equals(inputId) && ingredients.length > 0 && ingredients[0] instanceof ItemStack stack) {
             Item minerItem = Item.getItemFromBlock(getMinerBlock());
             if (stack.getItem() == minerItem) {
@@ -210,6 +211,8 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             clearLensStack.setChance((float) (ws.realWeight / 100.0f));
             clearLensStack.setTextYOffset(10); // Draw below
             clearLensStack.setTextColor(0x000000);
+            clearLensStack.setLabel("Clear");
+            clearLensStack.setLabelColor(0x000000);
             this.input.add(clearLensStack);
 
             // 3. Output Item (Center) skip percentage display
@@ -240,6 +243,11 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                 bonusLensStack.setChance((float) (focusedChance / 100.0f));
                 bonusLensStack.setTextYOffset(10); // Draw below
                 bonusLensStack.setTextColor(0x000000);
+                // Set color label
+                String colorName = preferred.getName();
+                colorName = Character.toUpperCase(colorName.charAt(0)) + colorName.substring(1);
+                bonusLensStack.setLabel(colorName);
+                bonusLensStack.setLabelColor(0x000000);
                 this.input.add(bonusLensStack);
             }
         }
