@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
@@ -229,7 +230,7 @@ public class DeepLearnerPanel extends ModularPanel {
         int simulationsThisTier = DataModel.getSimulationCount(stack);
         boolean isMaxTier = tier >= DataModelExperience.getMaxTier();
 
-        TextWidget<?> heartTile = IKey.lang("gui.learner_heart_tile")
+        TextWidget<?> heartTile = IKey.lang("gui.deep_learner.health_points")
             .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget();
@@ -249,13 +250,13 @@ public class DeepLearnerPanel extends ModularPanel {
             .child(hearts);
 
         Column heartCol = (Column) new Column().name("info_display_" + modelIndex)
-            .pos(195, 10)
+            .pos(185, 10)
             .coverChildren()
             .childPadding(2)
             .child(heartTile)
             .child(heartRow);
 
-        TextWidget<?> nameTile = IKey.lang("gui.learner_name_tile")
+        TextWidget<?> nameTile = IKey.lang("gui.deep_learner.heading_name")
             .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget()
@@ -274,7 +275,7 @@ public class DeepLearnerPanel extends ModularPanel {
             .child(nameTile)
             .child(nameText);
 
-        TextWidget<?> infoTile = IKey.lang("gui.learner_info_tile")
+        TextWidget<?> infoTile = IKey.lang("gui.deep_learner.heading_information")
             .scale(1f)
             .color(0xFF7CCDDB)
             .asWidget()
@@ -300,7 +301,8 @@ public class DeepLearnerPanel extends ModularPanel {
         ListWidget<Column, ?> kill = new ListWidget<>();
         Column killInfo = (Column) new Column().coverChildren()
             .childPadding(2);
-        TextWidget<?> tierText = IKey.lang("gui.learner_model_tier", IKey.lang(DataModelExperience.getTierName(tier)))
+        TextWidget<?> tierText = IKey
+            .lang("gui.deep_learner.model_tier", IKey.lang(DataModelExperience.getTierName(tier)))
             .scale(1f)
             .color(0xFFFFFFFF)
             .alignment(Alignment.CenterLeft)
@@ -308,7 +310,7 @@ public class DeepLearnerPanel extends ModularPanel {
             .left(0)
             .width(200);
 
-        TextWidget<?> totalKillText = IKey.lang("gui.learner_model_defeated", totalKillCount)
+        TextWidget<?> totalKillText = IKey.lang("gui.deep_learner.defeated", totalKillCount)
             .scale(1f)
             .color(0xFFFFFFFF)
             .alignment(Alignment.CenterLeft)
@@ -322,10 +324,7 @@ public class DeepLearnerPanel extends ModularPanel {
                 .ceil(DataModelExperience.getKillsToNextTier(tier, killsThisTier, simulationsThisTier));
 
             defeatedMoreText = IKey
-                .lang(
-                    "gui.learner_model_defeated_more",
-                    killsRemaining,
-                    IKey.lang(DataModelExperience.getTierName(tier + 1)))
+                .lang("gui.deep_learner.required", killsRemaining, IKey.lang(DataModelExperience.getTierName(tier + 1)))
                 .scale(1f)
                 .color(0xFFFFFFFF)
                 .alignment(Alignment.CenterLeft)
@@ -365,6 +364,10 @@ public class DeepLearnerPanel extends ModularPanel {
             .right(13)
             .background(RIGHT_BUTTON)
             .hoverBackground(HOVER_RIGHT_BUTTON)
+            .tooltip(tooltip -> {
+                tooltip.addLine(LibMisc.LANG.localize("gui.deep_learner.button_next"));
+                tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);
+            })
             .onMousePressed(button -> {
                 if (button == 0) {
                     Interactable.playButtonClickSound();
@@ -377,6 +380,10 @@ public class DeepLearnerPanel extends ModularPanel {
             .left(13)
             .background(LEFT_BUTTON)
             .hoverBackground(HOVER_LEFT_BUTTON)
+            .tooltip(tooltip -> {
+                tooltip.addLine(LibMisc.LANG.localize("gui.deep_learner.button_prev"));
+                tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);
+            })
             .onMousePressed(button -> {
                 if (button == 0) {
                     Interactable.playButtonClickSound();

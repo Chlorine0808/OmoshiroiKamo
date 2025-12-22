@@ -22,17 +22,17 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.ICraftingUpgrade;
 public class CraftingUpgradeWidget extends ExpandedUpgradeTabWidget<CraftingUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> INTO_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.into_backpack"), MGuiTextures.INTO_BACKPACK),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.into_inventory"), MGuiTextures.INTO_INVENTORY));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.into_backpack"), MGuiTextures.INTO_BACKPACK),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.into_inventory"), MGuiTextures.INTO_INVENTORY));
 
     private static final List<CyclicVariantButtonWidget.Variant> USED_BACKPACK_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.used_backpack"), MGuiTextures.USED_BACKPACK),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.unused_backpack"), MGuiTextures.UNUSED_BACKPACK));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.used_backpack"), MGuiTextures.USED_BACKPACK),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.unused_backpack"), MGuiTextures.UNUSED_BACKPACK));
 
     private final CraftingUpgradeWrapper wrapper;
 
     public CraftingUpgradeWidget(int slotIndex, CraftingUpgradeWrapper wrapper, BackpackPanel panel) {
-        super(slotIndex, 5, ModItems.CRAFTING_UPGRADE.newItemStack(), "gui.crafting_settings", 90);
+        super(slotIndex, 5, ModItems.CRAFTING_UPGRADE.newItemStack(), "gui.backpack.crafting_settings", 90);
         this.wrapper = wrapper;
 
         this.syncHandler("upgrades", slotIndex);

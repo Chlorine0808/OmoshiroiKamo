@@ -89,11 +89,11 @@ public class BackpackPanel extends ModularPanel {
 
     private static final List<CyclicVariantButtonWidget.Variant> SORT_TYPE_VARIANTS = Arrays.asList(
         new CyclicVariantButtonWidget.Variant(
-            IKey.lang(LibMisc.LANG.localize("gui.sort_by_name")),
+            IKey.lang(LibMisc.LANG.localize("gui.backpack.sort_by_name")),
             MGuiTextures.SMALL_A_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.sort_by_mod_id"), MGuiTextures.SMALL_M_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.sort_by_count"), MGuiTextures.SMALL_1_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.sort_by_ore_dict"), MGuiTextures.SMALL_O_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.sort_by_mod_id"), MGuiTextures.SMALL_M_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.sort_by_count"), MGuiTextures.SMALL_1_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.sort_by_ore_dict"), MGuiTextures.SMALL_O_ICON));
 
     public static BackpackPanel defaultPanel(PanelSyncManager syncManager, UISettings settings, EntityPlayer player,
         TileEntity tileEntity, BackpackHandler handler, int width, int height, Integer slotIndex) {
@@ -252,7 +252,7 @@ public class BackpackPanel extends ModularPanel {
                 })
                 .tooltipStatic(
                     (tooltip) -> {
-                        tooltip.addLine(IKey.lang("gui.sort_inventory"))
+                        tooltip.addLine(IKey.lang("gui.backpack.sort_inventory"))
                             .pos(RichTooltip.Pos.NEXT_TO_MOUSE);
                     });
 
@@ -301,11 +301,11 @@ public class BackpackPanel extends ModularPanel {
                 .tooltipAutoUpdate(true)
                 .tooltipDynamic(tooltip -> {
                     if (Interactable.hasShiftDown()) {
-                        tooltip.addLine(IKey.lang("gui.transfer_to_player_inv"));
+                        tooltip.addLine(IKey.lang("gui.backpack.transfer_to_player_inv"));
                     } else {
-                        tooltip.addLine(IKey.lang("gui.transfer_to_player_inv_matched_1"))
+                        tooltip.addLine(IKey.lang("gui.backpack.transfer_to_player_inv_matched_1"))
                             .addLine(
-                                IKey.lang("gui.transfer_to_player_inv_matched_2")
+                                IKey.lang("gui.backpack.transfer_to_player_inv_matched_2")
                                     .style(IKey.GRAY));
                     }
 
@@ -334,11 +334,11 @@ public class BackpackPanel extends ModularPanel {
                 .tooltipAutoUpdate(true)
                 .tooltipDynamic(tooltip -> {
                     if (Interactable.hasShiftDown()) {
-                        tooltip.addLine(IKey.lang("gui.transfer_to_backpack_inv"));
+                        tooltip.addLine(IKey.lang("gui.backpack.transfer_to_backpack_inv"));
                     } else {
-                        tooltip.addLine(IKey.lang("gui.transfer_to_backpack_inv_matched_1"))
+                        tooltip.addLine(IKey.lang("gui.backpack.transfer_to_backpack_inv_matched_1"))
                             .addLine(
-                                IKey.lang("gui.transfer_to_backpack_inv_matched_2")
+                                IKey.lang("gui.backpack.transfer_to_backpack_inv_matched_2")
                                     .style(IKey.GRAY));
                     }
 

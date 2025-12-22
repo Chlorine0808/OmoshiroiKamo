@@ -30,7 +30,7 @@ public class SettingTabWidget extends Widget<SettingTabWidget> implements Intera
                     tooltip.addLine(IKey.lang("gui.backpack"))
                         .pos(RichTooltip.Pos.NEXT_TO_MOUSE);
                 } else {
-                    tooltip.addLine(IKey.lang("gui.settings"))
+                    tooltip.addLine(IKey.lang("gui.backpack.settings"))
                         .pos(RichTooltip.Pos.NEXT_TO_MOUSE);
                 }
                 tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);

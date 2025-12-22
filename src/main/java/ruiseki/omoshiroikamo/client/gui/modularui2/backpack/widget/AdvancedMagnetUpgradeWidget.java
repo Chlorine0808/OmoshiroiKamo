@@ -16,13 +16,15 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedMagnetUpgradeW
 public class AdvancedMagnetUpgradeWidget extends AdvancedExpandedTabWidget<AdvancedMagnetUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> EXP_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.exp_magnet"), MGuiTextures.EXP_MAGNET_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.ignore_exp_magnet"), MGuiTextures.IGNORE_EXP_MAGNET_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.exp_magnet"), MGuiTextures.EXP_MAGNET_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.ignore_exp_magnet"),
+            MGuiTextures.IGNORE_EXP_MAGNET_ICON));
 
     private static final List<CyclicVariantButtonWidget.Variant> ITEM_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.item_magnet"), MGuiTextures.ITEM_MAGNET_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.item_magnet"), MGuiTextures.ITEM_MAGNET_ICON),
         new CyclicVariantButtonWidget.Variant(
-            IKey.lang("gui.ignore_item_magnet"),
+            IKey.lang("gui.backpack.ignore_item_magnet"),
             MGuiTextures.IGNORE_ITEM_MAGNET_ICON));
 
     @Getter
@@ -35,7 +37,7 @@ public class AdvancedMagnetUpgradeWidget extends AdvancedExpandedTabWidget<Advan
             slotIndex,
             wrapper,
             new ItemStack(ModItems.ADVANCED_MAGNET_UPGRADE.getItem()),
-            "gui.advanced_magnet_settings",
+            "gui.backpack.advanced_magnet_settings",
             "adv_common_filter",
             6,
             100);

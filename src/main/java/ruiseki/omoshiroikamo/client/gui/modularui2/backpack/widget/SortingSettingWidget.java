@@ -19,7 +19,7 @@ public class SortingSettingWidget extends ExpandedTabWidget {
     private final TabWidget parentTabWidget;
 
     public SortingSettingWidget(BackpackPanel panel, BackpackSettingPanel settingPanel, TabWidget parentTabWidget) {
-        super(2, MGuiTextures.NO_SORT_ICON, "gui.sorting_settings", 80, ExpandDirection.RIGHT);
+        super(2, MGuiTextures.NO_SORT_ICON, "gui.backpack.sorting_settings", 80, ExpandDirection.RIGHT);
 
         this.panel = panel;
         this.settingPanel = settingPanel;
@@ -49,7 +49,7 @@ public class SortingSettingWidget extends ExpandedTabWidget {
                 return false;
             })
             .tooltipStatic(
-                t -> t.addLine(IKey.lang("gui.lock_all_sort"))
+                t -> t.addLine(IKey.lang("gui.backpack.lock_all_sort"))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
 
         ButtonWidget<?> unlockAllButton = new ButtonWidget<>().size(20)
@@ -71,7 +71,7 @@ public class SortingSettingWidget extends ExpandedTabWidget {
                 return false;
             })
             .tooltipStatic(
-                t -> t.addLine(IKey.lang("gui.unlock_all_sort"))
+                t -> t.addLine(IKey.lang("gui.backpack.unlock_all_sort"))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
 
         buttonRow.top(28)

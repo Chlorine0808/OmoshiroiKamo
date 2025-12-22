@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
@@ -74,17 +73,9 @@ public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExt
 
             if (duration > 0) {
                 float percent = Math.max(0f, (progress / (float) duration) * 100f);
-                tooltip.add(
-                    String.format(
-                        "%s: %s%.1f%%%s",
-                        EnumChatFormatting.GRAY + LibMisc.LANG.localize("tooltip.progress"),
-                        EnumChatFormatting.GRAY,
-                        percent,
-                        EnumChatFormatting.RESET));
+                tooltip.add(LibMisc.LANG.localize("gui.progress", percent));
             } else {
-                tooltip.add(
-                    EnumChatFormatting.GRAY + LibMisc.LANG.localize(
-                        "tooltip.progress") + ": " + EnumChatFormatting.GRAY + "N/A" + EnumChatFormatting.RESET);
+                tooltip.add(LibMisc.LANG.localize("gui.progress", 0f));
             }
         }
 

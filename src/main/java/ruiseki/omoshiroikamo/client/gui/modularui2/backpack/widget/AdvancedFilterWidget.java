@@ -41,18 +41,22 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 public class AdvancedFilterWidget extends ParentWidget<AdvancedFilterWidget> {
 
     private static final CyclicVariantButtonWidget.Variant[] FILTER_TYPE_VARIANTS = new CyclicVariantButtonWidget.Variant[] {
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON) };
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.whitelist"), MGuiTextures.CHECK_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.blacklist"), MGuiTextures.CROSS_ICON) };
 
     private static final CyclicVariantButtonWidget.Variant[] MATCH_TYPE_VARIANTS = new CyclicVariantButtonWidget.Variant[] {
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.match_item"), MGuiTextures.BY_ITEM_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.match_mod_id"), MGuiTextures.BY_MOD_ID_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.match_ore_dict"), MGuiTextures.MATCH_ORE_DICT_ICON) };
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.match_item"), MGuiTextures.BY_ITEM_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.match_mod_id"), MGuiTextures.BY_MOD_ID_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.match_ore_dict"),
+            MGuiTextures.MATCH_ORE_DICT_ICON) };
 
     private static final CyclicVariantButtonWidget.Variant[] IGNORE_DURABILITY_VARIANTS = new CyclicVariantButtonWidget.Variant[] {
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.match_durability"), MGuiTextures.MATCH_DURABILITY_ICON),
         new CyclicVariantButtonWidget.Variant(
-            IKey.lang("gui.ignore_durability"),
+            IKey.lang("gui.backpack.match_durability"),
+            MGuiTextures.MATCH_DURABILITY_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.ignore_durability"),
             MGuiTextures.IGNORE_DURABILITY_ICON) };
 
     private static final CyclicVariantButtonWidget.Variant[] IGNORE_NBT_VARIANTS = new CyclicVariantButtonWidget.Variant[] {

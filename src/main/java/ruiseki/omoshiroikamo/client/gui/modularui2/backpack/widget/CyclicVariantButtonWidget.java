@@ -49,7 +49,7 @@ public class CyclicVariantButtonWidget extends ButtonWidget<CyclicVariantButtonW
                 tooltip.addLine(variants.get(this.index).name);
                 if (!inEffect) {
                     tooltip.addLine(
-                        IKey.lang("gui.not_in_effect")
+                        IKey.lang("gui.backpack.not_in_effect")
                             .style(IKey.RED));
                 }
                 tooltip.pos(RichTooltip.Pos.NEXT_TO_MOUSE);

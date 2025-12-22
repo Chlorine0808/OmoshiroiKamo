@@ -25,7 +25,7 @@ public class ItemCraftingUpgrade extends ItemUpgrade<CraftingUpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "crafting_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "backpack.crafting_upgrade"));
     }
 
     @Override

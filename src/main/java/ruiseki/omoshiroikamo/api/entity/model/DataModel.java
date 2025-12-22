@@ -92,7 +92,7 @@ public class DataModel {
             String entityName = LibMisc.LANG.localize(
                 ModelRegistry.INSTANCE.getByType(getId(stack))
                     .getDisplayName());
-            String message = entityName + " reached the " + nextTierName + " tier";
+            String message = LibMisc.LANG.localize("tooltip.data_model.reached_tier", entityName, nextTierName);
             player.addChatMessage(new ChatComponentText(message));
             setKillCount(0, stack);
             setSimulationCount(0, stack);
@@ -192,6 +192,15 @@ public class DataModel {
             return 0;
         }
         return model.getSimulationRFCost();
+    }
+
+    public static boolean canSimulate(ItemStack stack) {
+        ModelTierRegistryItem tier = ModelTierRegistry.INSTANCE.getByType(getTier(stack));
+        if (tier == null) {
+            return false;
+        }
+
+        return tier.canSimulate;
     }
 
     public static int getCurrentTierSimulationCountWithKills(ItemStack stack) {

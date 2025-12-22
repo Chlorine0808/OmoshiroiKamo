@@ -18,8 +18,8 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IBasicFilterable;
 public class BasicFilterWidget extends ParentWidget<BasicFilterWidget> {
 
     private static final List<CyclicVariantButtonWidget.Variant> FILTER_TYPE_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist"), MGuiTextures.CHECK_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist"), MGuiTextures.CROSS_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.whitelist"), MGuiTextures.CHECK_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.blacklist"), MGuiTextures.CROSS_ICON));
 
     @Getter
     private final CyclicVariantButtonWidget filterTypeButton;

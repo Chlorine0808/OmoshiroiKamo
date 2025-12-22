@@ -27,7 +27,7 @@ public class MemorySettingWidget extends ExpandedTabWidget {
     private final CyclicVariantButtonWidget respectNBTButton;
 
     public MemorySettingWidget(BackpackPanel panel, BackpackSettingPanel settingPanel, TabWidget parentTabWidget) {
-        super(2, MGuiTextures.BRAIN_ICON, "gui.memory_settings", 80, ExpandDirection.RIGHT);
+        super(2, MGuiTextures.BRAIN_ICON, "gui.backpack.memory_settings", 80, ExpandDirection.RIGHT);
 
         this.panel = panel;
         this.settingPanel = settingPanel;
@@ -59,7 +59,7 @@ public class MemorySettingWidget extends ExpandedTabWidget {
                 return false;
             })
             .tooltipStatic(
-                t -> t.addLine(IKey.lang("gui.memorize_all"))
+                t -> t.addLine(IKey.lang("gui.backpack.memorize_all"))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
 
         ButtonWidget<?> unmemorizeAllButton = new ButtonWidget<>().size(20)
@@ -81,7 +81,7 @@ public class MemorySettingWidget extends ExpandedTabWidget {
                 return false;
             })
             .tooltipStatic(
-                t -> t.addLine(IKey.lang("gui.unmemorize_all"))
+                t -> t.addLine(IKey.lang("gui.backpack.unmemorize_all"))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
 
         respectNBTButton = new CyclicVariantButtonWidget(

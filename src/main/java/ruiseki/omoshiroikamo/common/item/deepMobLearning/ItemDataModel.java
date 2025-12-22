@@ -93,13 +93,17 @@ public class ItemDataModel extends ItemOK {
             builder.addLang("tooltip.data_model.tier", LibMisc.LANG.localize(DataModelExperience.getTierName(tier)));
             if (tier != DataModelExperience.getMaxTier()) {
                 builder.addLang(
-                    "tooltip.data_model.data.collected",
+                    "tooltip.data_model.data_collected",
                     DataModel.getCurrentTierSimulationCountWithKills(stack),
                     DataModel.getTierRoof(stack));
-                builder.addLang("tooltip.data_model.data.killmultiplier", DataModel.getKillMultiplier(stack));
+                builder.addLang("tooltip.data_model.kill_multiplier", DataModel.getKillMultiplier(stack));
             }
-            builder.addLang("tooltip.data_model.rfcost", DataModel.getSimulationTickCost(stack));
+            builder.addLang("tooltip.data_model.rf_cost", DataModel.getSimulationTickCost(stack));
             // list.add(LibMisc.LANG.localize("data_model.type", DataModel.getMatterTypeName(stack)));
+
+            if (DataModel.canSimulate(stack)) {
+                builder.addLang("tooltip.data_model.cannot_simulate");
+            }
         }
 
         list.addAll(builder.build());
