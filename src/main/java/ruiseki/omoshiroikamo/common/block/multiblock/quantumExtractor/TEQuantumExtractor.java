@@ -185,7 +185,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             return false;
         }
 
-        String blockName = Block.blockRegistry.getNameForObject(block);
+        String blockName = blockRegistry.getNameForObject(block);
         if (blockName == null) {
             return false;
         }
