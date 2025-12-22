@@ -16,6 +16,7 @@ public class PacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(LibMisc.MOD_ID);
 
     public static void init() {
+        ID = 0;
 
         INSTANCE.registerMessage(PacketProgress.class, PacketProgress.class, PacketHandler.nextID(), Side.CLIENT);
         INSTANCE.registerMessage(PacketEnergy.class, PacketEnergy.class, PacketHandler.nextID(), Side.CLIENT);
@@ -23,7 +24,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketCraftingState.class, PacketCraftingState.class, nextID(), Side.CLIENT);
 
         INSTANCE.registerMessage(PacketStall.class, PacketStall.class, PacketHandler.nextID(), Side.CLIENT);
-        INSTANCE.registerMessage(PacketLootFabricator.class, PacketLootFabricator.class, nextID(), Side.CLIENT);
+        INSTANCE.registerMessage(PacketLootFabricator.class, PacketLootFabricator.class, nextID(), Side.SERVER);
 
         INSTANCE.registerMessage(PacketNBBClientFlight.class, PacketNBBClientFlight.class, nextID(), Side.CLIENT);
 

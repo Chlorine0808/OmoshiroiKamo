@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.api.crafting.CraftingState;
 import ruiseki.omoshiroikamo.api.crafting.ICraftingTile;
+import ruiseki.omoshiroikamo.common.network.PacketCraftingState;
+import ruiseki.omoshiroikamo.common.network.PacketHandler;
 
 /*
  * IDLE
@@ -66,7 +68,7 @@ public abstract class AbstractMachine extends AbstractEnergyTE implements ICraft
         CraftingState newState = updateCraftingState();
         if (craftingState != newState) {
             craftingState = newState;
-            // PacketHandler.sendToAllAround(new PacketCraftingState(this), this);
+            PacketHandler.sendToAllAround(new PacketCraftingState(this), this);
             markDirty();
         }
     }

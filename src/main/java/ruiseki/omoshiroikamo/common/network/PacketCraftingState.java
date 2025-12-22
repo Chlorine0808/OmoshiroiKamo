@@ -21,6 +21,7 @@ public class PacketCraftingState implements IMessage, IMessageHandler<PacketCraf
 
     public PacketCraftingState(ICraftingTile tile) {
         craftingState = tile.getCraftingState();
+        pos = tile.getPos();
     }
 
     @Override
