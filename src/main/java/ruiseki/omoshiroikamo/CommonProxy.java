@@ -12,9 +12,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
+import ruiseki.omoshiroikamo.common.command.CommandStructure;
 import ruiseki.omoshiroikamo.common.init.MobOreDicts;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
@@ -95,7 +99,9 @@ public class CommonProxy {
         BaubleExpandedCompat.postInit();
     }
 
-    public void serverLoad(FMLServerStartingEvent event) {}
+    public void serverLoad(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandStructure());
+    }
 
     public void serverStarted(FMLServerStartedEvent event) {}
 
@@ -125,21 +131,21 @@ public class CommonProxy {
     public final class TickTimer {
 
         @SubscribeEvent
-        public void onTick(TickEvent.ServerTickEvent evt) {
-            if (evt.phase == TickEvent.Phase.END) {
+        public void onTick(ServerTickEvent evt) {
+            if (evt.phase == Phase.END) {
                 onServerTick();
             }
         }
 
         @SubscribeEvent
-        public void onTick(TickEvent.ClientTickEvent evt) {
-            if (evt.phase == TickEvent.Phase.END) {
+        public void onTick(ClientTickEvent evt) {
+            if (evt.phase == Phase.END) {
                 onClientTick();
             }
         }
 
         @SubscribeEvent
-        public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        public void onPlayerLogin(PlayerLoggedInEvent event) {
             StructureManager.getInstance()
                 .notifyPlayerIfNeeded(event.player);
         }
