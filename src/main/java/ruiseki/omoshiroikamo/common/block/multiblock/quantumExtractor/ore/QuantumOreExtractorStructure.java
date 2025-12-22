@@ -25,7 +25,7 @@ public class QuantumOreExtractorStructure {
     public static void registerStructureInfo() {
         STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT1.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_1,
+            QuantumOreExtractorShapes.getShape(1),
             QuantumOreExtractorShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             1,
@@ -33,7 +33,7 @@ public class QuantumOreExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT2.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_2,
+            QuantumOreExtractorShapes.getShape(2),
             QuantumOreExtractorShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             2,
@@ -41,7 +41,7 @@ public class QuantumOreExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT3.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_3,
+            QuantumOreExtractorShapes.getShape(3),
             QuantumOreExtractorShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             3,
@@ -49,7 +49,7 @@ public class QuantumOreExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT4.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_4,
+            QuantumOreExtractorShapes.getShape(4),
             QuantumOreExtractorShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             4,
@@ -57,7 +57,7 @@ public class QuantumOreExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT5.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_5,
+            QuantumOreExtractorShapes.getShape(5),
             QuantumOreExtractorShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             5,
@@ -65,7 +65,7 @@ public class QuantumOreExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
             TEQuantumOreExtractorT6.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_6,
+            QuantumOreExtractorShapes.getShape(6),
             QuantumOreExtractorShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             6,

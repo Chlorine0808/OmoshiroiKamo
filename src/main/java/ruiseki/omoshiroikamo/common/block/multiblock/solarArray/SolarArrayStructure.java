@@ -23,7 +23,7 @@ public class SolarArrayStructure {
     public static void registerStructureInfo() {
         STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
             TESolarArrayT1.class,
-            SolarArrayShapes.SHAPE_TIER_1,
+            SolarArrayShapes.getShape(1),
             SolarArrayShapes.STRUCTURE_TIER_1,
             ModBlocks.SOLAR_ARRAY.get(),
             1,
@@ -31,7 +31,7 @@ public class SolarArrayStructure {
 
         STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
             TESolarArrayT2.class,
-            SolarArrayShapes.SHAPE_TIER_2,
+            SolarArrayShapes.getShape(2),
             SolarArrayShapes.STRUCTURE_TIER_2,
             ModBlocks.SOLAR_ARRAY.get(),
             2,
@@ -39,7 +39,7 @@ public class SolarArrayStructure {
 
         STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
             TESolarArrayT3.class,
-            SolarArrayShapes.SHAPE_TIER_3,
+            SolarArrayShapes.getShape(3),
             SolarArrayShapes.STRUCTURE_TIER_3,
             ModBlocks.SOLAR_ARRAY.get(),
             3,
@@ -47,7 +47,7 @@ public class SolarArrayStructure {
 
         STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
             TESolarArrayT4.class,
-            SolarArrayShapes.SHAPE_TIER_4,
+            SolarArrayShapes.getShape(4),
             SolarArrayShapes.STRUCTURE_TIER_4,
             ModBlocks.SOLAR_ARRAY.get(),
             4,
@@ -55,7 +55,7 @@ public class SolarArrayStructure {
 
         STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
             TESolarArrayT5.class,
-            SolarArrayShapes.SHAPE_TIER_5,
+            SolarArrayShapes.getShape(5),
             SolarArrayShapes.STRUCTURE_TIER_5,
             ModBlocks.SOLAR_ARRAY.get(),
             5,
@@ -63,7 +63,7 @@ public class SolarArrayStructure {
 
         STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
             TESolarArrayT6.class,
-            SolarArrayShapes.SHAPE_TIER_6,
+            SolarArrayShapes.getShape(6),
             SolarArrayShapes.STRUCTURE_TIER_6,
             ModBlocks.SOLAR_ARRAY.get(),
             6,

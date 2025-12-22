@@ -23,7 +23,7 @@ public class QuantumBeaconStructure {
     public static void registerStructureInfo() {
         STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT1.class,
-            QuantumBeaconShapes.SHAPE_TIER_1,
+            QuantumBeaconShapes.getShape(1),
             QuantumBeaconShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_BEACON.get(),
             1,
@@ -31,7 +31,7 @@ public class QuantumBeaconStructure {
 
         STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT2.class,
-            QuantumBeaconShapes.SHAPE_TIER_2,
+            QuantumBeaconShapes.getShape(2),
             QuantumBeaconShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_BEACON.get(),
             2,
@@ -39,7 +39,7 @@ public class QuantumBeaconStructure {
 
         STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT3.class,
-            QuantumBeaconShapes.SHAPE_TIER_3,
+            QuantumBeaconShapes.getShape(3),
             QuantumBeaconShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_BEACON.get(),
             3,
@@ -47,7 +47,7 @@ public class QuantumBeaconStructure {
 
         STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT4.class,
-            QuantumBeaconShapes.SHAPE_TIER_4,
+            QuantumBeaconShapes.getShape(4),
             QuantumBeaconShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_BEACON.get(),
             4,
@@ -55,7 +55,7 @@ public class QuantumBeaconStructure {
 
         STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT5.class,
-            QuantumBeaconShapes.SHAPE_TIER_5,
+            QuantumBeaconShapes.getShape(5),
             QuantumBeaconShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_BEACON.get(),
             5,
@@ -63,7 +63,7 @@ public class QuantumBeaconStructure {
 
         STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
             TEQuantumBeaconT6.class,
-            QuantumBeaconShapes.SHAPE_TIER_6,
+            QuantumBeaconShapes.getShape(6),
             QuantumBeaconShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_BEACON.get(),
             6,

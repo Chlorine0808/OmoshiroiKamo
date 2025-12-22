@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import ruiseki.omoshiroikamo.common.structure.StructureDefinitionData.BlockMapping;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.plugin.structureLib.StructureCompat;
 
 /**
  * Main manager for the custom structure system.
@@ -194,6 +195,9 @@ public class StructureManager {
         if (errorCollector.hasErrors()) {
             errorCollector.writeToFile();
         }
+
+        // Re-register structures with StructureLib using updated shapes
+        StructureCompat.reload();
 
         Logger.info(
             "StructureManager reloaded"

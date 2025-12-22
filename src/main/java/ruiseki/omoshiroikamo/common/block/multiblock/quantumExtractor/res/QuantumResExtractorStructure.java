@@ -25,7 +25,7 @@ public class QuantumResExtractorStructure {
     public static void registerStructureInfo() {
         STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT1.class,
-            QuantumResExtractorShapes.SHAPE_TIER_1,
+            QuantumResExtractorShapes.getShape(1),
             QuantumResExtractorShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             1,
@@ -33,7 +33,7 @@ public class QuantumResExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT2.class,
-            QuantumResExtractorShapes.SHAPE_TIER_2,
+            QuantumResExtractorShapes.getShape(2),
             QuantumResExtractorShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             2,
@@ -41,7 +41,7 @@ public class QuantumResExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT3.class,
-            QuantumResExtractorShapes.SHAPE_TIER_3,
+            QuantumResExtractorShapes.getShape(3),
             QuantumResExtractorShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             3,
@@ -49,7 +49,7 @@ public class QuantumResExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT4.class,
-            QuantumResExtractorShapes.SHAPE_TIER_4,
+            QuantumResExtractorShapes.getShape(4),
             QuantumResExtractorShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             4,
@@ -57,7 +57,7 @@ public class QuantumResExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT5.class,
-            QuantumResExtractorShapes.SHAPE_TIER_5,
+            QuantumResExtractorShapes.getShape(5),
             QuantumResExtractorShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             5,
@@ -65,7 +65,7 @@ public class QuantumResExtractorStructure {
 
         STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
             TEQuantumResExtractorT6.class,
-            QuantumResExtractorShapes.SHAPE_TIER_6,
+            QuantumResExtractorShapes.getShape(6),
             QuantumResExtractorShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             6,
