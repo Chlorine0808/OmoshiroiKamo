@@ -313,4 +313,27 @@ public class StructureJsonLoader {
             GSON.toJson(entries, writer);
         }
     }
+
+    // ========== バリデーション用ヘルパーメソッド ==========
+
+    /**
+     * 構造体名のセットを取得
+     */
+    public java.util.Set<String> getStructureNames() {
+        return structureCache.keySet();
+    }
+
+    /**
+     * 構造体エントリを取得
+     */
+    public StructureEntry getStructureEntry(String name) {
+        return structureCache.get(name);
+    }
+
+    /**
+     * デフォルトマッピングを取得
+     */
+    public Map<Character, BlockMapping> getDefaultMappings() {
+        return new HashMap<>(defaultMappings);
+    }
 }

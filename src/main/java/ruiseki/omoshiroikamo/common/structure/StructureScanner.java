@@ -33,7 +33,7 @@ public class StructureScanner {
      * @return 成功時true
      */
     public static ScanResult scan(World world, String name, int x1, int y1, int z1, int x2, int y2, int z2,
-            File configDir) {
+        File configDir) {
 
         // 座標を正規化（小さい方を開始点に）
         int minX = Math.min(x1, x2);
@@ -85,8 +85,8 @@ public class StructureScanner {
                         } else {
                             // シンボル溢れ：ブロックIDを{}で直接記述
                             row.append("{")
-                                    .append(blockId)
-                                    .append("}");
+                                .append(blockId)
+                                .append("}");
                             overflowCount++;
                         }
                     } else {
@@ -105,8 +105,8 @@ public class StructureScanner {
         json.append("[\n");
         json.append("  {\n");
         json.append("    \"name\": \"")
-                .append(name)
-                .append("\",\n");
+            .append(name)
+            .append("\",\n");
 
         // レイヤー
         json.append("    \"layers\": [\n");
@@ -115,15 +115,13 @@ public class StructureScanner {
             json.append("      [\n");
             for (int j = 0; j < layer.size(); j++) {
                 json.append("        \"")
-                        .append(layer.get(j))
-                        .append("\"");
-                if (j < layer.size() - 1)
-                    json.append(",");
+                    .append(layer.get(j))
+                    .append("\"");
+                if (j < layer.size() - 1) json.append(",");
                 json.append("\n");
             }
             json.append("      ]");
-            if (i < layers.size() - 1)
-                json.append(",");
+            if (i < layers.size() - 1) json.append(",");
             json.append("\n");
         }
         json.append("    ],\n");
@@ -133,12 +131,11 @@ public class StructureScanner {
         int count = 0;
         for (Map.Entry<Character, String> entry : symbolToBlock.entrySet()) {
             json.append("      \"")
-                    .append(entry.getKey())
-                    .append("\": \"")
-                    .append(entry.getValue())
-                    .append("\"");
-            if (++count < symbolToBlock.size())
-                json.append(",");
+                .append(entry.getKey())
+                .append("\": \"")
+                .append(entry.getValue())
+                .append("\"");
+            if (++count < symbolToBlock.size()) json.append(",");
             json.append("\n");
         }
         json.append("    }\n");

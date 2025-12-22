@@ -24,6 +24,7 @@ public class StructureException extends RuntimeException {
         EMPTY_STRUCTURE("Empty structure definition"),
         LOAD_FAILED("Load failed"),
         WRITE_FAILED("Write failed"),
+        VALIDATION_ERROR("Validation error"),
         UNKNOWN("Unknown error");
 
         private final String description;

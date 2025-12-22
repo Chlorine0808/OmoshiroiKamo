@@ -107,7 +107,16 @@ public class StructureManager {
 
             if (loader.loadFromFile(file)) {
                 loaders.put(name, loader);
-                // ローダーのエラーを収集
+
+                // 構造体バリデーション
+                StructureValidator validator = new StructureValidator(loader);
+                if (validator.validateAll()) {
+                    for (String error : validator.getErrors()) {
+                        errorCollector.collect(StructureException.ErrorType.VALIDATION_ERROR, name + ".json", error);
+                    }
+                }
+
+                // ローダーのエラーを収集（パースエラー）
                 for (String error : loader.getErrors()) {
                     errorCollector.collect(StructureException.ErrorType.PARSE_ERROR, name + ".json", error);
                 }
