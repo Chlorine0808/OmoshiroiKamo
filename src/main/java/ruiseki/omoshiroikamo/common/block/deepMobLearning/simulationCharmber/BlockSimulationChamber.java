@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.block.deepMobLearning.lootFabricator;
+package ruiseki.omoshiroikamo.common.block.deepMobLearning.simulationCharmber;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,14 +15,14 @@ import ruiseki.omoshiroikamo.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractTE;
 
-public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
+public class BlockSimulationChamber extends AbstractBlock<TESimulationChamber> {
 
-    protected BlockLootFabricator() {
-        super(ModObject.blockLootFabricator.unlocalisedName, TELootFabricator.class);
+    protected BlockSimulationChamber() {
+        super(ModObject.blockSimulationChamber.unlocalisedName, TESimulationChamber.class);
     }
 
-    public static BlockLootFabricator create() {
-        return new BlockLootFabricator();
+    public static BlockSimulationChamber create() {
+        return new BlockSimulationChamber();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TELootFabricator();
+        return new TESimulationChamber();
     }
 
     @Override

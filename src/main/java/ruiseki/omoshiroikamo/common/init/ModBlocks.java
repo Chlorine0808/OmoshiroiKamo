@@ -18,6 +18,7 @@ import ruiseki.omoshiroikamo.common.block.chicken.BlockRoost;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoostCollector;
 import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
 import ruiseki.omoshiroikamo.common.block.deepMobLearning.lootFabricator.BlockLootFabricator;
+import ruiseki.omoshiroikamo.common.block.deepMobLearning.simulationCharmber.BlockSimulationChamber;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockAlabasterStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockBasaltStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockCrystal;
@@ -120,6 +121,7 @@ public enum ModBlocks {
     ROOST_COLLECTOR(useChicken, BlockRoostCollector.create()),
 
     LOOT_FABRICATOR(useDeepMobLearning, BlockLootFabricator.create()),
+    SIMULATION_CHAMBER(useDeepMobLearning, BlockSimulationChamber.create()),
 
     ;
     // spotless: on

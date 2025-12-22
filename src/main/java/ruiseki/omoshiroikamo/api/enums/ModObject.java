@@ -52,6 +52,7 @@ public enum ModObject {
     blockRoostCollector,
 
     blockLootFabricator,
+    blockSimulationChamber,
 
     itemBackPack,
     itemUpgrade,
@@ -93,7 +94,8 @@ public enum ModObject {
     itemDataModel,
     itemDataModelBlank,
     itemPristineMatter,
-    itemLivingMatter
+    itemLivingMatter,
+    itemPolymerClay
 
     ;
     // spotless: on

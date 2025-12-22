@@ -43,6 +43,8 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     protected boolean notifyNeighbours = false;
 
+    public static String INVENTORY_TAG = "inventory";
+
     public ForgeDirection getFacingDir() {
         return ForgeDirection.getOrientation(facing);
     }

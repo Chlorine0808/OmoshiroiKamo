@@ -12,6 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
+import ruiseki.omoshiroikamo.api.item.ItemUtils;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
@@ -201,6 +202,37 @@ public class DataModel {
         }
 
         return tier.canSimulate;
+    }
+
+    public static int getPristineChance(ItemStack stack) {
+        ModelTierRegistryItem tier = ModelTierRegistry.INSTANCE.getByType(getTier(stack));
+        if (tier == null) {
+            return 0;
+        }
+
+        return tier.getPristineChance();
+    }
+
+    public static int getSimulationEnergy(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return 0;
+        }
+
+        return model.getSimulationRFCost();
+    }
+
+    public static boolean isDataModelMatchesLivingMatter(ItemStack modelStack, ItemStack livingMatterStack) {
+        ModelRegistryItem model = getDataFromStack(modelStack);
+        if (model == null) {
+            return false;
+        }
+
+        return ItemUtils.areStacksEqual(model.getLivingMatter(), livingMatterStack);
+    }
+
+    public static boolean isDataModelMatchesPristineMatter(ItemStack modelStack, ItemStack pristineMatterStack) {
+        return modelStack.getItemDamage() == pristineMatterStack.getItemDamage();
     }
 
     public static int getCurrentTierSimulationCountWithKills(ItemStack stack) {

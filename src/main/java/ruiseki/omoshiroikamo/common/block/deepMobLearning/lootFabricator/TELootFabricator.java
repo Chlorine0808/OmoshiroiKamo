@@ -21,12 +21,12 @@ import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.client.gui.modularui2.base.handler.ItemStackHandlerBase;
 import ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.handler.ItemHandlerPristineMatter;
-import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMachine;
+import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMachineTE;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemPristineMatter;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.DeepMobLearningConfig;
 
-public class TELootFabricator extends AbstractMachine implements IEnergySink, ISidedInventory {
+public class TELootFabricator extends AbstractMachineTE implements IEnergySink, ISidedInventory {
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_START = 1;
@@ -160,12 +160,12 @@ public class TELootFabricator extends AbstractMachine implements IEnergySink, IS
         NBTTagCompound inventory = new NBTTagCompound();
         inventory.setTag("input", input.serializeNBT());
         inventory.setTag("output", output.serializeNBT());
-        root.setTag("inventory", inventory);
+        root.setTag(INVENTORY_TAG, inventory);
 
         if (outputItem != null) {
-            NBTTagCompound crafting = root.getCompoundTag("crafting");
+            NBTTagCompound crafting = root.getCompoundTag(CRAFTING_TAG);
             crafting.setTag("outputItem", ItemNBTUtils.stackToNbt(outputItem));
-            root.setTag("crafting", crafting);
+            root.setTag(CRAFTING_TAG, crafting);
         }
 
     }
@@ -173,11 +173,11 @@ public class TELootFabricator extends AbstractMachine implements IEnergySink, IS
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        NBTTagCompound inventory = root.getCompoundTag("inventory");
+        NBTTagCompound inventory = root.getCompoundTag(INVENTORY_TAG);
         input.deserializeNBT(inventory.getCompoundTag("input"));
         output.deserializeNBT(inventory.getCompoundTag("output"));
 
-        NBTTagCompound crafting = root.getCompoundTag("crafting");
+        NBTTagCompound crafting = root.getCompoundTag(CRAFTING_TAG);
         outputItem = ItemNBTUtils.nbtToStack(crafting.getCompoundTag("outputItem"));
 
     }

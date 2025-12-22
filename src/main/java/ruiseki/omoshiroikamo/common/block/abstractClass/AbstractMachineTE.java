@@ -25,22 +25,24 @@ import ruiseki.omoshiroikamo.common.network.PacketHandler;
  * ▼
  * RESET → IDLE
  */
-public abstract class AbstractMachine extends AbstractEnergyTE implements ICraftingTile {
+public abstract class AbstractMachineTE extends AbstractEnergyTE implements ICraftingTile {
 
     @Getter
     private CraftingState craftingState = CraftingState.IDLE;
     protected boolean crafting = false;
     protected int craftingProgress = 0;
 
-    public AbstractMachine() {
+    public static String CRAFTING_TAG = "crafting";
+
+    public AbstractMachineTE() {
         super();
     }
 
-    public AbstractMachine(int energyCapacity) {
+    public AbstractMachineTE(int energyCapacity) {
         super(energyCapacity);
     }
 
-    public AbstractMachine(int energyCapacity, int energyMaxReceive) {
+    public AbstractMachineTE(int energyCapacity, int energyMaxReceive) {
         super(energyCapacity, energyMaxReceive);
     }
 
@@ -149,14 +151,14 @@ public abstract class AbstractMachine extends AbstractEnergyTE implements ICraft
         NBTTagCompound craftingTag = new NBTTagCompound();
         craftingTag.setBoolean("isCrafting", crafting);
         craftingTag.setInteger("progress", craftingProgress);
-        root.setTag("crafting", craftingTag);
+        root.setTag(CRAFTING_TAG, craftingTag);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
 
-        NBTTagCompound craftingTag = root.getCompoundTag("crafting");
+        NBTTagCompound craftingTag = root.getCompoundTag(CRAFTING_TAG);
         crafting = craftingTag.getBoolean("isCrafting");
         craftingProgress = craftingTag.getInteger("progress");
     }

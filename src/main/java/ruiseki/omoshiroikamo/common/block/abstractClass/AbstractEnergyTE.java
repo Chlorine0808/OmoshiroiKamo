@@ -13,6 +13,8 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     private int lastSyncPowerStored;
     protected EnergyStorage energyStorage;
 
+    public static String ENERGY_TAG = "energy";
+
     public AbstractEnergyTE(int energyCapacity, int energyMaxReceive) {
         energyStorage = new EnergyStorage(energyCapacity, energyMaxReceive) {
 
@@ -66,12 +68,12 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        energyStorage.writeToNBT(root);
+        energyStorage.writeToNBT(root, ENERGY_TAG);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        energyStorage.readFromNBT(root);
+        energyStorage.readFromNBT(root, ENERGY_TAG);
     }
 }

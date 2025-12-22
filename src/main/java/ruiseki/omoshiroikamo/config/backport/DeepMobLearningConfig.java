@@ -19,4 +19,13 @@ public class DeepMobLearningConfig {
 
     @Config.DefaultInt(51)
     public static int lootFabricatorPrecessingTime;
+
+    @Config.DefaultInt(2000000)
+    public static int simulationChamberEnergyCapacity;
+
+    @Config.DefaultInt(25600)
+    public static int simulationChamberEnergyInMax;
+
+    @Config.DefaultInt(301)
+    public static int simulationChamberProcessingTime;
 }

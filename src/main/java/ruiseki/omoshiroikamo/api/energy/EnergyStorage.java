@@ -40,11 +40,11 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
-        readFromNBT(nbt, "Energy");
+        readFromNBT(nbt, "energy");
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
-        writeToNBT(nbt, "Energy");
+        writeToNBT(nbt, "energy");
     }
 
     public void readFromNBT(NBTTagCompound nbt, String tag) {

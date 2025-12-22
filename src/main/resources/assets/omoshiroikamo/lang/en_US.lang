@@ -432,6 +432,7 @@ item.coloredEgg.black.name=Ink Black Chicken Egg
 item.creativeModelLearner.name=Creative Model Learner
 item.dataModelBlank.name=Blank Data Model
 item.deepLearner.name=§bDeep Learner§r
+item.polymerClay.name=Polymer Clay
 
 #Block
 
@@ -565,6 +566,9 @@ tile.roost.name=Roost
 tile.roostCollector.name=Roost Collector
 tile.breeder.name=Chicken Breeder
 tile.stall.name=Stall
+
+tile.lootFabricator.name=Loot Fabricator
+tile.simulationChamber.name=Simulation Chamber
 
 #ENTITY
 
