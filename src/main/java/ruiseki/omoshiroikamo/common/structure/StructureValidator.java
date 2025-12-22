@@ -101,7 +101,7 @@ public class StructureValidator {
 
         int expectedDepth = firstLayer.rows.size();
         int expectedWidth = firstLayer.rows.get(0)
-                .length();
+            .length();
 
         // Validate each layer
         for (int layerIndex = 0; layerIndex < entry.layers.size(); layerIndex++) {
@@ -118,8 +118,7 @@ public class StructureValidator {
             // Confirm layer height matches baseline
             if (layer.rows.size() != expectedDepth) {
                 addError(
-                        "[" + name + "] " + layerLabel + " has " + layer.rows.size()
-                                + " rows, expected " + expectedDepth);
+                    "[" + name + "] " + layerLabel + " has " + layer.rows.size() + " rows, expected " + expectedDepth);
                 hasErrors = true;
             }
 
@@ -128,8 +127,15 @@ public class StructureValidator {
                 String row = layer.rows.get(rowIndex);
                 if (row.length() != expectedWidth) {
                     addError(
-                            "[" + name + "] " + layerLabel + " row " + rowIndex
-                                    + " has length " + row.length() + ", expected " + expectedWidth);
+                        "[" + name
+                            + "] "
+                            + layerLabel
+                            + " row "
+                            + rowIndex
+                            + " has length "
+                            + row.length()
+                            + ", expected "
+                            + expectedWidth);
                     hasErrors = true;
                 }
 
@@ -146,8 +152,15 @@ public class StructureValidator {
                     BlockMapping mapping = loader.getMapping(name, symbol);
                     if (mapping == null) {
                         addError(
-                                "[" + name + "] Unknown symbol '" + symbol + "' at "
-                                        + layerLabel + " row " + rowIndex + " col " + charIndex);
+                            "[" + name
+                                + "] Unknown symbol '"
+                                + symbol
+                                + "' at "
+                                + layerLabel
+                                + " row "
+                                + rowIndex
+                                + " col "
+                                + charIndex);
                         hasErrors = true;
                     }
                 }
@@ -167,8 +180,7 @@ public class StructureValidator {
     public boolean validateBlockIds(String name) {
         boolean hasErrors = false;
         StructureEntry entry = loader.getStructureEntry(name);
-        if (entry == null)
-            return false;
+        if (entry == null) return false;
 
         // Validate default mappings
         Map<Character, BlockMapping> defaultMappings = loader.getDefaultMappings();
@@ -183,7 +195,7 @@ public class StructureValidator {
             for (Map.Entry<String, Object> mapEntry : entry.mappings.entrySet()) {
                 if (mapEntry.getValue() instanceof BlockMapping) {
                     char symbol = mapEntry.getKey()
-                            .charAt(0);
+                        .charAt(0);
                     if (!validateBlockMapping(name, symbol, (BlockMapping) mapEntry.getValue())) {
                         hasErrors = true;
                     }
@@ -198,8 +210,7 @@ public class StructureValidator {
      * Validate a block mapping entry.
      */
     private boolean validateBlockMapping(String structureName, char symbol, BlockMapping mapping) {
-        if (mapping == null)
-            return true;
+        if (mapping == null) return true;
 
         // Single-block mappings
         if (mapping.block != null && !mapping.block.isEmpty()) {
@@ -217,8 +228,7 @@ public class StructureValidator {
                     BlockResolver.ResolvedBlock resolved = BlockResolver.resolve(blockEntry.id);
                     if (resolved == null && !"air".equalsIgnoreCase(blockEntry.id)) {
                         addError(
-                                "[" + structureName + "] Invalid block ID for symbol '" + symbol + "': "
-                                        + blockEntry.id);
+                            "[" + structureName + "] Invalid block ID for symbol '" + symbol + "': " + blockEntry.id);
                         return false;
                     }
                 }
