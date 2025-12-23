@@ -10,7 +10,7 @@ public class PickupUpgradeWrapper extends BasicUpgradeWrapper implements IPickup
 
     @Override
     public String getSettingLangKey() {
-        return "gui.pickup_settings";
+        return "gui.backpack.pickup_settings";
     }
 
     @Override

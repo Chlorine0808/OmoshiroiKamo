@@ -40,6 +40,11 @@ import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemCreativeModelLearne
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModel;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModelBlank;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDeepLearner;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemLivingMatter;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemPolymerClay;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemPristineMatter;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemSootCoveredPlate;
+import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemSootCoveredRedstone;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.trait.ItemAnalyzer;
@@ -47,6 +52,8 @@ import ruiseki.omoshiroikamo.common.item.trait.ItemSyringe;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public enum ModItems {
+
+    // spotless: off
 
     BASE_UPGRADE(useBackpack, new ItemUpgrade<>()),
     STACK_UPGRADE(useBackpack, new ItemStackUpgrade()),
@@ -83,12 +90,18 @@ public enum ModItems {
 
     SYRINGE(useCow, new ItemSyringe()),
 
-    CREATIVE_MODEL_LEARNER(useDeepMobLearning, new ItemCreativeModelLearner()),
     DEEP_LEARNER(useDeepMobLearning, new ItemDeepLearner()),
+    CREATIVE_MODEL_LEARNER(useDeepMobLearning, new ItemCreativeModelLearner()),
     DATA_MODEL(useDeepMobLearning, new ItemDataModel()),
     DATA_MODEL_BLANK(useDeepMobLearning, new ItemDataModelBlank()),
-    //
+    PRISTINE_MATTER(useDeepMobLearning, new ItemPristineMatter()),
+    LIVING_MATTER(useDeepMobLearning, new ItemLivingMatter()),
+    POLYMER_CLAY(useDeepMobLearning, new ItemPolymerClay()),
+    SOOT_COVERED_PLATE(useDeepMobLearning, new ItemSootCoveredPlate()),
+    SOOT_COVERED_REDSTONE(useDeepMobLearning, new ItemSootCoveredRedstone()),
+
     ;
+    // spotless: on
 
     public static final ModItems[] VALUES = values();
 

@@ -98,17 +98,9 @@ public class BlockStall extends AbstractBlock<TEStall> {
 
             if (progress > 0) {
                 float percent = Math.max(0f, progress);
-                tooltip.add(
-                    String.format(
-                        "%s: %s%.1f%%%s",
-                        EnumChatFormatting.GRAY + LibMisc.LANG.localize("tooltip.progress"),
-                        EnumChatFormatting.GRAY,
-                        percent,
-                        EnumChatFormatting.RESET));
+                tooltip.add(LibMisc.LANG.localize("gui.progress", percent));
             } else {
-                tooltip.add(
-                    EnumChatFormatting.GRAY + LibMisc.LANG.localize(
-                        "tooltip.progress") + ": " + EnumChatFormatting.GRAY + "N/A" + EnumChatFormatting.RESET);
+                tooltip.add(LibMisc.LANG.localize("gui.progress", 0f));
             }
 
             FluidStack stored = stall.tank.getFluid();
@@ -120,7 +112,7 @@ public class BlockStall extends AbstractBlock<TEStall> {
                     String.format(
                         "%s%s : %s (%d %s)",
                         EnumChatFormatting.GRAY,
-                        LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.fluid"),
+                        LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.fluid"),
                         fluidName,
                         amount,
                         LibMisc.LANG.localize("fluid.millibucket.abr")));

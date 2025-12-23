@@ -361,12 +361,12 @@ public class EntityChickensChicken extends EntityChicken
         if (!(entity instanceof EntityChickensChicken chicken)) {
             return;
         }
-        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.tier", chicken.getTier()));
+        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.tier", chicken.getTier()));
 
         if (chicken.getStatsAnalyzed() || ChickenConfig.alwaysShowStats) {
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.growth", chicken.getGrowth()));
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.gain", chicken.getGain()));
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.strength", chicken.getStrength()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.growth", chicken.getGrowth()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.gain", chicken.getGain()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.strength", chicken.getStrength()));
         }
 
         if (!chicken.isChild()) {
@@ -378,7 +378,7 @@ public class EntityChickensChicken extends EntityChicken
 
                 String timeFormatted = String.format("%d:%02d", minutes, seconds);
 
-                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.layProgress", timeFormatted));
+                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.layProgress", timeFormatted));
             }
         }
     }

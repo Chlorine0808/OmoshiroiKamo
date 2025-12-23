@@ -16,13 +16,19 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.AdvancedFeedingUpgrade
 public class AdvancedFeedingUpgradeWidget extends AdvancedExpandedTabWidget<AdvancedFeedingUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> HUNGER_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.complete_hunger"), MGuiTextures.COMPLETE_HUNGER_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.half_hunger"), MGuiTextures.HALF_HUNGER_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.immediate_hunger"), MGuiTextures.IMMEDIATE_HUNGER_ICON));
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.complete_hunger"),
+            MGuiTextures.COMPLETE_HUNGER_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.half_hunger"), MGuiTextures.HALF_HUNGER_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.immediate_hunger"),
+            MGuiTextures.IMMEDIATE_HUNGER_ICON));
 
     private static final List<CyclicVariantButtonWidget.Variant> HEART_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.consider_health"), MGuiTextures.HALF_HEART_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.ignore_health"), MGuiTextures.IGNORE_HALF_HEART_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.consider_health"), MGuiTextures.HALF_HEART_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.ignore_health"),
+            MGuiTextures.IGNORE_HALF_HEART_ICON));
 
     @Getter
     private final CyclicVariantButtonWidget hungerButton;
@@ -34,7 +40,7 @@ public class AdvancedFeedingUpgradeWidget extends AdvancedExpandedTabWidget<Adva
             slotIndex,
             wrapper,
             new ItemStack(ModItems.ADVANCED_FEEDING_UPGRADE.getItem()),
-            "gui.advanced_feeding_settings",
+            "gui.backpack.advanced_feeding_settings",
             "adv_feeding_filter",
             6,
             100);

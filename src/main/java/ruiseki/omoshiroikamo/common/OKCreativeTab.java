@@ -140,11 +140,18 @@ public abstract class OKCreativeTab extends CreativeTabs {
             this.list = list;
 
             addBlock(ModBlocks.LOOT_FABRICATOR.get());
+            addBlock(ModBlocks.SIMULATION_CHAMBER.get());
+            addBlock(ModBlocks.MACHINE_CASING.get());
 
-            addItem(ModItems.CREATIVE_MODEL_LEARNER.getItem());
             addItem(ModItems.DEEP_LEARNER.getItem());
-            addItem(ModItems.DATA_MODEL.getItem());
+            addItem(ModItems.CREATIVE_MODEL_LEARNER.getItem());
             addItem(ModItems.DATA_MODEL_BLANK.getItem());
+            addItem(ModItems.DATA_MODEL.getItem());
+            addItem(ModItems.PRISTINE_MATTER.getItem());
+            addItem(ModItems.LIVING_MATTER.getItem());
+            addItem(ModItems.POLYMER_CLAY.getItem());
+            addItem(ModItems.SOOT_COVERED_PLATE.getItem());
+            addItem(ModItems.SOOT_COVERED_REDSTONE.getItem());
         }
     };
 
@@ -156,7 +163,7 @@ public abstract class OKCreativeTab extends CreativeTabs {
 
     @Override
     public boolean hasSearchBar() {
-        return true;
+        return false;
     }
 
     @Override

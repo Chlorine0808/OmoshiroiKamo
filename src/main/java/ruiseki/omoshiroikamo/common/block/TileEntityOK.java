@@ -8,11 +8,12 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import ruiseki.omoshiroikamo.api.block.BlockPos;
+import ruiseki.omoshiroikamo.api.block.IOKTile;
 import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketProgress;
 
-public abstract class TileEntityOK extends TileEntity {
+public abstract class TileEntityOK extends TileEntity implements IOKTile {
 
     private final int checkOffset = (int) (Math.random() * 20);
     protected final boolean isProgressTile;
@@ -43,7 +44,7 @@ public abstract class TileEntityOK extends TileEntity {
             if (isProgressTile && !worldObj.isRemote) {
                 int curScaled = getProgressScaled(16);
                 if (++ticksSinceLastProgressUpdate >= getProgressUpdateFreq() || curScaled != lastProgressScaled) {
-                    sendTaskProgressPacket();
+                    requestProgressSync();
                     lastProgressScaled = curScaled;
                 }
             }
@@ -61,14 +62,11 @@ public abstract class TileEntityOK extends TileEntity {
         return (int) (tile.getProgress() * scale);
     }
 
-    protected void doUpdate() {
+    protected void doUpdate() {}
 
-    }
-
-    protected void sendTaskProgressPacket() {
-        if (isProgressTile) {
-            PacketHandler.sendToAllAround(new PacketProgress((IProgressTile) this), this);
-        }
+    protected void requestProgressSync() {
+        if (!isProgressTile || worldObj.isRemote) return;
+        PacketHandler.sendToAllAround(new PacketProgress((IProgressTile) this), this);
         ticksSinceLastProgressUpdate = 0;
     }
 
@@ -111,25 +109,22 @@ public abstract class TileEntityOK extends TileEntity {
 
     protected abstract void readCommon(NBTTagCompound root);
 
-    protected void updateBlock() {
-        if (worldObj != null) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    private BlockPos cachedPos = null;
+
+    @Override
+    public BlockPos getPos() {
+        if (cachedPos == null || cachedPos.getX() != xCoord
+            || cachedPos.getY() != yCoord
+            || cachedPos.getZ() != zCoord
+            || cachedPos.getWorld() != worldObj) {
+            cachedPos = new BlockPos(this);
         }
+        return cachedPos;
     }
 
-    /**
-     * Called directly after the TE is constructed. This is the place to call non-final methods.
-     * <p>
-     * Note: This will not be called when the TE is loaded from the save. Hook into the nbt methods for that.
-     */
-    public void init() {}
-
-    private BlockPos cachedLocation = null;
-
-    public BlockPos getLocation() {
-        return cachedLocation == null || !cachedLocation.equals(xCoord, yCoord, zCoord)
-            ? (cachedLocation = new BlockPos(xCoord, yCoord, zCoord, worldObj))
-            : cachedLocation;
+    @Override
+    public TileEntity getTileEntity() {
+        return this;
     }
 
     /**

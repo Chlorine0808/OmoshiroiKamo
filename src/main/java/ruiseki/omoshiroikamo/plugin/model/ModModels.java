@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistry;
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistryItem;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistry;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.entity.model.ModelTierRegistry;
@@ -51,13 +53,18 @@ public class ModModels {
     }
 
     private static void loadConfiguration() {
-        Collection<ModelRegistryItem> allModels = generateDefaultModels();
         Logger.info("Models Loading Config...");
+        Collection<LivingRegistryItem> allLivings = new ModLivingMatters().tryRegisterLivings();
+        for (LivingRegistryItem model : allLivings) {
+            LivingRegistry.INSTANCE.register(model);
+        }
+
+        Collection<ModelRegistryItem> allModels = generateDefaultModels();
         for (ModelRegistryItem model : allModels) {
             ModelRegistry.INSTANCE.register(model);
         }
 
-        Collection<ModelTierRegistryItem> allTiers = new ModelTier().registerTiers();
+        Collection<ModelTierRegistryItem> allTiers = new ModelTier().tryRegisterTiers();
         for (ModelTierRegistryItem tier : allTiers) {
             ModelTierRegistry.INSTANCE.register(tier);
         }

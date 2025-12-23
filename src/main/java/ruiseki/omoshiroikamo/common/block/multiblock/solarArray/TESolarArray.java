@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import ruiseki.omoshiroikamo.api.block.BlockPos;
-import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
 import ruiseki.omoshiroikamo.api.energy.IEnergySource;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
@@ -36,7 +35,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     private Map<BlockPos, Integer> cellTiers = new HashMap<>();
 
     public TESolarArray(int energyGen) {
-        this.energyStorage = new EnergyStorage(energyGen * getBaseDuration());
+        energyStorage.setEnergyStorage(energyGen * getBaseDuration());
     }
 
     @Override
@@ -107,7 +106,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = getLocation().getTileEntity();
+        TileEntity tileEntity = getPos().getTileEntity();
         if (tileEntity instanceof TESolarArrayT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_SOLAR_ARRAY_T1.get());
         }
@@ -216,6 +215,4 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
         modifiers.clear();
         modifierHandler = new ModifierHandler();
     }
-
-    public abstract int getTier();
 }

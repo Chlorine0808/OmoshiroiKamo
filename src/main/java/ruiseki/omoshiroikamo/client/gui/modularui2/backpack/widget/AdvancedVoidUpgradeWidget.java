@@ -16,19 +16,19 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IVoidUpgrade;
 public class AdvancedVoidUpgradeWidget extends AdvancedExpandedTabWidget<AdvancedVoidUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> VOID_INPUT_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.void_all"), MGuiTextures.VOID_ALL),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.void_automation"), MGuiTextures.VOID_AUTOMATION));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.void_all"), MGuiTextures.VOID_ALL),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.void_automation"), MGuiTextures.VOID_AUTOMATION));
 
     private static final List<CyclicVariantButtonWidget.Variant> VOID_TYPE_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.void_overflow"), MGuiTextures.VOID_OVERFLOW),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.void_any"), MGuiTextures.VOID_ANY));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.void_overflow"), MGuiTextures.VOID_OVERFLOW),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.void_any"), MGuiTextures.VOID_ANY));
 
     public AdvancedVoidUpgradeWidget(int slotIndex, AdvancedVoidUpgradeWrapper wrapper) {
         super(
             slotIndex,
             wrapper,
             new ItemStack(ModItems.ADVANCED_VOID_UPGRADE.getItem()),
-            "gui.advanced_void_settings",
+            "gui.backpack.advanced_void_settings",
             "adv_common_filter",
             6,
             100);

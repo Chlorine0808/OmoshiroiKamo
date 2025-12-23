@@ -68,15 +68,9 @@ public class BlockSolarArray extends AbstractTieredMBBlock<TESolarArray> impleme
         if (te instanceof TESolarArray solar) {
             float efficiency = solar.calculateLightRatio();
             if (!solar.canSeeSun()) {
-                tooltip.add(EnumChatFormatting.RED + LibMisc.LANG.localize("tooltip.sunlightBlocked"));
+                tooltip.add(EnumChatFormatting.RED + LibMisc.LANG.localize("gui.sunlightBlocked"));
             } else {
-                tooltip.add(
-                    String.format(
-                        "%s : %s%.0f%%",
-                        EnumChatFormatting.GRAY + LibMisc.LANG.localize("tooltip.efficiency")
-                            + EnumChatFormatting.RESET,
-                        EnumChatFormatting.GRAY,
-                        efficiency * 100));
+                tooltip.add(LibMisc.LANG.localize("gui.efficiency", efficiency * 100));
             }
         }
     }

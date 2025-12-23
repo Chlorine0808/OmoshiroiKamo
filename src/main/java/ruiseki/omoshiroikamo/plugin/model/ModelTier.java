@@ -49,17 +49,17 @@ public class ModelTier {
         int glitchChance;
     }
 
-    public List<ModelTierRegistryItem> registerTiers() {
+    public List<ModelTierRegistryItem> tryRegisterTiers() {
         List<ModelTierRegistryItem> allTiers = new ArrayList<>();
 
         File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
         if (!configFile.exists()) {
-            List<ModelTierRegistryItem> defaultModels = registerModels();
+            List<ModelTierRegistryItem> defaultModels = registerTiers();
             createDefaultConfig(configFile, defaultModels);
         }
 
         if (DeepMobLearningConfig.updateMissing) {
-            updateConfigWithMissing(configFile, registerModels());
+            updateConfigWithMissing(configFile, registerTiers());
             ConfigUpdater.updateBoolean(DeepMobLearningConfig.class, "updateMissing", false);
         }
 
@@ -111,27 +111,27 @@ public class ModelTier {
         return allTiers;
     }
 
-    public List<ModelTierRegistryItem> registerModels() {
+    public List<ModelTierRegistryItem> registerTiers() {
         List<ModelTierRegistryItem> allTiers = new ArrayList<>();
 
-        ModelTierRegistryItem tier0 = addTier(0, 1, 6, false, 0, 2, 1, 0, 0).setLang("en_US", "§7Faulty")
-            .setLang("ja_JP", "§7フォールティー");
+        ModelTierRegistryItem tier0 = addTier(0, 1, 6, false, 0, 2, 1, 0, 0).setLang("en_US", "§7Faulty§r")
+            .setLang("ja_JP", "§7フォールティー§r");
         allTiers.add(tier0);
 
-        ModelTierRegistryItem tier1 = addTier(1, 4, 48, true, 5, 5, 2, 1, 1).setLang("en_US", "§aBasic")
-            .setLang("ja_JP", "§aベーシック");
+        ModelTierRegistryItem tier1 = addTier(1, 4, 48, true, 5, 5, 2, 1, 1).setLang("en_US", "§aBasic§r")
+            .setLang("ja_JP", "§aベーシック§r");
         allTiers.add(tier1);
 
-        ModelTierRegistryItem tier2 = addTier(2, 10, 300, true, 11, 8, 4, 1, 3).setLang("en_US", "§9Advanced")
-            .setLang("ja_JP", "§9アドバンスド");
+        ModelTierRegistryItem tier2 = addTier(2, 10, 300, true, 11, 8, 4, 1, 3).setLang("en_US", "§9Advanced§r")
+            .setLang("ja_JP", "§9アドバンスド§r");
         allTiers.add(tier2);
 
-        ModelTierRegistryItem tier3 = addTier(3, 18, 900, true, 12, 24, 5, 2, 6).setLang("en_US", "§dSuperior")
-            .setLang("ja_JP", "§dスーペリア");
+        ModelTierRegistryItem tier3 = addTier(3, 18, 900, true, 12, 24, 5, 2, 6).setLang("en_US", "§dSuperior§r")
+            .setLang("ja_JP", "§dスーペリア§r");
         allTiers.add(tier3);
 
-        ModelTierRegistryItem tier4 = addTier(4, 0, 0, true, 18, 42, 7, 3, 11).setLang("en_US", "§6Self-Aware")
-            .setLang("ja_JP", "§6自己認識");
+        ModelTierRegistryItem tier4 = addTier(4, 0, 0, true, 18, 42, 7, 3, 11).setLang("en_US", "§6Self-Aware§r")
+            .setLang("ja_JP", "§6自己認識§r");
         allTiers.add(tier4);
 
         return allTiers;

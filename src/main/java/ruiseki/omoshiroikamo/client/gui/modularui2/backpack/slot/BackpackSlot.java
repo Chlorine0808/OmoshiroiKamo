@@ -98,7 +98,7 @@ public class BackpackSlot extends ItemSlot {
 
         tooltip.addLine(
             IKey.lang(
-                "gui.stack_size_extra",
+                "gui.backpack.stack_size_extra",
                 new ChatComponentText(formattedCount).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA))
                     .getFormattedText(),
                 new ChatComponentText(formattedStackLimit)
@@ -109,23 +109,23 @@ public class BackpackSlot extends ItemSlot {
 
         if (handler.isSlotMemorized(index)) {
             tooltip.addLine(
-                IKey.lang("gui.memorized_slot")
+                IKey.lang("gui.backpack.memorized_slot")
                     .style(IKey.LIGHT_PURPLE));
 
             if (handler.isMemoryStackRespectNBT(index)) {
                 tooltip.addLine(
-                    IKey.comp(IKey.str("- "), IKey.lang("gui.match_nbt"))
+                    IKey.comp(IKey.str("- "), IKey.lang("gui.backpack.match_nbt"))
                         .style(EnumChatFormatting.YELLOW));
             } else {
                 tooltip.addLine(
-                    IKey.comp(IKey.str("- "), IKey.lang("gui.ignore_nbt"))
+                    IKey.comp(IKey.str("- "), IKey.lang("gui.backpack.ignore_nbt"))
                         .style(EnumChatFormatting.GRAY));
             }
         }
 
         if (handler.isSlotLocked(index)) {
             tooltip.addLine(
-                IKey.lang("gui.no_sorting_slot")
+                IKey.lang("gui.backpack.no_sorting_slot")
                     .style(EnumChatFormatting.DARK_RED));
         }
     }

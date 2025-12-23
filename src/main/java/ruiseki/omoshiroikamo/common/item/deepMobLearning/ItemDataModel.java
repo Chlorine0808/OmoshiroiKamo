@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -58,7 +57,7 @@ public class ItemDataModel extends ItemOK {
         if (model == null) {
             return super.getItemStackDisplayName(stack);
         }
-        return LibMisc.LANG.localize(model.getItemName());
+        return LibMisc.LANG.localize(model.getItemName()) + ": " + DataModel.getTierName(stack);
     }
 
     @Override
@@ -67,10 +66,7 @@ public class ItemDataModel extends ItemOK {
         for (ModelRegistryItem model : ModelRegistry.INSTANCE.getItems()) {
             int type = model.getId();
 
-            ResourceLocation tex = model.getTexture();
-            String path = tex.getResourcePath();
-            String iconName = tex.getResourceDomain() + ":" + path;
-
+            String iconName = model.getTexture();
             IIcon icon = reg.registerIcon(iconName);
             icons.put(type, icon);
         }
@@ -79,11 +75,7 @@ public class ItemDataModel extends ItemOK {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta) {
-        IIcon icon = icons.get(meta);
-        if (icon == null) {
-            icon = icons.get(0);
-        }
-        return icon;
+        return icons.get(meta);
     }
 
     @Override
@@ -101,13 +93,17 @@ public class ItemDataModel extends ItemOK {
             builder.addLang("tooltip.data_model.tier", LibMisc.LANG.localize(DataModelExperience.getTierName(tier)));
             if (tier != DataModelExperience.getMaxTier()) {
                 builder.addLang(
-                    "tooltip.data_model.data.collected",
+                    "tooltip.data_model.data_collected",
                     DataModel.getCurrentTierSimulationCountWithKills(stack),
                     DataModel.getTierRoof(stack));
-                builder.addLang("tooltip.data_model.data.killmultiplier", DataModel.getKillMultiplier(stack));
+                builder.addLang("tooltip.data_model.kill_multiplier", DataModel.getKillMultiplier(stack));
             }
-            builder.addLang(LibMisc.LANG.localize("data_model.rfcost", DataModel.getSimulationTickCost(stack)));
-            // list.add(LibMisc.LANG.localize("data_model.type", DataModel.getMatterTypeName(stack)));
+            builder.addLang("tooltip.data_model.rf_cost", DataModel.getSimulationTickCost(stack));
+            builder.addLang("tooltip.data_model.type", DataModel.getMatterTypeName(stack));
+
+            if (!DataModel.canSimulate(stack)) {
+                builder.addLang("tooltip.data_model.cannot_simulate");
+            }
         }
 
         list.addAll(builder.build());

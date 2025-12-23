@@ -6,10 +6,11 @@ import java.util.Map;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import lombok.Getter;
 import lombok.Setter;
+import ruiseki.omoshiroikamo.api.item.ItemUtils;
+import ruiseki.omoshiroikamo.common.init.ModItems;
 
 public class ModelRegistryItem {
 
@@ -18,10 +19,12 @@ public class ModelRegistryItem {
     @Getter
     protected final String displayName;
     @Getter
-    protected final ResourceLocation texture;
-
+    protected final String texture;
     @Getter
     @Setter
+    protected String pristineTexture;
+
+    @Getter
     protected int simulationRFCost;
 
     @Getter
@@ -39,17 +42,12 @@ public class ModelRegistryItem {
 
     @Getter
     protected Map<String, String> lang;
+    @Getter
+    protected Map<String, String> pristineLang;
 
     @Getter
     @Setter
     protected String extraTooltip;
-
-    @Getter
-    @Setter
-    protected ItemStack livingMatter;
-    @Getter
-    @Setter
-    protected ItemStack pristineMatter;
 
     @Getter
     protected String[] associatedMobs;
@@ -63,11 +61,20 @@ public class ModelRegistryItem {
     protected String[] lootStrings;
 
     @Getter
+    protected String[] craftingStrings;
+
+    @Getter
+    @Setter
+    protected ItemStack pristineMatter;
+    @Getter
+    protected ItemStack livingMatter;
+
+    @Getter
     @Setter
     protected boolean enabled;
 
-    public ModelRegistryItem(int id, String displayName, ResourceLocation texture, String entityDisplay,
-        float numberOfHearts, float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
+    public ModelRegistryItem(int id, String displayName, String texture, String entityDisplay, float numberOfHearts,
+        float interfaceScale, int interfaceOffsetX, int interfaceOffsetY, String[] mobTrivia) {
         this.id = id;
         this.displayName = displayName;
         this.texture = texture;
@@ -83,6 +90,10 @@ public class ModelRegistryItem {
         return "item.model." + displayName + ".name";
     }
 
+    public String getPristineName() {
+        return "item.pristine." + displayName + ".name";
+    }
+
     public ModelRegistryItem setLootStrings(String[] lootStrings) {
         this.lootStrings = lootStrings;
         return this;
@@ -90,6 +101,16 @@ public class ModelRegistryItem {
 
     public ModelRegistryItem setLootItems(List<ItemStack> lootItems) {
         this.lootItems = lootItems;
+        return this;
+    }
+
+    public ModelRegistryItem setCraftingStrings(String[] craftingStrings) {
+        this.craftingStrings = craftingStrings;
+        return this;
+    }
+
+    public ModelRegistryItem setSimulationRFCost(int simulationRFCost) {
+        this.simulationRFCost = simulationRFCost;
         return this;
     }
 
@@ -113,5 +134,63 @@ public class ModelRegistryItem {
         }
 
         return this;
+    }
+
+    public ModelRegistryItem setPristineLang(String langCode, String value) {
+        if (this.pristineLang == null) {
+            this.pristineLang = new HashMap<>();
+        }
+
+        if (langCode != null && !langCode.isEmpty() && value != null && !value.isEmpty()) {
+            this.pristineLang.put(langCode, value);
+        }
+
+        return this;
+    }
+
+    public ModelRegistryItem setLivingMatter(LivingRegistryItem livingMatter) {
+        this.livingMatter = ModItems.LIVING_MATTER.newItemStack(1, livingMatter.getId());
+        return this;
+    }
+
+    public ModelRegistryItem setLivingMatter(String key) {
+        LivingRegistryItem livingMatter = LivingRegistry.INSTANCE.getByName(key);
+        setLivingMatter(livingMatter);
+        return this;
+    }
+
+    public boolean hasLootItem(ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+
+        if (lootItems != null) {
+            for (ItemStack loot : lootItems) {
+                if (loot == null) continue;
+
+                if (ItemUtils.areStacksEqual(loot, stack)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public int getLootItemIndex(ItemStack stack) {
+        if (stack == null || lootItems == null || lootItems.isEmpty()) {
+            return -1;
+        }
+
+        for (int i = 0; i < lootItems.size(); i++) {
+            ItemStack loot = lootItems.get(i);
+            if (loot == null) continue;
+
+            if (ItemUtils.areStacksEqual(loot, stack)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

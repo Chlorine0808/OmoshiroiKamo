@@ -17,7 +17,9 @@ import ruiseki.omoshiroikamo.common.block.chicken.BlockBreeder;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoost;
 import ruiseki.omoshiroikamo.common.block.chicken.BlockRoostCollector;
 import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
-import ruiseki.omoshiroikamo.common.block.deepMobLearning.BlockLootFabricator;
+import ruiseki.omoshiroikamo.common.block.deepMobLearning.BlockMachineCasing;
+import ruiseki.omoshiroikamo.common.block.deepMobLearning.lootFabricator.BlockLootFabricator;
+import ruiseki.omoshiroikamo.common.block.deepMobLearning.simulationCharmber.BlockSimulationChamber;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockAlabasterStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockBasaltStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockCrystal;
@@ -49,6 +51,8 @@ import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
 
 public enum ModBlocks {
+
+    // spotless: off
 
     BACKPACK_BASE(useBackpack,
         BlockBackpack.create(
@@ -118,8 +122,11 @@ public enum ModBlocks {
     ROOST_COLLECTOR(useChicken, BlockRoostCollector.create()),
 
     LOOT_FABRICATOR(useDeepMobLearning, BlockLootFabricator.create()),
-    //
+    SIMULATION_CHAMBER(useDeepMobLearning, BlockSimulationChamber.create()),
+    MACHINE_CASING(useDeepMobLearning, BlockMachineCasing.create()),
+
     ;
+    // spotless: on
 
     public static final ModBlocks[] VALUES = values();
 

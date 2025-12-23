@@ -16,10 +16,10 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import lombok.Getter;
 import lombok.Setter;
-import ruiseki.omoshiroikamo.api.block.BlockPos;
 import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.api.redstone.RedstoneMode;
 import ruiseki.omoshiroikamo.common.block.TileEntityOK;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosGuiData> {
 
@@ -35,11 +35,15 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     @Getter
     protected RedstoneMode redstoneMode = RedstoneMode.ALWAYS_ON;
-    protected boolean redstonePowered;
-    protected int redstoneLevel;
+    @Setter
+    protected boolean redstonePowered = false;
+    @Setter
+    protected int redstoneLevel = 0;
     protected boolean redstoneStateDirty = true;
 
     protected boolean notifyNeighbours = false;
+
+    public static String INVENTORY_TAG = "inventory";
 
     public ForgeDirection getFacingDir() {
         return ForgeDirection.getOrientation(facing);
@@ -50,7 +54,7 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
         return false;
     }
 
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block nbid) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         int oldLevel = redstoneLevel;
         redstoneLevel = world.getStrongestIndirectPower(x, y, z);
         redstonePowered = redstoneLevel > 0;
@@ -63,8 +67,9 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
     }
 
     public String getMachineName() {
-        return this.worldObj.getBlock(xCoord, yCoord, zCoord)
-            .getUnlocalizedName();
+        return LibMisc.LANG.localize(
+            this.worldObj.getBlock(xCoord, yCoord, zCoord)
+                .getUnlocalizedName());
     }
 
     public abstract boolean isActive();
@@ -98,7 +103,7 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
         requiresClientSync |= processTasks(isRedstoneActive());
 
         if (requiresClientSync) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            requestRenderUpdate();
             markDirty();
         }
 
@@ -122,7 +127,7 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
             if (worldObj.rand.nextInt(1024) <= (isDirty ? 256 : 0)) {
                 isDirty = !isDirty;
             }
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            requestRenderUpdate();
             forceClientUpdate = false;
         }
     }
@@ -130,16 +135,22 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
     @Override
     public void writeCommon(NBTTagCompound root) {
         root.setInteger("facing", facing);
-        root.setInteger("redstoneMode", redstoneMode.getIndex());
-        root.setBoolean("forceClientUpdate", forceClientUpdate);
-        forceClientUpdate = false;
+
+        NBTTagCompound redstoneTag = new NBTTagCompound();
+        redstoneTag.setInteger("level", redstoneLevel);
+        redstoneTag.setBoolean("powered", redstonePowered);
+        redstoneTag.setInteger("mode", redstoneMode.getIndex());
+        root.setTag("redstone", redstoneTag);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         setFacing(root.getInteger("facing"));
-        redstoneMode = RedstoneMode.byIndex(root.getInteger("redstoneMode"));
-        forceClientUpdate = root.getBoolean("forceClientUpdate");
+
+        NBTTagCompound redstoneTag = root.getCompoundTag("redstone");
+        redstoneLevel = redstoneTag.getInteger("level");
+        redstonePowered = redstoneTag.getBoolean("powered");
+        redstoneMode = RedstoneMode.byIndex(redstoneTag.getInteger("mode"));
     }
 
     public void readFromItemStack(ItemStack stack) {
@@ -169,17 +180,13 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
         return new ModularPanel("base");
     }
 
-    @Override
-    public BlockPos getLocation() {
-        return new BlockPos(xCoord, yCoord, zCoord, worldObj);
-    }
-
-    public void sendUpdatePacketToClient() {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    public void requestClientSync() {
+        if (worldObj.isRemote) return;
+        requestRenderUpdate();
         forceClientUpdate = true;
     }
 
-    public void sendBlockUpdate() {
+    public void requestRenderUpdate() {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 }

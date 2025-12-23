@@ -21,7 +21,6 @@ import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.block.BlockPos;
-import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
@@ -55,7 +54,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     private long lastBeamUpdateTick = 0L;
 
     public TEQuantumExtractor() {
-        this.energyStorage = new EnergyStorage(1000000);
+        energyStorage.setEnergyStorage(1000000);
         this.output = new ItemStackHandler(4);
 
         this.allSlots = new int[output.getSlots()];
@@ -84,7 +83,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         if (player == null) {
             return;
         }
-        TileEntity tileEntity = getLocation().getTileEntity();
+        TileEntity tileEntity = getPos().getTileEntity();
         if (tileEntity instanceof TEQuantumOreExtractorT1) {
             player.triggerAchievement(ModAchievements.ASSEMBLE_VOID_ORE_MINER_T1.get());
         }
@@ -261,14 +260,14 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             if (lens != null) {
                 Block block = lens.getBlock();
                 if (block instanceof BlockColoredLens) {
-                    int meta = lens.getMetadata();
+                    int meta = lens.getBlockMetadata();
                     this.focusColor = ((BlockColoredLens) block).getFocusColor(meta);
                     this.possibleResults.clear();
                     this.possibleResults.addAll(
                         this.getRegistry()
                             .getFocusedList(this.focusColor, this.focusBoostModifier));
                 } else {
-                    if (lens.getMetadata() == 1) {
+                    if (lens.getBlockMetadata() == 1) {
                         this.focusColor = EnumDye.CRYSTAL;
                         this.possibleResults.clear();
                         this.possibleResults.addAll(
