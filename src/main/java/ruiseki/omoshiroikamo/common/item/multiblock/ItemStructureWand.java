@@ -162,6 +162,11 @@ public class ItemStructureWand extends ItemOK {
             int sizeZ = Math.abs(pos2.posZ - pos1.posZ) + 1;
             tooltip.add(EnumChatFormatting.YELLOW + "Size: " + sizeX + "x" + sizeY + "x" + sizeZ);
         }
+
+        // Always show clear instruction when positions are set
+        if (hasPos1(nbt) || hasPos2(nbt)) {
+            tooltip.add(EnumChatFormatting.DARK_GRAY + "Shift+Left-click to clear");
+        }
     }
 
     // NBT helper methods

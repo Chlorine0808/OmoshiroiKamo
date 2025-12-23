@@ -189,7 +189,7 @@ public class CommandStructure extends CommandBase {
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[OmoshiroiKamo] " + result.message));
             sender.addChatMessage(
                 new ChatComponentText(
-                    EnumChatFormatting.GRAY + "File: config/omoshiroikamo/structures/scanned_" + name + ".json"));
+                    EnumChatFormatting.GRAY + "File: config/omoshiroikamo/structures/custom/" + name + ".json"));
         } else {
             sender.addChatMessage(
                 new ChatComponentText(EnumChatFormatting.RED + "[OmoshiroiKamo] Scan failed: " + result.message));
@@ -309,7 +309,7 @@ public class CommandStructure extends CommandBase {
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[OmoshiroiKamo] " + result.message));
             player.addChatMessage(
                 new ChatComponentText(
-                    EnumChatFormatting.GRAY + "File: config/omoshiroikamo/structures/scanned_" + name + ".json"));
+                    EnumChatFormatting.GRAY + "File: config/omoshiroikamo/structures/custom/" + name + ".json"));
 
             // Clear the pending selection
             WandSelectionManager.getInstance()

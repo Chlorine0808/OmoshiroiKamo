@@ -145,13 +145,13 @@ public class StructureScanner {
         json.append("  }\n");
         json.append("]\n");
 
-        // Save to disk
-        File structuresDir = new File(configDir, "structures");
-        if (!structuresDir.exists()) {
-            structuresDir.mkdirs();
+        // Save to disk - in a 'custom' subdirectory
+        File customDir = new File(configDir, "structures/custom");
+        if (!customDir.exists()) {
+            customDir.mkdirs();
         }
 
-        File outputFile = new File(structuresDir, "scanned_" + name + ".json");
+        File outputFile = new File(customDir, name + ".json");
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
             writer.print(json.toString());
