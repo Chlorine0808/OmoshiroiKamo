@@ -24,17 +24,17 @@ import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExtractor>
-    implements IWailaBlockInfoProvider {
+        implements IWailaBlockInfoProvider {
 
     protected BlockQuantumResExtractor() {
         super(
-            ModObject.blockQuantumResExtractor.unlocalisedName,
-            TEQuantumResExtractorT1.class,
-            TEQuantumResExtractorT2.class,
-            TEQuantumResExtractorT3.class,
-            TEQuantumResExtractorT4.class,
-            TEQuantumResExtractorT5.class,
-            TEQuantumResExtractorT6.class);
+                ModObject.blockQuantumResExtractor.unlocalisedName,
+                TEQuantumResExtractorT1.class,
+                TEQuantumResExtractorT2.class,
+                TEQuantumResExtractorT3.class,
+                TEQuantumResExtractorT4.class,
+                TEQuantumResExtractorT5.class,
+                TEQuantumResExtractorT6.class);
         this.setLightLevel(0.8F);
     }
 
@@ -76,17 +76,9 @@ public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExt
 
             if (duration > 0) {
                 float percent = Math.max(0f, (progress / (float) duration) * 100f);
-                tooltip.add(
-                    String.format(
-                        "%s: %s%.1f%%%s",
-                        EnumChatFormatting.GRAY + LibMisc.LANG.localize("tooltip.progress"),
-                        EnumChatFormatting.GRAY,
-                        percent,
-                        EnumChatFormatting.RESET));
+                tooltip.add(LibMisc.LANG.localize("gui.progress", percent));
             } else {
-                tooltip.add(
-                    EnumChatFormatting.GRAY + LibMisc.LANG.localize(
-                        "tooltip.progress") + ": " + EnumChatFormatting.GRAY + "N/A" + EnumChatFormatting.RESET);
+                tooltip.add(LibMisc.LANG.localize("gui.progress", 0f));
             }
         }
 

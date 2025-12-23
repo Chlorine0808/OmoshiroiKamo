@@ -34,21 +34,21 @@ public class BackpackSettingPanel extends ModularPanel {
 
         backpackTab = new TabWidget(1, ExpandDirection.RIGHT);
         backpackTab.tooltipStatic(
-            tooltip -> tooltip.addLine(IKey.lang("gui.backpack_settings"))
+            tooltip -> tooltip.addLine(IKey.lang("gui.backpack.backpack_settings"))
                 .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
         backpackTab.setExpandedWidget(new BackpackSettingWidget(parent, this, backpackTab));
         backpackTab.setTabIcon(MGuiTextures.BACKPACK_ICON);
 
         memoryTab = new TabWidget(2, ExpandDirection.RIGHT);
         memoryTab.tooltipStatic(
-            tooltip -> tooltip.addLine(IKey.lang("gui.memory_settings"))
+            tooltip -> tooltip.addLine(IKey.lang("gui.backpack.memory_settings"))
                 .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
         memoryTab.setExpandedWidget(new MemorySettingWidget(parent, this, memoryTab));
         memoryTab.setTabIcon(MGuiTextures.BRAIN_ICON);
 
         sortTab = new TabWidget(3, ExpandDirection.RIGHT);
         sortTab.tooltipStatic(
-            tooltip -> tooltip.addLine(IKey.lang("gui.sorting_settings"))
+            tooltip -> tooltip.addLine(IKey.lang("gui.backpack.sorting_settings"))
                 .pos(RichTooltip.Pos.NEXT_TO_MOUSE));
         sortTab.setExpandedWidget(new SortingSettingWidget(parent, this, sortTab));
         sortTab.setTabIcon(MGuiTextures.NO_SORT_ICON);

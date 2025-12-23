@@ -25,7 +25,7 @@ public class ItemVoidUpgrade extends ItemUpgrade<VoidUpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "void_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "backpack.void_upgrade"));
     }
 
     @Override

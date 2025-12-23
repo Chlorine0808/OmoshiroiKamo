@@ -14,13 +14,15 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.MagnetUpgradeWrapper;
 public class MagnetUpgradeWidget extends BasicExpandedTabWidget<MagnetUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> EXP_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.exp_magnet"), MGuiTextures.EXP_MAGNET_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.ignore_exp_magnet"), MGuiTextures.IGNORE_EXP_MAGNET_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.exp_magnet"), MGuiTextures.EXP_MAGNET_ICON),
+        new CyclicVariantButtonWidget.Variant(
+            IKey.lang("gui.backpack.ignore_exp_magnet"),
+            MGuiTextures.IGNORE_EXP_MAGNET_ICON));
 
     private static final List<CyclicVariantButtonWidget.Variant> ITEM_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.item_magnet"), MGuiTextures.ITEM_MAGNET_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.item_magnet"), MGuiTextures.ITEM_MAGNET_ICON),
         new CyclicVariantButtonWidget.Variant(
-            IKey.lang("gui.ignore_item_magnet"),
+            IKey.lang("gui.backpack.ignore_item_magnet"),
             MGuiTextures.IGNORE_ITEM_MAGNET_ICON));
 
     @Getter
@@ -33,7 +35,7 @@ public class MagnetUpgradeWidget extends BasicExpandedTabWidget<MagnetUpgradeWra
             slotIndex,
             wrapper,
             ModItems.MAGNET_UPGRADE.newItemStack(),
-            "gui.magnet_settings",
+            "gui.backpack.magnet_settings",
             "common_filter",
             5,
             75);

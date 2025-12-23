@@ -25,7 +25,7 @@ public class ItemAdvancedFilterUpgrade extends ItemUpgrade<AdvancedFilterUpgrade
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "advanced_filter_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "backpack.advanced_filter_upgrade"));
     }
 
     @Override

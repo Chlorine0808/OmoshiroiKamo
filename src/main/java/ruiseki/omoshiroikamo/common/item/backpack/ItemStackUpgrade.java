@@ -75,7 +75,7 @@ public class ItemStackUpgrade extends ItemUpgrade<UpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "stack_upgrade", multiplier(itemstack)));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "backpack.stack_upgrade", multiplier(itemstack)));
     }
 
     public int multiplier(ItemStack stack) {

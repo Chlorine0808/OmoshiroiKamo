@@ -12,7 +12,6 @@ import java.util.Map;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,12 +19,17 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lombok.Getter;
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistry;
+import ruiseki.omoshiroikamo.api.entity.model.LivingRegistryItem;
 import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.api.json.ItemJson;
 import ruiseki.omoshiroikamo.api.json.JsonUtils;
+import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
+import ruiseki.omoshiroikamo.common.util.lib.LibResources;
 import ruiseki.omoshiroikamo.config.ConfigUpdater;
 import ruiseki.omoshiroikamo.config.backport.DeepMobLearningConfig;
 import ruiseki.omoshiroikamo.plugin.ModCompatInformation;
@@ -67,12 +71,16 @@ public abstract class BaseModelHandler {
         String displayName;
         boolean enabled;
         String texture;
+        String pristineMatterTexture;
         int simulationRFCost;
+        String livingMatter;
         DeepLearnerDisplay deepLearnerDisplay;
         ItemJson[] lootItems;
+        ItemJson[] craftingIngredients;
         String[] associatedMobs;
         String extraTooltip;
         Map<String, String> lang;
+        Map<String, String> pristineLang;
     }
 
     private static class DeepLearnerDisplay {
@@ -134,7 +142,31 @@ public abstract class BaseModelHandler {
 
                     List<Class<? extends Entity>> associatedEntityClasses;
                     associatedEntityClasses = JsonUtils.resolveEntityClasses(data.associatedMobs);
-                    if (associatedEntityClasses.isEmpty()) continue;
+                    if (associatedEntityClasses.isEmpty()) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : associatedEntityClasses was null",
+                            this.modID,
+                            data.displayName);
+                        continue;
+                    }
+
+                    if (data.livingMatter == null || data.livingMatter.isEmpty()) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : livingMatter is missing or empty",
+                            this.modID,
+                            data.displayName);
+                        continue;
+                    }
+
+                    LivingRegistryItem livingMatter = LivingRegistry.INSTANCE.getByName(data.livingMatter);
+                    if (livingMatter == null) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : livingMatter '{}' not found in LivingRegistry",
+                            this.modID,
+                            data.displayName,
+                            data.livingMatter);
+                        continue;
+                    }
 
                     // Migrate
                     int modelID = (data.id != null && data.id >= 0) ? data.id : fixedID(data.displayName);
@@ -159,10 +191,40 @@ public abstract class BaseModelHandler {
 
                         model.setEnabled(data.enabled);
 
+                        if (data.pristineMatterTexture != null) {
+                            model.setPristineTexture(
+                                LibResources.PREFIX_MOD + "pristine/"
+                                    + this.texturesLocation
+                                    + data.pristineMatterTexture);
+                        } else {
+                            model.setPristineTexture(
+                                LibResources.PREFIX_MOD + "pristine/"
+                                    + this.texturesLocation
+                                    + "pristine_matter_"
+                                    + data.texture);
+                        }
+
                         if (data.lootItems != null && data.lootItems.length > 0) {
                             List<ItemStack> loot = ItemJson.resolveListItemStack(data.lootItems);
                             model.setLootItems(loot);
                         }
+
+                        if (data.craftingIngredients != null && data.craftingIngredients.length > 0) {
+                            List<ItemStack> crafting = ItemJson.resolveListItemStack(data.craftingIngredients);
+
+                            Object[] recipe = new Object[crafting.size() + 1];
+                            recipe[0] = ModItems.DATA_MODEL_BLANK.newItemStack(1);
+
+                            for (int i = 0; i < crafting.size(); i++) {
+                                recipe[i + 1] = crafting.get(i);
+                            }
+
+                            GameRegistry.addShapelessRecipe(ModItems.DATA_MODEL.newItemStack(1, data.id), recipe);
+                        }
+
+                        model.setLivingMatter(livingMatter);
+
+                        model.setPristineMatter(ModItems.PRISTINE_MATTER.newItemStack(1, model.getId()));
 
                         model.setAssociatedMobs(data.associatedMobs);
                         model.setAssociatedMobsClasses(associatedEntityClasses);
@@ -176,6 +238,11 @@ public abstract class BaseModelHandler {
                         if (data.lang != null) {
                             String langKey = "item.model." + data.displayName + ".name";
                             JsonUtils.registerLang(langKey, data.lang);
+                        }
+
+                        if (data.pristineLang != null) {
+                            String langKey = "item.pristine." + data.displayName + ".name";
+                            JsonUtils.registerLang(langKey, data.pristineLang);
                         }
 
                         ModCompatInformation.addInformation(
@@ -227,7 +294,7 @@ public abstract class BaseModelHandler {
         return new ModelRegistryItem(
             id,
             displayName,
-            new ResourceLocation(LibMisc.MOD_ID, this.texturesLocation + texture),
+            LibResources.PREFIX_MOD + "model/" + this.texturesLocation + texture,
             entityDisplay,
             numberOfHearts,
             interfaceScale,
@@ -243,11 +310,15 @@ public abstract class BaseModelHandler {
         json.id = model.getId();
         json.displayName = model.getDisplayName();
         json.enabled = true;
-        String fullPath = model.getTexture()
-            .getResourcePath();
+        String fullPath = model.getTexture();
         json.texture = fullPath.substring(fullPath.lastIndexOf('/') + 1);
 
         json.simulationRFCost = model.getSimulationRFCost() > 0 ? model.getSimulationRFCost() : 256;
+
+        json.livingMatter = LivingRegistry.INSTANCE.getByType(
+            model.getLivingMatter()
+                .getItemDamage())
+            .getDisplayName();
 
         json.deepLearnerDisplay = new DeepLearnerDisplay();
         json.deepLearnerDisplay.entityDisplay = model.getEntityDisplay();
@@ -276,6 +347,20 @@ public abstract class BaseModelHandler {
             }
         }
 
+        List<ItemJson> craftingList = new ArrayList<>();
+        if (model.getCraftingStrings() != null) {
+            for (String string : model.getCraftingStrings()) {
+                ItemJson item = ItemJson.parseItemString(string);
+                if (item != null) {
+                    craftingList.add(item);
+                }
+            }
+        }
+
+        if (!craftingList.isEmpty()) {
+            json.craftingIngredients = craftingList.toArray(new ItemJson[0]);
+        }
+
         if (!lootList.isEmpty()) {
             json.lootItems = lootList.toArray(new ItemJson[0]);
         }
@@ -287,6 +372,7 @@ public abstract class BaseModelHandler {
         }
 
         json.lang = model.getLang();
+        json.pristineLang = model.getPristineLang();
         return json;
     }
 
@@ -295,9 +381,9 @@ public abstract class BaseModelHandler {
             File parent = file.getParentFile();
             if (parent != null && !parent.exists()) parent.mkdirs();
 
-            List<BaseModelHandler.ModelJson> jsonModels = new ArrayList<>();
+            List<ModelJson> jsonModels = new ArrayList<>();
             for (ModelRegistryItem model : allModels) {
-                BaseModelHandler.ModelJson json = toModelJson(model);
+                ModelJson json = toModelJson(model);
                 if (json != null) jsonModels.add(json);
             }
 
@@ -314,14 +400,14 @@ public abstract class BaseModelHandler {
     }
 
     private void updateConfigWithMissing(File file, List<ModelRegistryItem> allModels) {
-        List<BaseModelHandler.ModelJson> existing = new ArrayList<>();
+        List<ModelJson> existing = new ArrayList<>();
 
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
                 JsonReader jsonReader = new JsonReader(reader);
                 jsonReader.setLenient(true);
-                Type listType = new TypeToken<ArrayList<BaseModelHandler.ModelJson>>() {}.getType();
-                List<BaseModelHandler.ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
+                Type listType = new TypeToken<ArrayList<ModelJson>>() {}.getType();
+                List<ModelJson> loaded = new Gson().fromJson(jsonReader, listType);
                 if (loaded != null) existing.addAll(loaded);
             } catch (Exception e) {
                 Logger.error("Failed to read existing model config: {}", e.getMessage());
@@ -339,7 +425,7 @@ public abstract class BaseModelHandler {
             boolean exists = existing.stream()
                 .anyMatch(m -> m != null && m.id != null && m.id == model.getId());
             if (!exists) {
-                BaseModelHandler.ModelJson json = toModelJson(model);
+                ModelJson json = toModelJson(model);
                 if (json != null) {
                     existing.add(json);
                     addedModels.add(model.getDisplayName());

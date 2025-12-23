@@ -405,12 +405,12 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
         if (!(entity instanceof EntityCowsCow cow)) {
             return;
         }
-        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.tier", getTier()));
+        tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.tier", getTier()));
 
         if (getStatsAnalyzed() || CowConfig.alwaysShowStats) {
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.growth", getGrowth()));
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.gain", getGain()));
-            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.strength", getStrength()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.growth", getGrowth()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.gain", getGain()));
+            tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.strength", getStrength()));
         }
 
         if (!isChild()) {
@@ -420,7 +420,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
                 int minutes = totalSeconds / 60;
                 int seconds = totalSeconds % 60;
                 String timeFormatted = String.format("%d:%02d", minutes, seconds);
-                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.milkProgress", timeFormatted));
+                tooltip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.milkProgress", timeFormatted));
             }
 
             FluidStack stored = cow.getMilkFluid();
@@ -432,7 +432,7 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
                     String.format(
                         "%s%s : %s (%d %s)",
                         EnumChatFormatting.GRAY,
-                        LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.fluid"),
+                        LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.fluid"),
                         fluidName,
                         amount,
                         LibMisc.LANG.localize("fluid.millibucket.abr")));

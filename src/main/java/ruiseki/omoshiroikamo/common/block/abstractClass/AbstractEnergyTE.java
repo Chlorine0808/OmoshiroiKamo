@@ -3,19 +3,35 @@ package ruiseki.omoshiroikamo.common.block.abstractClass;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import ruiseki.omoshiroikamo.api.client.IProgressTile;
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
 import ruiseki.omoshiroikamo.common.network.PacketEnergy;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 
-public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile, IProgressTile {
+public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile {
 
     private int lastSyncPowerStored;
     protected EnergyStorage energyStorage;
 
+    public static String ENERGY_TAG = "energy";
+
+    public AbstractEnergyTE(int energyCapacity, int energyMaxReceive) {
+        energyStorage = new EnergyStorage(energyCapacity, energyMaxReceive) {
+
+            @Override
+            public void onEnergyChanged() {
+                super.onEnergyChanged();
+                markDirty();
+            }
+        };
+    }
+
+    public AbstractEnergyTE(int energyCapacity) {
+        this(energyCapacity, energyCapacity);
+    }
+
     public AbstractEnergyTE() {
-        energyStorage = new EnergyStorage(100000);
+        this(100000, 100000);
     }
 
     @Override
@@ -52,12 +68,12 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-        energyStorage.writeToNBT(root);
+        energyStorage.writeToNBT(root, ENERGY_TAG);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-        energyStorage.readFromNBT(root);
+        energyStorage.readFromNBT(root, ENERGY_TAG);
     }
 }

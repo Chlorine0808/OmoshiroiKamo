@@ -25,7 +25,7 @@ public class ItemPickupUpgrade extends ItemUpgrade<PickupUpgradeWrapper> {
 
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "pickup_upgrade"));
+        list.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "backpack.pickup_upgrade"));
     }
 
     @Override

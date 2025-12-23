@@ -2,16 +2,29 @@ package ruiseki.omoshiroikamo.api.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.base.Strings;
 import com.gtnewhorizon.gtnhlib.blockpos.IWorldReferent;
 
 public class BlockPos extends com.gtnewhorizon.gtnhlib.blockpos.BlockPos implements IWorldReferent {
+
+    public static final BlockPos ORIGIN = new BlockPos(0, 0, 0);
+
+    private static final int NUM_X_BITS = 26;
+    private static final int NUM_Z_BITS = NUM_X_BITS;
+    private static final int NUM_Y_BITS = 64 - NUM_X_BITS - NUM_Z_BITS;
+    private static final int Y_SHIFT = NUM_Z_BITS;
+    private static final int X_SHIFT = Y_SHIFT + NUM_Y_BITS;
+    private static final long X_MASK = (1L << NUM_X_BITS) - 1L;
+    private static final long Y_MASK = (1L << NUM_Y_BITS) - 1L;
+    private static final long Z_MASK = (1L << NUM_Z_BITS) - 1L;
 
     public World world = null;
 
@@ -75,7 +88,7 @@ public class BlockPos extends com.gtnewhorizon.gtnhlib.blockpos.BlockPos impleme
         return getWorld().getBlock(getX(), getY(), getZ());
     }
 
-    public int getMetadata() {
+    public int getBlockMetadata() {
         return getWorld().getBlockMetadata(getX(), getY(), getZ());
     }
 
@@ -91,8 +104,24 @@ public class BlockPos extends com.gtnewhorizon.gtnhlib.blockpos.BlockPos impleme
         getWorld().markBlockForUpdate(getX(), getY(), getZ());
     }
 
+    public TileEntity getTileEntity(World world) {
+        return world.getTileEntity(getX(), getY(), getZ());
+    }
+
+    public Block getBlock(World world) {
+        return world.getBlock(getX(), getY(), getZ());
+    }
+
+    public int getBlockMetadata(World world) {
+        return world.getBlockMetadata(getX(), getY(), getZ());
+    }
+
     public boolean equals(int x, int y, int z) {
         return x == getX() && y == getY() && z == getZ();
+    }
+
+    public boolean equals(TileEntity tile) {
+        return tile.xCoord == getX() && tile.yCoord == getY() && tile.zCoord == getZ();
     }
 
     @Override
@@ -132,5 +161,44 @@ public class BlockPos extends com.gtnewhorizon.gtnhlib.blockpos.BlockPos impleme
 
     public BlockPos withZ(final int z) {
         return getZ() == z ? this : new BlockPos(getX(), getY(), z);
+    }
+
+    public BlockPos add(ForgeDirection d) {
+        add(d.offsetX, d.offsetY, d.offsetZ);
+        return this;
+    }
+
+    public BlockPos sub(ForgeDirection d) {
+        sub(d.offsetX, d.offsetY, d.offsetZ);
+        return this;
+    }
+
+    public long toLong() {
+        return (getX() & X_MASK) << X_SHIFT | (getY() & Y_MASK) << Y_SHIFT | (getZ() & Z_MASK) << 0;
+    }
+
+    public static BlockPos fromLong(long serialized) {
+        int j = (int) (serialized << 64 - X_SHIFT - NUM_X_BITS >> 64 - NUM_X_BITS);
+        int k = (int) (serialized << 64 - Y_SHIFT - NUM_Y_BITS >> 64 - NUM_Y_BITS);
+        int l = (int) (serialized << 64 - NUM_Z_BITS >> 64 - NUM_Z_BITS);
+        return new BlockPos(j, k, l);
+    }
+
+    public static BlockPos fromLong(long packed, World world) {
+        BlockPos pos = fromLong(packed);
+        pos.world = world;
+        return pos;
+    }
+
+    public static BlockPos readFromNBT(NBTTagCompound compound) {
+        return new BlockPos(compound.getInteger("X"), compound.getInteger("Y"), compound.getInteger("Z"));
+    }
+
+    public static NBTTagCompound writeToNBT(BlockPos pos) {
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setInteger("X", pos.getX());
+        compound.setInteger("Y", pos.getY());
+        compound.setInteger("Z", pos.getZ());
+        return compound;
     }
 }

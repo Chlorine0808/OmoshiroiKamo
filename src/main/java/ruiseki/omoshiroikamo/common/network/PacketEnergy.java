@@ -13,45 +13,34 @@ import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
 
 public class PacketEnergy implements IMessage, IMessageHandler<PacketEnergy, IMessage> {
 
-    private int x;
-    private int y;
-    private int z;
+    private BlockPos pos;
     private int storedEnergy;
 
     public PacketEnergy() {}
 
     public PacketEnergy(IEnergyTile tile) {
-        BlockPos pos = tile.getLocation();
-        x = pos.x;
-        y = pos.y;
-        z = pos.z;
         storedEnergy = tile.getEnergyStored();
-    }
-
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(storedEnergy);
-
+        pos = tile.getPos();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        x = buf.readInt();
-        y = buf.readInt();
-        z = buf.readInt();
-        storedEnergy = buf.readInt();
+        buf.writeInt(storedEnergy);
+        buf.writeLong(pos.toLong());
+    }
 
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        storedEnergy = buf.readInt();
+        pos = BlockPos.fromLong(buf.readLong());
     }
 
     @Override
     public IMessage onMessage(PacketEnergy message, MessageContext ctx) {
         EntityPlayer player = OmoshiroiKamo.proxy.getClientPlayer();
-        TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-        if (te instanceof IEnergyTile me) {
-            me.setEnergyStored(message.storedEnergy);
+        TileEntity tile = player.worldObj.getTileEntity(message.pos.x, message.pos.y, message.pos.z);
+        if (tile instanceof IEnergyTile te) {
+            te.setEnergyStored(message.storedEnergy);
         }
         return null;
     }

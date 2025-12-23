@@ -56,7 +56,7 @@ public class EntityAnimalProvider implements IWailaEntityProvider {
 
                 String timeFormatted = String.format("%d:%02d", minutes, seconds);
 
-                currenttip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.breedCountdown", timeFormatted));
+                currenttip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.breedCountdown", timeFormatted));
             }
         } else if (config.getConfig(LibMisc.MOD_ID + ".grownTime")) {
             int growUp = -animal.getGrowingAge();
@@ -66,7 +66,7 @@ public class EntityAnimalProvider implements IWailaEntityProvider {
 
             String timeFormatted = String.format("%d:%02d", minutes, seconds);
 
-            currenttip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "entity.childGrowUp", timeFormatted));
+            currenttip.add(LibMisc.LANG.localize(LibResources.TOOLTIP + "mob.childGrowUp", timeFormatted));
         }
 
         return currenttip;

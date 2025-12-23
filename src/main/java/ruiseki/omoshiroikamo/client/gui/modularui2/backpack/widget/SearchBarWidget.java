@@ -36,7 +36,7 @@ public class SearchBarWidget extends TextFieldWidget {
         this.panel = panel;
         background(VANILLA_SEARCH_BACKGROUND);
         hintText(
-            IKey.lang("gui.search_hint")
+            IKey.lang("gui.backpack.search_hint")
                 .get());
         value(new StringValue(prevText));
     }

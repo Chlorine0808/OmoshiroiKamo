@@ -12,6 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
+import ruiseki.omoshiroikamo.api.item.ItemUtils;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
@@ -92,7 +93,7 @@ public class DataModel {
             String entityName = LibMisc.LANG.localize(
                 ModelRegistry.INSTANCE.getByType(getId(stack))
                     .getDisplayName());
-            String message = entityName + " reached the " + nextTierName + " tier";
+            String message = LibMisc.LANG.localize("tooltip.data_model.reached_tier", entityName, nextTierName);
             player.addChatMessage(new ChatComponentText(message));
             setKillCount(0, stack);
             setSimulationCount(0, stack);
@@ -192,6 +193,65 @@ public class DataModel {
             return 0;
         }
         return model.getSimulationRFCost();
+    }
+
+    public static boolean canSimulate(ItemStack stack) {
+        ModelTierRegistryItem tier = ModelTierRegistry.INSTANCE.getByType(getTier(stack));
+        if (tier == null) {
+            return false;
+        }
+
+        return tier.canSimulate;
+    }
+
+    public static int getPristineChance(ItemStack stack) {
+        ModelTierRegistryItem tier = ModelTierRegistry.INSTANCE.getByType(getTier(stack));
+        if (tier == null) {
+            return 0;
+        }
+
+        return tier.getPristineChance();
+    }
+
+    public static int getSimulationEnergy(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return 0;
+        }
+
+        return model.getSimulationRFCost();
+    }
+
+    public static String getTierName(ItemStack stack) {
+        return LibMisc.LANG.localize(DataModelExperience.getTierName(getTier(stack)));
+    }
+
+    public static String getMatterTypeName(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return "";
+        }
+        LivingRegistryItem item = LivingRegistry.INSTANCE.getByType(
+            model.getLivingMatter()
+                .getItemDamage());
+        return LibMisc.LANG.localize(item.getItemName());
+    }
+
+    public static boolean isMaxTier(ItemStack stack) {
+        return DataModelExperience.isMaxTier(getTier(stack));
+    }
+
+    public static boolean isDataModelMatchesLivingMatter(ItemStack modelStack, ItemStack livingMatterStack) {
+        ModelRegistryItem model = getDataFromStack(modelStack);
+        if (model == null) {
+            return false;
+        }
+
+        return ItemUtils.areStacksEqual(model.getLivingMatter(), livingMatterStack);
+    }
+
+    public static boolean isDataModelMatchesPristineMatter(ItemStack modelStack, ItemStack pristineMatterStack) {
+        return modelStack.getItemDamage() == pristineMatterStack.getItemDamage();
     }
 
     public static int getCurrentTierSimulationCountWithKills(ItemStack stack) {

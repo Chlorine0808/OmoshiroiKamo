@@ -15,9 +15,9 @@ import ruiseki.omoshiroikamo.common.item.backpack.wrapper.IFilterUpgrade;
 public class FilterUpgradeWidget extends BasicExpandedTabWidget<FilterUpgradeWrapper> {
 
     private static final List<CyclicVariantButtonWidget.Variant> FILTER_VARIANTS = Arrays.asList(
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.input_output"), MGuiTextures.IN_OUT_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.input"), MGuiTextures.IN_ICON),
-        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.output"), MGuiTextures.OUT_ICON));
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.input_output"), MGuiTextures.IN_OUT_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.input"), MGuiTextures.IN_ICON),
+        new CyclicVariantButtonWidget.Variant(IKey.lang("gui.backpack.output"), MGuiTextures.OUT_ICON));
 
     @Getter
     private final CyclicVariantButtonWidget filterButton;
@@ -27,7 +27,7 @@ public class FilterUpgradeWidget extends BasicExpandedTabWidget<FilterUpgradeWra
             slotIndex,
             wrapper,
             ModItems.FILTER_UPGRADE.newItemStack(),
-            "gui.filter_settings",
+            "gui.backpack.filter_settings",
             "common_filter",
             5,
             75);
