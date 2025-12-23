@@ -75,9 +75,9 @@ public enum ModItems {
     CRYSTAL(useEnvironmentalTech, new ItemCrystal()),
     ASSEMBLER(useEnvironmentalTech, new ItemAssembler()),
     STABILIZED_ENDER_PEAR(useEnvironmentalTech, new ItemOK().setName(ModObject.itemStabilizedEnderPear)
-            .setTextureName("ender_stabilized")),
+        .setTextureName("ender_stabilized")),
     PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
-            .setTextureName("photovoltaic_cell")),
+        .setTextureName("photovoltaic_cell")),
 
     ANALYZER(useChicken || useCow, new ItemAnalyzer()),
     CHICKEN_CATCHER(useChicken, new ItemChickenCatcher()),
@@ -133,7 +133,7 @@ public enum ModItems {
 
     public String getName() {
         return getItem().getUnlocalizedName()
-                .replace("item.", "");
+            .replace("item.", "");
     }
 
     public ItemStack newItemStack() {

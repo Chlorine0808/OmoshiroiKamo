@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -24,17 +23,17 @@ import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 import ruiseki.omoshiroikamo.plugin.waila.IWailaBlockInfoProvider;
 
 public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExtractor>
-        implements IWailaBlockInfoProvider {
+    implements IWailaBlockInfoProvider {
 
     protected BlockQuantumResExtractor() {
         super(
-                ModObject.blockQuantumResExtractor.unlocalisedName,
-                TEQuantumResExtractorT1.class,
-                TEQuantumResExtractorT2.class,
-                TEQuantumResExtractorT3.class,
-                TEQuantumResExtractorT4.class,
-                TEQuantumResExtractorT5.class,
-                TEQuantumResExtractorT6.class);
+            ModObject.blockQuantumResExtractor.unlocalisedName,
+            TEQuantumResExtractorT1.class,
+            TEQuantumResExtractorT2.class,
+            TEQuantumResExtractorT3.class,
+            TEQuantumResExtractorT4.class,
+            TEQuantumResExtractorT5.class,
+            TEQuantumResExtractorT6.class);
         this.setLightLevel(0.8F);
     }
 
