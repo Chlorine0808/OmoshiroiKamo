@@ -287,17 +287,11 @@ public class TELootFabricator extends AbstractMachineTE implements IEnergySink, 
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        ForgeDirection dir = ForgeDirection.getOrientation(side);
-
-        if (dir == ForgeDirection.DOWN) {
-            int[] out = new int[OUTPUT_SIZE];
-            for (int i = 0; i < OUTPUT_SIZE; i++) {
-                out[i] = OUTPUT_START + i;
-            }
-            return out;
+        int[] slots = new int[getSizeInventory()];
+        for (int i = 0; i < slots.length; i++) {
+            slots[i] = i;
         }
-
-        return new int[] { INPUT_SLOT };
+        return slots;
     }
 
     @Override

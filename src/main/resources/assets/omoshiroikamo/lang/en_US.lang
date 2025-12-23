@@ -345,17 +345,6 @@ achievement.omoshiroikamo.craft_modifier_saturation.desc=Craft a Saturation Modi
 
 category.omoshiroikamo=Omoshiroi Kamo
 keybind.backpackOpenToggle=Open Backpack
-keybind.backpackSortToggle=Sort Backpack Inventory 
-
-#Elemental
-
-element.pyro.name=Pyro
-element.cryo.name=Cryo
-element.electro.name=Electro
-element.hydro.name=Hydro
-element.anemo.name=Anemo
-element.geo.name=Geo
-element.dendro.name=Dendro
 
 #Item
 

@@ -148,15 +148,22 @@ public abstract class BaseModelHandler {
                         continue;
                     }
 
-                    LivingRegistryItem livingMatter = null;
-                    if (data.livingMatter == null) {
-                        livingMatter = LivingRegistry.INSTANCE.getByName(data.displayName);
-                        if (livingMatter != null) {
-                            Logger.error(
-                                "Error registering ({}) Model '{}' : livingMatter was null",
-                                this.modID,
-                                data.displayName);
-                        }
+                    if (data.livingMatter == null || data.livingMatter.isEmpty()) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : livingMatter is missing or empty",
+                            this.modID,
+                            data.displayName);
+                        continue;
+                    }
+
+                    LivingRegistryItem livingMatter = LivingRegistry.INSTANCE.getByName(data.livingMatter);
+                    if (livingMatter == null) {
+                        Logger.error(
+                            "Error registering ({}) Model '{}' : livingMatter '{}' not found in LivingRegistry",
+                            this.modID,
+                            data.displayName,
+                            data.livingMatter);
+                        continue;
                     }
 
                     // Migrate
@@ -200,9 +207,7 @@ public abstract class BaseModelHandler {
                             model.setLootItems(loot);
                         }
 
-                        if (livingMatter != null) {
-                            model.setLivingMatter(livingMatter);
-                        }
+                        model.setLivingMatter(livingMatter);
 
                         model.setPristineMatter(ModItems.PRISTINE_MATTER.newItemStack(1, model.getId()));
 

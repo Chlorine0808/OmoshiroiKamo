@@ -222,6 +222,25 @@ public class DataModel {
         return model.getSimulationRFCost();
     }
 
+    public static String getTierName(ItemStack stack) {
+        return LibMisc.LANG.localize(DataModelExperience.getTierName(getTier(stack)));
+    }
+
+    public static String getMatterTypeName(ItemStack stack) {
+        ModelRegistryItem model = getDataFromStack(stack);
+        if (model == null) {
+            return "";
+        }
+        LivingRegistryItem item = LivingRegistry.INSTANCE.getByType(
+            model.getLivingMatter()
+                .getItemDamage());
+        return LibMisc.LANG.localize(item.getItemName());
+    }
+
+    public static boolean isMaxTier(ItemStack stack) {
+        return DataModelExperience.isMaxTier(getTier(stack));
+    }
+
     public static boolean isDataModelMatchesLivingMatter(ItemStack modelStack, ItemStack livingMatterStack) {
         ModelRegistryItem model = getDataFromStack(modelStack);
         if (model == null) {

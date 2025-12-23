@@ -2,12 +2,22 @@ package ruiseki.omoshiroikamo.common.block.deepMobLearning.simulationCharmber;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import ruiseki.omoshiroikamo.api.crafting.CraftingState;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.entity.model.DataModel;
+import ruiseki.omoshiroikamo.api.entity.model.ModelRegistryItem;
 import ruiseki.omoshiroikamo.client.gui.modularui2.base.handler.ItemStackHandlerBase;
 import ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.handler.ItemHandlerDataModel;
 import ruiseki.omoshiroikamo.client.gui.modularui2.deepMobLearning.handler.ItemHandlerPolymerClay;
@@ -16,18 +26,23 @@ import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemDataModel;
 import ruiseki.omoshiroikamo.common.item.deepMobLearning.ItemPolymerClay;
 import ruiseki.omoshiroikamo.config.backport.DeepMobLearningConfig;
 
-public class TESimulationChamber extends AbstractMachineTE implements IEnergySink {
+public class TESimulationChamber extends AbstractMachineTE implements IEnergySink, ISidedInventory {
 
-    private final ItemHandlerDataModel inputDataModel = new ItemHandlerDataModel() {
+    private static final int SLOT_DATA_MODEL = 0;
+    private static final int SLOT_POLYMER = 1;
+    private static final int SLOT_LIVING = 2;
+    private static final int SLOT_PRISTINE = 3;
+
+    public final ItemHandlerDataModel inputDataModel = new ItemHandlerDataModel() {
 
         @Override
         protected void onContentsChanged(int slot) {
             onDataModelChanged();
         }
     };
-    private final ItemHandlerPolymerClay inputPolymer = new ItemHandlerPolymerClay();
-    private final ItemStackHandlerBase outputLiving = new ItemStackHandlerBase();
-    private final ItemStackHandlerBase outputPristine = new ItemStackHandlerBase();
+    public final ItemHandlerPolymerClay inputPolymer = new ItemHandlerPolymerClay();
+    public final ItemStackHandlerBase outputLiving = new ItemStackHandlerBase();
+    public final ItemStackHandlerBase outputPristine = new ItemStackHandlerBase();
 
     private boolean pristineSuccess = false;
 
@@ -65,6 +80,31 @@ public class TESimulationChamber extends AbstractMachineTE implements IEnergySin
     @Override
     protected void finishCrafting() {
         ItemStack dataModel = getDataModel();
+        ModelRegistryItem model = DataModel.getDataFromStack(dataModel);
+
+        if (model == null) {
+            resetCrafting();
+            return;
+        }
+
+        DataModel.increaseSimulationCount(dataModel);
+
+        ItemStack livingMatter = outputLiving.getStackInSlot(0);
+        if (livingMatter == null) {
+            outputLiving.setStackInSlot(0, model.getLivingMatter());
+        } else {
+            livingMatter.stackSize++;
+        }
+
+        if (pristineSuccess) {
+            ItemStack pristineMatter = outputPristine.getStackInSlot(0);
+
+            if (pristineMatter == null) {
+                outputPristine.setStackInSlot(0, model.getPristineMatter());
+            } else {
+                pristineMatter.stackSize++;
+            }
+        }
 
         resetCrafting();
     }
@@ -125,7 +165,7 @@ public class TESimulationChamber extends AbstractMachineTE implements IEnergySin
     }
 
     public boolean hasPolymerClay() {
-        return getDataModel() != null && getPolymerClay().getItem() instanceof ItemPolymerClay;
+        return getPolymerClay() != null && getPolymerClay().getItem() instanceof ItemPolymerClay;
     }
 
     public boolean isLivingMatterOutputFull() {
@@ -157,5 +197,181 @@ public class TESimulationChamber extends AbstractMachineTE implements IEnergySin
     @Override
     public int receiveEnergy(ForgeDirection side, int amount, boolean simulate) {
         return energyStorage.receiveEnergy(amount, simulate);
+    }
+
+    @Override
+    public void writeCommon(NBTTagCompound root) {
+        super.writeCommon(root);
+
+        NBTTagCompound inventory = new NBTTagCompound();
+        inventory.setTag("inputDataModel", inputDataModel.serializeNBT());
+        inventory.setTag("inputPolymer", inputPolymer.serializeNBT());
+        inventory.setTag("outputLiving", outputLiving.serializeNBT());
+        inventory.setTag("outputPristine", outputPristine.serializeNBT());
+        root.setTag(INVENTORY_TAG, inventory);
+
+        root.getCompoundTag(CRAFTING_TAG)
+            .setBoolean("pristineSuccess", pristineSuccess);
+    }
+
+    @Override
+    public void readCommon(NBTTagCompound root) {
+        super.readCommon(root);
+
+        NBTTagCompound inventory = root.getCompoundTag(INVENTORY_TAG);
+        inputDataModel.deserializeNBT(inventory.getCompoundTag("inputDataModel"));
+        inputPolymer.deserializeNBT(inventory.getCompoundTag("inputPolymer"));
+        outputLiving.deserializeNBT(inventory.getCompoundTag("outputLiving"));
+        outputPristine.deserializeNBT(inventory.getCompoundTag("outputPristine"));
+
+        pristineSuccess = root.getCompoundTag(CRAFTING_TAG)
+            .getBoolean("pristineSuccess");
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
+        float hitZ) {
+        openGui(player);
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new SimulationChamberPanel(this, data, syncManager, settings);
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return new int[] { SLOT_DATA_MODEL, SLOT_POLYMER, SLOT_LIVING, SLOT_PRISTINE };
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        switch (slot) {
+            case SLOT_DATA_MODEL:
+                return stack != null && stack.getItem() instanceof ItemDataModel;
+
+            case SLOT_POLYMER:
+                return stack != null && stack.getItem() instanceof ItemPolymerClay;
+
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        return slot == SLOT_LIVING || slot == SLOT_PRISTINE;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 4;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        switch (slot) {
+            case 0:
+                return inputDataModel.getStackInSlot(0);
+            case 1:
+                return inputPolymer.getStackInSlot(0);
+            case 2:
+                return outputLiving.getStackInSlot(0);
+            case 3:
+                return outputPristine.getStackInSlot(0);
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int slot, int count) {
+        ItemStack stack = getStackInSlot(slot);
+        if (stack == null) return null;
+
+        ItemStack result;
+        if (stack.stackSize <= count) {
+            result = stack;
+            setInventorySlotContents(slot, null);
+        } else {
+            result = stack.splitStack(count);
+            if (stack.stackSize <= 0) {
+                setInventorySlotContents(slot, null);
+            }
+        }
+        markDirty();
+        return result;
+    }
+
+    @Override
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        switch (slot) {
+            case SLOT_DATA_MODEL:
+                inputDataModel.setStackInSlot(0, stack);
+                break;
+            case SLOT_POLYMER:
+                inputPolymer.setStackInSlot(0, stack);
+                break;
+            case SLOT_LIVING:
+                outputLiving.setStackInSlot(0, stack);
+                break;
+            case SLOT_PRISTINE:
+                outputPristine.setStackInSlot(0, stack);
+                break;
+        }
+        markDirty();
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int index) {
+        return null;
+    }
+
+    @Override
+    public String getInventoryName() {
+        return getMachineName();
+    }
+
+    @Override
+    public boolean hasCustomInventoryName() {
+        return false;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return canPlayerAccess(player);
+    }
+
+    @Override
+    public void openInventory() {
+
+    }
+
+    @Override
+    public void closeInventory() {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        if (stack == null) return false;
+
+        switch (index) {
+            case SLOT_DATA_MODEL:
+                return stack.getItem() instanceof ItemDataModel;
+
+            case SLOT_POLYMER:
+                return stack.getItem() instanceof ItemPolymerClay;
+
+            case SLOT_LIVING:
+            case SLOT_PRISTINE:
+            default:
+                return false;
+        }
     }
 }

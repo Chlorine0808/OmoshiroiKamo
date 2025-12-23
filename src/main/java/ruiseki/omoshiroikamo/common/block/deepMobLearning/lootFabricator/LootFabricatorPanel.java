@@ -260,8 +260,12 @@ public class LootFabricatorPanel extends ModularPanel {
                         .slot(new ModularSlot(tileEntity.output, index).accessibility(false, true)))
                 .build()
                 .pos(99, 6));
+    }
 
-        syncManager.onClientTick(this::updateLootItem);
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        updateLootItem();
     }
 
     public void updateLootItem() {

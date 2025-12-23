@@ -57,7 +57,7 @@ public class ItemDataModel extends ItemOK {
         if (model == null) {
             return super.getItemStackDisplayName(stack);
         }
-        return LibMisc.LANG.localize(model.getItemName());
+        return LibMisc.LANG.localize(model.getItemName()) + ": " + DataModel.getTierName(stack);
     }
 
     @Override
@@ -99,9 +99,9 @@ public class ItemDataModel extends ItemOK {
                 builder.addLang("tooltip.data_model.kill_multiplier", DataModel.getKillMultiplier(stack));
             }
             builder.addLang("tooltip.data_model.rf_cost", DataModel.getSimulationTickCost(stack));
-            // list.add(LibMisc.LANG.localize("data_model.type", DataModel.getMatterTypeName(stack)));
+            builder.addLang("tooltip.data_model.type", DataModel.getMatterTypeName(stack));
 
-            if (DataModel.canSimulate(stack)) {
+            if (!DataModel.canSimulate(stack)) {
                 builder.addLang("tooltip.data_model.cannot_simulate");
             }
         }
