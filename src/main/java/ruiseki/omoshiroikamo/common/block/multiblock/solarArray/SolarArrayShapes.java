@@ -1,5 +1,8 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.solarArray;
 
+import java.util.Map;
+
+import ruiseki.omoshiroikamo.common.structure.StructureJsonLoader;
 import ruiseki.omoshiroikamo.common.structure.StructureManager;
 
 public class SolarArrayShapes {
@@ -10,6 +13,27 @@ public class SolarArrayShapes {
             return custom;
         }
         return getDefaultShape(tier);
+    }
+
+    /**
+     * Get the shape with dynamic mappings for the specified tier.
+     * Returns null if no custom shape/mappings are defined (use default behavior).
+     */
+    public static StructureJsonLoader.ShapeWithMappings getShapeWithMappings(int tier) {
+        return StructureManager.getInstance()
+            .getShapeWithMappings("solar_array", "solarArrayTier" + tier);
+    }
+
+    /**
+     * Get all dynamic mappings as a Character -> Object map for use with
+     * registerTierWithDynamicMappings.
+     */
+    public static Map<Character, Object> getDynamicMappings(int tier) {
+        StructureJsonLoader.ShapeWithMappings swm = getShapeWithMappings(tier);
+        if (swm != null) {
+            return swm.dynamicMappings;
+        }
+        return null;
     }
 
     public static String[][] getDefaultShape(int tier) {

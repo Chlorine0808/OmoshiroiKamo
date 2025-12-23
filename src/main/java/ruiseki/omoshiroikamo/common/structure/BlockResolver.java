@@ -1,11 +1,21 @@
 package ruiseki.omoshiroikamo.common.structure;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
+
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * Utility for resolving Block objects from block ID strings.
+ * Utility for resolving Block objects from block ID strings
+ * and creating StructureLib elements dynamically.
  */
 public class BlockResolver {
 
@@ -53,6 +63,58 @@ public class BlockResolver {
         }
 
         return new ResolvedBlock(block, meta, anyMeta);
+    }
+
+    /**
+     * Create a StructureLib element for a single block string.
+     *
+     * @param blockString Format: "mod:blockId:meta" or "mod:blockId:*"
+     * @return IStructureElement or null if invalid
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElement<T> createElement(String blockString) {
+        ResolvedBlock result = resolve(blockString);
+        if (result == null || result.isAir) {
+            return null;
+        }
+
+        if (result.anyMeta) {
+            return (IStructureElement<T>) ofBlockAnyMeta(result.block, 0);
+        } else {
+            return (IStructureElement<T>) ofBlock(result.block, result.meta);
+        }
+    }
+
+    /**
+     * Create a chain element from multiple block strings.
+     * This allows any of the specified blocks to be valid at this position.
+     *
+     * @param blockStrings List of block strings
+     * @return IStructureElement using ofChain, or null if all invalid
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> IStructureElement<T> createChainElement(List<String> blockStrings) {
+        if (blockStrings == null || blockStrings.isEmpty()) {
+            return null;
+        }
+
+        List<IStructureElement<T>> elements = new ArrayList<>();
+        for (String blockString : blockStrings) {
+            IStructureElement<T> element = createElement(blockString);
+            if (element != null) {
+                elements.add(element);
+            }
+        }
+
+        if (elements.isEmpty()) {
+            return null;
+        }
+
+        if (elements.size() == 1) {
+            return elements.get(0);
+        }
+
+        return (IStructureElement<T>) ofChain(elements.toArray(new IStructureElement[0]));
     }
 
     /**

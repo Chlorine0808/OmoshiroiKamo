@@ -23,49 +23,55 @@ public class QuantumResExtractorStructure {
     public static IStructureDefinition<TEQuantumResExtractorT6> STRUCTURE_DEFINITION_TIER_6;
 
     public static void registerStructureInfo() {
-        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT1.class,
             QuantumResExtractorShapes.getShape(1),
+            QuantumResExtractorShapes.getDynamicMappings(1),
             QuantumResExtractorShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             1,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT2.class,
             QuantumResExtractorShapes.getShape(2),
+            QuantumResExtractorShapes.getDynamicMappings(2),
             QuantumResExtractorShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             2,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT3.class,
             QuantumResExtractorShapes.getShape(3),
+            QuantumResExtractorShapes.getDynamicMappings(3),
             QuantumResExtractorShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             3,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT4.class,
             QuantumResExtractorShapes.getShape(4),
+            QuantumResExtractorShapes.getDynamicMappings(4),
             QuantumResExtractorShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             4,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT5.class,
             QuantumResExtractorShapes.getShape(5),
+            QuantumResExtractorShapes.getDynamicMappings(5),
             QuantumResExtractorShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             5,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumResExtractorT6.class,
             QuantumResExtractorShapes.getShape(6),
+            QuantumResExtractorShapes.getDynamicMappings(6),
             QuantumResExtractorShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_RES_EXTRACTOR.get(),
             6,

@@ -157,6 +157,32 @@ public class StructureManager {
     }
 
     /**
+     * Fetch a structure shape along with all applicable mappings.
+     *
+     * @param fileKey       file key ("ore_miner", "res_miner", ...)
+     * @param structureName structure name ("oreExtractorTier1", ...)
+     * @return ShapeWithMappings containing shape and mappings, or null if not found
+     */
+    public StructureJsonLoader.ShapeWithMappings getShapeWithMappings(String fileKey, String structureName) {
+        if (!initialized) {
+            return null;
+        }
+
+        StructureJsonLoader loader = loaders.get(fileKey);
+        if (loader == null) {
+            warnOnce(fileKey, "Structure loader not found: " + fileKey);
+            return null;
+        }
+
+        StructureJsonLoader.ShapeWithMappings result = loader.getShapeWithMappings(structureName);
+        if (result == null) {
+            warnOnce(fileKey + ":" + structureName, "Structure not found: " + structureName + " in " + fileKey);
+        }
+
+        return result;
+    }
+
+    /**
      * Prevents repeating the same warning.
      */
     private void warnOnce(String key, String message) {

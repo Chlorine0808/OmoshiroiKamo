@@ -1,5 +1,8 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumBeacon;
 
+import java.util.Map;
+
+import ruiseki.omoshiroikamo.common.structure.StructureJsonLoader;
 import ruiseki.omoshiroikamo.common.structure.StructureManager;
 
 public class QuantumBeaconShapes {
@@ -10,6 +13,25 @@ public class QuantumBeaconShapes {
             return custom;
         }
         return getDefaultShape(tier);
+    }
+
+    /**
+     * Get the shape with dynamic mappings for the specified tier.
+     */
+    public static StructureJsonLoader.ShapeWithMappings getShapeWithMappings(int tier) {
+        return StructureManager.getInstance()
+            .getShapeWithMappings("quantum_beacon", "beaconTier" + tier);
+    }
+
+    /**
+     * Get all dynamic mappings for use with registerTierWithDynamicMappings.
+     */
+    public static Map<Character, Object> getDynamicMappings(int tier) {
+        StructureJsonLoader.ShapeWithMappings swm = getShapeWithMappings(tier);
+        if (swm != null) {
+            return swm.dynamicMappings;
+        }
+        return null;
     }
 
     public static String[][] getDefaultShape(int tier) {

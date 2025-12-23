@@ -21,49 +21,55 @@ public class QuantumBeaconStructure {
     public static IStructureDefinition<TEQuantumBeaconT6> STRUCTURE_DEFINITION_TIER_6;
 
     public static void registerStructureInfo() {
-        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT1.class,
             QuantumBeaconShapes.getShape(1),
+            QuantumBeaconShapes.getDynamicMappings(1),
             QuantumBeaconShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_BEACON.get(),
             1,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT2.class,
             QuantumBeaconShapes.getShape(2),
+            QuantumBeaconShapes.getDynamicMappings(2),
             QuantumBeaconShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_BEACON.get(),
             2,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT3.class,
             QuantumBeaconShapes.getShape(3),
+            QuantumBeaconShapes.getDynamicMappings(3),
             QuantumBeaconShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_BEACON.get(),
             3,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT4.class,
             QuantumBeaconShapes.getShape(4),
+            QuantumBeaconShapes.getDynamicMappings(4),
             QuantumBeaconShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_BEACON.get(),
             4,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT5.class,
             QuantumBeaconShapes.getShape(5),
+            QuantumBeaconShapes.getDynamicMappings(5),
             QuantumBeaconShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_BEACON.get(),
             5,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumBeaconT6.class,
             QuantumBeaconShapes.getShape(6),
+            QuantumBeaconShapes.getDynamicMappings(6),
             QuantumBeaconShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_BEACON.get(),
             6,

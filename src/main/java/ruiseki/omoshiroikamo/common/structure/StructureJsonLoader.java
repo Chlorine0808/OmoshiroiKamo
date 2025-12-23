@@ -336,4 +336,57 @@ public class StructureJsonLoader {
     public Map<Character, BlockMapping> getDefaultMappings() {
         return new HashMap<>(defaultMappings);
     }
+
+    /**
+     * Container for shape data with dynamic mappings.
+     */
+    public static class ShapeWithMappings {
+
+        public final String[][] shape;
+        public final Map<Character, Object> dynamicMappings;
+
+        public ShapeWithMappings(String[][] shape, Map<Character, Object> dynamicMappings) {
+            this.shape = shape;
+            this.dynamicMappings = dynamicMappings != null ? dynamicMappings : new HashMap<>();
+        }
+    }
+
+    /**
+     * Get the shape along with all applicable dynamic mappings.
+     * This includes both default mappings and structure-specific mappings.
+     *
+     * @param structureName The name of the structure
+     * @return ShapeWithMappings containing shape and all mappings, or null if not
+     *         found
+     */
+    public ShapeWithMappings getShapeWithMappings(String structureName) {
+        String[][] shape = getShape(structureName);
+        if (shape == null) {
+            return null;
+        }
+
+        // Collect all mappings (default + structure-specific)
+        Map<Character, Object> mappings = new HashMap<>();
+
+        // Add default mappings first
+        for (Map.Entry<Character, BlockMapping> entry : defaultMappings.entrySet()) {
+            mappings.put(entry.getKey(), entry.getValue());
+        }
+
+        // Override with structure-specific mappings
+        StructureEntry entry = structureCache.get(structureName);
+        if (entry != null && entry.mappings != null) {
+            for (Map.Entry<String, Object> mapEntry : entry.mappings.entrySet()) {
+                if (!mapEntry.getKey()
+                    .isEmpty()) {
+                    mappings.put(
+                        mapEntry.getKey()
+                            .charAt(0),
+                        mapEntry.getValue());
+                }
+            }
+        }
+
+        return new ShapeWithMappings(shape, mappings);
+    }
 }
