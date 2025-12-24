@@ -11,12 +11,12 @@ import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenBreedingReci
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenDropsRecipeHandler;
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenLayingRecipeHandler;
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenThrowsRecipeHandler;
-import ruiseki.omoshiroikamo.module.cows.common.integration.nei.CowBreedingRecipeHandler;
-import ruiseki.omoshiroikamo.module.cows.common.integration.nei.CowMilkingRecipeHandler;
+import ruiseki.omoshiroikamo.module.cows.integration.nei.CowBreedingRecipeHandler;
+import ruiseki.omoshiroikamo.module.cows.integration.nei.CowMilkingRecipeHandler;
+import ruiseki.omoshiroikamo.module.dml.integration.nei.LootFabricatorRecipeHandler;
+import ruiseki.omoshiroikamo.module.dml.integration.nei.SimulationChamberRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.overlay.BackpackOverlay;
 import ruiseki.omoshiroikamo.plugin.nei.positioner.BackpackPositioner;
-import ruiseki.omoshiroikamo.plugin.nei.recipe.dml.LootFabricatorRecipeHandler;
-import ruiseki.omoshiroikamo.plugin.nei.recipe.dml.SimulationChamberRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.quantumExtractor.QuantumOreExtractorRecipeHandler;
 import ruiseki.omoshiroikamo.plugin.nei.recipe.quantumExtractor.QuantumResExtractorRecipeHandler;
 

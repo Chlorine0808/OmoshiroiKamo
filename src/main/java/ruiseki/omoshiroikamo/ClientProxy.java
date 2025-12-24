@@ -11,7 +11,6 @@ import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -29,10 +28,6 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 import ruiseki.omoshiroikamo.core.ModuleManager;
-import ruiseki.omoshiroikamo.module.cows.client.render.RenderCowsCow;
-import ruiseki.omoshiroikamo.module.cows.client.render.StallTESR;
-import ruiseki.omoshiroikamo.module.cows.common.block.TEStall;
-import ruiseki.omoshiroikamo.module.cows.common.entity.EntityCowsCow;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
@@ -44,6 +39,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         ModelRegistry.registerModid(LibMisc.MOD_ID);
+
         ModuleManager.preInitClient(event);
         MGuiFactories.init();
     }
@@ -63,11 +59,6 @@ public class ClientProxy extends CommonProxy {
 
         if (BackportConfigs.useEnvironmentalTech) {
             ClientRegistry.bindTileEntitySpecialRenderer(TEQuantumExtractor.class, new QuantumExtractorTESR());
-        }
-
-        if (BackportConfigs.useCow) {
-            ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
-            RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
         }
 
         if (ItemConfigs.renderPufferFish) {

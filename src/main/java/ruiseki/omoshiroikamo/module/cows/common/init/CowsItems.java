@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.cows.common.item.ItemCowHalter;
 import ruiseki.omoshiroikamo.module.cows.common.item.ItemCowSpawnEgg;
 
@@ -25,13 +24,11 @@ public enum CowsItems {
 
     public static void preInit() {
         for (CowsItems item : VALUES) {
-            if (BackportConfigs.useCow) {
-                try {
-                    GameRegistry.registerItem(item.getItem(), item.getName());
-                    Logger.info("Successfully initialized " + item.name());
-                } catch (Exception e) {
-                    Logger.error("Failed to initialize item: +" + item.name());
-                }
+            try {
+                GameRegistry.registerItem(item.getItem(), item.getName());
+                Logger.info("Successfully initialized " + item.name());
+            } catch (Exception e) {
+                Logger.error("Failed to initialize item: +" + item.name());
             }
         }
     }

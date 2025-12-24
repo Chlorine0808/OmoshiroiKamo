@@ -1,7 +1,5 @@
-package ruiseki.omoshiroikamo.module.cows;
+package ruiseki.omoshiroikamo.module.dml;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -10,25 +8,21 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import ruiseki.omoshiroikamo.api.IModule;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
-import ruiseki.omoshiroikamo.module.cows.client.render.RenderCowsCow;
-import ruiseki.omoshiroikamo.module.cows.client.render.StallTESR;
-import ruiseki.omoshiroikamo.module.cows.common.block.TEStall;
-import ruiseki.omoshiroikamo.module.cows.common.entity.EntityCowsCow;
-import ruiseki.omoshiroikamo.module.cows.common.init.CowsBlocks;
-import ruiseki.omoshiroikamo.module.cows.common.init.CowsItems;
-import ruiseki.omoshiroikamo.module.cows.common.init.CowsRecipes;
-import ruiseki.omoshiroikamo.module.cows.common.registries.ModCows;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLBlocks;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLItems;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLRecipes;
+import ruiseki.omoshiroikamo.module.dml.common.registries.ModModels;
 
-public class CowsModule implements IModule {
+public class DMLCommonModule implements IModule {
 
     @Override
     public String getId() {
-        return "Cows";
+        return "Deep Mod Learning";
     }
 
     @Override
     public boolean isEnabled() {
-        return BackportConfigs.useCow;
+        return BackportConfigs.useDML;
     }
 
     @Override
@@ -38,20 +32,19 @@ public class CowsModule implements IModule {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        CowsBlocks.preInit();
-        CowsItems.preInit();
-        ModCows.preInit();
+        DMLBlocks.preInit();
+        DMLItems.preInit();
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
-        CowsRecipes.init();
-        ModCows.init();
+        ModModels.init();
+        DMLRecipes.init();
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        ModCows.postInit();
+        ModModels.postInit();
     }
 
     @Override
@@ -71,8 +64,7 @@ public class CowsModule implements IModule {
 
     @Override
     public void initClient(FMLInitializationEvent event) {
-        ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
+
     }
 
     @Override

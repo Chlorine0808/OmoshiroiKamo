@@ -1,8 +1,6 @@
 package ruiseki.omoshiroikamo.common.init;
 
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useBackpack;
-import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useCow;
-import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useDML;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useEnvironmentalTech;
 
 import net.minecraft.block.material.Material;
@@ -12,9 +10,6 @@ import net.minecraft.item.ItemStack;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
-import ruiseki.omoshiroikamo.common.block.dml.BlockMachineCasing;
-import ruiseki.omoshiroikamo.common.block.dml.lootFabricator.BlockLootFabricator;
-import ruiseki.omoshiroikamo.common.block.dml.simulationCharmber.BlockSimulationChamber;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockAlabasterStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockBasaltStructure;
 import ruiseki.omoshiroikamo.common.block.multiblock.base.BlockCrystal;
@@ -44,7 +39,6 @@ import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarArray;
 import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarCell;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
-import ruiseki.omoshiroikamo.module.cows.common.block.BlockStall;
 
 public enum ModBlocks {
 
@@ -111,12 +105,6 @@ public enum ModBlocks {
     MODIFIER_FIRE_RESISTANCE(useEnvironmentalTech, BlockModifierFireResistance.create()),
     MODIFIER_NULL(useEnvironmentalTech, BlockModifierCore.create()),
     BLOCK_CRYSTAL(useEnvironmentalTech, BlockCrystal.create()),
-
-    STALL(useCow, BlockStall.create()),
-
-    LOOT_FABRICATOR(useDML, BlockLootFabricator.create()),
-    SIMULATION_CHAMBER(useDML, BlockSimulationChamber.create()),
-    MACHINE_CASING(useDML, BlockMachineCasing.create()),
 
     ;
     // spotless: on

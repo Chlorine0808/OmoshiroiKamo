@@ -22,7 +22,6 @@ import ruiseki.omoshiroikamo.common.command.CommandOK;
 import ruiseki.omoshiroikamo.common.init.MobOreDicts;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.init.ModEntity;
 import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.init.ModRecipes;
 import ruiseki.omoshiroikamo.common.init.OKWorldGenerator;
@@ -33,6 +32,7 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.core.ModuleManager;
 import ruiseki.omoshiroikamo.module.chickens.ChickensModule;
 import ruiseki.omoshiroikamo.module.cows.CowsModule;
+import ruiseki.omoshiroikamo.module.dml.DMLCommonModule;
 import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
 import ruiseki.omoshiroikamo.plugin.compat.EtFuturumCompat;
 import ruiseki.omoshiroikamo.plugin.nei.NEICompat;
@@ -48,6 +48,7 @@ public class CommonProxy {
     public CommonProxy() {}
 
     public void onConstruction(FMLConstructionEvent event) {
+        ModuleManager.onConstruction(event);
         if (LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
             Logger.info(
                 "{} is in snapshot mode. Disabling update checker... Other features may also be different.",
@@ -61,6 +62,7 @@ public class CommonProxy {
 
         ModuleManager.register(new ChickensModule());
         ModuleManager.register(new CowsModule());
+        ModuleManager.register(new DMLCommonModule());
 
         ModuleManager.preInit(event);
 
@@ -95,7 +97,6 @@ public class CommonProxy {
         ModuleManager.init(event);
 
         ModRecipes.init();
-        ModEntity.init();
         WailaCompat.init();
         NEICompat.init();
         EtFuturumCompat.init();
@@ -106,7 +107,6 @@ public class CommonProxy {
 
         ModuleManager.postInit(event);
 
-        ModEntity.postInit();
         StructureCompat.postInit();
         BaubleExpandedCompat.postInit();
     }

@@ -4,7 +4,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
@@ -387,68 +386,6 @@ public class ItemRecipes {
                     "blockObsidian",
                     'B',
                     ModBlocks.HARDENED_STRUCTURE.newItemStack(1, 1)));
-        }
-
-        if (BackportConfigs.useDML) {
-
-            // Deep Learner
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModItems.DEEP_LEARNER.newItemStack(),
-                    "ORO",
-                    "RSR",
-                    "ODO",
-                    'O',
-                    ModItems.SOOT_COVERED_PLATE.getItem(),
-                    'D',
-                    ModItems.SOOT_COVERED_REDSTONE.getItem(),
-                    'S',
-                    Blocks.glass_pane,
-                    'R',
-                    Items.repeater));
-
-            // Data Model Blank
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModItems.DATA_MODEL_BLANK.newItemStack(),
-                    "CEC",
-                    "RSR",
-                    "CGC",
-                    'E',
-                    Items.repeater,
-                    'R',
-                    ModItems.SOOT_COVERED_REDSTONE.getItem(),
-                    'G',
-                    "ingotGold",
-                    'C',
-                    "gemLapis",
-                    'S',
-                    "stone"));
-
-            // Polymer Clay
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModItems.POLYMER_CLAY.newItemStack(16),
-                    "GC ",
-                    "CDC",
-                    " CI",
-                    'I',
-                    "ingotIron",
-                    'G',
-                    "ingotGold",
-                    'D',
-                    "gemLapis",
-                    'C',
-                    "itemClay"));
-
-            // Soot Covered Plate
-            GameRegistry.addRecipe(
-                new ShapelessOreRecipe(
-                    ModItems.SOOT_COVERED_PLATE.newItemStack(8),
-                    ModItems.SOOT_COVERED_REDSTONE.getItem(),
-                    "blockObsidian",
-                    "blockObsidian",
-                    "blockObsidian"));
         }
     }
 

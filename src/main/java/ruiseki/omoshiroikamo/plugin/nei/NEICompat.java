@@ -18,8 +18,9 @@ import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenBreedingReci
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenDropsRecipeHandler;
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenLayingRecipeHandler;
 import ruiseki.omoshiroikamo.module.chickens.integration.nei.ChickenThrowsRecipeHandler;
-import ruiseki.omoshiroikamo.plugin.nei.recipe.dml.LootFabricatorRecipeHandler;
-import ruiseki.omoshiroikamo.plugin.nei.recipe.dml.SimulationChamberRecipeHandler;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLBlocks;
+import ruiseki.omoshiroikamo.module.dml.integration.nei.LootFabricatorRecipeHandler;
+import ruiseki.omoshiroikamo.module.dml.integration.nei.SimulationChamberRecipeHandler;
 
 public class NEICompat {
 
@@ -95,10 +96,10 @@ public class NEICompat {
         }
 
         if (BackportConfigs.useDML) {
-            sendHandler(LootFabricatorRecipeHandler.UID, ModBlocks.LOOT_FABRICATOR.newItemStack(), 48, 8);
-            sendCatalyst(LootFabricatorRecipeHandler.UID, ModBlocks.LOOT_FABRICATOR.newItemStack());
-            sendHandler(SimulationChamberRecipeHandler.UID, ModBlocks.SIMULATION_CHAMBER.newItemStack(), 48, 8);
-            sendCatalyst(SimulationChamberRecipeHandler.UID, ModBlocks.SIMULATION_CHAMBER.newItemStack());
+            sendHandler(LootFabricatorRecipeHandler.UID, DMLBlocks.LOOT_FABRICATOR.newItemStack(), 48, 8);
+            sendCatalyst(LootFabricatorRecipeHandler.UID, DMLBlocks.LOOT_FABRICATOR.newItemStack());
+            sendHandler(SimulationChamberRecipeHandler.UID, DMLBlocks.SIMULATION_CHAMBER.newItemStack(), 48, 8);
+            sendCatalyst(SimulationChamberRecipeHandler.UID, DMLBlocks.SIMULATION_CHAMBER.newItemStack());
         }
 
         Logger.info("Loaded IMCForNEI");

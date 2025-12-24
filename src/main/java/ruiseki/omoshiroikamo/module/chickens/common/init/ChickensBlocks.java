@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.chickens.common.block.BlockBreeder;
 import ruiseki.omoshiroikamo.module.chickens.common.block.BlockRoost;
 import ruiseki.omoshiroikamo.module.chickens.common.block.BlockRoostCollector;
@@ -25,14 +24,12 @@ public enum ChickensBlocks {
 
     public static void preInit() {
         for (ChickensBlocks block : VALUES) {
-            if (BackportConfigs.useChicken) {
-                try {
-                    block.getBlock()
-                        .init();
-                    Logger.info("Successfully initialized {}", block.name());
-                } catch (Exception e) {
-                    Logger.error("Failed to initialize block: +{}", block.name());
-                }
+            try {
+                block.getBlock()
+                    .init();
+                Logger.info("Successfully initialized {}", block.name());
+            } catch (Exception e) {
+                Logger.error("Failed to initialize block: +{}", block.name());
             }
         }
     }

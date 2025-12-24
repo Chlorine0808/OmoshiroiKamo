@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.module.cows.common.init;
+package ruiseki.omoshiroikamo.module.dml.common.init;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -6,21 +6,25 @@ import net.minecraft.item.ItemStack;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.module.cows.common.block.BlockStall;
+import ruiseki.omoshiroikamo.module.dml.common.block.BlockMachineCasing;
+import ruiseki.omoshiroikamo.module.dml.common.block.lootFabricator.BlockLootFabricator;
+import ruiseki.omoshiroikamo.module.dml.common.block.simulationCharmber.BlockSimulationChamber;
 
-public enum CowsBlocks {
+public enum DMLBlocks {
 
     // spotless: off
 
-    STALL(BlockStall.create()),
+    LOOT_FABRICATOR(BlockLootFabricator.create()),
+    SIMULATION_CHAMBER(BlockSimulationChamber.create()),
+    MACHINE_CASING(BlockMachineCasing.create()),
 
     ;
     // spotless: on
 
-    public static final CowsBlocks[] VALUES = values();
+    public static final DMLBlocks[] VALUES = values();
 
     public static void preInit() {
-        for (CowsBlocks block : VALUES) {
+        for (DMLBlocks block : VALUES) {
             try {
                 block.getBlock()
                     .init();
@@ -34,7 +38,7 @@ public enum CowsBlocks {
     @Getter
     private final BlockOK block;
 
-    CowsBlocks(BlockOK block) {
+    DMLBlocks(BlockOK block) {
         this.block = block;
     }
 

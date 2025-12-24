@@ -9,49 +9,49 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import ruiseki.omoshiroikamo.api.IModuleMod;
+import ruiseki.omoshiroikamo.api.IModule;
 
 public final class ModuleManager {
 
-    private static final List<IModuleMod> MODULES = new ArrayList<>();
+    private static final List<IModule> MODULES = new ArrayList<>();
 
-    public static void register(IModuleMod module) {
+    public static void register(IModule module) {
         MODULES.add(module);
     }
 
     public static void onConstruction(FMLConstructionEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.onConstruction(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.onConstruction(event);
     }
 
     public static void preInit(FMLPreInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.preInit(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.preInit(event);
     }
 
     public static void init(FMLInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.init(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.init(event);
     }
 
     public static void postInit(FMLPostInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.postInit(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.postInit(event);
     }
 
     public static void serverLoad(FMLServerStartingEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.serverLoad(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.serverLoad(event);
     }
 
     public static void serverStarted(FMLServerStartedEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.serverStarted(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.serverStarted(event);
     }
 
     public static void preInitClient(FMLPreInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.preInitClient(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.preInitClient(event);
     }
 
     public static void initClient(FMLInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.initClient(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.initClient(event);
     }
 
     public static void postInitClient(FMLPostInitializationEvent event) {
-        for (IModuleMod m : MODULES) if (m.isEnabled()) m.postInitClient(event);
+        for (IModule m : MODULES) if (m.isEnabled()) m.postInitClient(event);
     }
 }

@@ -8,7 +8,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import ruiseki.omoshiroikamo.api.IModuleMod;
+import ruiseki.omoshiroikamo.api.IModule;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.chickens.client.render.BreederTESR;
 import ruiseki.omoshiroikamo.module.chickens.client.render.RenderChickensChicken;
@@ -21,7 +21,7 @@ import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensBlocks;
 import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensItems;
 import ruiseki.omoshiroikamo.module.chickens.registries.ModChickens;
 
-public class ChickensModule implements IModuleMod {
+public class ChickensModule implements IModule {
 
     @Override
     public String getId() {

@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lombok.Getter;
 import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.chickens.common.item.ItemAnalyzer;
 import ruiseki.omoshiroikamo.module.chickens.common.item.ItemChicken;
 import ruiseki.omoshiroikamo.module.chickens.common.item.ItemChickenCatcher;
@@ -35,13 +34,11 @@ public enum ChickensItems {
 
     public static void preInit() {
         for (ChickensItems item : VALUES) {
-            if (BackportConfigs.useChicken) {
-                try {
-                    GameRegistry.registerItem(item.getItem(), item.getName());
-                    Logger.info("Successfully initialized " + item.name());
-                } catch (Exception e) {
-                    Logger.error("Failed to initialize item: +" + item.name());
-                }
+            try {
+                GameRegistry.registerItem(item.getItem(), item.getName());
+                Logger.info("Successfully initialized " + item.name());
+            } catch (Exception e) {
+                Logger.error("Failed to initialize item: +" + item.name());
             }
         }
     }

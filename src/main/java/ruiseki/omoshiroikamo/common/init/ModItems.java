@@ -26,19 +26,19 @@ import ruiseki.omoshiroikamo.common.item.backpack.ItemPickupUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemVoidUpgrade;
-import ruiseki.omoshiroikamo.common.item.dml.ItemCreativeModelLearner;
-import ruiseki.omoshiroikamo.common.item.dml.ItemDataModel;
-import ruiseki.omoshiroikamo.common.item.dml.ItemDataModelBlank;
-import ruiseki.omoshiroikamo.common.item.dml.ItemDeepLearner;
-import ruiseki.omoshiroikamo.common.item.dml.ItemLivingMatter;
-import ruiseki.omoshiroikamo.common.item.dml.ItemPolymerClay;
-import ruiseki.omoshiroikamo.common.item.dml.ItemPristineMatter;
-import ruiseki.omoshiroikamo.common.item.dml.ItemSootCoveredPlate;
-import ruiseki.omoshiroikamo.common.item.dml.ItemSootCoveredRedstone;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemStructureWand;
 import ruiseki.omoshiroikamo.common.util.Logger;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemCreativeModelLearner;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemDataModel;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemDataModelBlank;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemLivingMatter;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemPolymerClay;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemPristineMatter;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemSootCoveredPlate;
+import ruiseki.omoshiroikamo.module.dml.common.item.ItemSootCoveredRedstone;
+import ruiseki.omoshiroikamo.module.dml.common.item.deepLearner.ItemDeepLearner;
 
 public enum ModItems {
 

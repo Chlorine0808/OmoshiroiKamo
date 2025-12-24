@@ -16,6 +16,8 @@ import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensBlocks;
 import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensItems;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsBlocks;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsItems;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLBlocks;
+import ruiseki.omoshiroikamo.module.dml.common.init.DMLItems;
 
 public abstract class OKCreativeTab extends CreativeTabs {
 
@@ -136,26 +138,26 @@ public abstract class OKCreativeTab extends CreativeTabs {
 
         @Override
         public ItemStack getIconItemStack() {
-            return new ItemStack(ModItems.DEEP_LEARNER.getItem());
+            return new ItemStack(DMLItems.DEEP_LEARNER.getItem());
         }
 
         @Override
         public void displayAllReleventItems(List<ItemStack> list) {
             this.list = list;
 
-            addBlock(ModBlocks.LOOT_FABRICATOR.get());
-            addBlock(ModBlocks.SIMULATION_CHAMBER.get());
-            addBlock(ModBlocks.MACHINE_CASING.get());
+            addBlock(DMLBlocks.LOOT_FABRICATOR.getBlock());
+            addBlock(DMLBlocks.SIMULATION_CHAMBER.getBlock());
+            addBlock(DMLBlocks.MACHINE_CASING.getBlock());
 
-            addItem(ModItems.DEEP_LEARNER.getItem());
-            addItem(ModItems.CREATIVE_MODEL_LEARNER.getItem());
-            addItem(ModItems.DATA_MODEL_BLANK.getItem());
-            addItem(ModItems.DATA_MODEL.getItem());
-            addItem(ModItems.PRISTINE_MATTER.getItem());
-            addItem(ModItems.LIVING_MATTER.getItem());
-            addItem(ModItems.POLYMER_CLAY.getItem());
-            addItem(ModItems.SOOT_COVERED_PLATE.getItem());
-            addItem(ModItems.SOOT_COVERED_REDSTONE.getItem());
+            addItem(DMLItems.DEEP_LEARNER.getItem());
+            addItem(DMLItems.CREATIVE_MODEL_LEARNER.getItem());
+            addItem(DMLItems.DATA_MODEL_BLANK.getItem());
+            addItem(DMLItems.DATA_MODEL.getItem());
+            addItem(DMLItems.PRISTINE_MATTER.getItem());
+            addItem(DMLItems.LIVING_MATTER.getItem());
+            addItem(DMLItems.POLYMER_CLAY.getItem());
+            addItem(DMLItems.SOOT_COVERED_PLATE.getItem());
+            addItem(DMLItems.SOOT_COVERED_REDSTONE.getItem());
         }
     };
 

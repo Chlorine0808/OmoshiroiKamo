@@ -1368,54 +1368,5 @@ public class BlockRecipes {
                     'C',
                     ModBlocks.BLOCK_CRYSTAL.newItemStack(1, 1)));
         }
-
-        if (BackportConfigs.useDML) {
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModBlocks.MACHINE_CASING.getItem(),
-                    "PIP",
-                    "ICI",
-                    "PIP",
-                    'P',
-                    ModItems.SOOT_COVERED_PLATE.getItem(),
-                    'I',
-                    "ingotIron",
-                    'C',
-                    ModItems.SOOT_COVERED_REDSTONE.getItem()));
-
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModBlocks.LOOT_FABRICATOR.getItem(),
-                    " G ",
-                    "DMD",
-                    "YCY",
-                    'M',
-                    ModBlocks.MACHINE_CASING.get(),
-                    'G',
-                    "ingotGold",
-                    'D',
-                    "gemDiamond",
-                    'Y',
-                    "dyeYellow",
-                    'C',
-                    Items.comparator));
-
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModBlocks.SIMULATION_CHAMBER.getItem(),
-                    " G ",
-                    "PMP",
-                    "DCD",
-                    'M',
-                    ModBlocks.MACHINE_CASING.get(),
-                    'P',
-                    "pearlEnder",
-                    'G',
-                    Blocks.glass_pane,
-                    'C',
-                    Items.comparator,
-                    'D',
-                    "gemLapis"));
-        }
     }
 }
