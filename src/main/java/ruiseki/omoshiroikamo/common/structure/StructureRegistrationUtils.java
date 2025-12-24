@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.common.block.multiblock;
+package ruiseki.omoshiroikamo.common.structure;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -17,11 +17,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
-import ruiseki.omoshiroikamo.common.structure.BlockResolver;
+import ruiseki.omoshiroikamo.common.block.multiblock.TieredMultiblockInfoContainer;
 import ruiseki.omoshiroikamo.common.structure.StructureDefinitionData.BlockEntry;
 import ruiseki.omoshiroikamo.common.structure.StructureDefinitionData.BlockMapping;
-import ruiseki.omoshiroikamo.common.structure.StructureException;
-import ruiseki.omoshiroikamo.common.structure.StructureManager;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class StructureRegistrationUtils {

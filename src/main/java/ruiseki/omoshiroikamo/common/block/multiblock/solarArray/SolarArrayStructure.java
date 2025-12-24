@@ -7,8 +7,8 @@ import static ruiseki.omoshiroikamo.plugin.structureLib.StructureLibUtils.ofBloc
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ruiseki.omoshiroikamo.common.block.multiblock.StructureRegistrationUtils;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.structure.StructureRegistrationUtils;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class SolarArrayStructure {
