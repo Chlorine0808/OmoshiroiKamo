@@ -83,6 +83,50 @@ public class QuantumBeaconStructure {
                     (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
                     ModBlocks.MODIFIER_NULL.get(),
                     0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_FIRE_RESISTANCE.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_FLIGHT.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_NIGHT_VISION.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_WATER_BREATHING.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_STRENGTH.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_HASTE.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_REGENERATION.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_SATURATION.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_RESISTANCE.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_JUMP_BOOST.get(),
+                    0),
+                ofBlockAdderWithPos(
+                    (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                    ModBlocks.MODIFIER_SPEED.get(),
+                    0),
                 ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
                 ofBlock(ModBlocks.MODIFIER_FIRE_RESISTANCE.get(), 0),
                 ofBlock(ModBlocks.MODIFIER_FLIGHT.get(), 0),

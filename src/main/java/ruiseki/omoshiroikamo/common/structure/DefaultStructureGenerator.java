@@ -59,22 +59,22 @@ public class DefaultStructureGenerator {
         required.put("default", createDefaultMappings("oreMiner"));
         required.put(
             "oreExtractorTier1",
-            createStructureEntry("oreExtractorTier1", QuantumOreExtractorShapes.SHAPE_TIER_1));
+            createStructureEntry("oreExtractorTier1", QuantumOreExtractorShapes.SHAPE_TIER_1, 1));
         required.put(
             "oreExtractorTier2",
-            createStructureEntry("oreExtractorTier2", QuantumOreExtractorShapes.SHAPE_TIER_2));
+            createStructureEntry("oreExtractorTier2", QuantumOreExtractorShapes.SHAPE_TIER_2, 2));
         required.put(
             "oreExtractorTier3",
-            createStructureEntry("oreExtractorTier3", QuantumOreExtractorShapes.SHAPE_TIER_3));
+            createStructureEntry("oreExtractorTier3", QuantumOreExtractorShapes.SHAPE_TIER_3, 3));
         required.put(
             "oreExtractorTier4",
-            createStructureEntry("oreExtractorTier4", QuantumOreExtractorShapes.SHAPE_TIER_4));
+            createStructureEntry("oreExtractorTier4", QuantumOreExtractorShapes.SHAPE_TIER_4, 4));
         required.put(
             "oreExtractorTier5",
-            createStructureEntry("oreExtractorTier5", QuantumOreExtractorShapes.SHAPE_TIER_5));
+            createStructureEntry("oreExtractorTier5", QuantumOreExtractorShapes.SHAPE_TIER_5, 5));
         required.put(
             "oreExtractorTier6",
-            createStructureEntry("oreExtractorTier6", QuantumOreExtractorShapes.SHAPE_TIER_6));
+            createStructureEntry("oreExtractorTier6", QuantumOreExtractorShapes.SHAPE_TIER_6, 6));
 
         updateConfigWithMissing(file, required, "Ore Miner");
     }
@@ -87,22 +87,22 @@ public class DefaultStructureGenerator {
         required.put("default", createDefaultMappings("resMiner"));
         required.put(
             "resExtractorTier1",
-            createStructureEntry("resExtractorTier1", QuantumResExtractorShapes.SHAPE_TIER_1));
+            createStructureEntry("resExtractorTier1", QuantumResExtractorShapes.SHAPE_TIER_1, 1));
         required.put(
             "resExtractorTier2",
-            createStructureEntry("resExtractorTier2", QuantumResExtractorShapes.SHAPE_TIER_2));
+            createStructureEntry("resExtractorTier2", QuantumResExtractorShapes.SHAPE_TIER_2, 2));
         required.put(
             "resExtractorTier3",
-            createStructureEntry("resExtractorTier3", QuantumResExtractorShapes.SHAPE_TIER_3));
+            createStructureEntry("resExtractorTier3", QuantumResExtractorShapes.SHAPE_TIER_3, 3));
         required.put(
             "resExtractorTier4",
-            createStructureEntry("resExtractorTier4", QuantumResExtractorShapes.SHAPE_TIER_4));
+            createStructureEntry("resExtractorTier4", QuantumResExtractorShapes.SHAPE_TIER_4, 4));
         required.put(
             "resExtractorTier5",
-            createStructureEntry("resExtractorTier5", QuantumResExtractorShapes.SHAPE_TIER_5));
+            createStructureEntry("resExtractorTier5", QuantumResExtractorShapes.SHAPE_TIER_5, 5));
         required.put(
             "resExtractorTier6",
-            createStructureEntry("resExtractorTier6", QuantumResExtractorShapes.SHAPE_TIER_6));
+            createStructureEntry("resExtractorTier6", QuantumResExtractorShapes.SHAPE_TIER_6, 6));
 
         updateConfigWithMissing(file, required, "Resource Miner");
     }
@@ -113,12 +113,12 @@ public class DefaultStructureGenerator {
     private static void updateSolarArrayJson(File file) {
         Map<String, Map<String, Object>> required = new LinkedHashMap<>();
         required.put("default", createDefaultMappings("solarArray"));
-        required.put("solarArrayTier1", createStructureEntry("solarArrayTier1", SolarArrayShapes.SHAPE_TIER_1));
-        required.put("solarArrayTier2", createStructureEntry("solarArrayTier2", SolarArrayShapes.SHAPE_TIER_2));
-        required.put("solarArrayTier3", createStructureEntry("solarArrayTier3", SolarArrayShapes.SHAPE_TIER_3));
-        required.put("solarArrayTier4", createStructureEntry("solarArrayTier4", SolarArrayShapes.SHAPE_TIER_4));
-        required.put("solarArrayTier5", createStructureEntry("solarArrayTier5", SolarArrayShapes.SHAPE_TIER_5));
-        required.put("solarArrayTier6", createStructureEntry("solarArrayTier6", SolarArrayShapes.SHAPE_TIER_6));
+        required.put("solarArrayTier1", createStructureEntry("solarArrayTier1", SolarArrayShapes.SHAPE_TIER_1, 1));
+        required.put("solarArrayTier2", createStructureEntry("solarArrayTier2", SolarArrayShapes.SHAPE_TIER_2, 2));
+        required.put("solarArrayTier3", createStructureEntry("solarArrayTier3", SolarArrayShapes.SHAPE_TIER_3, 3));
+        required.put("solarArrayTier4", createStructureEntry("solarArrayTier4", SolarArrayShapes.SHAPE_TIER_4, 4));
+        required.put("solarArrayTier5", createStructureEntry("solarArrayTier5", SolarArrayShapes.SHAPE_TIER_5, 5));
+        required.put("solarArrayTier6", createStructureEntry("solarArrayTier6", SolarArrayShapes.SHAPE_TIER_6, 6));
 
         updateConfigWithMissing(file, required, "Solar Array");
     }
@@ -129,12 +129,12 @@ public class DefaultStructureGenerator {
     private static void updateBeaconJson(File file) {
         Map<String, Map<String, Object>> required = new LinkedHashMap<>();
         required.put("default", createDefaultMappings("beacon"));
-        required.put("beaconTier1", createStructureEntry("beaconTier1", QuantumBeaconShapes.SHAPE_TIER_1));
-        required.put("beaconTier2", createStructureEntry("beaconTier2", QuantumBeaconShapes.SHAPE_TIER_2));
-        required.put("beaconTier3", createStructureEntry("beaconTier3", QuantumBeaconShapes.SHAPE_TIER_3));
-        required.put("beaconTier4", createStructureEntry("beaconTier4", QuantumBeaconShapes.SHAPE_TIER_4));
-        required.put("beaconTier5", createStructureEntry("beaconTier5", QuantumBeaconShapes.SHAPE_TIER_5));
-        required.put("beaconTier6", createStructureEntry("beaconTier6", QuantumBeaconShapes.SHAPE_TIER_6));
+        required.put("beaconTier1", createStructureEntry("beaconTier1", QuantumBeaconShapes.SHAPE_TIER_1, 1));
+        required.put("beaconTier2", createStructureEntry("beaconTier2", QuantumBeaconShapes.SHAPE_TIER_2, 2));
+        required.put("beaconTier3", createStructureEntry("beaconTier3", QuantumBeaconShapes.SHAPE_TIER_3, 3));
+        required.put("beaconTier4", createStructureEntry("beaconTier4", QuantumBeaconShapes.SHAPE_TIER_4, 4));
+        required.put("beaconTier5", createStructureEntry("beaconTier5", QuantumBeaconShapes.SHAPE_TIER_5, 5));
+        required.put("beaconTier6", createStructureEntry("beaconTier6", QuantumBeaconShapes.SHAPE_TIER_6, 6));
 
         updateConfigWithMissing(file, required, "Quantum Beacon");
     }
@@ -219,7 +219,7 @@ public class DefaultStructureGenerator {
 
         // Shared mappings (used by all structures)
         mappings.put("_", "air");
-        mappings.put("F", "omoshiroikamo:basaltStructure:0");
+        mappings.put("F", "omoshiroikamo:basaltStructure:*");
 
         // Machine-specific mappings
         if ("oreMiner".equals(machineType) || "resMiner".equals(machineType)) {
@@ -242,6 +242,10 @@ public class DefaultStructureGenerator {
             normalLens.put("id", "omoshiroikamo:lens:0");
             normalLens.put("max", 1);
             lensBlocks.add(normalLens);
+            Map<String, Object> crystalLens = new LinkedHashMap<>();
+            crystalLens.put("id", "omoshiroikamo:lens:1");
+            crystalLens.put("max", 1);
+            lensBlocks.add(crystalLens);
             Map<String, Object> coloredLens = new LinkedHashMap<>();
             coloredLens.put("id", "omoshiroikamo:coloredLens:*");
             coloredLens.put("max", 1);
@@ -325,7 +329,7 @@ public class DefaultStructureGenerator {
     /**
      * Build a structure entry from a name and shape.
      */
-    private static Map<String, Object> createStructureEntry(String name, String[][] shape) {
+    private static Map<String, Object> createStructureEntry(String name, String[][] shape, int tier) {
         Map<String, Object> entry = new LinkedHashMap<>();
         entry.put("name", name);
 
@@ -343,7 +347,11 @@ public class DefaultStructureGenerator {
             layers.add(layer);
         }
         entry.put("layers", layers);
-        entry.put("mappings", new LinkedHashMap<>());
+
+        // Add tier-specific frame mapping (basaltStructure:meta matches tier-1)
+        Map<String, Object> mappings = new LinkedHashMap<>();
+        mappings.put("F", "omoshiroikamo:basaltStructure:" + (tier - 1));
+        entry.put("mappings", mappings);
 
         return entry;
     }

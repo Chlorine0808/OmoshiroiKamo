@@ -95,6 +95,14 @@ public class QuantumOreExtractorStructure {
                         (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
                         ModBlocks.MODIFIER_NULL.get(),
                         0),
+                    ofBlockAdderWithPos(
+                        (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                        ModBlocks.MODIFIER_ACCURACY.get(),
+                        0),
+                    ofBlockAdderWithPos(
+                        (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                        ModBlocks.MODIFIER_SPEED.get(),
+                        0),
                     ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
                     ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
                     ofBlock(ModBlocks.MODIFIER_SPEED.get(), 0)));
