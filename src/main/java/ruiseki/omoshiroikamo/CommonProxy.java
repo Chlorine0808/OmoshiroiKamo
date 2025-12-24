@@ -18,23 +18,20 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
-import ruiseki.omoshiroikamo.common.command.CommandOK;
-import ruiseki.omoshiroikamo.common.init.MobOreDicts;
-import ruiseki.omoshiroikamo.common.init.ModAchievements;
-import ruiseki.omoshiroikamo.common.init.ModBlocks;
-import ruiseki.omoshiroikamo.common.init.ModEntity;
-import ruiseki.omoshiroikamo.common.init.ModItems;
-import ruiseki.omoshiroikamo.common.init.ModRecipes;
-import ruiseki.omoshiroikamo.common.init.OKWorldGenerator;
-import ruiseki.omoshiroikamo.common.network.PacketHandler;
-import ruiseki.omoshiroikamo.common.structure.StructureManager;
-import ruiseki.omoshiroikamo.common.util.Logger;
-import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
-import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
-import ruiseki.omoshiroikamo.plugin.compat.EtFuturumCompat;
-import ruiseki.omoshiroikamo.plugin.nei.NEICompat;
-import ruiseki.omoshiroikamo.plugin.structureLib.StructureCompat;
-import ruiseki.omoshiroikamo.plugin.waila.WailaCompat;
+import ruiseki.omoshiroikamo.core.CoreCommon;
+import ruiseki.omoshiroikamo.core.ModuleManager;
+import ruiseki.omoshiroikamo.core.common.command.CommandOK;
+import ruiseki.omoshiroikamo.core.common.structure.StructureManager;
+import ruiseki.omoshiroikamo.core.common.util.Logger;
+import ruiseki.omoshiroikamo.core.integration.nei.NEICompat;
+import ruiseki.omoshiroikamo.core.integration.structureLib.StructureCompat;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaCompat;
+import ruiseki.omoshiroikamo.core.lib.LibMisc;
+import ruiseki.omoshiroikamo.module.backpack.BackpackCommon;
+import ruiseki.omoshiroikamo.module.chickens.ChickensCommon;
+import ruiseki.omoshiroikamo.module.cows.CowsCommon;
+import ruiseki.omoshiroikamo.module.dml.DMLCommon;
+import ruiseki.omoshiroikamo.module.multiblock.MultiBlockCommon;
 
 public class CommonProxy {
 
@@ -45,6 +42,7 @@ public class CommonProxy {
     public CommonProxy() {}
 
     public void onConstruction(FMLConstructionEvent event) {
+        ModuleManager.onConstruction(event);
         if (LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
             Logger.info(
                 "{} is in snapshot mode. Disabling update checker... Other features may also be different.",
@@ -56,20 +54,14 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         Logger.setPhase("PREINIT");
 
-        // Initialize the custom structure system
-        StructureManager.getInstance()
-            .initialize(
-                event.getModConfigurationDirectory()
-                    .getParentFile());
+        ModuleManager.register(new CoreCommon());
+        ModuleManager.register(new ChickensCommon());
+        ModuleManager.register(new CowsCommon());
+        ModuleManager.register(new DMLCommon());
+        ModuleManager.register(new BackpackCommon());
+        ModuleManager.register(new MultiBlockCommon());
 
-        ModBlocks.preInit();
-        ModItems.preInit();
-        ModEntity.preInit();
-        MobOreDicts.preInit();
-        ModAchievements.preInit();
-        OKWorldGenerator.preInit();
-
-        BaubleExpandedCompat.preInit();
+        ModuleManager.preInitCommon(event);
 
         if (!LibMisc.SNAPSHOT_BUILD && !LibMisc.DEV_ENVIRONMENT) {
             MCLibModules.updateCheckAPI.submitModTask(LibMisc.MOD_ID, LibMisc.VERSION, LibMisc.VERSION_URL);
@@ -83,27 +75,28 @@ public class CommonProxy {
             .bus()
             .register(tickTimer);
 
-        PacketHandler.init();
+        ModuleManager.initCommon(event);
 
-        ModRecipes.init();
-        ModEntity.init();
         WailaCompat.init();
         NEICompat.init();
-        EtFuturumCompat.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         Logger.setPhase("POSTINIT");
-        ModEntity.postInit();
+
+        ModuleManager.postInitCommon(event);
+
         StructureCompat.postInit();
-        BaubleExpandedCompat.postInit();
     }
 
     public void serverLoad(FMLServerStartingEvent event) {
+        ModuleManager.serverLoad(event);
         event.registerServerCommand(new CommandOK());
     }
 
-    public void serverStarted(FMLServerStartedEvent event) {}
+    public void serverStarted(FMLServerStartedEvent event) {
+        ModuleManager.serverStarted(event);
+    }
 
     public World getEntityWorld() {
         return MinecraftServer.getServer()
