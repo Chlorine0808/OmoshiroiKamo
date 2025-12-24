@@ -47,6 +47,7 @@ import ruiseki.omoshiroikamo.common.item.dml.ItemSootCoveredPlate;
 import ruiseki.omoshiroikamo.common.item.dml.ItemSootCoveredRedstone;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
+import ruiseki.omoshiroikamo.common.item.multiblock.ItemStructureWand;
 import ruiseki.omoshiroikamo.common.item.trait.ItemAnalyzer;
 import ruiseki.omoshiroikamo.common.item.trait.ItemSyringe;
 import ruiseki.omoshiroikamo.common.util.Logger;
@@ -100,6 +101,8 @@ public enum ModItems {
     SOOT_COVERED_PLATE(useDML, new ItemSootCoveredPlate()),
     SOOT_COVERED_REDSTONE(useDML, new ItemSootCoveredRedstone()),
 
+    STRUCTURE_WAND(true, new ItemStructureWand()),
+    //
     ;
     // spotless: on
 

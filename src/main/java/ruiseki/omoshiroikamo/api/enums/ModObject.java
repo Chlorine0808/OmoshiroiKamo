@@ -98,7 +98,9 @@ public enum ModObject {
     itemLivingMatter,
     itemPolymerClay,
     itemSootCoveredPlate,
-    itemSootCoveredRedstone
+    itemSootCoveredRedstone,
+
+    itemStructureWand
 
     ;
     // spotless: on

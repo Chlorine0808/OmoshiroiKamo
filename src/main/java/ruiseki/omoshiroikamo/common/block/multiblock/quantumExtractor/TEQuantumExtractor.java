@@ -11,6 +11,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.block.BlockPos;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
+import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -33,7 +35,9 @@ import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore.TEQuan
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res.TEQuantumResExtractorT4;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 import ruiseki.omoshiroikamo.common.util.PlayerUtils;
+import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 
 public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements IEnergySink, ISidedInventory {
 
@@ -119,7 +123,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     private boolean isModifierBlock(Block block) {
-        return block == ModBlocks.MODIFIER_SPEED.get() || block == ModBlocks.MODIFIER_ACCURACY.get();
+        return block instanceof IModifierBlock;
     }
 
     @Override
@@ -151,9 +155,13 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             Block block = worldObj.getBlock(xCoord, y, zCoord);
 
             if (block.isAir(worldObj, xCoord, y, zCoord) || block == Blocks.glass
+                || block == Blocks.stained_glass
+                || block == Blocks.glass_pane
+                || block == Blocks.stained_glass_pane
                 || block == ModBlocks.LASER_CORE.get()
                 || block == ModBlocks.LENS.get()
-                || block == ModBlocks.COLORED_LENS.get()) {
+                || block == ModBlocks.COLORED_LENS.get()
+                || isBlockInPathWhitelist(block, worldObj.getBlockMetadata(xCoord, y, zCoord))) {
                 if (y == 0) {
                     return true;
                 }
@@ -165,6 +173,56 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
             return false;
         }
         return true;
+    }
+
+    /**
+     * Check if the given block matches any entry in the path-to-void whitelist.
+     * Supports formats: "modid:blockname" or "modid:blockname:meta"
+     */
+    private boolean isBlockInPathWhitelist(Block block, int meta) {
+        String[] whitelist = EnvironmentalConfig.quantumExtractorConfig.pathToVoidWhitelist;
+        if (whitelist == null || whitelist.length == 0) {
+            return false;
+        }
+
+        String blockName = Block.blockRegistry.getNameForObject(block);
+        if (blockName == null) {
+            return false;
+        }
+
+        for (String entry : whitelist) {
+            if (entry == null || entry.isEmpty()) {
+                continue;
+            }
+
+            // Check if entry has metadata specified (modid:block:meta)
+            int lastColon = entry.lastIndexOf(':');
+            int firstColon = entry.indexOf(':');
+
+            if (lastColon > firstColon && lastColon < entry.length() - 1) {
+                // Format: modid:blockname:meta
+                String entryMeta = entry.substring(lastColon + 1);
+                String entryBlockId = entry.substring(0, lastColon);
+
+                try {
+                    int expectedMeta = Integer.parseInt(entryMeta);
+                    if (blockName.equals(entryBlockId) && meta == expectedMeta) {
+                        return true;
+                    }
+                } catch (NumberFormatException e) {
+                    // If meta is not a number, treat whole string as block ID
+                    if (blockName.equals(entry)) {
+                        return true;
+                    }
+                }
+            } else {
+                // Format: modid:blockname (any meta)
+                if (blockName.equals(entry)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
@@ -192,7 +250,46 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         return beamProgress;
     }
 
-    public abstract IFocusableRegistry getRegistry();
+    /**
+     * Override the render bounding box to include the entire beam (from miner to
+     * Y=0).
+     * This prevents frustum culling from hiding the beam when the player is not
+     * looking at the miner.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(xCoord, 0, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+
+    /**
+     * Increase the max render distance to match vanilla Beacon (256 blocks).
+     * This prevents the beam from disappearing when the player is far away.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 65536.0D; // 256 * 256
+    }
+
+    /**
+     * Returns the type of this extractor.
+     * Subclasses must override to specify their type.
+     */
+    public abstract ExtractorType getExtractorType();
+
+    public IFocusableRegistry getRegistry() {
+        int dimId = this.worldObj.provider.dimensionId;
+        int tier = getTier() - 1; // getTier() returns 1-6, array is 0-5
+        switch (getExtractorType()) {
+            case ORE:
+                return QuantumExtractorRecipes.getOreRegistry(tier, dimId);
+            case RESOURCE:
+                return QuantumExtractorRecipes.getResRegistry(tier, dimId);
+            default:
+                throw new IllegalStateException("Unknown extractor type: " + getExtractorType());
+        }
+    }
 
     @Override
     public void onProcessComplete() {
@@ -256,37 +353,33 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         modifierHandler.calculateAttributeMultipliers();
         focusBoostModifier = modifierHandler.getAttributeMultiplier("accuracy");
 
-        if (this.possibleResults.isEmpty()) {
-            if (lens != null) {
-                Block block = lens.getBlock();
-                if (block instanceof BlockColoredLens) {
-                    int meta = lens.getBlockMetadata();
-                    this.focusColor = ((BlockColoredLens) block).getFocusColor(meta);
-                    this.possibleResults.clear();
+        // 毎回 possibleResults を再計算して Modifier 効果を反映させる
+        this.possibleResults.clear();
+        if (lens != null) {
+            Block block = lens.getBlock();
+            if (block instanceof BlockColoredLens) {
+                int meta = lens.getBlockMetadata();
+                this.focusColor = ((BlockColoredLens) block).getFocusColor(meta);
+                this.possibleResults.addAll(
+                    this.getRegistry()
+                        .getFocusedList(this.focusColor, this.focusBoostModifier));
+            } else {
+                if (lens.getBlockMetadata() == 1) {
+                    this.focusColor = EnumDye.CRYSTAL;
                     this.possibleResults.addAll(
                         this.getRegistry()
                             .getFocusedList(this.focusColor, this.focusBoostModifier));
                 } else {
-                    if (lens.getBlockMetadata() == 1) {
-                        this.focusColor = EnumDye.CRYSTAL;
-                        this.possibleResults.clear();
-                        this.possibleResults.addAll(
-                            this.getRegistry()
-                                .getFocusedList(this.focusColor, this.focusBoostModifier));
-                    } else {
-                        this.focusColor = null;
-                        this.possibleResults.clear();
-                        this.possibleResults.addAll(
-                            this.getRegistry()
-                                .getUnFocusedList());
-                    }
+                    this.focusColor = null;
+                    this.possibleResults.addAll(
+                        this.getRegistry()
+                            .getUnFocusedList());
                 }
-            } else {
-                this.possibleResults.clear();
-                this.possibleResults.addAll(
-                    this.getRegistry()
-                        .getUnFocusedList());
             }
+        } else {
+            this.possibleResults.addAll(
+                this.getRegistry()
+                    .getUnFocusedList());
         }
 
         if (getEnergyStored() < getEnergyCostPerTick()) {

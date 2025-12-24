@@ -1,11 +1,13 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.modifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCostFixed;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierAttribute;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BlockModifierNightVision extends BlockModifier {
 
@@ -22,5 +24,13 @@ public class BlockModifierNightVision extends BlockModifier {
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.P_NIGHT_VISION.getAttribute());
         list.add(new AttributeEnergyCostFixed(128));
+    }
+
+    @Override
+    public List<String> getTooltipLines() {
+        List<String> list = new ArrayList<>();
+        list.add(LibMisc.LANG.localize("tooltip.modifier.night_vision.effect"));
+        list.add(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"));
+        return list;
     }
 }

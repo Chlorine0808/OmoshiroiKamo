@@ -202,7 +202,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
             return true;
         }
 
-        if (block == ModBlocks.MODIFIER_PIEZO.get() && !modifiers.contains(pos)) {
+        if (block instanceof IModifierBlock && !modifiers.contains(pos)) {
             modifiers.add(pos);
             return true;
         }

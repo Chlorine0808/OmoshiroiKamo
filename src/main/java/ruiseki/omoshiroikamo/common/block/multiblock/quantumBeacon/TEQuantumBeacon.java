@@ -16,7 +16,6 @@ import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
 import ruiseki.omoshiroikamo.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.common.block.multiblock.modifier.ModifierHandler;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
-import ruiseki.omoshiroikamo.common.init.ModBlocks;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
 import ruiseki.omoshiroikamo.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.common.network.PacketNBBClientFlight;
@@ -85,16 +84,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     }
 
     private boolean isModifierBlock(Block block) {
-        return block == ModBlocks.MODIFIER_SPEED.get() || block == ModBlocks.MODIFIER_FLIGHT.get()
-            || block == ModBlocks.MODIFIER_NIGHT_VISION.get()
-            || block == ModBlocks.MODIFIER_HASTE.get()
-            || block == ModBlocks.MODIFIER_STRENGTH.get()
-            || block == ModBlocks.MODIFIER_WATER_BREATHING.get()
-            || block == ModBlocks.MODIFIER_REGENERATION.get()
-            || block == ModBlocks.MODIFIER_SATURATION.get()
-            || block == ModBlocks.MODIFIER_RESISTANCE.get()
-            || block == ModBlocks.MODIFIER_JUMP_BOOST.get()
-            || block == ModBlocks.MODIFIER_FIRE_RESISTANCE.get();
+        return block instanceof IModifierBlock;
     }
 
     private void addPlayerEffects() {

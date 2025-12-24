@@ -1,11 +1,13 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.modifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCost;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierAttribute;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BlockModifierAccuracy extends BlockModifier {
 
@@ -21,6 +23,15 @@ public class BlockModifierAccuracy extends BlockModifier {
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
         list.add(ModifierAttribute.ACCURACY.getAttribute());
-        list.add(new AttributeEnergyCost(0.5F));
+        list.add(new AttributeEnergyCost(1.05F));
+        list.add(new AttributeSpeed(-0.295F)); // 10% slower per modifier (0.9x speed)
+    }
+
+    @Override
+    public List<String> getTooltipLines() {
+        List<String> list = new ArrayList<>();
+        list.add(LibMisc.LANG.localize("tooltip.modifier.accuracy.effect"));
+        list.add(LibMisc.LANG.localize("tooltip.modifier.accuracy.penalty"));
+        return list;
     }
 }

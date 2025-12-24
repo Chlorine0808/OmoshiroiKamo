@@ -38,6 +38,8 @@ public class BlockCrystal extends BlockOK {
         list.add(new ItemStack(this, 1, 3));
         list.add(new ItemStack(this, 1, 4));
         list.add(new ItemStack(this, 1, 5));
+        list.add(new ItemStack(this, 1, 6));
+        list.add(new ItemStack(this, 1, 7));
     }
 
     @Override
@@ -60,6 +62,10 @@ public class BlockCrystal extends BlockOK {
                 return EnumDye.rgbToHex(28, 28, 28);
             case 5:
                 return EnumDye.rgbToHex(177, 156, 217);
+            case 6:
+                return EnumDye.rgbToHex(128, 0, 128);
+            case 7:
+                return EnumDye.rgbToHex(255, 215, 0);
             default:
                 return EnumDye.WHITE.getColor();
         }

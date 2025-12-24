@@ -397,6 +397,8 @@ item.crystal.tier_3.name=Abyssal Crystal
 item.crystal.tier_4.name=Aurora Crystal
 item.crystal.tier_5.name=Eclipse Crystal
 item.crystal.tier_6.name=Nebula Crystal
+item.crystal.tier_7.name=Prismatic Crystal
+item.crystal.tier_8.name=Celestial Crystal
 
 item.cowHalter.name=Cow Halter
 item.analyzer.name=Analyzer
@@ -428,6 +430,8 @@ item.deepLearner.name=§bDeep Learner§r
 item.polymerClay.name=Polymer Clay
 item.sootCoveredRedstone.name=Soot-covered Redstone
 item.sootCoveredPlate.name=Soot-covered Plate
+
+item.structureWand.name=Structure Wand
 
 #Block
 
@@ -514,6 +518,8 @@ tile.blockCrystal.tier_3.name=Block of Abyssal
 tile.blockCrystal.tier_4.name=Block of Aurora
 tile.blockCrystal.tier_5.name=Block of Eclipse
 tile.blockCrystal.tier_6.name=Block of Nebula
+tile.blockCrystal.tier_7.name=Block of Prismatic
+tile.blockCrystal.tier_8.name=Block of Celestial
 
 tile.solarArray.tier_1.name=Solar Array Tier 1
 tile.solarArray.tier_2.name=Solar Array Tier 2
@@ -572,3 +578,91 @@ tile.machineCasing.name=Machine Casing
 neiintegration.chance=Chance: %s
 neiintegration.chance.never=Never
 neiintegration.chance.lessThan1=<1%
+
+#Modifier Tooltips
+tooltip.modifier.speed.effect=§aMining Speed 1.3x§r
+tooltip.modifier.speed.penalty=§cEnergy Cost 1.5x§r
+tooltip.modifier.accuracy.effect=§aFocus 1.18x§r
+tooltip.modifier.accuracy.penalty=§cMining Speed 0.9x§r, §cEnergy Cost 1.05x§r
+tooltip.modifier.piezo.effect=§aLittle generation bonus when raining§r
+
+#Beacon Modifiers
+tooltip.modifier.flight.effect=§bCreative Flight§r
+tooltip.modifier.night_vision.effect=§bNight Vision§r
+tooltip.modifier.haste.effect=§bHaste§r
+tooltip.modifier.strength.effect=§bStrength§r
+tooltip.modifier.regeneration.effect=§bRegeneration§r
+tooltip.modifier.resistance.effect=§bResistance§r
+tooltip.modifier.saturation.effect=§bSaturation§r
+tooltip.modifier.jump_boost.effect=§bJump Boost§r
+tooltip.modifier.fire_resistance.effect=§bFire Resistance§r
+tooltip.modifier.water_breathing.effect=§bWater Breathing§r
+tooltip.modifier.beacon.energy=§7Uses 128 RF/t per effect§r
+
+#Solar Tooltips
+tooltip.solar.cell.power=§aPeak Output: %d RF/t§r
+tooltip.solar.array.peak=§aMax Output: %d RF/t§r
+
+#Miner Tooltips
+tooltip.miner.speed=§aCycle Time: %.1fs§r
+tooltip.miner.energy=§7Energy Cost: %d RF§r
+
+#Structure Wand
+chat.wand.pos1_set=[OmoshiroiKamo] Position 1 set: (%d, %d, %d)
+chat.wand.pos2_set=[OmoshiroiKamo] Position 2 set: (%d, %d, %d)
+chat.wand.scan_ready=[OmoshiroiKamo] Scan ready! (%d blocks)
+chat.wand.cleared=[OmoshiroiKamo] All positions cleared.
+chat.wand.set_pos1_first=[OmoshiroiKamo] Set Position 1 first! (Right-click a block)
+chat.wand.area_too_large=[OmoshiroiKamo] Area too large! Max %s blocks, got %s
+chat.wand.use_save_command=Use: /ok wand save <name>
+chat.wand.shift_right=Shift+Right-click to set Position 2
+
+tooltip.wand.right_click=Right-click: Set Position 1
+tooltip.wand.shift_right_click=Shift+Right-click: Set Position 2 & Prepare
+tooltip.wand.shift_left_click=Shift+Left-click: Clear all positions
+tooltip.wand.shift_left_clear=Shift+Left-click to clear
+tooltip.wand.pos1=Pos1: (%d, %d, %d)
+tooltip.wand.pos2=Pos2: (%d, %d, %d)
+tooltip.wand.pos_not_set=Not set
+tooltip.wand.size=Size: %dx%dx%d
+
+#Structure Commands
+command.ok.main_usage_title=Usage:
+command.ok.main_usage_structure=/ok structure - Structure management commands
+
+command.ok.reloading=[OmoshiroiKamo] Reloading structure configurations...
+command.ok.reload_success=[OmoshiroiKamo] Structure configurations reloaded successfully!
+command.ok.reload_errors=[OmoshiroiKamo] Reload completed with %d error(s)!
+command.ok.reload_check_file=Check: config/omoshiroikamo/structures/errors.txt
+command.ok.reload_failed=[OmoshiroiKamo] Reload failed: %s
+
+command.ok.status_header=== OmoshiroiKamo Structure Status ===
+command.ok.status_initialized=Initialized: 
+command.ok.status_yes=Yes
+command.ok.status_no=No
+command.ok.status_errors=Errors: 
+command.ok.status_none=None
+
+command.ok.scan_usage=Usage: /ok structure scan <name> <x1> <y1> <z1> <x2> <y2> <z2>
+command.ok.scan_example=Example: /ok structure scan myStructure 0 64 0 10 70 10
+command.ok.scan_invalid_coords=Invalid coordinates: %s
+command.ok.scan_no_world=Could not get world instance
+command.ok.scan_area_too_large=Area too large! Max %d blocks, got %d
+command.ok.scan_scanning=Scanning %dx%dx%d area...
+command.ok.scan_file=File: config/omoshiroikamo/structures/custom/%s.json
+command.ok.scan_failed=[OmoshiroiKamo] Scan failed: %s
+
+command.ok.usage_title=Usage:
+command.ok.usage_reload=/ok structure reload - Reload structure configurations
+command.ok.usage_status=/ok structure status - Show current status
+command.ok.usage_scan=/ok structure scan <name> <x1> <y1> <z1> <x2> <y2> <z2> - Scan area to JSON
+command.ok.usage_wand_save=/ok structure wand save <name> - Save wand selection to JSON
+
+command.ok.wand_players_only=[OmoshiroiKamo] This command can only be used by players!
+command.ok.wand_usage=Usage: /ok structure wand save <name>
+command.ok.wand_no_pending=[OmoshiroiKamo] No pending scan! Use the Structure Wand first.
+command.ok.wand_different_dimension=[OmoshiroiKamo] Selection is in a different dimension!
+command.ok.wand_scanning=[OmoshiroiKamo] Scanning %d blocks...
+command.ok.wand_cleared=[OmoshiroiKamo] Wand selection cleared.
+command.ok.wand_no_selection=[OmoshiroiKamo] No pending selection to clear.
+

@@ -29,7 +29,7 @@ public class BotaniaChickens extends BaseChickenHandler {
             0xf5fcf1,
             SpawnType.NONE).setLayString("ore:ingotTerrasteel")
                 .setLang("en_US", "Terrasteel Chicken")
-                .setLang("ja_JP", "テラースチールのニワトリ");
+                .setLang("ja_JP", "テラスチールのニワトリ");
         allChickens.add(terrasteelChicken);
 
         manasteelChicken = addChicken(
@@ -51,7 +51,7 @@ public class BotaniaChickens extends BaseChickenHandler {
             0xb407b7,
             SpawnType.NONE).setLayString("ore:nuggetElvenElementium")
                 .setLang("en_US", "Elementium Chicken")
-                .setLang("ja_JP", "エレメンティウムのニワトリ");
+                .setLang("ja_JP", "エレメンチウムのニワトリ");
         allChickens.add(elementiumChicken);
 
         return allChickens;

@@ -41,6 +41,8 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
 
     @SuppressWarnings("unchecked")
     protected boolean structureCheck(String piece, int ox, int oy, int oz) {
+        clearStructureParts();
+
         boolean valid = getStructureDefinition()
             .check(this, piece, worldObj, getExtendedFacing(), xCoord, yCoord, zCoord, ox, oy, oz, false);
 
@@ -49,7 +51,6 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
             onFormed();
         } else if (!valid && isFormed) {
             isFormed = false;
-            clearStructureParts();
         }
 
         return isFormed;
@@ -97,11 +98,11 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
             isProcessing = true;
         }
 
+        onProcessTick();
+
         if (++currentProgress >= currentDuration) {
             onProcessComplete();
             resetProcess();
-        } else {
-            onProcessTick();
         }
     }
 

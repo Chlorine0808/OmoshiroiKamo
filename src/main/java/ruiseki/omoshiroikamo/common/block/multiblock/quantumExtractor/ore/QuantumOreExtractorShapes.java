@@ -1,6 +1,85 @@
 package ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore;
 
+import java.util.Map;
+
+import ruiseki.omoshiroikamo.common.structure.StructureJsonLoader;
+import ruiseki.omoshiroikamo.common.structure.StructureManager;
+
 public class QuantumOreExtractorShapes {
+
+    /**
+     * Retrieve the shape for the given tier, honoring custom overrides.
+     *
+     * @param tier tier number (1-6)
+     * @return shape array; defaults are used when no custom shape exists
+     */
+    public static String[][] getShape(int tier) {
+        String[][] custom = StructureManager.getOreMinerShape(tier);
+        if (custom != null) {
+            return custom;
+        }
+        return getDefaultShape(tier);
+    }
+
+    /**
+     * Get the shape with dynamic mappings for the specified tier.
+     */
+    public static StructureJsonLoader.ShapeWithMappings getShapeWithMappings(int tier) {
+        return StructureManager.getInstance()
+            .getShapeWithMappings("ore_miner", "oreExtractorTier" + tier);
+    }
+
+    /**
+     * Get all dynamic mappings for use with registerTierWithDynamicMappings.
+     */
+    public static Map<Character, Object> getDynamicMappings(int tier) {
+        StructureJsonLoader.ShapeWithMappings swm = getShapeWithMappings(tier);
+        if (swm != null) {
+            return swm.dynamicMappings;
+        }
+        return null;
+    }
+
+    /**
+     * Get the default shape for the given tier.
+     */
+    public static String[][] getDefaultShape(int tier) {
+        switch (tier) {
+            case 1:
+                return SHAPE_TIER_1;
+            case 2:
+                return SHAPE_TIER_2;
+            case 3:
+                return SHAPE_TIER_3;
+            case 4:
+                return SHAPE_TIER_4;
+            case 5:
+                return SHAPE_TIER_5;
+            case 6:
+                return SHAPE_TIER_6;
+            default:
+                return SHAPE_TIER_1;
+        }
+    }
+
+    public static String getStructureName(int tier) {
+        switch (tier) {
+            case 1:
+                return STRUCTURE_TIER_1;
+            case 2:
+                return STRUCTURE_TIER_2;
+            case 3:
+                return STRUCTURE_TIER_3;
+            case 4:
+                return STRUCTURE_TIER_4;
+            case 5:
+                return STRUCTURE_TIER_5;
+            case 6:
+                return STRUCTURE_TIER_6;
+            default:
+                return STRUCTURE_TIER_1;
+        }
+    }
 
     // spotless:off
     public static final String STRUCTURE_TIER_1 = "tier1";

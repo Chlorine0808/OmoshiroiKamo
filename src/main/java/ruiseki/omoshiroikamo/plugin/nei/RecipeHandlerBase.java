@@ -238,6 +238,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler implements
         for (PositionedStack stack : allStacks) {
             if (stack instanceof PositionedStackAdv advStack) {
                 advStack.drawChance();
+                advStack.drawLabel();
             }
         }
     }

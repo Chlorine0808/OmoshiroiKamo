@@ -26,6 +26,8 @@ public class PositionedStackAdv extends PositionedStack {
     public float chance;
     public int textYOffset = 0;
     public int textColor = 0xFFFFFF;
+    public String label = null;
+    public int labelColor = 0x000000;
 
     public PositionedStackAdv(Object object, int x, int y) {
         super(object, x, y);
@@ -112,6 +114,40 @@ public class PositionedStackAdv extends PositionedStack {
             (int) ((y + 16 - font.FONT_HEIGHT * scale + textYOffset) * inverse),
             textColor);
         GL11.glPopMatrix();
+    }
+
+    public void drawLabel() {
+        if (label == null || label.isEmpty()) {
+            return;
+        }
+        float scale = 0.8f;
+
+        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        int stringWidth = font.getStringWidth(label);
+
+        float inverse = 1f / scale;
+
+        int x = this.relx + 1;
+        int y = this.rely + 1;
+
+        GL11.glPushMatrix();
+        GL11.glScalef(scale, scale, 1.0f);
+        font.drawString(
+            label,
+            (int) ((x + 8 - stringWidth * scale / 2) * inverse),
+            (int) ((y - 6) * inverse),
+            labelColor);
+        GL11.glPopMatrix();
+    }
+
+    public PositionedStackAdv setLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    public PositionedStackAdv setLabelColor(int color) {
+        this.labelColor = color;
+        return this;
     }
 
     public PositionedStackAdv setChance(float chance) {

@@ -6,9 +6,8 @@ import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
+import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
-import ruiseki.omoshiroikamo.common.recipe.quantumExtractor.QuantumExtractorRecipes;
 import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 
 public class TEQuantumOreExtractorT4 extends TEQuantumExtractor {
@@ -28,11 +27,6 @@ public class TEQuantumOreExtractorT4 extends TEQuantumExtractor {
     }
 
     @Override
-    public IFocusableRegistry getRegistry() {
-        return QuantumExtractorRecipes.oreRegistry[3];
-    }
-
-    @Override
     public String getStructurePieceName() {
         return STRUCTURE_TIER_4;
     }
@@ -40,6 +34,11 @@ public class TEQuantumOreExtractorT4 extends TEQuantumExtractor {
     @Override
     public int getTier() {
         return 4;
+    }
+
+    @Override
+    public ExtractorType getExtractorType() {
+        return ExtractorType.ORE;
     }
 
     @Override
@@ -52,9 +51,8 @@ public class TEQuantumOreExtractorT4 extends TEQuantumExtractor {
         return config.tickOreTier4;
     }
 
-    @Override
     public int getMinDuration() {
-        return config.tickOreTier4;
+        return config.minTickOreTier4;
     }
 
     @Override

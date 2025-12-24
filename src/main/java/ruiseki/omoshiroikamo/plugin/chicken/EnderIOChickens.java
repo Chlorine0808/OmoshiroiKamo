@@ -91,7 +91,7 @@ public class EnderIOChickens extends BaseChickenHandler {
             0x406448,
             SpawnType.NONE).setLayString("ore:ingotPulsatingIron")
                 .setLang("en_US", "Pulsating Iron Chicken")
-                .setLang("ja_JP", "鼓動する鉄のニワトリ");
+                .setLang("ja_JP", "脈動鉄のニワトリ");
         allChickens.add(pulsatingIronChicken);
 
         darkSteelChicken = addChicken(

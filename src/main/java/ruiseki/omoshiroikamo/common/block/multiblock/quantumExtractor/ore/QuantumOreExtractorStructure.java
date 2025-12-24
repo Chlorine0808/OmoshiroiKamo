@@ -8,9 +8,9 @@ import static ruiseki.omoshiroikamo.plugin.structureLib.StructureLibUtils.ofBloc
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ruiseki.omoshiroikamo.common.block.multiblock.StructureRegistrationUtils;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
+import ruiseki.omoshiroikamo.common.structure.StructureRegistrationUtils;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public class QuantumOreExtractorStructure {
@@ -23,49 +23,55 @@ public class QuantumOreExtractorStructure {
     public static IStructureDefinition<TEQuantumOreExtractorT6> STRUCTURE_DEFINITION_TIER_6;
 
     public static void registerStructureInfo() {
-        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_1 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT1.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_1,
+            QuantumOreExtractorShapes.getShape(1),
+            QuantumOreExtractorShapes.getDynamicMappings(1),
             QuantumOreExtractorShapes.STRUCTURE_TIER_1,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             1,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_2 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT2.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_2,
+            QuantumOreExtractorShapes.getShape(2),
+            QuantumOreExtractorShapes.getDynamicMappings(2),
             QuantumOreExtractorShapes.STRUCTURE_TIER_2,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             2,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_3 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT3.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_3,
+            QuantumOreExtractorShapes.getShape(3),
+            QuantumOreExtractorShapes.getDynamicMappings(3),
             QuantumOreExtractorShapes.STRUCTURE_TIER_3,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             3,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_4 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT4.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_4,
+            QuantumOreExtractorShapes.getShape(4),
+            QuantumOreExtractorShapes.getDynamicMappings(4),
             QuantumOreExtractorShapes.STRUCTURE_TIER_4,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             4,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_5 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT5.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_5,
+            QuantumOreExtractorShapes.getShape(5),
+            QuantumOreExtractorShapes.getDynamicMappings(5),
             QuantumOreExtractorShapes.STRUCTURE_TIER_5,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             5,
             builder -> addCommonElements(builder));
 
-        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTier(
+        STRUCTURE_DEFINITION_TIER_6 = StructureRegistrationUtils.registerTierWithDynamicMappings(
             TEQuantumOreExtractorT6.class,
-            QuantumOreExtractorShapes.SHAPE_TIER_6,
+            QuantumOreExtractorShapes.getShape(6),
+            QuantumOreExtractorShapes.getDynamicMappings(6),
             QuantumOreExtractorShapes.STRUCTURE_TIER_6,
             ModBlocks.QUANTUM_ORE_EXTRACTOR.get(),
             6,
@@ -75,8 +81,7 @@ public class QuantumOreExtractorStructure {
     }
 
     private static <T extends TEQuantumExtractor> void addCommonElements(StructureDefinition.Builder<T> builder) {
-        builder.addElement('C', ofBlock(ModBlocks.LASER_CORE.get(), 0))
-            .addElement('P', ofBlockAnyMeta(ModBlocks.MACHINE_BASE.get(), 0))
+        builder
             .addElement(
                 'L',
                 ofChain(
@@ -89,6 +94,14 @@ public class QuantumOreExtractorStructure {
                     ofBlockAdderWithPos(
                         (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
                         ModBlocks.MODIFIER_NULL.get(),
+                        0),
+                    ofBlockAdderWithPos(
+                        (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                        ModBlocks.MODIFIER_ACCURACY.get(),
+                        0),
+                    ofBlockAdderWithPos(
+                        (t, b, m, x, y, z) -> t.addToMachine(b, m, x, y, z),
+                        ModBlocks.MODIFIER_SPEED.get(),
                         0),
                     ofBlock(ModBlocks.MODIFIER_NULL.get(), 0),
                     ofBlock(ModBlocks.MODIFIER_ACCURACY.get(), 0),
