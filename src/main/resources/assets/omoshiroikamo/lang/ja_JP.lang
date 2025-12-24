@@ -640,8 +640,8 @@ command.ok.status_no=いいえ
 command.ok.status_errors=エラー: 
 command.ok.status_none=なし
 
-command.ok.scan_usage=使用法: /ok scan <名前> <x1> <y1> <z1> <x2> <y2> <z2>
-command.ok.scan_example=例: /ok scan myStructure 0 64 0 10 70 10
+command.ok.scan_usage=使用法: /ok structure scan <名前> <x1> <y1> <z1> <x2> <y2> <z2>
+command.ok.scan_example=例: /ok structure scan myStructure 0 64 0 10 70 10
 command.ok.scan_invalid_coords=無効な座標: %s
 command.ok.scan_no_world=ワールドインスタンスを取得できませんでした
 command.ok.scan_area_too_large=範囲が広すぎます! 最大 %d ブロック, 現在 %d
@@ -650,9 +650,9 @@ command.ok.scan_file=ファイル: config/omoshiroikamo/structures/custom/%s.jso
 command.ok.scan_failed=[OmoshiroiKamo] スキャン失敗: %s
 
 command.ok.usage_title=使用法:
-command.ok.usage_reload=/ok reload - ストラクチャー設定を再読み込み
-command.ok.usage_status=/ok status - 現在のステータスを表示
-command.ok.usage_scan=/ok scan <名前> <x1> <y1> <z1> <x2> <y2> <z2> - 範囲をスキャンしてJSONに保存
+command.ok.usage_reload=/ok structure reload - ストラクチャー設定を再読み込み
+command.ok.usage_status=/ok structure status - 現在のステータスを表示
+command.ok.usage_scan=/ok structure scan <名前> <x1> <y1> <z1> <x2> <y2> <z2> - 範囲をスキャンしてJSONに保存
 command.ok.usage_wand_save=/ok wand save <名前> - ワンドの選択範囲をJSONに保存
 
 command.ok.wand_players_only=[OmoshiroiKamo] このコマンドはプレイヤーのみ使用可能です!

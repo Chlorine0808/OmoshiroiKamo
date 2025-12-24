@@ -18,7 +18,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
-import ruiseki.omoshiroikamo.common.command.CommandStructure;
+import ruiseki.omoshiroikamo.common.command.CommandOK;
 import ruiseki.omoshiroikamo.common.init.MobOreDicts;
 import ruiseki.omoshiroikamo.common.init.ModAchievements;
 import ruiseki.omoshiroikamo.common.init.ModBlocks;
@@ -100,7 +100,7 @@ public class CommonProxy {
     }
 
     public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandStructure());
+        event.registerServerCommand(new CommandOK());
     }
 
     public void serverStarted(FMLServerStartedEvent event) {}

@@ -2,7 +2,6 @@ package ruiseki.omoshiroikamo.common.command;
 
 import java.io.File;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -17,32 +16,16 @@ import ruiseki.omoshiroikamo.common.structure.WandSelectionManager;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 /**
- * Structure management command.
- * Usage:
- * /ok reload - reload configuration
- * /ok status - show current status
- * /ok scan <name> <x1> <y1> <z1> <x2> <y2> <z2> - scan a region
+ * Structure management subcommand handler.
+ * Handles: /ok structure <reload|status|scan|wand>
+ * This class is called by CommandOK with args already shifted.
  */
-public class CommandStructure extends CommandBase {
+public class CommandStructure {
 
-    @Override
-    public String getCommandName() {
-        return "ok structure";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/ok structure <reload|status|scan>";
-    }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return 2; // OP required
-    }
-
-    @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if (args.length == 0) {
+        // args[0] = "structure"
+        // args[1] = actual subcommand (reload, status, scan, wand)
+        if (args.length < 2) {
             sendUsage(sender);
             return;
         }
@@ -127,8 +110,9 @@ public class CommandStructure extends CommandBase {
     }
 
     private void scanStructure(ICommandSender sender, String[] args) {
-        // /ok scan <name> <x1> <y1> <z1> <x2> <y2> <z2>
-        if (args.length < 8) {
+        // /ok structure scan <name> <x1> <y1> <z1> <x2> <y2> <z2>
+        // args[0] = "structure", args[1] = "scan", args[2] = name, ...
+        if (args.length < 9) {
             sender.addChatMessage(
                 new ChatComponentText(EnumChatFormatting.RED + LibMisc.LANG.localize("command.ok.scan_usage")));
             sender.addChatMessage(
@@ -136,16 +120,16 @@ public class CommandStructure extends CommandBase {
             return;
         }
 
-        String name = args[1];
+        String name = args[2];
         int x1, y1, z1, x2, y2, z2;
 
         try {
-            x1 = parseInt(sender, args[2]);
-            y1 = parseInt(sender, args[3]);
-            z1 = parseInt(sender, args[4]);
-            x2 = parseInt(sender, args[5]);
-            y2 = parseInt(sender, args[6]);
-            z2 = parseInt(sender, args[7]);
+            x1 = parseInt(sender, args[3]);
+            y1 = parseInt(sender, args[4]);
+            z1 = parseInt(sender, args[5]);
+            x2 = parseInt(sender, args[6]);
+            y2 = parseInt(sender, args[7]);
+            z2 = parseInt(sender, args[8]);
         } catch (Exception e) {
             sender.addChatMessage(
                 new ChatComponentText(
@@ -232,14 +216,15 @@ public class CommandStructure extends CommandBase {
             return;
         }
 
-        if (args.length < 2) {
+        // args[0] = "structure", args[1] = "wand", args[2] = subaction (save/clear)
+        if (args.length < 3) {
             sender.addChatMessage(
                 new ChatComponentText(EnumChatFormatting.RED + LibMisc.LANG.localize("command.ok.wand_usage")));
             return;
         }
 
         EntityPlayer player = (EntityPlayer) sender;
-        String subAction = args[1].toLowerCase();
+        String subAction = args[2].toLowerCase();
 
         switch (subAction) {
             case "save":
@@ -256,13 +241,14 @@ public class CommandStructure extends CommandBase {
     }
 
     private void saveWandSelection(EntityPlayer player, String[] args) {
-        if (args.length < 3) {
+        // args[0] = "structure", args[1] = "wand", args[2] = "save", args[3] = name
+        if (args.length < 4) {
             player.addChatMessage(
                 new ChatComponentText(EnumChatFormatting.RED + LibMisc.LANG.localize("command.ok.wand_usage")));
             return;
         }
 
-        String name = args[2];
+        String name = args[3];
 
         WandSelectionManager.PendingScan pending = WandSelectionManager.getInstance()
             .getPendingScan(player.getUniqueID());
@@ -347,5 +333,10 @@ public class CommandStructure extends CommandBase {
             player.addChatMessage(
                 new ChatComponentText(EnumChatFormatting.GRAY + LibMisc.LANG.localize("command.ok.wand_no_selection")));
         }
+    }
+
+    // Helper method to parse integers (since we no longer extend CommandBase)
+    private int parseInt(ICommandSender sender, String value) throws NumberFormatException {
+        return Integer.parseInt(value);
     }
 }
