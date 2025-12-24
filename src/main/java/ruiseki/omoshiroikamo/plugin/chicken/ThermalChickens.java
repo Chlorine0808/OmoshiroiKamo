@@ -34,7 +34,7 @@ public class ThermalChickens extends BaseChickenHandler {
             0x6E6664,
             SpawnType.NONE).setLayString("ore:rodBasalz")
                 .setLang("en_US", "Basalz Rod Chicken")
-                .setLang("ja_JP", "バサルズロッドのニワトリ");
+                .setLang("ja_JP", "バサルツロッドのニワトリ");
         allChickens.add(basalzRodChicken);
 
         blitzRodChicken = addChicken("BlitzRodChicken", nextID(), "BlitzRodChicken", 0xECE992, 0x66E5EF, SpawnType.NONE)
@@ -46,13 +46,13 @@ public class ThermalChickens extends BaseChickenHandler {
         blizzRodChicken = addChicken("BlizzRodChicken", nextID(), "BlizzRodChicken", 0x88E0FF, 0x1D3B95, SpawnType.NONE)
             .setLayString("ore:rodBlizz")
             .setLang("en_US", "Blizz Rod Chicken")
-            .setLang("ja_JP", "ブリズロッドのニワトリ");
+            .setLang("ja_JP", "ブリーズロッドのニワトリ");
         allChickens.add(blizzRodChicken);
 
         cinnabarChicken = addChicken("CinnabarChicken", nextID(), "CinnabarChicken", 0xE49790, 0x9B3229, SpawnType.NONE)
             .setLayString("ore:crystalCinnabar")
             .setLang("en_US", "Cinnabar Chicken")
-            .setLang("ja_JP", "辰砂のニワトリ");
+            .setLang("ja_JP", "シナバーのニワトリ");
         allChickens.add(cinnabarChicken);
 
         enderiumChicken = addChicken("EnderiumChicken", nextID(), "EnderiumChicken", 0x127575, 0x0A4849, SpawnType.NONE)

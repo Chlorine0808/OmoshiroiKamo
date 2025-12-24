@@ -23,17 +23,17 @@ public class BigReactorsCows extends BaseCowHandler {
 
         yelloriumCow = addCow("YelloriumCow", 500, 0xE5FF00, 0xA6A600, SpawnType.NORMAL).setFluidString("yellorium")
             .setLang("en_US", "Yellorium Cow")
-            .setLang("ja_JP", "イエローリウム牛");
+            .setLang("ja_JP", "イエロリウムウシ");
         allCows.add(yelloriumCow);
 
         cyaniteCow = addCow("CyaniteCow", 501, 0x66CCFF, 0x3399CC, SpawnType.NORMAL).setFluidString("cyanite")
             .setLang("en_US", "Cyanite Cow")
-            .setLang("ja_JP", "シアナイト牛");
+            .setLang("ja_JP", "シアナイトウシ");
         allCows.add(cyaniteCow);
 
         steamCow = addCow("SteamCow", 502, 0xCCCCCC, 0xFFFFFF, SpawnType.NORMAL).setFluidString("steam")
             .setLang("en_US", "Steam Cow")
-            .setLang("ja_JP", "スチーム牛");
+            .setLang("ja_JP", "蒸気ウシ");
         allCows.add(steamCow);
 
         return allCows;

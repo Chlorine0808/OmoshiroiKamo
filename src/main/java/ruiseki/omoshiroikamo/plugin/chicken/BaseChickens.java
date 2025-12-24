@@ -154,7 +154,7 @@ public class BaseChickens extends BaseChickenHandler {
         smartChicken = addChicken("SmartChicken", this.nextID(), "SmartChicken", 0xffffff, 0xffff00, SpawnType.NONE)
             .setLayItem(new ItemStack(Items.egg))
             .setLang("en_US", "Smart Chicken")
-            .setLang("ja_JP", "スマートニワトリ");
+            .setLang("ja_JP", "スマートなニワトリ");
         allChickens.add(smartChicken);
 
         // BASE CHICKENS
