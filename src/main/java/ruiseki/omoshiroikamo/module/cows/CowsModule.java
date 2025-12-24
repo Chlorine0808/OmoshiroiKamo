@@ -1,8 +1,11 @@
 package ruiseki.omoshiroikamo.module.cows;
 
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import ruiseki.omoshiroikamo.api.IModuleMod;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsBlocks;
@@ -20,6 +23,11 @@ public class CowsModule implements IModuleMod {
     @Override
     public boolean isEnabled() {
         return BackportConfigs.useCow;
+    }
+
+    @Override
+    public void onConstruction(FMLConstructionEvent event) {
+
     }
 
     @Override
@@ -41,17 +49,27 @@ public class CowsModule implements IModuleMod {
     }
 
     @Override
+    public void serverLoad(FMLServerStartingEvent event) {
+
+    }
+
+    @Override
+    public void serverStarted(FMLServerStartedEvent event) {
+
+    }
+
+    @Override
     public void preInitClient(FMLPreInitializationEvent event) {
-        IModuleMod.super.preInitClient(event);
+
     }
 
     @Override
     public void initClient(FMLInitializationEvent event) {
-        IModuleMod.super.initClient(event);
+
     }
 
     @Override
     public void postInitClient(FMLPostInitializationEvent event) {
-        IModuleMod.super.postInitClient(event);
+
     }
 }

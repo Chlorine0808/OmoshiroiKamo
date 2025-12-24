@@ -13,21 +13,21 @@ public interface IModuleMod {
 
     boolean isEnabled();
 
-    default void onConstruction(FMLConstructionEvent event) {}
+    void onConstruction(FMLConstructionEvent event);
 
-    default void preInit(FMLPreInitializationEvent event) {}
+    void preInit(FMLPreInitializationEvent event);
 
-    default void init(FMLInitializationEvent event) {}
+    void init(FMLInitializationEvent event);
 
-    default void postInit(FMLPostInitializationEvent event) {}
+    void postInit(FMLPostInitializationEvent event);
 
-    default void serverLoad(FMLServerStartingEvent event) {}
+    void serverLoad(FMLServerStartingEvent event);
 
-    default void serverStarted(FMLServerStartedEvent event) {}
+    void serverStarted(FMLServerStartedEvent event);
 
-    default void preInitClient(FMLPreInitializationEvent event) {}
+    void preInitClient(FMLPreInitializationEvent event);
 
-    default void initClient(FMLInitializationEvent event) {}
+    void initClient(FMLInitializationEvent event);
 
-    default void postInitClient(FMLPostInitializationEvent event) {}
+    void postInitClient(FMLPostInitializationEvent event);
 }
