@@ -30,9 +30,9 @@ import ruiseki.omoshiroikamo.common.structure.StructureManager;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.core.ModuleManager;
-import ruiseki.omoshiroikamo.module.chickens.ChickensModule;
-import ruiseki.omoshiroikamo.module.cows.CowsModule;
-import ruiseki.omoshiroikamo.module.dml.DMLCommonModule;
+import ruiseki.omoshiroikamo.module.chickens.ChickensCommon;
+import ruiseki.omoshiroikamo.module.cows.CowsCommon;
+import ruiseki.omoshiroikamo.module.dml.DMLCommon;
 import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
 import ruiseki.omoshiroikamo.plugin.compat.EtFuturumCompat;
 import ruiseki.omoshiroikamo.plugin.nei.NEICompat;
@@ -60,11 +60,11 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         Logger.setPhase("PREINIT");
 
-        ModuleManager.register(new ChickensModule());
-        ModuleManager.register(new CowsModule());
-        ModuleManager.register(new DMLCommonModule());
+        ModuleManager.register(new ChickensCommon());
+        ModuleManager.register(new CowsCommon());
+        ModuleManager.register(new DMLCommon());
 
-        ModuleManager.preInit(event);
+        ModuleManager.preInitCommon(event);
 
         // Initialize the custom structure system
         StructureManager.getInstance()
@@ -94,7 +94,7 @@ public class CommonProxy {
 
         PacketHandler.init();
 
-        ModuleManager.init(event);
+        ModuleManager.initCommon(event);
 
         ModRecipes.init();
         WailaCompat.init();
@@ -105,7 +105,7 @@ public class CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         Logger.setPhase("POSTINIT");
 
-        ModuleManager.postInit(event);
+        ModuleManager.postInitCommon(event);
 
         StructureCompat.postInit();
         BaubleExpandedCompat.postInit();

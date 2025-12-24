@@ -1,25 +1,19 @@
 package ruiseki.omoshiroikamo.module.cows;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import ruiseki.omoshiroikamo.api.IModule;
+import ruiseki.omoshiroikamo.api.mod.IModuleCommon;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
-import ruiseki.omoshiroikamo.module.cows.client.render.RenderCowsCow;
-import ruiseki.omoshiroikamo.module.cows.client.render.StallTESR;
-import ruiseki.omoshiroikamo.module.cows.common.block.TEStall;
-import ruiseki.omoshiroikamo.module.cows.common.entity.EntityCowsCow;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsBlocks;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsItems;
 import ruiseki.omoshiroikamo.module.cows.common.init.CowsRecipes;
 import ruiseki.omoshiroikamo.module.cows.common.registries.ModCows;
 
-public class CowsModule implements IModule {
+public class CowsCommon implements IModuleCommon {
 
     @Override
     public String getId() {
@@ -61,22 +55,6 @@ public class CowsModule implements IModule {
 
     @Override
     public void serverStarted(FMLServerStartedEvent event) {
-
-    }
-
-    @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
-
-    }
-
-    @Override
-    public void initClient(FMLInitializationEvent event) {
-        ClientRegistry.bindTileEntitySpecialRenderer(TEStall.class, new StallTESR());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCowsCow.class, new RenderCowsCow());
-    }
-
-    @Override
-    public void postInitClient(FMLPostInitializationEvent event) {
 
     }
 }

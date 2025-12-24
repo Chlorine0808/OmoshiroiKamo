@@ -6,14 +6,14 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import ruiseki.omoshiroikamo.api.IModule;
+import ruiseki.omoshiroikamo.api.mod.IModuleCommon;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.module.dml.common.init.DMLBlocks;
 import ruiseki.omoshiroikamo.module.dml.common.init.DMLItems;
 import ruiseki.omoshiroikamo.module.dml.common.init.DMLRecipes;
 import ruiseki.omoshiroikamo.module.dml.common.registries.ModModels;
 
-public class DMLCommonModule implements IModule {
+public class DMLCommon implements IModuleCommon {
 
     @Override
     public String getId() {
@@ -54,21 +54,6 @@ public class DMLCommonModule implements IModule {
 
     @Override
     public void serverStarted(FMLServerStartedEvent event) {
-
-    }
-
-    @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
-
-    }
-
-    @Override
-    public void initClient(FMLInitializationEvent event) {
-
-    }
-
-    @Override
-    public void postInitClient(FMLPostInitializationEvent event) {
 
     }
 }

@@ -28,6 +28,9 @@ import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 import ruiseki.omoshiroikamo.core.ModuleManager;
+import ruiseki.omoshiroikamo.module.chickens.ChickensClient;
+import ruiseki.omoshiroikamo.module.cows.CowsClient;
+import ruiseki.omoshiroikamo.module.dml.DMLClient;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
@@ -39,6 +42,10 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         ModelRegistry.registerModid(LibMisc.MOD_ID);
+
+        ModuleManager.register(new ChickensClient());
+        ModuleManager.register(new CowsClient());
+        ModuleManager.register(new DMLClient());
 
         ModuleManager.preInitClient(event);
         MGuiFactories.init();
