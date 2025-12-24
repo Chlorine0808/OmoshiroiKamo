@@ -14,6 +14,8 @@ import ruiseki.omoshiroikamo.common.init.ModItems;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensBlocks;
 import ruiseki.omoshiroikamo.module.chickens.common.init.ChickensItems;
+import ruiseki.omoshiroikamo.module.cows.common.init.CowsBlocks;
+import ruiseki.omoshiroikamo.module.cows.common.init.CowsItems;
 
 public abstract class OKCreativeTab extends CreativeTabs {
 
@@ -113,10 +115,10 @@ public abstract class OKCreativeTab extends CreativeTabs {
         public void displayAllReleventItems(List<ItemStack> list) {
             this.list = list;
 
-            addBlock(ChickensBlocks.ROOST.get());
-            addBlock(ChickensBlocks.BREEDER.get());
-            addBlock(ChickensBlocks.ROOST_COLLECTOR.get());
-            addBlock(ModBlocks.STALL.get());
+            addBlock(ChickensBlocks.ROOST.getBlock());
+            addBlock(ChickensBlocks.BREEDER.getBlock());
+            addBlock(ChickensBlocks.ROOST_COLLECTOR.getBlock());
+            addBlock(CowsBlocks.STALL.getBlock());
 
             addItem(ChickensItems.ANALYZER.getItem());
             addItem(ChickensItems.CHICKEN_CATCHER.getItem());
@@ -125,8 +127,8 @@ public abstract class OKCreativeTab extends CreativeTabs {
             addItem(ChickensItems.CHICKEN_SPAWN_EGG.getItem());
             addItem(ChickensItems.LIQUID_EGG.getItem());
             addItem(ChickensItems.SOLID_XP.getItem());
-            addItem(ModItems.COW_HALTER.getItem());
-            addItem(ModItems.COW_SPAWN_EGG.getItem());
+            addItem(CowsItems.COW_HALTER.getItem());
+            addItem(CowsItems.COW_SPAWN_EGG.getItem());
         }
     };
 

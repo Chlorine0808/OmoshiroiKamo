@@ -21,18 +21,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.client.gui.modularui2.MGuiFactories;
 import ruiseki.omoshiroikamo.client.handler.KeyHandler;
 import ruiseki.omoshiroikamo.client.handler.StructureWandRenderer;
-import ruiseki.omoshiroikamo.client.render.block.cow.StallTESR;
 import ruiseki.omoshiroikamo.client.render.block.quantumExtractor.QuantumExtractorTESR;
-import ruiseki.omoshiroikamo.client.render.entity.RenderCowsCow;
 import ruiseki.omoshiroikamo.client.render.item.pufferfish.PufferFishRenderer;
 import ruiseki.omoshiroikamo.client.util.TextureLoader;
-import ruiseki.omoshiroikamo.common.block.cow.TEStall;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
-import ruiseki.omoshiroikamo.common.entity.cow.EntityCowsCow;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.config.item.ItemConfigs;
 import ruiseki.omoshiroikamo.core.ModuleManager;
+import ruiseki.omoshiroikamo.module.cows.client.render.RenderCowsCow;
+import ruiseki.omoshiroikamo.module.cows.client.render.StallTESR;
+import ruiseki.omoshiroikamo.module.cows.common.block.TEStall;
+import ruiseki.omoshiroikamo.module.cows.common.entity.EntityCowsCow;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)

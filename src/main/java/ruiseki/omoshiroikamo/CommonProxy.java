@@ -31,7 +31,8 @@ import ruiseki.omoshiroikamo.common.structure.StructureManager;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 import ruiseki.omoshiroikamo.core.ModuleManager;
-import ruiseki.omoshiroikamo.module.chickens.ChickenModule;
+import ruiseki.omoshiroikamo.module.chickens.ChickensModule;
+import ruiseki.omoshiroikamo.module.cows.CowsModule;
 import ruiseki.omoshiroikamo.plugin.compat.BaubleExpandedCompat;
 import ruiseki.omoshiroikamo.plugin.compat.EtFuturumCompat;
 import ruiseki.omoshiroikamo.plugin.nei.NEICompat;
@@ -58,7 +59,8 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         Logger.setPhase("PREINIT");
 
-        ModuleManager.register(new ChickenModule());
+        ModuleManager.register(new ChickensModule());
+        ModuleManager.register(new CowsModule());
 
         ModuleManager.preInit(event);
 
@@ -70,7 +72,6 @@ public class CommonProxy {
 
         ModBlocks.preInit();
         ModItems.preInit();
-        ModEntity.preInit();
         MobOreDicts.preInit();
         ModAchievements.preInit();
         OKWorldGenerator.preInit();

@@ -1369,24 +1369,6 @@ public class BlockRecipes {
                     ModBlocks.BLOCK_CRYSTAL.newItemStack(1, 1)));
         }
 
-        if (BackportConfigs.useCow) {
-
-            // Stall
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModBlocks.STALL.getItem(),
-                    "B B",
-                    "BHB",
-                    "GGG",
-                    'B',
-                    Blocks.iron_bars,
-                    'H',
-                    Blocks.hay_block,
-                    'G',
-                    new ItemStack(Blocks.stained_hardened_clay, 1, 7)));
-
-        }
-
         if (BackportConfigs.useDML) {
             GameRegistry.addRecipe(
                 new ShapedOreRecipe(

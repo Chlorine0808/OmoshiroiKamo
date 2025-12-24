@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.block.backpack.BlockBackpack;
-import ruiseki.omoshiroikamo.common.block.cow.BlockStall;
 import ruiseki.omoshiroikamo.common.block.dml.BlockMachineCasing;
 import ruiseki.omoshiroikamo.common.block.dml.lootFabricator.BlockLootFabricator;
 import ruiseki.omoshiroikamo.common.block.dml.simulationCharmber.BlockSimulationChamber;
@@ -45,6 +44,7 @@ import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarArray;
 import ruiseki.omoshiroikamo.common.block.multiblock.solarArray.BlockSolarCell;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.BackpackConfig;
+import ruiseki.omoshiroikamo.module.cows.common.block.BlockStall;
 
 public enum ModBlocks {
 

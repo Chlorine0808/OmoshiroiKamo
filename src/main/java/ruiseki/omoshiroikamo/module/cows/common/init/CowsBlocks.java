@@ -1,31 +1,28 @@
-package ruiseki.omoshiroikamo.module.chickens.common.init;
+package ruiseki.omoshiroikamo.module.cows.common.init;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import lombok.Getter;
 import ruiseki.omoshiroikamo.common.block.BlockOK;
 import ruiseki.omoshiroikamo.common.util.Logger;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
-import ruiseki.omoshiroikamo.module.chickens.common.block.BlockBreeder;
-import ruiseki.omoshiroikamo.module.chickens.common.block.BlockRoost;
-import ruiseki.omoshiroikamo.module.chickens.common.block.BlockRoostCollector;
+import ruiseki.omoshiroikamo.module.cows.common.block.BlockStall;
 
-public enum ChickensBlocks {
+public enum CowsBlocks {
 
     // spotless: off
 
-    ROOST(BlockRoost.create()),
-    BREEDER(BlockBreeder.create()),
-    ROOST_COLLECTOR(BlockRoostCollector.create()),
+    STALL(BlockStall.create()),
 
     ;
     // spotless: on
 
-    public static final ChickensBlocks[] VALUES = values();
+    public static final CowsBlocks[] VALUES = values();
 
     public static void preInit() {
-        for (ChickensBlocks block : VALUES) {
-            if (BackportConfigs.useChicken) {
+        for (CowsBlocks block : VALUES) {
+            if (BackportConfigs.useCow) {
                 try {
                     block.getBlock()
                         .init();
@@ -37,14 +34,11 @@ public enum ChickensBlocks {
         }
     }
 
+    @Getter
     private final BlockOK block;
 
-    ChickensBlocks(BlockOK block) {
+    CowsBlocks(BlockOK block) {
         this.block = block;
-    }
-
-    public BlockOK getBlock() {
-        return block;
     }
 
     public Item getItem() {

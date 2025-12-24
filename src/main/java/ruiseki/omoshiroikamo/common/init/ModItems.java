@@ -1,7 +1,6 @@
 package ruiseki.omoshiroikamo.common.init;
 
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useBackpack;
-import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useCow;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useDML;
 import static ruiseki.omoshiroikamo.config.backport.BackportConfigs.useEnvironmentalTech;
 
@@ -27,8 +26,6 @@ import ruiseki.omoshiroikamo.common.item.backpack.ItemPickupUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemStackUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemUpgrade;
 import ruiseki.omoshiroikamo.common.item.backpack.ItemVoidUpgrade;
-import ruiseki.omoshiroikamo.common.item.cow.ItemCowHalter;
-import ruiseki.omoshiroikamo.common.item.cow.ItemCowSpawnEgg;
 import ruiseki.omoshiroikamo.common.item.dml.ItemCreativeModelLearner;
 import ruiseki.omoshiroikamo.common.item.dml.ItemDataModel;
 import ruiseki.omoshiroikamo.common.item.dml.ItemDataModelBlank;
@@ -41,7 +38,6 @@ import ruiseki.omoshiroikamo.common.item.dml.ItemSootCoveredRedstone;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemAssembler;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemCrystal;
 import ruiseki.omoshiroikamo.common.item.multiblock.ItemStructureWand;
-import ruiseki.omoshiroikamo.common.item.trait.ItemSyringe;
 import ruiseki.omoshiroikamo.common.util.Logger;
 
 public enum ModItems {
@@ -70,11 +66,6 @@ public enum ModItems {
         .setTextureName("ender_stabilized")),
     PHOTOVOLTAIC_CELL(useEnvironmentalTech, new ItemOK().setName(ModObject.itemPhotovoltaicCell)
         .setTextureName("photovoltaic_cell")),
-
-    COW_HALTER(useCow, new ItemCowHalter()),
-    COW_SPAWN_EGG(useCow, new ItemCowSpawnEgg()),
-
-    SYRINGE(useCow, new ItemSyringe()),
 
     DEEP_LEARNER(useDML, new ItemDeepLearner()),
     CREATIVE_MODEL_LEARNER(useDML, new ItemCreativeModelLearner()),

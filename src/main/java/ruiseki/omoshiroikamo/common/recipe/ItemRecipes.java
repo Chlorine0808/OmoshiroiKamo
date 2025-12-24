@@ -389,19 +389,6 @@ public class ItemRecipes {
                     ModBlocks.HARDENED_STRUCTURE.newItemStack(1, 1)));
         }
 
-        if (BackportConfigs.useCow) {
-            GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                    ModItems.COW_HALTER.getItem(),
-                    "  L",
-                    " S ",
-                    "S  ",
-                    'L',
-                    Items.leather,
-                    'S',
-                    Items.stick));
-        }
-
         if (BackportConfigs.useDML) {
 
             // Deep Learner
