@@ -6,6 +6,7 @@ import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.ore
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 
@@ -33,6 +34,11 @@ public class TEQuantumOreExtractorT1 extends TEQuantumExtractor {
     @Override
     public int getTier() {
         return 1;
+    }
+
+    @Override
+    public ExtractorType getExtractorType() {
+        return ExtractorType.ORE;
     }
 
     public int getEnergyCostPerDuration() {

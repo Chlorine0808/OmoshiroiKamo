@@ -3,13 +3,12 @@ package ruiseki.omoshiroikamo.common.block.multiblock.modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import ruiseki.omoshiroikamo.common.util.LangUtils;
-
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCost;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCostFixed;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierAttribute;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BlockModifierSpeed extends BlockModifier {
 
@@ -33,8 +32,8 @@ public class BlockModifierSpeed extends BlockModifier {
     @Override
     public List<String> getTooltipLines() {
         List<String> list = new ArrayList<>();
-        list.add(LangUtils.translateToLocal("tooltip.modifier.speed.effect"));
-        list.add(LangUtils.translateToLocal("tooltip.modifier.speed.penalty"));
+        list.add(LibMisc.LANG.localize("tooltip.modifier.speed.effect"));
+        list.add(LibMisc.LANG.localize("tooltip.modifier.speed.penalty"));
         return list;
     }
 }

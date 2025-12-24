@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
@@ -107,8 +106,8 @@ public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExt
             int tickDuration = getTickDuration(tier);
             int energyCost = getEnergyCost(tier);
             float seconds = tickDuration / 20.0f;
-            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.miner.speed", seconds));
-            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.miner.energy", energyCost));
+            tooltip.add(LibMisc.LANG.localize("tooltip.miner.speed", seconds));
+            tooltip.add(LibMisc.LANG.localize("tooltip.miner.energy", energyCost));
         }
 
         private int getTickDuration(int tier) {

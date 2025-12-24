@@ -155,7 +155,7 @@ public class BlockSolarCell extends BlockOK implements IMBBlock {
             super.addInformation(stack, player, tooltip, advanced);
             int tier = stack.getItemDamage();
             int cellEnergy = getCellEnergy(tier);
-            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.solar.cell.power", cellEnergy));
+            tooltip.add(LibMisc.LANG.localize("tooltip.solar.cell.power", cellEnergy));
         }
 
         private int getCellEnergy(int cellTier) {

@@ -12,7 +12,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
@@ -100,7 +99,7 @@ public class BlockSolarArray extends AbstractTieredMBBlock<TESolarArray> impleme
             super.addInformation(stack, player, tooltip, advanced);
             int tier = stack.getItemDamage() + 1;
             int peakEnergy = getPeakEnergy(tier);
-            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.solar.array.peak", peakEnergy));
+            tooltip.add(LibMisc.LANG.localize("tooltip.solar.array.peak", peakEnergy));
         }
 
         private int getPeakEnergy(int tier) {

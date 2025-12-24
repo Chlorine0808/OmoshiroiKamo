@@ -6,6 +6,7 @@ import static ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.res
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.common.block.multiblock.quantumExtractor.TEQuantumExtractor;
 import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
 
@@ -26,8 +27,8 @@ public class TEQuantumResExtractorT1 extends TEQuantumExtractor {
     }
 
     @Override
-    protected boolean isOreExtractor() {
-        return false;
+    public ExtractorType getExtractorType() {
+        return ExtractorType.RESOURCE;
     }
 
     @Override

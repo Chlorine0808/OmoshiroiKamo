@@ -3,11 +3,10 @@ package ruiseki.omoshiroikamo.common.block.multiblock.modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import ruiseki.omoshiroikamo.common.util.LangUtils;
-
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierAttribute;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
+import ruiseki.omoshiroikamo.common.util.lib.LibMisc;
 
 public class BlockModifierPiezo extends BlockModifier {
 
@@ -28,7 +27,7 @@ public class BlockModifierPiezo extends BlockModifier {
     @Override
     public List<String> getTooltipLines() {
         List<String> list = new ArrayList<>();
-        list.add(LangUtils.translateToLocal("tooltip.modifier.piezo.effect"));
+        list.add(LibMisc.LANG.localize("tooltip.modifier.piezo.effect"));
         return list;
     }
 }

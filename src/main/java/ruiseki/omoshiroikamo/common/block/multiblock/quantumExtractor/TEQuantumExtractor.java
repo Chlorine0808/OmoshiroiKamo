@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.block.BlockPos;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
+import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -272,20 +273,21 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     /**
-     * Returns true if this extractor is an Ore Extractor.
-     * Override in subclass to return false for Resource Extractors.
+     * Returns the type of this extractor.
+     * Subclasses must override to specify their type.
      */
-    protected boolean isOreExtractor() {
-        return true;
-    }
+    public abstract ExtractorType getExtractorType();
 
     public IFocusableRegistry getRegistry() {
         int dimId = this.worldObj.provider.dimensionId;
         int tier = getTier() - 1; // getTier() returns 1-6, array is 0-5
-        if (isOreExtractor()) {
-            return QuantumExtractorRecipes.getOreRegistry(tier, dimId);
-        } else {
-            return QuantumExtractorRecipes.getResRegistry(tier, dimId);
+        switch (getExtractorType()) {
+            case ORE:
+                return QuantumExtractorRecipes.getOreRegistry(tier, dimId);
+            case RESOURCE:
+                return QuantumExtractorRecipes.getResRegistry(tier, dimId);
+            default:
+                throw new IllegalStateException("Unknown extractor type: " + getExtractorType());
         }
     }
 
