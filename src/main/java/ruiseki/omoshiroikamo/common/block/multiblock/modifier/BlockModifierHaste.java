@@ -3,7 +3,7 @@ package ruiseki.omoshiroikamo.common.block.multiblock.modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.StatCollector;
+import ruiseki.omoshiroikamo.common.util.LangUtils;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCostFixed;
@@ -30,8 +30,8 @@ public class BlockModifierHaste extends BlockModifier {
     @Override
     public List<String> getTooltipLines() {
         List<String> list = new ArrayList<>();
-        list.add(StatCollector.translateToLocal("tooltip.modifier.haste.effect"));
-        list.add(StatCollector.translateToLocal("tooltip.modifier.beacon.energy"));
+        list.add(LangUtils.translateToLocal("tooltip.modifier.haste.effect"));
+        list.add(LangUtils.translateToLocal("tooltip.modifier.beacon.energy"));
         return list;
     }
 }

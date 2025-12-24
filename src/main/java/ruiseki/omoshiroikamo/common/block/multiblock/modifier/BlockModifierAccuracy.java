@@ -9,6 +9,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.api.multiblock.AttributeEnergyCost;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierAttribute;
 import ruiseki.omoshiroikamo.common.init.ModifierAttribute;
+import ruiseki.omoshiroikamo.common.util.LangUtils;
 
 public class BlockModifierAccuracy extends BlockModifier {
 
@@ -31,8 +32,8 @@ public class BlockModifierAccuracy extends BlockModifier {
     @Override
     public List<String> getTooltipLines() {
         List<String> list = new ArrayList<>();
-        list.add(StatCollector.translateToLocal("tooltip.modifier.accuracy.effect"));
-        list.add(StatCollector.translateToLocal("tooltip.modifier.accuracy.penalty"));
+        list.add(LangUtils.translateToLocal("tooltip.modifier.accuracy.effect"));
+        list.add(LangUtils.translateToLocal("tooltip.modifier.accuracy.penalty"));
         return list;
     }
 }
