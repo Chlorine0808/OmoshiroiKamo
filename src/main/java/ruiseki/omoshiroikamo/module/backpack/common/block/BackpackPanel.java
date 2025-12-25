@@ -164,7 +164,7 @@ public class BackpackPanel extends ModularPanel {
             ModularBackpackSlot modularBackpackSlot = new ModularBackpackSlot(this.handler, i);
             modularBackpackSlot.slotGroup("backpack_inventory");
             modularBackpackSlot.changeListener((lastStack, currentStack, isClient, init) -> {
-                if (isClient && !currentStack) {
+                if (isClient) {
                     searchBarWidget.research();
                     handler.syncToServer();
                 }
@@ -185,7 +185,7 @@ public class BackpackPanel extends ModularPanel {
             modularUpgradeSlot.slotGroup("upgrade_inventory");
             UpgradeSlotSH syncHandler = new UpgradeSlotSH(modularUpgradeSlot, this.handler, this);
             modularUpgradeSlot.changeListener((lastStack, currentStack, isClient, init) -> {
-                if (isClient && !currentStack) {
+                if (isClient) {
                     updateUpgradeWidgets();
                     handler.syncToServer();
                 }
