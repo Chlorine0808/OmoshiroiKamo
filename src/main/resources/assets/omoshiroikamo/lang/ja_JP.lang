@@ -600,7 +600,7 @@ tooltip.modifier.saturation.effect=§b満腹§r
 tooltip.modifier.jump_boost.effect=§b跳躍力上昇§r
 tooltip.modifier.fire_resistance.effect=§b火炎耐性§r
 tooltip.modifier.water_breathing.effect=§b水中呼吸§r
-tooltip.modifier.beacon.energy=§7効果ごとに 128 RF/t 消費§r
+tooltip.modifier.beacon.energy=§7効果ごとに %d RF/t 消費§r
 
 #Solar Tooltips
 tooltip.solar.cell.power=§aピーク出力: %d RF/t§r

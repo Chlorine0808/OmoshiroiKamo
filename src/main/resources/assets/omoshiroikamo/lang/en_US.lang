@@ -600,7 +600,7 @@ tooltip.modifier.saturation.effect=§bSaturation§r
 tooltip.modifier.jump_boost.effect=§bJump Boost§r
 tooltip.modifier.fire_resistance.effect=§bFire Resistance§r
 tooltip.modifier.water_breathing.effect=§bWater Breathing§r
-tooltip.modifier.beacon.energy=§7Uses 128 RF/t per effect§r
+tooltip.modifier.beacon.energy=§7Uses %d RF/t per effect§r
 
 #Solar Tooltips
 tooltip.solar.cell.power=§aPeak Output: %d RF/t§r
