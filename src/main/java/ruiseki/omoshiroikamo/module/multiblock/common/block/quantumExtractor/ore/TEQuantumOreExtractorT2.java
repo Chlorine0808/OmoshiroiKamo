@@ -41,20 +41,20 @@ public class TEQuantumOreExtractorT2 extends TEQuantumExtractor {
 
     @Override
     public int getEnergyCostPerDuration() {
-        return QuantumExtractorConfig.energyCostOreTier2;
+        return QuantumExtractorConfig.oreMiner.getEnergyCost(2);
     }
 
     @Override
     public int getBaseDuration() {
-        return QuantumExtractorConfig.tickOreTier2;
+        return QuantumExtractorConfig.oreMiner.getTick(2);
     }
 
     public int getMinDuration() {
-        return QuantumExtractorConfig.minTickOreTier2;
+        return QuantumExtractorConfig.oreMiner.getMinTick(2);
     }
 
     @Override
     public int getMaxDuration() {
-        return QuantumExtractorConfig.tickOreTier2;
+        return QuantumExtractorConfig.oreMiner.getTick(2);
     }
 }
