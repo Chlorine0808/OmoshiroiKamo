@@ -7,7 +7,10 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 
 @Config.Comment("Main MultiBlock WorldGen Settings")
 @Config.LangKey(LibResources.CONFIG + "eTWorldGenConfig")
-@Config(modid = LibMisc.MOD_ID, category = "general.backports.multiblock.woldGen", configSubDirectory = LibMisc.MOD_ID)
+@Config(
+    modid = LibMisc.MOD_ID,
+    category = "general.backports.multiblock.woldGen",
+    configSubDirectory = LibMisc.MOD_ID + "/environmentaltech")
 public class MultiblockWorldGenConfig {
 
     @Config.DefaultBoolean(true)

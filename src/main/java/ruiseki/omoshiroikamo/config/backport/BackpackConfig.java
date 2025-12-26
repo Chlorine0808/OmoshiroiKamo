@@ -7,7 +7,10 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 
 @Config.Comment("Main Backpack Settings")
 @Config.LangKey(LibResources.CONFIG + "backpackConfig")
-@Config(modid = LibMisc.MOD_ID, category = "general.backports.backpack", configSubDirectory = LibMisc.MOD_ID)
+@Config(
+    modid = LibMisc.MOD_ID,
+    category = "general.backports.backpack",
+    configSubDirectory = LibMisc.MOD_ID + "/backpack")
 public class BackpackConfig {
 
     @Config.Comment("Main Magnet Settings")

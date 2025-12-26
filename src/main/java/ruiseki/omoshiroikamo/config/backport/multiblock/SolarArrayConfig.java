@@ -7,7 +7,10 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 
 @Config.Comment("Main Solar Array Settings")
 @Config.LangKey(LibResources.CONFIG + "solarArrayConfig")
-@Config(modid = LibMisc.MOD_ID, category = "general.backports.multiblock.solar", configSubDirectory = LibMisc.MOD_ID)
+@Config(
+    modid = LibMisc.MOD_ID,
+    category = "general.backports.multiblock.solar",
+    configSubDirectory = LibMisc.MOD_ID + "/environmentaltech")
 public class SolarArrayConfig {
 
     @Config.DefaultInt(2000)
