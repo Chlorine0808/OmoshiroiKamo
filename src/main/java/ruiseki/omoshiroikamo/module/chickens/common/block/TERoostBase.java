@@ -1,7 +1,5 @@
 package ruiseki.omoshiroikamo.module.chickens.common.block;
 
-import java.text.DecimalFormat;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
@@ -23,8 +21,6 @@ import ruiseki.omoshiroikamo.core.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.core.common.network.PacketProgress;
 
 public abstract class TERoostBase extends AbstractStorageTE implements IProgressTile {
-
-    protected static final DecimalFormat FORMATTER = new DecimalFormat("0.0%");
 
     protected int timeUntilNextDrop = 0;
     protected int timeElapsed = 0;
@@ -285,14 +281,6 @@ public abstract class TERoostBase extends AbstractStorageTE implements IProgress
     @Override
     public void setProgress(float progress) {
         this.progress = (int) (progress * 1000.0);
-    }
-
-    public String getFormattedProgress() {
-        return formatProgress(getProgress());
-    }
-
-    public String formatProgress(double progress) {
-        return FORMATTER.format(progress);
     }
 
     @Override
