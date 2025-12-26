@@ -134,6 +134,31 @@ public class QuantumExtractorConfig {
     @Config.RangeInt(min = 1)
     public static int minTickOreTier6;
 
+    @Config.Comment("Maximum tick duration for Ore Miners (limits how fast Speed Modifiers can make them)")
+    @Config.DefaultInt(4000)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier1;
+
+    @Config.DefaultInt(3000)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier2;
+
+    @Config.DefaultInt(1600)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier3;
+
+    @Config.DefaultInt(800)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier4;
+
+    @Config.DefaultInt(400)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier5;
+
+    @Config.DefaultInt(200)
+    @Config.RangeInt(min = 1)
+    public static int maxTickOreTier6;
+
     @Config.Comment("Minimum tick duration for Resource Miners (limits how fast Speed Modifiers can make them)")
     @Config.DefaultInt(200)
     @Config.RangeInt(min = 1)
@@ -158,6 +183,31 @@ public class QuantumExtractorConfig {
     @Config.DefaultInt(1)
     @Config.RangeInt(min = 1)
     public static int minTickResTier6;
+
+    @Config.Comment("Maximum tick duration for Res Miners (limits how fast Speed Modifiers can make them)")
+    @Config.DefaultInt(4000)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier1;
+
+    @Config.DefaultInt(3000)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier2;
+
+    @Config.DefaultInt(1600)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier3;
+
+    @Config.DefaultInt(800)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier4;
+
+    @Config.DefaultInt(400)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier5;
+
+    @Config.DefaultInt(200)
+    @Config.RangeInt(min = 1)
+    public static int maxTickResTier6;
 
     @Config.Comment("Additional blocks to allow in the miner's path to void (e.g., \"OmoshiroiKamo:LASER_CORE:0\")")
     @Config.DefaultStringList({})

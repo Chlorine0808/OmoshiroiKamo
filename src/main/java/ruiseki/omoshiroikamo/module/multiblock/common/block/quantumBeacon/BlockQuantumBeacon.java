@@ -11,7 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +23,7 @@ import ruiseki.omoshiroikamo.config.backport.muliblock.QuantumBeaconConfig.Beaco
 import ruiseki.omoshiroikamo.config.backport.muliblock.QuantumBeaconConfig.BeaconTierRangeConfig;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredMBBlock;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 
 public class BlockQuantumBeacon extends AbstractTieredMBBlock<TEQuantumBeacon> {
@@ -64,6 +67,14 @@ public class BlockQuantumBeacon extends AbstractTieredMBBlock<TEQuantumBeacon> {
     @Override
     public Class<? extends ItemBlock> getItemBlockClass() {
         return ItemBlockQuantumBeacon.class;
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TEQuantumBeacon te) {
+            tooltip.add(WailaUtils.getCraftingState(te));
+        }
     }
 
     public static class ItemBlockQuantumBeacon extends ItemBlockOK {

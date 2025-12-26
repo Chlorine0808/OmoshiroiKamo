@@ -68,9 +68,10 @@ public class BlockQuantumResExtractor extends AbstractTieredMBBlock<TEQuantumExt
 
     @Override
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TEQuantumExtractor extractor) {
-            tooltip.add(WailaUtils.getProgress(extractor));
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TEQuantumExtractor te) {
+            tooltip.add(WailaUtils.getCraftingState(te));
+            tooltip.add(WailaUtils.getProgress(te));
         }
 
     }

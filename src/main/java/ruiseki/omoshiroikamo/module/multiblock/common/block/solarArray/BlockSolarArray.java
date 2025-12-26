@@ -19,6 +19,7 @@ import ruiseki.omoshiroikamo.config.backport.muliblock.SolarArrayConfig;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredMBBlock;
 import ruiseki.omoshiroikamo.core.integration.waila.IWailaBlockInfoProvider;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 
 public class BlockSolarArray extends AbstractTieredMBBlock<TESolarArray> implements IWailaBlockInfoProvider {
@@ -68,6 +69,7 @@ public class BlockSolarArray extends AbstractTieredMBBlock<TESolarArray> impleme
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TESolarArray solar) {
+            tooltip.add(WailaUtils.getCraftingState(solar));
             float efficiency = solar.calculateLightRatio();
             if (!solar.canSeeSun()) {
                 tooltip.add(EnumChatFormatting.RED + LibMisc.LANG.localize("gui.sunlightBlocked"));

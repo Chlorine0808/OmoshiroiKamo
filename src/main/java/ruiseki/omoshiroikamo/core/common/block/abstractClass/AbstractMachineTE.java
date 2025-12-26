@@ -57,7 +57,7 @@ public abstract class AbstractMachineTE extends AbstractEnergyTE implements ICra
         }
 
         if (crafting && canContinueCrafting()) {
-            energyStorage.voidEnergy(getCraftingEnergyCost());
+            onCrafting();
             advanceCraftingProgress();
         }
 
@@ -87,6 +87,10 @@ public abstract class AbstractMachineTE extends AbstractEnergyTE implements ICra
 
     protected boolean canContinueCrafting() {
         return isRedstoneActive() && hasEnergyForCrafting();
+    }
+
+    protected void onCrafting() {
+        energyStorage.voidEnergy(getCraftingEnergyCost());
     }
 
     private void advanceCraftingProgress() {

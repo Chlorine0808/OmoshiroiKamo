@@ -52,7 +52,7 @@ public class ModelTier {
     public List<ModelTierRegistryItem> tryRegisterTiers() {
         List<ModelTierRegistryItem> allTiers = new ArrayList<>();
 
-        File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/dml/" + configFileName);
         if (!configFile.exists()) {
             List<ModelTierRegistryItem> defaultModels = registerTiers();
             createDefaultConfig(configFile, defaultModels);

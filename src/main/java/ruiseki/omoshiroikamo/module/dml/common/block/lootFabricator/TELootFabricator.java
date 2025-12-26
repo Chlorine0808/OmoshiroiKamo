@@ -108,7 +108,7 @@ public class TELootFabricator extends AbstractMachineTE implements IEnergySink, 
 
     @Override
     protected CraftingState updateCraftingState() {
-        if (!crafting && !hasPristineMatter()) {
+        if (!isCrafting() && !hasPristineMatter()) {
             return CraftingState.IDLE;
         } else if (!canContinueCrafting() || (!this.isCrafting() && !canStartCrafting())) {
             return CraftingState.ERROR;
