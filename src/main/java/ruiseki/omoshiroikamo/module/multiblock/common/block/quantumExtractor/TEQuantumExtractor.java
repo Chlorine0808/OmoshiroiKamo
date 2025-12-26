@@ -369,6 +369,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         modifierHandler.setModifiers(mods);
         modifierHandler.calculateAttributeMultipliers();
         focusBoostModifier = modifierHandler.getAttributeMultiplier("accuracy");
+        possibleResults.clear();
 
         if (lens != null) {
             Block block = lens.getBlock();
