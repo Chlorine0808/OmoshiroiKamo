@@ -602,6 +602,20 @@ tooltip.modifier.fire_resistance.effect=§bFire Resistance§r
 tooltip.modifier.water_breathing.effect=§bWater Breathing§r
 tooltip.modifier.beacon.energy=§7Uses %d RF/t per effect§r
 
+#Beacon Effect Tooltip
+tooltip.beacon.shift_for_effects=Hold §eSHIFT§r for effect list
+tooltip.beacon.effect_list=Available Effects:
+tooltip.beacon.effect.speed=Speed
+tooltip.beacon.effect.haste=Haste
+tooltip.beacon.effect.strength=Strength
+tooltip.beacon.effect.resistance=Resistance
+tooltip.beacon.effect.regeneration=Regeneration
+tooltip.beacon.effect.saturation=Saturation
+tooltip.beacon.effect.jump_boost=Jump Boost
+tooltip.beacon.effect.night_vision=Night Vision
+tooltip.beacon.effect.water_breathing=Water Breathing
+tooltip.beacon.effect.fire_resistance=Fire Resistance
+
 #Solar Tooltips
 tooltip.solar.cell.power=§aPeak Output: %d RF/t§r
 tooltip.solar.array.peak=§aMax Output: %d RF/t§r

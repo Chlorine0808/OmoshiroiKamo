@@ -69,86 +69,86 @@ public class QuantumBeaconConfig {
 
     @Config.Comment("Tier 1 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier1 = new BeaconTierConfig(
-            0, // saturation
-            1, // speed
-            1, // haste
-            1, // strength
-            1, // regeneration
-            1, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            1 // jumpBoost
+        0, // saturation
+        1, // speed
+        1, // haste
+        1, // strength
+        1, // regeneration
+        1, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        1 // jumpBoost
     );
 
     @Config.Comment("Tier 2 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier2 = new BeaconTierConfig(
-            0, // saturation
-            2, // speed
-            2, // haste
-            2, // strength
-            1, // regeneration
-            1, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            2 // jumpBoost
+        0, // saturation
+        2, // speed
+        2, // haste
+        2, // strength
+        1, // regeneration
+        1, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        2 // jumpBoost
     );
 
     @Config.Comment("Tier 3 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier3 = new BeaconTierConfig(
-            1, // saturation
-            3, // speed
-            3, // haste
-            3, // strength
-            2, // regeneration
-            2, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            3 // jumpBoost
+        1, // saturation
+        3, // speed
+        3, // haste
+        3, // strength
+        2, // regeneration
+        2, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        3 // jumpBoost
     );
 
     @Config.Comment("Tier 4 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier4 = new BeaconTierConfig(
-            2, // saturation
-            4, // speed
-            4, // haste
-            3, // strength
-            2, // regeneration
-            3, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            4 // jumpBoost
+        2, // saturation
+        4, // speed
+        4, // haste
+        3, // strength
+        2, // regeneration
+        3, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        4 // jumpBoost
     );
 
     @Config.Comment("Tier 5 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier5 = new BeaconTierConfig(
-            3, // saturation
-            5, // speed
-            5, // haste
-            4, // strength
-            3, // regeneration
-            4, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            5 // jumpBoost
+        3, // saturation
+        5, // speed
+        5, // haste
+        4, // strength
+        3, // regeneration
+        4, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        5 // jumpBoost
     );
 
     @Config.Comment("Tier 6 Beacon Effect Level Limits")
     public static final BeaconTierConfig tier6 = new BeaconTierConfig(
-            4, // saturation
-            6, // speed
-            6, // haste
-            4, // strength
-            4, // regeneration
-            5, // resistance
-            1, // fireResistance
-            1, // waterBreathing
-            1, // nightVision
-            6 // jumpBoost
+        4, // saturation
+        6, // speed
+        6, // haste
+        4, // strength
+        4, // regeneration
+        5, // resistance
+        1, // fireResistance
+        1, // waterBreathing
+        1, // nightVision
+        6 // jumpBoost
     );
 
     @Config.LangKey(LibResources.CONFIG + "beaconTierConfig")
@@ -198,8 +198,8 @@ public class QuantumBeaconConfig {
             this(0, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         }
 
-        public BeaconTierConfig(int saturation, int speed, int haste, int strength, int regeneration,
-                int resistance, int fireResistance, int waterBreathing, int nightVision, int jumpBoost) {
+        public BeaconTierConfig(int saturation, int speed, int haste, int strength, int regeneration, int resistance,
+            int fireResistance, int waterBreathing, int nightVision, int jumpBoost) {
             this.saturationLevel = saturation;
             this.speedLevel = speed;
             this.hasteLevel = haste;

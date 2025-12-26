@@ -602,6 +602,20 @@ tooltip.modifier.fire_resistance.effect=§b火炎耐性§r
 tooltip.modifier.water_breathing.effect=§b水中呼吸§r
 tooltip.modifier.beacon.energy=§7効果ごとに %d RF/t 消費§r
 
+#Beacon Effect Tooltip
+tooltip.beacon.shift_for_effects=§eSHIFT§rを押すと効果一覧を表示
+tooltip.beacon.effect_list=利用可能な効果:
+tooltip.beacon.effect.speed=移動速度上昇
+tooltip.beacon.effect.haste=採掘速度上昇
+tooltip.beacon.effect.strength=攻撃力上昇
+tooltip.beacon.effect.resistance=耐性
+tooltip.beacon.effect.regeneration=再生
+tooltip.beacon.effect.saturation=満腹
+tooltip.beacon.effect.jump_boost=跳躍力上昇
+tooltip.beacon.effect.night_vision=暗視
+tooltip.beacon.effect.water_breathing=水中呼吸
+tooltip.beacon.effect.fire_resistance=火炎耐性
+
 #Solar Tooltips
 tooltip.solar.cell.power=§aピーク出力: %d RF/t§r
 tooltip.solar.array.peak=§a最大出力: %d RF/t§r
