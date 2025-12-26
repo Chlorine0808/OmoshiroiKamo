@@ -1,6 +1,7 @@
 package ruiseki.omoshiroikamo.module.multiblock.common.block.quantumExtractor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -73,9 +74,9 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     @Override
-    public void onProcessTick() {
-        int energyExtracted = Math.min(getEnergyStored(), this.getEnergyCostPerTick());
-        setEnergyStored(getEnergyStored() - energyExtracted);
+    protected void onCrafting() {
+        int energyExtracted = Math.min(getEnergyStored(), this.getCraftingEnergyCost());
+        energyStorage.voidEnergy(energyExtracted);
     }
 
     @Override
@@ -130,8 +131,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     @Override
     protected void clearStructureParts() {
         modifiers.clear();
-        modifierHandler = new ModifierHandler();
-        possibleResults.clear();
+        modifierHandler.setModifiers(Collections.emptyList());
         lens = null;
     }
 
@@ -293,7 +293,8 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     @Override
-    public void onProcessComplete() {
+    public void finishCrafting() {
+        super.finishCrafting();
         if (!this.possibleResults.isEmpty()) {
             WeightedStackBase result = (WeightedStackBase) WeightedRandom
                 .getRandomItem(this.rand, this.possibleResults);
@@ -342,16 +343,16 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
     }
 
     @Override
-    public boolean canProcess() {
+    public boolean canStartCrafting() {
 
         boolean hasFreeSlot = false;
         for (int i = 0; i < output.getSlots(); i++) {
-            ItemStack stack = output.getStackInSlot(i);
-            if (stack == null) {
+            if (output.getStackInSlot(i) == null) {
                 hasFreeSlot = true;
                 break;
             }
         }
+
         if (!hasFreeSlot) {
             this.extract();
             return false;
@@ -368,9 +369,8 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
         modifierHandler.setModifiers(mods);
         modifierHandler.calculateAttributeMultipliers();
         focusBoostModifier = modifierHandler.getAttributeMultiplier("accuracy");
+        possibleResults.clear();
 
-        // 毎回 possibleResults を再計算して Modifier 効果を反映させる
-        this.possibleResults.clear();
         if (lens != null) {
             Block block = lens.getBlock();
             if (block instanceof BlockColoredLens) {
@@ -398,7 +398,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
                     .getUnFocusedList());
         }
 
-        if (getEnergyStored() < getEnergyCostPerTick()) {
+        if (!hasEnergyForCrafting()) {
             return false;
         }
 
@@ -407,18 +407,22 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
 
     public abstract int getEnergyCostPerDuration();
 
-    public int getEnergyCostPerTick() {
-        if (this.modifierHandler.hasAttribute("energycost")) {
-            int e = (int) ((float) this.getEnergyCostPerDuration()
-                * this.modifierHandler.getAttributeMultiplier("energycost"));
-            return Math.max(1, e / Math.max(1, this.getCurrentProcessDuration()));
-        }
-        return Math.max(1, this.getEnergyCostPerDuration() / Math.max(1, this.getCurrentProcessDuration()));
+    @Override
+    public int getCraftingEnergyCost() {
+        int base = getEnergyCostPerDuration();
+        int duration = Math.max(1, getCraftingDuration());
+        float multiplier = modifierHandler.hasAttribute("energycost")
+            ? modifierHandler.getAttributeMultiplier("energycost")
+            : 1.0F;
+
+        return Math.max(1, (int) (base * multiplier) / duration);
     }
 
     @Override
     public float getSpeedMultiplier() {
-        return this.modifierHandler.hasAttribute("speed") ? this.modifierHandler.getAttributeMultiplier("speed") : 1.0F;
+        float speed = modifierHandler.getAttributeMultiplier("speed");
+        float speedP = modifierHandler.getAttributeMultiplier("speed_p");
+        return speed * speedP;
     }
 
     @Override

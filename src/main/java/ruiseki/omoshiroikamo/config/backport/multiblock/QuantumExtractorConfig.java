@@ -125,6 +125,37 @@ public class QuantumExtractorConfig {
         @Config.RangeInt(min = 1)
         public int minTickTier6;
 
+        // Minimum tick per tier
+        @Config.Comment("Tier 1: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(4000)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier1;
+
+        @Config.Comment("Tier 2: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(3000)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier2;
+
+        @Config.Comment("Tier 3: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(1600)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier3;
+
+        @Config.Comment("Tier 4: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(800)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier4;
+
+        @Config.Comment("Tier 5: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(400)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier5;
+
+        @Config.Comment("Tier 6: Maximum ticks (Speed Modifier limit)")
+        @Config.DefaultInt(200)
+        @Config.RangeInt(min = 1)
+        public int maxTickTier6;
+
         public int getTick(int tier) {
             switch (tier) {
                 case 1:
@@ -181,42 +212,66 @@ public class QuantumExtractorConfig {
                     return minTickTier1;
             }
         }
+
+        public int getMaxTick(int tier) {
+            switch (tier) {
+                case 1:
+                    return maxTickTier1;
+                case 2:
+                    return maxTickTier2;
+                case 3:
+                    return maxTickTier3;
+                case 4:
+                    return maxTickTier4;
+                case 5:
+                    return maxTickTier5;
+                case 6:
+                    return maxTickTier6;
+                default:
+                    return maxTickTier1;
+            }
+        }
     }
 
     public static class ModifierSettings {
 
-        @Config.Comment("Speed Modifier: Speed multiplier base (0.7 = 30% faster per modifier)")
+        @Config.Comment("Speed Modifier: Multiplier applied per Speed modifier (0.7 = 30% faster per modifier)")
         @Config.DefaultFloat(0.7f)
         @Config.RangeFloat(min = 0.1f, max = 1.0f)
         public float speedMultiplier;
 
-        @Config.Comment("Speed Modifier: Energy cost multiplier per modifier (1.5 = 50% more energy)")
+        @Config.Comment("Speed Modifier: Minimum speed multiplier allowed (0.1 = processing time cannot go below 10% of base)")
+        @Config.DefaultFloat(0.1f)
+        @Config.RangeFloat(min = 0.1f, max = 1.0f)
+        public float speedMinMultiplier;
+
+        @Config.Comment("Speed Modifier: Energy cost multiplier per Speed modifier (1.5 = 50% more energy per modifier)")
         @Config.DefaultFloat(1.5f)
         @Config.RangeFloat(min = 1.0f, max = 1000.0f)
         public float speedEnergyCost;
 
-        @Config.Comment("Speed Modifier: Minimum speed multiplier (0.1 = processing time can be reduced to 10% at most)")
-        @Config.DefaultFloat(0.1f)
-        @Config.RangeFloat(min = 0.01f, max = 1.0f)
-        public float speedMinMultiplier;
-
-        @Config.Comment("Accuracy Modifier: Focus multiplier per modifier (1.18 = 18% better focus)")
+        @Config.Comment("Accuracy Modifier: Multiplier to focus per Accuracy modifier (1.18 = 18% more focus per modifier)")
         @Config.DefaultFloat(1.18f)
         @Config.RangeFloat(min = 1.0f, max = 100.0f)
         public float accuracyMultiplier;
 
-        @Config.Comment("Accuracy Modifier: Energy cost multiplier per modifier (1.05 = 5% more energy)")
+        @Config.Comment("Accuracy Modifier: Energy cost multiplier per Accuracy modifier (1.05 = 5% more energy per modifier)")
         @Config.DefaultFloat(1.05f)
         @Config.RangeFloat(min = 1.0f, max = 1000.0f)
         public float accuracyEnergyCost;
 
-        @Config.Comment("Accuracy Modifier: Speed penalty per modifier (0.9 = 10% slower)")
-        @Config.DefaultFloat(0.9f)
-        @Config.RangeFloat(min = 0.1f, max = 1.0f)
+        @Config.Comment("Accuracy Modifier: Speed penalty per Accuracy modifier (1.3 = 30% slower per modifier)")
+        @Config.DefaultFloat(1.3f)
+        @Config.RangeFloat(min = 1.0f, max = 10.0f)
         public float accuracySpeedPenalty;
 
-        @Config.Comment("Accuracy Modifier: Maximum focus multiplier (5.0 = focus can be increased by 5x at most)")
+        @Config.Comment("Accuracy Modifier: Maximum allowed speed penalty (3.0 = processing cannot be more than 3x slower)")
         @Config.DefaultFloat(5.0f)
+        @Config.RangeFloat(min = 1.0f, max = 100.0f)
+        public float accuracyMaxSpeedPenalty;
+
+        @Config.Comment("Accuracy Modifier: Maximum focus multiplier allowed (5.0 = focus can be increased up to 5x)")
+        @Config.DefaultFloat(10.0f)
         @Config.RangeFloat(min = 1.0f, max = 100.0f)
         public float accuracyMaxMultiplier;
 

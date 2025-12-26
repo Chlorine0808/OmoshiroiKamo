@@ -18,6 +18,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractStorageTE;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 
 public class BlockRoost extends AbstractBlock<TERoost> {
 
@@ -96,7 +97,7 @@ public class BlockRoost extends AbstractBlock<TERoost> {
             DataChicken chicken1 = roost.getChickenData(0);
             if (chicken1 != null) {
                 tooltip.add(chicken1.getDisplaySummary());
-                tooltip.add("Progress: " + roost.getFormattedProgress());
+                tooltip.add(WailaUtils.getProgress(roost));
             }
         }
     }

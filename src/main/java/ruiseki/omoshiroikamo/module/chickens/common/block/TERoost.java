@@ -19,6 +19,7 @@ import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.config.backport.ChickenConfig;
 import ruiseki.omoshiroikamo.core.client.gui.GuiTextures;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 import ruiseki.omoshiroikamo.module.chickens.client.gui.container.ChickenContainer;
 
 public class TERoost extends TERoostBase {
@@ -101,7 +102,7 @@ public class TERoost extends TERoostBase {
                 .child(
                     new ProgressWidget().progress(this::getProgress)
                         .tooltipDynamic(richTooltip -> {
-                            richTooltip.add(getFormattedProgress());
+                            richTooltip.add(WailaUtils.getProgress(this));
                             richTooltip.markDirty();
                         })
                         .topRel(0.25f)

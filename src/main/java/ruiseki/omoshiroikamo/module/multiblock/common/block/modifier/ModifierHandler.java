@@ -75,4 +75,24 @@ public class ModifierHandler {
             .findFirst()
             .orElse(1.0F);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("ModifierHandler{");
+
+        if (attributeTotals.isEmpty()) {
+            sb.append("no modifiers");
+        } else {
+            attributeTotals.forEach(
+                (key, value) -> sb.append(key)
+                    .append("=")
+                    .append(String.format("%.2f", value))
+                    .append(", "));
+            sb.setLength(sb.length() - 2);
+        }
+
+        sb.append("}");
+        return sb.toString();
+    }
+
 }
