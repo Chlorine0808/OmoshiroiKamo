@@ -10,6 +10,14 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 @Config(modid = LibMisc.MOD_ID, category = "beacon", configSubDirectory = LibMisc.MOD_ID + "/QuantumBeacon")
 public class QuantumBeaconConfig {
 
+    @Config.Comment("If true, the beacon requires clear sky above to function and show beam")
+    @Config.DefaultBoolean(true)
+    public static boolean requireSky;
+
+    @Config.Comment("If true, the beacon will render a beam when formed and active")
+    @Config.DefaultBoolean(true)
+    public static boolean enableBeam;
+
     @Config.Comment("Beacon Modifier Energy Cost Settings")
     public static final ModifierEnergyCost modifierEnergyCost = new ModifierEnergyCost();
 

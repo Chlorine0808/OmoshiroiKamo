@@ -8,8 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ruiseki.omoshiroikamo.api.block.BlockPos;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
@@ -33,6 +36,10 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
      * with other mods)
      */
     private boolean wasFlightGrantedByBeacon = false;
+
+    // Beam rendering state
+    private float beamProgress = 0.0F;
+    private long lastBeamUpdateTick = 0L;
 
     public TEQuantumBeacon(int eBuffSize) {
         this.energyStorage.setEnergyStorage(eBuffSize);
@@ -328,6 +335,70 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
         return energyStorage.receiveEnergy(maxReceive, simulate);
+    }
+
+    // ========== Beam Rendering Methods ==========
+
+    /**
+     * Check if the Beacon can see the sky (required for beam to show if requireSky
+     * is true)
+     */
+    public boolean canSeeSky() {
+        if (!QuantumBeaconConfig.requireSky) {
+            return true;
+        }
+        return worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord);
+    }
+
+    /**
+     * Get the current beam progress for rendering.
+     * Only shows beam when formed, has energy, and can see sky.
+     */
+    @SideOnly(Side.CLIENT)
+    public float getBeamProgress() {
+        if (!QuantumBeaconConfig.enableBeam || !isFormed() || !canSeeSky()) {
+            beamProgress = 0f;
+            return 0f;
+        }
+
+        long now = this.worldObj.getTotalWorldTime();
+        int ticksPassed = (int) (now - this.lastBeamUpdateTick);
+        this.lastBeamUpdateTick = now;
+
+        if (ticksPassed > 1) {
+            beamProgress -= (float) ticksPassed / 40.0F;
+            if (beamProgress < 0f) {
+                beamProgress = 0f;
+            }
+        }
+
+        beamProgress += 0.025F;
+        if (beamProgress > 1.0F) {
+            beamProgress = 1.0F;
+        }
+        return beamProgress;
+    }
+
+    /**
+     * Override the render bounding box to include the entire beam (from beacon to
+     * build height).
+     * This prevents frustum culling from hiding the beam when the player is not
+     * looking at the beacon.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, 256, zCoord + 1);
+    }
+
+    /**
+     * Increase the max render distance to match vanilla Beacon (256 blocks).
+     * This prevents the beam from disappearing when the player is far away.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 65536.0D; // 256 * 256
     }
 
 }
