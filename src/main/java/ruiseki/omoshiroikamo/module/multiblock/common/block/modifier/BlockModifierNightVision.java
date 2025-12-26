@@ -23,14 +23,14 @@ public class BlockModifierNightVision extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.nightVisionEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.nightVision;
         list.add(ModifierAttribute.P_NIGHT_VISION.getAttribute());
         list.add(new AttributeEnergyCostFixed(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.nightVisionEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.nightVision;
         List<String> list = new ArrayList<>();
         list.add(LibMisc.LANG.localize("tooltip.modifier.night_vision.effect"));
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"), energyCost));

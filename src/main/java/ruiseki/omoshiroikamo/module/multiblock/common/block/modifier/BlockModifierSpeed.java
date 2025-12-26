@@ -24,7 +24,7 @@ public class BlockModifierSpeed extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        float energyCost = QuantumExtractorConfig.speedModifierEnergyCost;
+        float energyCost = QuantumExtractorConfig.modifiers.speedEnergyCost;
         list.add(new AttributeEnergyCost(energyCost));
         list.add(ModifierAttribute.SPEED.getAttribute());
         list.add(ModifierAttribute.P_SPEED.getAttribute());
@@ -33,8 +33,8 @@ public class BlockModifierSpeed extends BlockModifier {
 
     @Override
     public List<String> getTooltipLines() {
-        float speedMultiplier = QuantumExtractorConfig.speedModifierMultiplier;
-        float energyCost = QuantumExtractorConfig.speedModifierEnergyCost;
+        float speedMultiplier = QuantumExtractorConfig.modifiers.speedMultiplier;
+        float energyCost = QuantumExtractorConfig.modifiers.speedEnergyCost;
 
         List<String> list = new ArrayList<>();
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.speed.effect"), speedMultiplier));

@@ -23,14 +23,14 @@ public class BlockModifierResistance extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.resistanceEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.resistance;
         list.add(ModifierAttribute.P_RESISTANCE.getAttribute());
         list.add(new AttributeEnergyCostFixed(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.resistanceEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.resistance;
         List<String> list = new ArrayList<>();
         list.add(LibMisc.LANG.localize("tooltip.modifier.resistance.effect"));
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"), energyCost));

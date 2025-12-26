@@ -23,14 +23,14 @@ public class BlockModifierHaste extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.hasteEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.haste;
         list.add(ModifierAttribute.P_HASTE.getAttribute());
         list.add(new AttributeEnergyCostFixed(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.hasteEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.haste;
         List<String> list = new ArrayList<>();
         list.add(LibMisc.LANG.localize("tooltip.modifier.haste.effect"));
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"), energyCost));

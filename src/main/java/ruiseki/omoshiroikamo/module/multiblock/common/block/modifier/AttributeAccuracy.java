@@ -24,8 +24,8 @@ public class AttributeAccuracy implements IModifierAttribute {
     }
 
     public float getMultiplier(float totalModificationFactor) {
-        float base = QuantumExtractorConfig.accuracyModifierMultiplier;
-        float maxMultiplier = QuantumExtractorConfig.accuracyModifierMaxMultiplier;
+        float base = QuantumExtractorConfig.modifiers.accuracyMultiplier;
+        float maxMultiplier = QuantumExtractorConfig.modifiers.accuracyMaxMultiplier;
         float result = (float) Math.pow(base, (double) totalModificationFactor);
         return Math.min(maxMultiplier, result);
     }

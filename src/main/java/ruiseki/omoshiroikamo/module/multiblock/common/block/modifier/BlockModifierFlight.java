@@ -23,14 +23,14 @@ public class BlockModifierFlight extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.flightEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.flight;
         list.add(ModifierAttribute.E_FLIGHT_CREATIVE.getAttribute());
         list.add(new AttributeEnergyCostFixed(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.flightEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.flight;
         List<String> list = new ArrayList<>();
         list.add(LibMisc.LANG.localize("tooltip.modifier.flight.effect"));
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"), energyCost));

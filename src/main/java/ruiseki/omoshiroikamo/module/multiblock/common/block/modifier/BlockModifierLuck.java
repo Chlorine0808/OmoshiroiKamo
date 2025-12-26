@@ -21,16 +21,16 @@ public class BlockModifierLuck extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        float bonusChance = QuantumExtractorConfig.luckModifierBonusChance;
-        float energyCost = QuantumExtractorConfig.luckModifierEnergyCost;
+        float bonusChance = QuantumExtractorConfig.modifiers.luckBonusChance;
+        float energyCost = QuantumExtractorConfig.modifiers.luckEnergyCost;
         list.add(new AttributeLuck(bonusChance));
         list.add(new AttributeEnergyCost(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        float bonusChance = QuantumExtractorConfig.luckModifierBonusChance;
-        float energyCost = QuantumExtractorConfig.luckModifierEnergyCost;
+        float bonusChance = QuantumExtractorConfig.modifiers.luckBonusChance;
+        float energyCost = QuantumExtractorConfig.modifiers.luckEnergyCost;
 
         List<String> list = new ArrayList<>();
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.luck.effect"), (int) (bonusChance * 100)));

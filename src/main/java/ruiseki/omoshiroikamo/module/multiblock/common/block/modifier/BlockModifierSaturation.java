@@ -23,14 +23,14 @@ public class BlockModifierSaturation extends BlockModifier {
 
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.saturationEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.saturation;
         list.add(ModifierAttribute.P_SATURATION.getAttribute());
         list.add(new AttributeEnergyCostFixed(energyCost));
     }
 
     @Override
     public List<String> getTooltipLines() {
-        int energyCost = QuantumBeaconConfig.modifierEnergyCost.saturationEnergyCost;
+        int energyCost = QuantumBeaconConfig.modifierEnergyCost.saturation;
         List<String> list = new ArrayList<>();
         list.add(LibMisc.LANG.localize("tooltip.modifier.saturation.effect"));
         list.add(String.format(LibMisc.LANG.localize("tooltip.modifier.beacon.energy"), energyCost));
