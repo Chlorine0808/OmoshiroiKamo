@@ -21,6 +21,9 @@ config.quantumExtractorConfig=クアンタムエクストラクターの設定
 config.quantumBeaconConfig=クアンタムビーコンの設定
 config.solarArrayConfig=ソーラーアレイの設定
 config.eTWorldGenConfig=ワールド生成の設定
+config.hardenedStoneGen=硬化石
+config.alabasterGen=アラバスター
+config.basaltGen=玄武岩
 
 config.chickenConfig=ニワトリの設定
 

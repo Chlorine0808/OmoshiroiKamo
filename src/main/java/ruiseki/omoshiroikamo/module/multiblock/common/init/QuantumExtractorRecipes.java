@@ -16,6 +16,10 @@ public class QuantumExtractorRecipes {
 
     public static final int MAX_TIER = 6;
 
+    // Legacy: kept for backward compatibility with existing code that references these directly
+    public static IFocusableRegistry[] oreRegistry = new IFocusableRegistry[MAX_TIER];
+    public static IFocusableRegistry[] resRegistry = new IFocusableRegistry[MAX_TIER];
+
     // Dimension-aware registries (lazy-initialized)
     private static final Map<Integer, IFocusableRegistry[]> oreRegistryByDim = new HashMap<>();
     private static final Map<Integer, IFocusableRegistry[]> resRegistryByDim = new HashMap<>();

@@ -20,6 +20,9 @@ config.quantumExtractorConfig=Quantum Extractor Settings
 config.quantumBeaconConfig=Quantum Beacon Settings
 config.solarArrayConfig=Solar Array Settings
 config.eTWorldGenConfig=World Generation Settings
+config.hardenedStoneGen=Hardened Stone
+config.alabasterGen=Alabaster
+config.basaltGen=Basalt
 
 config.chickenConfig=Chicken Settings
 
