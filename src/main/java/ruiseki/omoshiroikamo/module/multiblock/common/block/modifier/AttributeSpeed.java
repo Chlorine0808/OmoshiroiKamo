@@ -22,7 +22,7 @@ public class AttributeSpeed implements IModifierAttribute {
     public float getMultiplier(float totalModificationFactor) {
         float base = QuantumExtractorConfig.modifiers.speedMultiplier;
         float minMultiplier = QuantumExtractorConfig.modifiers.speedMinMultiplier;
-        float result = (float) Math.pow(base, (double) totalModificationFactor);
+        float result = (float) Math.pow(base, totalModificationFactor);
         return Math.max(minMultiplier, result);
     }
 

@@ -14,7 +14,6 @@ import com.mojang.authlib.GameProfile;
 
 import lombok.Getter;
 import ruiseki.omoshiroikamo.api.crafting.CraftingState;
-import ruiseki.omoshiroikamo.core.common.util.Logger;
 import ruiseki.omoshiroikamo.core.common.util.PlayerUtils;
 
 public abstract class AbstractMBModifierTE extends AbstractMachineTE {
@@ -123,10 +122,10 @@ public abstract class AbstractMBModifierTE extends AbstractMachineTE {
 
     @Override
     protected int getCraftingDuration() {
-        float speed = getSpeedMultiplier();
-        int base = getBaseDuration();
+        float speedMultiplier = getSpeedMultiplier();
+        int baseDuration = getBaseDuration();
 
-        int duration = (int) (base / speed);
+        int duration = (int) (baseDuration * speedMultiplier);
 
         return Math.max(getMinDuration(), Math.min(duration, getMaxDuration()));
     }

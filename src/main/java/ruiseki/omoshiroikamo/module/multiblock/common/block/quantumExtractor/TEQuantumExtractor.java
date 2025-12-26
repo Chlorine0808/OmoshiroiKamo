@@ -421,13 +421,10 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
 
     @Override
     public float getSpeedMultiplier() {
-        float speed = this.modifierHandler.hasAttribute("speed")
-            ? this.modifierHandler.getAttributeMultiplier("speed")
-            : 1.0F;
-
+        float speed = modifierHandler.getAttributeMultiplier("speed");
+        float speedP = modifierHandler.getAttributeMultiplier("speed_p");
         Logger.info(modifierHandler.toString());
-
-        return speed;
+        return speed * speedP;
     }
 
     @Override

@@ -24,14 +24,9 @@ public class BlockModifierAccuracy extends BlockModifier {
     @Override
     public void addAttributes(List<IModifierAttribute> list) {
         float energyCost = QuantumExtractorConfig.modifiers.accuracyEnergyCost;
-        float speedPenalty = QuantumExtractorConfig.modifiers.accuracySpeedPenalty;
-        // Convert 0.9 (desired speedPenalty) to AttributeSpeed factor: ln(0.9) /
-        // ln(0.7) ≈ -0.295
-        float speedFactor = (float) (Math.log(speedPenalty) / Math.log(0.7));
-
         list.add(ModifierAttribute.ACCURACY.getAttribute());
         list.add(new AttributeEnergyCost(energyCost));
-        list.add(new AttributeSpeed(speedFactor));
+        list.add(new AttributeSpeedPenalty());
     }
 
     @Override
