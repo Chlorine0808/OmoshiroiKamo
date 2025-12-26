@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
-import ruiseki.omoshiroikamo.config.backport.muliblock.MultiblockWorldGenConfig;
+import ruiseki.omoshiroikamo.config.backport.multiblock.MultiblockWorldGenConfig;
 import ruiseki.omoshiroikamo.module.multiblock.common.init.MultiBlockBlocks;
 
 public class OKWorldGenerator implements IWorldGenerator {

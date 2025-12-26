@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.config.backport.muliblock;
+package ruiseki.omoshiroikamo.config.backport.multiblock;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 

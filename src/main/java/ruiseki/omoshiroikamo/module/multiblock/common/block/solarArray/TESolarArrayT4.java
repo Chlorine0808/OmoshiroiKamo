@@ -6,7 +6,7 @@ import static ruiseki.omoshiroikamo.module.multiblock.common.block.solarArray.So
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import ruiseki.omoshiroikamo.config.backport.muliblock.SolarArrayConfig;
+import ruiseki.omoshiroikamo.config.backport.multiblock.SolarArrayConfig;
 
 public class TESolarArrayT4 extends TESolarArray {
 
