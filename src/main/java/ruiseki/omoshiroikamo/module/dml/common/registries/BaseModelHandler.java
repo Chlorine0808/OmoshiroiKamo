@@ -103,7 +103,7 @@ public abstract class BaseModelHandler {
         }
         Logger.info("Loading {} models...", modName);
 
-        File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/dml/" + configFileName);
         if (!configFile.exists()) {
             List<ModelRegistryItem> defaultModels = registerModels();
             createDefaultConfig(configFile, defaultModels);
