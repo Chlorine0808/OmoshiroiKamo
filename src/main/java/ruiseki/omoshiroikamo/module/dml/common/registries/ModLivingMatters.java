@@ -47,7 +47,7 @@ public class ModLivingMatters {
     public List<LivingRegistryItem> tryRegisterLivings() {
         List<LivingRegistryItem> allLivings = new ArrayList<>();
 
-        File configFile = new File("config/" + LibMisc.MOD_ID + "/model/" + configFileName);
+        File configFile = new File("config/" + LibMisc.MOD_ID + "/dml/" + configFileName);
         if (!configFile.exists()) {
             List<LivingRegistryItem> defaultModels = registerLivings();
             createDefaultConfig(configFile, defaultModels);
