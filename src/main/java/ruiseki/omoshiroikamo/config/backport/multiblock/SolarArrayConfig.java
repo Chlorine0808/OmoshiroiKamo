@@ -10,7 +10,7 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 @Config(
     modid = LibMisc.MOD_ID,
     category = "solar",
-    configSubDirectory = LibMisc.MOD_ID + "/environmentaltech",
+    configSubDirectory = LibMisc.MOD_ID + "/multiblock",
     filename = "solararray")
 public class SolarArrayConfig {
 
