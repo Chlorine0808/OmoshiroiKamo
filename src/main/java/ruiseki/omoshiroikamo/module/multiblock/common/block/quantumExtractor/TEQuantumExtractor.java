@@ -28,7 +28,7 @@ import ruiseki.omoshiroikamo.api.enums.ExtractorType;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
 import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
 import ruiseki.omoshiroikamo.api.multiblock.IModifierBlock;
-import ruiseki.omoshiroikamo.config.backport.EnvironmentalConfig;
+import ruiseki.omoshiroikamo.config.backport.muliblock.QuantumExtractorConfig;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.core.common.util.PlayerUtils;
 import ruiseki.omoshiroikamo.module.multiblock.common.block.modifier.ModifierHandler;
@@ -181,7 +181,7 @@ public abstract class TEQuantumExtractor extends AbstractMBModifierTE implements
      * Supports formats: "modid:blockname" or "modid:blockname:meta"
      */
     private boolean isBlockInPathWhitelist(Block block, int meta) {
-        String[] whitelist = EnvironmentalConfig.quantumExtractorConfig.pathToVoidWhitelist;
+        String[] whitelist = QuantumExtractorConfig.pathToVoidWhitelist;
         if (whitelist == null || whitelist.length == 0) {
             return false;
         }

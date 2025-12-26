@@ -6,7 +6,7 @@ import static ruiseki.omoshiroikamo.module.multiblock.common.block.quantumBeacon
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import ruiseki.omoshiroikamo.config.backport.QuantumBeaconConfig;
+import ruiseki.omoshiroikamo.config.backport.muliblock.QuantumBeaconConfig;
 import ruiseki.omoshiroikamo.module.multiblock.common.init.ModifierAttribute;
 
 public class TEQuantumBeaconT2 extends TEQuantumBeacon {

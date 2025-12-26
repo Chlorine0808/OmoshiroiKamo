@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.config.backport;
+package ruiseki.omoshiroikamo.config.backport.muliblock;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 
@@ -7,7 +7,7 @@ import ruiseki.omoshiroikamo.core.lib.LibResources;
 
 @Config.Comment("Quantum Beacon Effect Level Settings")
 @Config.LangKey(LibResources.CONFIG + "quantumBeaconConfig")
-@Config(modid = LibMisc.MOD_ID, category = "beacon", configSubDirectory = LibMisc.MOD_ID + "/QuantumBeacon")
+@Config(modid = LibMisc.MOD_ID, category = "general.backports.multiblock.beacon", configSubDirectory = LibMisc.MOD_ID)
 public class QuantumBeaconConfig {
 
     @Config.Comment("If true, the beacon requires clear sky above to function and show beam")

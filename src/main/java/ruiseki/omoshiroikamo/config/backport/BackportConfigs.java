@@ -34,8 +34,7 @@ public class BackportConfigs {
 
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(BackportConfigs.class);
-        ConfigurationManager.registerConfig(EnvironmentalConfig.class);
-        ConfigurationManager.registerConfig(QuantumBeaconConfig.class);
+        MultiBlockConfigs.registerConfig();
         ConfigurationManager.registerConfig(ChickenConfig.class);
         ConfigurationManager.registerConfig(CowConfig.class);
         ConfigurationManager.registerConfig(BackpackConfig.class);
