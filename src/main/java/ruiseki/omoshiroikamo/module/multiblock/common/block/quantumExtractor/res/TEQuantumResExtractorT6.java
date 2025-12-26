@@ -41,21 +41,21 @@ public class TEQuantumResExtractorT6 extends TEQuantumExtractor {
 
     @Override
     public int getEnergyCostPerDuration() {
-        return QuantumExtractorConfig.energyCostResTier6;
+        return QuantumExtractorConfig.resMiner.getEnergyCost(6);
     }
 
     @Override
     public int getBaseDuration() {
-        return QuantumExtractorConfig.tickResTier6;
+        return QuantumExtractorConfig.resMiner.getTick(6);
     }
 
     @Override
     public int getMinDuration() {
-        return QuantumExtractorConfig.minTickResTier6;
+        return QuantumExtractorConfig.resMiner.getMinTick(6);
     }
 
     @Override
     public int getMaxDuration() {
-        return QuantumExtractorConfig.tickResTier6;
+        return QuantumExtractorConfig.resMiner.getTick(6);
     }
 }
