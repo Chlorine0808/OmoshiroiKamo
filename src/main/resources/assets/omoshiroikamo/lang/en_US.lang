@@ -8,22 +8,26 @@ creativetab.okDeepMobLearner=OK Deep Mob Learning
 #Config
 
 config.itemConfig=Item Settings
-config.anvilUpgradeConfig=Anvil Upgrade Settings
 
 config.blockConfig=Block Settings
 
 config.backportConfig=Backport Settings
-config.environmentalConfig=Environmental Tech Settings
+
+config.multiblockConfig=MultiBlock Settings
 config.quantumExtractorConfig=Quantum Extractor Settings
+config.quantumBeaconConfig=Quantum Beacon Settings
 config.solarArrayConfig=Solar Array Settings
 config.eTWorldGenConfig=World Generation Settings
+
 config.chickenConfig=Chicken Settings
+
 config.cowConfig=Cow Settings
+
 config.backpackConfig=Backpack Settings
 config.feedingConfig=Feeding Settings
 config.magnetConfig=Magnet Settings
+
 config.deepMobLearningConfig=Deep Mob Learning Settings
-config.dataModelConfig=Data Model Settings
 
 config.energyConfig=Energy Settings
 
