@@ -1,6 +1,7 @@
 package ruiseki.omoshiroikamo.module.multiblock.common.block.quantumBeacon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -59,7 +60,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     @Override
     protected void clearStructureParts() {
         modifiers.clear();
-        modifierHandler = new ModifierHandler();
+        modifierHandler.setModifiers(Collections.emptyList());
         // Note: Do not call disablePlayerFlight here
         // Structure check runs every 20 ticks, calling it every time would cause toggle
         // issues
@@ -189,15 +190,23 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
         int potionDuration = getBaseDuration() * 2 + 300;
 
-        int energyCost = (int) (modifierHandler.getAttributeMultiplier("energycost_fixed") * getBaseDuration());
-        boolean hasEnergy = plr.capabilities.isCreativeMode || getEnergyStored() >= energyCost;
+        boolean hasEnergy = plr.capabilities.isCreativeMode || hasEnergyForCrafting();
 
         // Check flight first, explicitly disable if energy is insufficient
-        updatePlayerFlight(energyCost);
+        updatePlayerFlight();
         if (!hasEnergy) return;
 
-        setEnergyStored(getEnergyStored() - energyCost);
         applyPotionEffects(plr, potionDuration);
+    }
+
+    @Override
+    public int getCraftingEnergyCost() {
+        return (int) (modifierHandler.getAttributeMultiplier("energycost_fixed"));
+    }
+
+    @Override
+    protected void onCrafting() {
+        energyStorage.voidEnergy(getCraftingEnergyCost());
     }
 
     private void applyPotionEffects(EntityPlayer plr, int duration) {
@@ -217,18 +226,23 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         }
     }
 
-    private void addPotionEffect(EntityPlayer plr, String pe, int potionDuration, Potion effect) {
-        if (this.modifierHandler.hasAttribute(pe)) {
-            int level = (int) Math
-                .min(this.modifierHandler.getAttributeMultiplier(pe) - 1.0F, (float) (this.maxPotionLevel(pe) - 1));
+    private void addPotionEffect(EntityPlayer plr, String pe, int duration, Potion effect) {
+        if (plr == null || plr.worldObj.isRemote) return;
 
-            if (level >= 0) {
-                plr.addPotionEffect(new PotionEffect(effect.id, potionDuration, level, true));
-            }
+        if (!modifierHandler.hasAttribute(pe)) {
+            return;
         }
+        int rawLevel = (int) (modifierHandler.getAttributeMultiplier(pe));
+        int maxLevel = maxPotionLevel(pe);
+
+        // Clamp: 0 <= level <= maxLevel
+        int level = Math.max(0, Math.min(rawLevel, maxLevel) - 1);
+
+        plr.addPotionEffect(new PotionEffect(effect.id, duration, level, true));
+
     }
 
-    private void updatePlayerFlight(int energyCost) {
+    private void updatePlayerFlight() {
         if (player == null || worldObj.isRemote) return;
 
         EntityPlayer plr = PlayerUtils.getPlayerFromWorld(worldObj, player.getId());
@@ -236,8 +250,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
         boolean hasFlightModifier = modifierHandler
             .hasAttribute(ModifierAttribute.E_FLIGHT_CREATIVE.getAttributeName());
-        boolean enoughEnergy = getEnergyStored() >= energyCost;
-        boolean shouldHaveFlight = hasFlightModifier && enoughEnergy;
+        boolean shouldHaveFlight = hasFlightModifier && hasEnergyForCrafting();
 
         // Grant flight if Beacon should provide it
         if (shouldHaveFlight) {
@@ -267,7 +280,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
         // (another mod may have granted flight)
     }
 
-    protected abstract int maxPotionLevel(String var1);
+    protected abstract int maxPotionLevel(String attribute);
 
     @Override
     public int getBaseDuration() {
@@ -290,7 +303,7 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
     }
 
     @Override
-    public boolean canProcess() {
+    public boolean canStartCrafting() {
         List<IModifierBlock> mods = new ArrayList<>();
         for (BlockPos pos : this.modifiers) {
             Block block = pos.getBlock();
@@ -301,16 +314,12 @@ public abstract class TEQuantumBeacon extends AbstractMBModifierTE implements IE
 
         modifierHandler.setModifiers(mods);
         modifierHandler.calculateAttributeMultipliers();
-        return this.player != null;
+        return super.canStartCrafting();
     }
 
     @Override
-    public void onProcessTick() {
-
-    }
-
-    @Override
-    public void onProcessComplete() {
+    protected void finishCrafting() {
+        super.finishCrafting();
         this.addPlayerEffects();
     }
 

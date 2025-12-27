@@ -55,6 +55,6 @@ public class TEQuantumOreExtractorT2 extends TEQuantumExtractor {
 
     @Override
     public int getMaxDuration() {
-        return QuantumExtractorConfig.oreMiner.getTick(2);
+        return QuantumExtractorConfig.oreMiner.getMaxTick(2);
     }
 }

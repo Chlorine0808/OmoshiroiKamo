@@ -1,8 +1,11 @@
 package ruiseki.omoshiroikamo.module.dml.common.block.lootFabricator;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +17,7 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 
 public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
 
@@ -88,5 +92,14 @@ public class BlockLootFabricator extends AbstractBlock<TELootFabricator> {
     @Override
     protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {
 
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TELootFabricator te) {
+            tooltip.add(WailaUtils.getCraftingState(te));
+            tooltip.add(WailaUtils.getProgress(te));
+        }
     }
 }

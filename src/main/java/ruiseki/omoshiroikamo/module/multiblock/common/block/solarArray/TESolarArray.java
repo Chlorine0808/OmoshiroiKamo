@@ -72,7 +72,7 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
     }
 
     @Override
-    public boolean canProcess() {
+    public boolean canStartCrafting() {
         List<IModifierBlock> mods = new ArrayList<>();
 
         for (BlockPos pos : this.modifiers) {
@@ -84,16 +84,12 @@ public abstract class TESolarArray extends AbstractMBModifierTE implements IEner
 
         this.modifierHandler.setModifiers(mods);
         this.modifierHandler.calculateAttributeMultipliers();
-        return true;
+
+        return super.canStartCrafting();
     }
 
     @Override
-    public void onProcessTick() {
-        collectEnergy();
-    }
-
-    @Override
-    public void onProcessComplete() {
+    protected void onCrafting() {
         collectEnergy();
     }
 

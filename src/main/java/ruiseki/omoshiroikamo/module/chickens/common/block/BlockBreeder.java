@@ -17,6 +17,7 @@ import ruiseki.omoshiroikamo.api.entity.chicken.DataChicken;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractStorageTE;
+import ruiseki.omoshiroikamo.core.integration.waila.WailaUtils;
 
 public class BlockBreeder extends AbstractBlock<TEBreeder> {
 
@@ -97,7 +98,7 @@ public class BlockBreeder extends AbstractBlock<TEBreeder> {
             if (chicken1 != null && chicken2 != null) {
                 tooltip.add(chicken1.getDisplaySummary());
                 tooltip.add(chicken2.getDisplaySummary());
-                tooltip.add("Progress: " + roost.getFormattedProgress());
+                tooltip.add(WailaUtils.getProgress(roost));
             }
         }
     }

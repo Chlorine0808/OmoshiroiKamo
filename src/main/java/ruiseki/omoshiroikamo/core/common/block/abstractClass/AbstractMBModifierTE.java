@@ -13,21 +13,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.mojang.authlib.GameProfile;
 
 import lombok.Getter;
-import lombok.Setter;
-import ruiseki.omoshiroikamo.api.client.IProgressTile;
+import ruiseki.omoshiroikamo.api.crafting.CraftingState;
 import ruiseki.omoshiroikamo.core.common.util.PlayerUtils;
 
-public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements IProgressTile {
+public abstract class AbstractMBModifierTE extends AbstractMachineTE {
 
     protected GameProfile player;
     @Getter
     protected boolean isFormed = false;
-    private boolean isProcessing = false;
-    @Getter
-    private int currentDuration = 0;
-    @Getter
-    @Setter
-    private int currentProgress = 0;
 
     protected abstract IStructureDefinition getStructureDefinition();
 
@@ -86,30 +79,35 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
         super.doUpdate();
     }
 
-    public void machineTick() {
-        if (!canProcess()) {
-            resetProcess();
-            return;
-        }
-
-        if (!isProcessing) {
-            currentDuration = getCurrentProcessDuration();
-            currentProgress = 0;
-            isProcessing = true;
-        }
-
-        onProcessTick();
-
-        if (++currentProgress >= currentDuration) {
-            onProcessComplete();
-            resetProcess();
-        }
+    @Override
+    public boolean canStartCrafting() {
+        return isFormed && super.canStartCrafting();
     }
 
-    private void resetProcess() {
-        currentProgress = 0;
-        currentDuration = 0;
-        isProcessing = false;
+    @Override
+    protected void onCrafting() {}
+
+    @Override
+    protected void finishCrafting() {
+        resetCrafting();
+    }
+
+    @Override
+    public int getCraftingEnergyCost() {
+        return 0;
+    }
+
+    @Override
+    protected CraftingState updateCraftingState() {
+        if (!isCrafting()) {
+            return CraftingState.IDLE;
+        }
+
+        if (!canContinueCrafting() || (!isCrafting() && !canStartCrafting())) {
+            return CraftingState.ERROR;
+        }
+
+        return CraftingState.RUNNING;
     }
 
     public abstract int getBaseDuration();
@@ -120,30 +118,22 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
 
     public abstract float getSpeedMultiplier();
 
-    public abstract boolean canProcess();
-
-    public abstract void onProcessTick();
-
-    public abstract void onProcessComplete();
-
     public abstract void onFormed();
 
-    public int getCurrentProcessDuration() {
-        int duration = (int) ((float) this.getBaseDuration() * this.getSpeedMultiplier());
-        if (duration < this.getMinDuration()) {
-            return this.getMinDuration();
-        } else {
-            return Math.min(duration, this.getMaxDuration());
-        }
+    @Override
+    protected int getCraftingDuration() {
+        float speedMultiplier = getSpeedMultiplier();
+        int baseDuration = getBaseDuration();
+
+        int duration = (int) (baseDuration * speedMultiplier);
+
+        return Math.max(getMinDuration(), Math.min(duration, getMaxDuration()));
     }
 
     @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
         NBTTagCompound multiblock = new NBTTagCompound();
-        multiblock.setBoolean("processing", this.isProcessing);
-        multiblock.setInteger("curr_dur", this.currentDuration);
-        multiblock.setInteger("curr_prog", this.currentProgress);
         multiblock.setBoolean("isFormed", this.isFormed);
         if (this.player != null) {
             multiblock.setTag("profile", PlayerUtils.proifleToNBT(this.player));
@@ -155,25 +145,12 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
         NBTTagCompound multiblock = root.getCompoundTag("multiblock");
-        this.isProcessing = multiblock.getBoolean("processing");
-        this.currentDuration = multiblock.getInteger("curr_dur");
-        this.currentProgress = multiblock.getInteger("curr_prog");
         this.isFormed = multiblock.getBoolean("isFormed");
         if (multiblock.hasKey("profile")) {
             this.player = PlayerUtils.profileFromNBT(multiblock.getCompoundTag("profile"));
         } else {
             this.player = null;
         }
-    }
-
-    @Override
-    public float getProgress() {
-        return getCurrentProgress();
-    }
-
-    @Override
-    public void setProgress(float progress) {
-        setCurrentProgress((int) progress);
     }
 
     public void setPlayer(EntityPlayer plr) {
@@ -200,18 +177,16 @@ public abstract class AbstractMBModifierTE extends AbstractEnergyTE implements I
 
     @Override
     public boolean isActive() {
-        return getCurrentDuration() > 0;
+        return isCrafting();
     }
 
     @Override
     public boolean processTasks(boolean redstone) {
-        if (!redstone || !isFormed) {
-            isProcessing = false;
+        if (!isFormed) {
             return false;
         }
 
-        machineTick();
-        return isProcessing;
+        return super.processTasks(redstone);
     }
 
 }
