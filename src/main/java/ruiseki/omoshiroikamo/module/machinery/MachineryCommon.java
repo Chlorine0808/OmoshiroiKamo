@@ -33,13 +33,7 @@ public class MachineryCommon implements IModuleCommon {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         MachineryBlocks.preInit();
-
-        // Client-side texture generation setup
-        // MachineryClient implements IModuleClient and is called by the module loader
-        if (event.getSide()
-            .isClient()) {
-            new MachineryClient().preInit(event);
-        }
+        // Client-side initialization is handled by MachineryClient via IModuleClient
     }
 
     @Override
