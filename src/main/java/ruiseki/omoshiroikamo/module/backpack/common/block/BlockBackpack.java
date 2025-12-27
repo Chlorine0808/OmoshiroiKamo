@@ -40,6 +40,7 @@ import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockBauble;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
+import ruiseki.omoshiroikamo.core.common.block.state.BlockStateUtils;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 import ruiseki.omoshiroikamo.module.backpack.client.gui.MGuiFactories;
 import ruiseki.omoshiroikamo.module.backpack.common.entity.EntityBackpack;
@@ -79,13 +80,6 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-        super.onBlockPlacedBy(world, x, y, z, player, stack);
-        AbstractTE te = (AbstractTE) world.getTileEntity(x, y, z);
-        world.setBlockMetadataWithNotify(x, y, z, te.getFacing(), 2);
-    }
-
-    @Override
     public int damageDropped(int meta) {
         return 0;
     }
@@ -94,6 +88,7 @@ public class BlockBackpack extends AbstractBlock<TEBackpack> implements IBlockCo
     public void init() {
         GameRegistry.registerBlock(this, ItemBackpack.class, name);
         GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+        BlockStateUtils.registerFacingProp(this.getClass());
         BlockColor.registerBlockColors(new IBlockColor() {
 
             @Override

@@ -46,13 +46,6 @@ public class BlockRoost extends AbstractBlock<TERoost> {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-        super.onBlockPlacedBy(world, x, y, z, player, stack);
-        AbstractTE te = (AbstractTE) world.getTileEntity(x, y, z);
-        world.setBlockMetadataWithNotify(x, y, z, te.getFacing(), 2);
-    }
-
-    @Override
     public int damageDropped(int meta) {
         return 0;
     }

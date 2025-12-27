@@ -29,7 +29,7 @@ public abstract class AbstractMBModifierTE extends AbstractMachineTE {
     public abstract String getStructurePieceName();
 
     protected ExtendedFacing getExtendedFacing() {
-        return ExtendedFacing.of(ForgeDirection.getOrientation(getFacing()));
+        return ExtendedFacing.of(ForgeDirection.getOrientation(2));
     }
 
     @SuppressWarnings("unchecked")

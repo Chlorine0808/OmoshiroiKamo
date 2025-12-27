@@ -19,13 +19,10 @@ import lombok.Setter;
 import ruiseki.omoshiroikamo.api.item.ItemNBTUtils;
 import ruiseki.omoshiroikamo.api.redstone.RedstoneMode;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
+import ruiseki.omoshiroikamo.core.common.block.state.BlockStateUtils;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 
 public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosGuiData> {
-
-    @Setter
-    @Getter
-    protected int facing;
 
     // Client sync monitoring
     protected boolean forceClientUpdate = true;
@@ -45,12 +42,12 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     public static String INVENTORY_TAG = "inventory";
 
-    public ForgeDirection getFacingDir() {
-        return ForgeDirection.getOrientation(facing);
+    public ForgeDirection getFacing() {
+        return BlockStateUtils.getFacingProp(worldObj, xCoord, yCoord, zCoord);
     }
 
     public boolean onBlockActivated(World world, EntityPlayer player, ForgeDirection side, float hitX, float hitY,
-        float hitZ) {
+                                    float hitZ) {
         return false;
     }
 
@@ -134,7 +131,6 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     @Override
     public void writeCommon(NBTTagCompound root) {
-        root.setInteger("facing", facing);
 
         NBTTagCompound redstoneTag = new NBTTagCompound();
         redstoneTag.setInteger("level", redstoneLevel);
@@ -145,7 +141,6 @@ public abstract class AbstractTE extends TileEntityOK implements IGuiHolder<PosG
 
     @Override
     public void readCommon(NBTTagCompound root) {
-        setFacing(root.getInteger("facing"));
 
         NBTTagCompound redstoneTag = root.getCompoundTag("redstone");
         redstoneLevel = redstoneTag.getInteger("level");
