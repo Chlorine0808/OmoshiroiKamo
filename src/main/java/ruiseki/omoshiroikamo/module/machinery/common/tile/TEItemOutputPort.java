@@ -1,118 +1,53 @@
 package ruiseki.omoshiroikamo.module.machinery.common.tile;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+
+import ruiseki.omoshiroikamo.api.io.SlotDefinition;
+import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractStorageTE;
 
 /**
  * Item Output Port TileEntity.
  * Holds a single slot for outputting processed items from machines.
+ * Extends AbstractStorageTE to leverage existing inventory management system.
  */
-public class TEItemOutputPort extends TileEntity implements IInventory {
+public class TEItemOutputPort extends AbstractStorageTE {
 
-    private ItemStack inventory;
-
-    @Override
-    public int getSizeInventory() {
-        return 1;
+    public TEItemOutputPort() {
+        super(new SlotDefinition().setItemSlots(0, 1)); // 0 input, 1 output
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) {
-        return slot == 0 ? inventory : null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amount) {
-        if (inventory == null) {
-            return null;
-        }
-        if (inventory.stackSize <= amount) {
-            ItemStack result = inventory;
-            inventory = null;
-            return result;
-        }
-        return inventory.splitStack(amount);
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        if (slot == 0) {
-            inventory = stack;
-        }
-    }
-
-    @Override
-    public String getInventoryName() {
-        return "itemOutputPort";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
+    public boolean isActive() {
         return false;
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
-            && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64.0;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
-
-    @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return true;
+        return false; // Output only, no external insertion
     }
 
     /**
      * Try to insert an item into the output slot.
+     * Used internally by the machine controller.
      * 
      * @return true if successful, false if slot is full
      */
     public boolean insertItem(ItemStack stack) {
-        if (inventory == null) {
-            inventory = stack.copy();
+        int outputSlot = slotDefinition.getMinItemOutput();
+        if (outputSlot < 0) return false;
+
+        ItemStack existing = inv.getStackInSlot(outputSlot);
+        if (existing == null) {
+            inv.setStackInSlot(outputSlot, stack.copy());
             return true;
         }
-        if (inventory.isItemEqual(stack) && inventory.stackSize + stack.stackSize <= getInventoryStackLimit()) {
-            inventory.stackSize += stack.stackSize;
+
+        if (existing.isItemEqual(stack) && existing.stackSize + stack.stackSize <= getInventoryStackLimit()) {
+            existing.stackSize += stack.stackSize;
+            inv.setStackInSlot(outputSlot, existing);
             return true;
         }
+
         return false;
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        if (inventory != null) {
-            NBTTagCompound itemNbt = new NBTTagCompound();
-            inventory.writeToNBT(itemNbt);
-            nbt.setTag("inventory", itemNbt);
-        }
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        if (nbt.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
-        }
     }
 }

@@ -5,128 +5,79 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import ruiseki.omoshiroikamo.api.block.BlockPos;
+import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.module.machinery.common.init.MachineryBlocks;
 
 /**
  * Machine Controller TileEntity - manages a Modular Machinery multiblock.
+ * Extends AbstractMBModifierTE to leverage existing structure validation and
+ * crafting logic.
  * Corresponds to the 'Q' symbol in structure definitions.
  * 
- * Responsibilities:
- * - Structure validation and formation
- * - IO port position tracking
- * - Machine state management
- * - Recipe processing coordination
+ * TODO: This class already extends AbstractMBModifierTE which provides:
+ * - CraftingState management (via AbstractMachineTE)
+ * - RedstoneMode support (via AbstractEnergyTE)
+ * - Energy capability system (via AbstractEnergyTE)
+ * Ensure we don't duplicate these existing systems.
  */
-public class TEMachineController extends TileEntity {
-
-    public enum MachineState {
-        IDLE,
-        WORKING,
-        PAUSED,
-        ERROR
-    }
-
-    private MachineState state = MachineState.IDLE;
-    private boolean isFormed = false;
+public class TEMachineController extends AbstractMBModifierTE {
 
     // IO port positions tracked during structure formation
     private final List<BlockPos> itemInputPorts = new ArrayList<>();
     private final List<BlockPos> itemOutputPorts = new ArrayList<>();
     private final List<BlockPos> energyInputPorts = new ArrayList<>();
 
-    // Processing
-    private int currentProgress = 0;
-    private int maxProgress = 0;
+    // Structure definition (will be loaded from JSON in Phase 1)
+    private static IStructureDefinition<TEMachineController> STRUCTURE_DEFINITION;
 
-    public TEMachineController() {}
+    // Structure offsets per tier (currently only tier 1)
+    private static final int[][] OFFSETS = { { 1, 1, 1 } // Tier 1 offset
+    };
 
-    /**
-     * Called when a player right-clicks the controller block.
-     */
-    public void onRightClick(EntityPlayer player) {
-        if (isFormed) {
-            // Already formed - show status
-            player.addChatComponentMessage(
-                new ChatComponentText(
-                    "[Machine] Status: " + state.name()
-                        + " | Item Inputs: "
-                        + itemInputPorts.size()
-                        + " | Item Outputs: "
-                        + itemOutputPorts.size()
-                        + " | Energy Inputs: "
-                        + energyInputPorts.size()));
-        } else {
-            // Try to form structure
-            boolean success = tryFormStructure();
-            if (success) {
-                player.addChatComponentMessage(new ChatComponentText("[Machine] Structure formed successfully!"));
-            } else {
-                player.addChatComponentMessage(
-                    new ChatComponentText("[Machine] Invalid structure. Check block placement."));
-            }
-        }
+    public TEMachineController() {
+        super();
     }
 
-    /**
-     * Attempt to form the multiblock structure.
-     * Currently uses a simple 3x3x3 structure for testing.
-     */
-    private boolean tryFormStructure() {
-        clearStructureParts();
+    // ========== Structure Definition ==========
 
-        // TODO: Integrate with StructureManager for JSON-based structure validation
-        // For MVP, use a simple hardcoded 3x3x3 structure check
-
-        // Check for machine casings in a 3x3x3 pattern (excluding controller position)
-        int casingCount = 0;
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    if (dx == 0 && dy == 0 && dz == 0) {
-                        continue; // Skip controller position
-                    }
-
-                    int checkX = xCoord + dx;
-                    int checkY = yCoord + dy;
-                    int checkZ = zCoord + dz;
-                    Block block = worldObj.getBlock(checkX, checkY, checkZ);
-
-                    if (block == MachineryBlocks.MACHINE_CASING) {
-                        casingCount++;
-                    } else if (block == MachineryBlocks.ITEM_INPUT_PORT) {
-                        addIOPort(block, 0, checkX, checkY, checkZ);
-                        casingCount++;
-                    } else if (block == MachineryBlocks.ITEM_OUTPUT_PORT) {
-                        addIOPort(block, 0, checkX, checkY, checkZ);
-                        casingCount++;
-                    } else if (block == MachineryBlocks.ENERGY_INPUT_PORT) {
-                        addIOPort(block, 0, checkX, checkY, checkZ);
-                        casingCount++;
-                    }
-                }
-            }
-        }
-
-        // Need at least 26 blocks (3x3x3 - 1 for controller)
-        if (casingCount >= 26) {
-            isFormed = true;
-            state = MachineState.IDLE;
-            return true;
-        }
-
-        return false;
+    @Override
+    protected IStructureDefinition<TEMachineController> getStructureDefinition() {
+        // TODO: Load from JSON via StructureManager
+        // For MVP, return null to use simplified check
+        return STRUCTURE_DEFINITION;
     }
 
-    /**
-     * Called during structure validation to register IO port positions.
-     * This will be called by StructureLib via ofBlockAdderWithPos.
-     */
-    public boolean addIOPort(Block block, int meta, int x, int y, int z) {
+    @Override
+    public int[][] getOffSet() {
+        return OFFSETS;
+    }
+
+    @Override
+    public String getStructurePieceName() {
+        return "main";
+    }
+
+    @Override
+    public int getTier() {
+        return 1;
+    }
+
+    // ========== Structure Parts Tracking ==========
+
+    @Override
+    protected void clearStructureParts() {
+        itemInputPorts.clear();
+        itemOutputPorts.clear();
+        energyInputPorts.clear();
+    }
+
+    @Override
+    protected boolean addToMachine(Block block, int meta, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z, worldObj);
 
         if (block == MachineryBlocks.ITEM_INPUT_PORT) {
@@ -149,39 +100,128 @@ public class TEMachineController extends TileEntity {
         return false;
     }
 
-    /**
-     * Clear all tracked structure parts.
-     * Called before structure re-validation.
-     */
-    protected void clearStructureParts() {
-        itemInputPorts.clear();
-        itemOutputPorts.clear();
-        energyInputPorts.clear();
-        isFormed = false;
-        state = MachineState.IDLE;
+    // ========== Crafting Configuration ==========
+
+    @Override
+    public int getBaseDuration() {
+        return 100; // 5 seconds base
     }
 
     @Override
-    public void updateEntity() {
-        if (worldObj.isRemote || !isFormed) {
+    public int getMinDuration() {
+        return 20; // 1 second minimum
+    }
+
+    @Override
+    public int getMaxDuration() {
+        return 1200; // 1 minute maximum
+    }
+
+    @Override
+    public float getSpeedMultiplier() {
+        return 1.0f; // No speed modifiers yet
+    }
+
+    @Override
+    public void onFormed() {
+        // Called when structure is successfully formed
+    }
+
+    @Override
+    protected void finishCrafting() {
+        // TODO: Implement recipe output
+        resetCrafting();
+    }
+
+    @Override
+    public int getCraftingEnergyCost() {
+        // TODO: Get from current recipe
+        return 100;
+    }
+
+    // ========== Player Interaction ==========
+
+    /**
+     * Called when a player right-clicks the controller block.
+     */
+    public void onRightClick(EntityPlayer player) {
+        if (worldObj.isRemote) {
             return;
         }
 
-        // TODO: Implement recipe processing logic
-        // 1. Check for valid recipe
-        // 2. Check energy availability
-        // 3. Progress processing
-        // 4. Output results
+        if (isFormed) {
+            player.addChatComponentMessage(
+                new ChatComponentText(
+                    "[Machine] Status: " + getCraftingState().name()
+                        + " | Item Inputs: "
+                        + itemInputPorts.size()
+                        + " | Item Outputs: "
+                        + itemOutputPorts.size()
+                        + " | Energy Inputs: "
+                        + energyInputPorts.size()));
+        } else {
+            // Trigger structure check manually
+            setPlayer(player);
+            boolean success = structureCheck(
+                getStructurePieceName(),
+                getOffSet()[getTier() - 1][0],
+                getOffSet()[getTier() - 1][1],
+                getOffSet()[getTier() - 1][2]);
+
+            if (success) {
+                player.addChatComponentMessage(new ChatComponentText("[Machine] Structure formed successfully!"));
+            } else {
+                // For MVP without proper structure definition, use simple check
+                if (trySimpleFormStructure()) {
+                    player.addChatComponentMessage(new ChatComponentText("[Machine] Structure formed successfully!"));
+                } else {
+                    player.addChatComponentMessage(
+                        new ChatComponentText("[Machine] Invalid structure. Check block placement."));
+                }
+            }
+        }
     }
 
-    // Getters
-    public boolean isFormed() {
-        return isFormed;
+    /**
+     * Simple 3x3x3 structure check for MVP testing.
+     */
+    private boolean trySimpleFormStructure() {
+        clearStructureParts();
+
+        int casingCount = 0;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) {
+                        continue;
+                    }
+
+                    int checkX = xCoord + dx;
+                    int checkY = yCoord + dy;
+                    int checkZ = zCoord + dz;
+                    Block block = worldObj.getBlock(checkX, checkY, checkZ);
+
+                    if (block == MachineryBlocks.MACHINE_CASING) {
+                        casingCount++;
+                    } else if (block == MachineryBlocks.ITEM_INPUT_PORT || block == MachineryBlocks.ITEM_OUTPUT_PORT
+                        || block == MachineryBlocks.ENERGY_INPUT_PORT) {
+                            addToMachine(block, 0, checkX, checkY, checkZ);
+                            casingCount++;
+                        }
+                }
+            }
+        }
+
+        if (casingCount >= 26) {
+            isFormed = true;
+            onFormed();
+            return true;
+        }
+
+        return false;
     }
 
-    public MachineState getState() {
-        return state;
-    }
+    // ========== Getters ==========
 
     public List<BlockPos> getItemInputPorts() {
         return itemInputPorts;
@@ -193,24 +233,5 @@ public class TEMachineController extends TileEntity {
 
     public List<BlockPos> getEnergyInputPorts() {
         return energyInputPorts;
-    }
-
-    // NBT
-    @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("isFormed", isFormed);
-        nbt.setInteger("state", state.ordinal());
-        nbt.setInteger("currentProgress", currentProgress);
-        nbt.setInteger("maxProgress", maxProgress);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        isFormed = nbt.getBoolean("isFormed");
-        state = MachineState.values()[nbt.getInteger("state")];
-        currentProgress = nbt.getInteger("currentProgress");
-        maxProgress = nbt.getInteger("maxProgress");
     }
 }

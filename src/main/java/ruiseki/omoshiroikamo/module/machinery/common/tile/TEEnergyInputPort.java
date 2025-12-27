@@ -1,37 +1,21 @@
 package ruiseki.omoshiroikamo.module.machinery.common.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.IEnergyReceiver;
+import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractEnergyTE;
 
 /**
  * Energy Input Port TileEntity.
  * Accepts RF energy for machine processing.
+ * Extends AbstractEnergyTE to leverage existing energy management system.
  */
-public class TEEnergyInputPort extends TileEntity implements IEnergyReceiver {
+public class TEEnergyInputPort extends AbstractEnergyTE {
 
-    private int energyStored = 0;
-    private int maxEnergy = 100000;
+    private static final int DEFAULT_CAPACITY = 100000;
+    private static final int DEFAULT_MAX_RECEIVE = 10000;
 
-    @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        int energyReceived = Math.min(maxEnergy - energyStored, maxReceive);
-        if (!simulate) {
-            energyStored += energyReceived;
-        }
-        return energyReceived;
-    }
-
-    @Override
-    public int getEnergyStored(ForgeDirection from) {
-        return energyStored;
-    }
-
-    @Override
-    public int getMaxEnergyStored(ForgeDirection from) {
-        return maxEnergy;
+    public TEEnergyInputPort() {
+        super(DEFAULT_CAPACITY, DEFAULT_MAX_RECEIVE);
     }
 
     @Override
@@ -39,26 +23,25 @@ public class TEEnergyInputPort extends TileEntity implements IEnergyReceiver {
         return true;
     }
 
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
+    @Override
+    public boolean processTasks(boolean redstoneCheckPassed) {
+        return super.processTasks(redstoneCheckPassed);
+    }
+
     /**
      * Extract energy for machine processing.
      * 
-     * @return amount of energy actually extracted
+     * @param amount requested amount
+     * @return amount actually extracted
      */
     public int extractEnergy(int amount) {
-        int extracted = Math.min(energyStored, amount);
-        energyStored -= extracted;
+        int extracted = Math.min(energyStorage.getEnergyStored(), amount);
+        energyStorage.voidEnergy(extracted);
         return extracted;
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        nbt.setInteger("energyStored", energyStored);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        energyStored = nbt.getInteger("energyStored");
     }
 }
