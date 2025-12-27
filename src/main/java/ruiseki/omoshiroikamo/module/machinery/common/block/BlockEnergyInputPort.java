@@ -1,6 +1,11 @@
 package ruiseki.omoshiroikamo.module.machinery.common.block;
 
-import ruiseki.omoshiroikamo.core.common.block.BlockOK;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
+import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.TEEnergyInputPort;
 
 /**
@@ -10,7 +15,7 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.TEEnergyInputPort;
  * TODO: Texture required -
  * assets/omoshiroikamo/textures/blocks/machinery/energy_input_port.png
  */
-public class BlockEnergyInputPort extends BlockOK {
+public class BlockEnergyInputPort extends AbstractBlock<TEEnergyInputPort> {
 
     protected BlockEnergyInputPort() {
         super("modularEnergyInput", TEEnergyInputPort.class);
@@ -23,7 +28,12 @@ public class BlockEnergyInputPort extends BlockOK {
     }
 
     @Override
-    public BlockOK setTextureName(String texture) {
-        return super.setTextureName("machinery/energy_input_port");
+    public String getTextureName() {
+        return "machinery/energy_input_port";
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+        // TODO: Add WAILA info for energy stored
     }
 }

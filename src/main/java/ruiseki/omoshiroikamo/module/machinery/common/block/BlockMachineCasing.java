@@ -22,7 +22,7 @@ public class BlockMachineCasing extends BlockOK {
     }
 
     @Override
-    public BlockOK setTextureName(String texture) {
-        return super.setTextureName("machinery/machine_casing");
+    public String getTextureName() {
+        return "machinery/machine_casing";
     }
 }

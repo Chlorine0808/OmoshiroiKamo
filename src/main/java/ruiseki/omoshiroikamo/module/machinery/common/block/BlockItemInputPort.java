@@ -1,6 +1,11 @@
 package ruiseki.omoshiroikamo.module.machinery.common.block;
 
-import ruiseki.omoshiroikamo.core.common.block.BlockOK;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
+import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.TEItemInputPort;
 
 /**
@@ -10,7 +15,7 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.TEItemInputPort;
  * TODO: Texture required -
  * assets/omoshiroikamo/textures/blocks/machinery/item_input_port.png
  */
-public class BlockItemInputPort extends BlockOK {
+public class BlockItemInputPort extends AbstractBlock<TEItemInputPort> {
 
     protected BlockItemInputPort() {
         super("modularItemInput", TEItemInputPort.class);
@@ -23,7 +28,12 @@ public class BlockItemInputPort extends BlockOK {
     }
 
     @Override
-    public BlockOK setTextureName(String texture) {
-        return super.setTextureName("machinery/item_input_port");
+    public String getTextureName() {
+        return "machinery/item_input_port";
+    }
+
+    @Override
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+        // TODO: Add WAILA info for slot contents
     }
 }

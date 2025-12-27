@@ -80,17 +80,17 @@ public class TEMachineController extends AbstractMBModifierTE {
     protected boolean addToMachine(Block block, int meta, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z, worldObj);
 
-        if (block == MachineryBlocks.ITEM_INPUT_PORT) {
+        if (block == MachineryBlocks.ITEM_INPUT_PORT.getBlock()) {
             if (!itemInputPorts.contains(pos)) {
                 itemInputPorts.add(pos);
             }
             return true;
-        } else if (block == MachineryBlocks.ITEM_OUTPUT_PORT) {
+        } else if (block == MachineryBlocks.ITEM_OUTPUT_PORT.getBlock()) {
             if (!itemOutputPorts.contains(pos)) {
                 itemOutputPorts.add(pos);
             }
             return true;
-        } else if (block == MachineryBlocks.ENERGY_INPUT_PORT) {
+        } else if (block == MachineryBlocks.ENERGY_INPUT_PORT.getBlock()) {
             if (!energyInputPorts.contains(pos)) {
                 energyInputPorts.add(pos);
             }
@@ -125,6 +125,58 @@ public class TEMachineController extends AbstractMBModifierTE {
     @Override
     public void onFormed() {
         // Called when structure is successfully formed
+    }
+
+    /**
+     * Override doUpdate to use simple structure check when STRUCTURE_DEFINITION is
+     * null.
+     */
+    @Override
+    public void doUpdate() {
+        if (STRUCTURE_DEFINITION != null) {
+            // Use parent's structure check
+            super.doUpdate();
+            return;
+        }
+
+        // Use simple check when no structure definition
+        if (!shouldDoWorkThisTick(20) && isFormed) {
+            // processTasks is called by TileEntityOK.updateEntity, so just return
+            return;
+        }
+
+        // Periodic structure validation
+        if (!isFormed) {
+            trySimpleFormStructure();
+        } else {
+            // Revalidate structure periodically
+            if (!validateSimpleStructure()) {
+                isFormed = false;
+                clearStructureParts();
+            }
+        }
+    }
+
+    /**
+     * Validate the simple 3x3x3 structure is still intact.
+     */
+    private boolean validateSimpleStructure() {
+        int casingCount = 0;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) continue;
+                    Block block = worldObj.getBlock(xCoord + dx, yCoord + dy, zCoord + dz);
+                    if (block == MachineryBlocks.MACHINE_CASING.getBlock()
+                        || block == MachineryBlocks.ITEM_INPUT_PORT.getBlock()
+                        || block == MachineryBlocks.ITEM_OUTPUT_PORT.getBlock()
+                        || block == MachineryBlocks.ENERGY_INPUT_PORT.getBlock()) {
+                        casingCount++;
+                    }
+                }
+            }
+        }
+        return casingCount >= 26;
     }
 
     @Override
@@ -201,10 +253,11 @@ public class TEMachineController extends AbstractMBModifierTE {
                     int checkZ = zCoord + dz;
                     Block block = worldObj.getBlock(checkX, checkY, checkZ);
 
-                    if (block == MachineryBlocks.MACHINE_CASING) {
+                    if (block == MachineryBlocks.MACHINE_CASING.getBlock()) {
                         casingCount++;
-                    } else if (block == MachineryBlocks.ITEM_INPUT_PORT || block == MachineryBlocks.ITEM_OUTPUT_PORT
-                        || block == MachineryBlocks.ENERGY_INPUT_PORT) {
+                    } else if (block == MachineryBlocks.ITEM_INPUT_PORT.getBlock()
+                        || block == MachineryBlocks.ITEM_OUTPUT_PORT.getBlock()
+                        || block == MachineryBlocks.ENERGY_INPUT_PORT.getBlock()) {
                             addToMachine(block, 0, checkX, checkY, checkZ);
                             casingCount++;
                         }
