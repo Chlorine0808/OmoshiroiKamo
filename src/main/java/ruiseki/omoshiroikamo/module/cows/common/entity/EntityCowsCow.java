@@ -196,15 +196,41 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
             return false;
         }
 
-        if (!isChild() && milkTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME
-            && stack.getItem() instanceof IFluidContainerItem) {
-            FluidStack milkToDrain = milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
-            if (milkToDrain.amount == 1000) {
-                ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(milkToDrain, stack);
-                worldObj.playSoundAtEntity(this, "mob.cow.milking", 1.0F, 1.0F);
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
-                syncMilkFluid();
-                return true;
+        if (!isChild() && milkTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
+            if (FluidContainerRegistry.isEmptyContainer(stack)) {
+                FluidStack milkToDrain = milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, false);
+                if (milkToDrain != null && milkToDrain.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+                    ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(milkToDrain, stack);
+                    if (filledContainer != null) {
+                        milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
+                        worldObj.playSoundAtEntity(this, "mob.cow.milking", 1.0F, 1.0F);
+
+                        if (stack.stackSize == 1) {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                        } else {
+                            --stack.stackSize;
+                            if (!player.inventory.addItemStackToInventory(filledContainer)) {
+                                player.dropPlayerItemWithRandomChoice(filledContainer, false);
+                            }
+                        }
+                        syncMilkFluid();
+                        return true;
+                    }
+                }
+            }
+            // IFluidContainerItem
+            else if (stack.getItem() instanceof IFluidContainerItem) {
+                IFluidContainerItem container = (IFluidContainerItem) stack.getItem();
+                FluidStack milkToDrain = milkTank.drain(FluidContainerRegistry.BUCKET_VOLUME, false);
+                if (milkToDrain != null && milkToDrain.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+                    int filled = container.fill(stack, milkToDrain, true);
+                    if (filled > 0) {
+                        milkTank.drain(filled, true);
+                        worldObj.playSoundAtEntity(this, "mob.cow.milking", 1.0F, 1.0F);
+                        syncMilkFluid();
+                        return true;
+                    }
+                }
             }
         }
 
@@ -221,6 +247,10 @@ public class EntityCowsCow extends EntityCow implements IMobStats, IWailaEntityI
                 this.func_146082_f(player);
                 return true;
             }
+        }
+
+        if (stack.getItem() == Items.bucket) {
+            return false;
         }
 
         return super.interact(player);
