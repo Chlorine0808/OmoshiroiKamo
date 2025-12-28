@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.weighted.IFocusableRegistry;
+import ruiseki.omoshiroikamo.api.item.weighted.WeightedStackBase;
 import ruiseki.omoshiroikamo.config.backport.BackportConfigs;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 import ruiseki.omoshiroikamo.core.lib.LibResources;
@@ -186,9 +187,15 @@ public class QuantumExtractorRecipes {
             return NEI_DIMENSION_COMMON;
         }
         for (FocusableHandler.FocusableEntry entry : cachedOreList.getEntries()) {
-            ItemStack entryStack = entry.getRegistryEntry() != null ? entry.getRegistryEntry()
-                .getMainStack() : null;
-            if (entryStack != null && ItemStack.areItemStacksEqual(entryStack, stack)) {
+            // Try all tiers to find a matching entry (since some items are tier-restricted)
+            ItemStack entryStack = null;
+            for (int tier = 0; tier < MAX_TIER && entryStack == null; tier++) {
+                WeightedStackBase wsb = entry.getRegistryEntry(tier);
+                if (wsb != null) {
+                    entryStack = wsb.getMainStack();
+                }
+            }
+            if (entryStack != null && areStacksSameItem(entryStack, stack)) {
                 // Found matching entry, return first dimension
                 int[] dims = entry.getDimensions();
                 if (dims != null && dims.length > 0) {
@@ -201,6 +208,14 @@ public class QuantumExtractorRecipes {
     }
 
     /**
+     * Check if two stacks are the same item (ignoring stack size and NBT).
+     */
+    private static boolean areStacksSameItem(ItemStack a, ItemStack b) {
+        if (a == null || b == null) return false;
+        return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage();
+    }
+
+    /**
      * Find the first dimension ID for a given resource item.
      * Returns the first dimension from the item's config, or NEI_DIMENSION_COMMON
      * if none.
@@ -210,9 +225,15 @@ public class QuantumExtractorRecipes {
             return NEI_DIMENSION_COMMON;
         }
         for (FocusableHandler.FocusableEntry entry : cachedResList.getEntries()) {
-            ItemStack entryStack = entry.getRegistryEntry() != null ? entry.getRegistryEntry()
-                .getMainStack() : null;
-            if (entryStack != null && ItemStack.areItemStacksEqual(entryStack, stack)) {
+            // Try all tiers to find a matching entry (since some items are tier-restricted)
+            ItemStack entryStack = null;
+            for (int tier = 0; tier < MAX_TIER && entryStack == null; tier++) {
+                WeightedStackBase wsb = entry.getRegistryEntry(tier);
+                if (wsb != null) {
+                    entryStack = wsb.getMainStack();
+                }
+            }
+            if (entryStack != null && areStacksSameItem(entryStack, stack)) {
                 // Found matching entry, return first dimension
                 int[] dims = entry.getDimensions();
                 if (dims != null && dims.length > 0) {

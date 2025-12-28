@@ -68,6 +68,15 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     protected abstract String getRecipeIdBase();
 
+    /**
+     * Find the first dimension ID where this item can be mined.
+     * Used for automatic dimension filter when viewing crafting recipes.
+     * 
+     * @param stack The item to search for
+     * @return The dimension ID, or NEIDimensionConfig.DIMENSION_COMMON if not found
+     */
+    protected abstract int findFirstDimension(ItemStack stack);
+
     @Override
     public String getRecipeName() {
         // Show tiered name + dimension filter so each NEI tab is unique and clear
@@ -211,10 +220,18 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     public void loadCraftingRecipes(ItemStack item) {
         arecipes.clear();
         super.loadCraftingRecipes(item);
-        // Use unfiltered registry so the recipe is shown regardless of current
-        // dimension
-        // Don't change filterDimension here as this method is called on hover
-        IFocusableRegistry registry = getRegistry();
+
+        // Find which dimension this item belongs to and auto-set filter
+        // This sets filterDimension to the first dimension found (or DIMENSION_COMMON
+        // if no specific dimension)
+        int itemDimension = findFirstDimension(item);
+        filterDimension = itemDimension;
+
+        // Use the dimension-aware registry for accurate probability display
+        IFocusableRegistry registry = getRegistryForNEI(tier, filterDimension);
+        if (registry == null) {
+            registry = getRegistry();
+        }
         List<WeightedStackBase> unfocusedList = registry.getUnFocusedList();
 
         for (WeightedStackBase ws : unfocusedList) {
