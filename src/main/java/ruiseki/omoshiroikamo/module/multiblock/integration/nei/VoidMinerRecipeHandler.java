@@ -288,6 +288,23 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     }
                 }
             }
+        } else {
+            // Check if this is a dimension catalyst item from config
+            int catalystDimension = NEIDimensionConfig.getDimensionForCatalyst(ingredient);
+            if (catalystDimension != NEIDimensionConfig.DIMENSION_COMMON) {
+                // Set dimension filter and load all recipes for that dimension
+                filterDimension = catalystDimension;
+                IFocusableRegistry dimRegistry = getRegistryForNEI(tier, catalystDimension);
+                if (dimRegistry != null) {
+                    List<WeightedStackBase> unfocusedList = dimRegistry.getUnFocusedList();
+                    for (WeightedStackBase ws : unfocusedList) {
+                        ItemStack output = ws.getMainStack();
+                        if (output != null) {
+                            arecipes.add(new CachedVoidRecipe(ws, dimRegistry, tier));
+                        }
+                    }
+                }
+            }
         }
     }
 

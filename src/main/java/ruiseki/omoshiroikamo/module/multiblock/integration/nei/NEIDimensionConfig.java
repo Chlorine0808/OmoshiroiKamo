@@ -99,6 +99,31 @@ public class NEIDimensionConfig {
         return new ItemStack(item, 1, entry.catalystMeta);
     }
 
+    /**
+     * Get the dimension ID associated with a catalyst item from config.
+     * 
+     * @param stack The catalyst item stack to check
+     * @return The dimension ID, or DIMENSION_COMMON if no match found
+     */
+    public static int getDimensionForCatalyst(ItemStack stack) {
+        if (stack == null) {
+            return DIMENSION_COMMON;
+        }
+        String itemName = GameData.getItemRegistry()
+            .getNameForObject(stack.getItem());
+        if (itemName == null) {
+            return DIMENSION_COMMON;
+        }
+        int meta = stack.getItemDamage();
+
+        for (DimensionEntry entry : getDimensions()) {
+            if (entry.catalystItem.equals(itemName) && entry.catalystMeta == meta) {
+                return entry.id;
+            }
+        }
+        return DIMENSION_COMMON;
+    }
+
     private static DimensionList loadFromJson(File file) {
         try (Reader reader = new BufferedReader(new FileReader(file))) {
             return GSON.fromJson(reader, DimensionList.class);
