@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import ic2.api.energy.tile.IEnergySink;
 import ruiseki.omoshiroikamo.api.energy.capability.EnergyIO;
+import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
 
 public class IC2EnergySink implements EnergyIO {
 
@@ -21,14 +22,14 @@ public class IC2EnergySink implements EnergyIO {
         if (!(tile instanceof IEnergySink sink)) {
             return 0;
         }
-        double euAmount = amount / 4.0;
+        double euAmount = (double) amount / EnergyConfig.rftToEU;
         double leftover = euAmount;
 
         if (!simulate) {
             leftover = sink.injectEnergy(side, euAmount, 0);
         }
 
-        return (int) Math.round(leftover * 4.0);
+        return (int) Math.round(leftover * EnergyConfig.rftToEU);
     }
 
     @Override

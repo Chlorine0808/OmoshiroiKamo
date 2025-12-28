@@ -67,6 +67,13 @@ gui.redstone_mode.high_on=レッドストーン信号でオン
 gui.redstone_mode.high_off=レッドストーン信号でオフ
 gui.redstone_mode.always_off=常にオフ
 
+gui.energy_mode.rf=RF
+gui.energy_mode.eu=EU
+
+#Modular Machinery
+
+gui.machinery.energy_used=消費電力: %s
+gui.machinery.use_ic2=IC2を使用
 
 # Backpack Gui Elements
 container.backpack=バックパック

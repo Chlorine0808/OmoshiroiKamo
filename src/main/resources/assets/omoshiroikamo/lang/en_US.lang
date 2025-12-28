@@ -65,6 +65,14 @@ gui.redstone_mode.high_on=On with redstone signal
 gui.redstone_mode.high_off=Off with redstone signal
 gui.redstone_mode.always_off=Always off
 
+gui.energy_mode.rf=RF
+gui.energy_mode.eu=EU
+
+#Modular Machinery
+
+gui.machinery.energy_used=Energy Used: %s
+gui.machinery.use_ic2=Use IC2
+
 # Backpack Gui Elements
 container.backpack=Backpack
 
