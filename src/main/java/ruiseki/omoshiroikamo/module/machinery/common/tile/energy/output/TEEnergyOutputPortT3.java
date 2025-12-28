@@ -6,7 +6,7 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.input.TEEnergyI
  * Energy Input Port TileEntity.
  * Accepts RF energy for machine processing.
  */
-public class TEEnergyOutputPortT3 extends TEEnergyInputPort {
+public class TEEnergyOutputPortT3 extends TEEnergyOutputPort {
 
     public TEEnergyOutputPortT3() {
         super(8192, 512);
