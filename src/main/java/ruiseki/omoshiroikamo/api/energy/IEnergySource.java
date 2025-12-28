@@ -5,12 +5,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyProvider;
 import cpw.mods.fml.common.Optional;
+import ic2.api.energy.tile.IEnergyConductor;
 import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
 
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "IC2"),
-    @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "CoFHLib")
-})
+@Optional.InterfaceList({ @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "IC2"),
+    @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "CoFHLib") })
 public interface IEnergySource extends IEnergyProvider, IEnergyTile, ic2.api.energy.tile.IEnergySource {
 
     int extractEnergy(ForgeDirection side, int amount, boolean simulate);
@@ -49,6 +48,6 @@ public interface IEnergySource extends IEnergyProvider, IEnergyTile, ic2.api.ene
     @Override
     @Optional.Method(modid = "IC2")
     default boolean emitsEnergyTo(TileEntity tileEntity, ForgeDirection forgeDirection) {
-        return canConnectEnergy(forgeDirection);
+        return canConnectEnergy(forgeDirection) && tileEntity instanceof IEnergyConductor;
     }
 }

@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
+import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.input.TEEnergyInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.input.TEEnergyInputPortT1;
@@ -89,6 +90,9 @@ public class BlockEnergyInputPort extends AbstractTieredBlock<TEEnergyInputPort>
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {}
+
+    @Override
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {}
 
     @Override
     public int getRenderType() {

@@ -1,9 +1,9 @@
 package ruiseki.omoshiroikamo.api.energy;
 
-import cpw.mods.fml.common.Optional;
-import ic2.api.tile.IEnergyStorage;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.Optional;
+import ic2.api.tile.IEnergyStorage;
 import ruiseki.omoshiroikamo.api.block.IOKTile;
 import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
 

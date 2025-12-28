@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
+import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.output.TEItemOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.output.TEItemOutputPortT1;
@@ -83,6 +84,15 @@ public class BlockItemOutputPort extends AbstractTieredBlock<TEItemOutputPort> {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {}
+
+    @Override
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {}
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        dropStacks(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
 
     @Override
     public int getRenderType() {

@@ -1,16 +1,16 @@
 package ruiseki.omoshiroikamo.core.common.block.abstractClass;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.common.Optional;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
 import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
@@ -117,18 +117,13 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     @Override
     @Optional.Method(modid = "IC2")
     public void register() {
-        if(!worldObj.isRemote)
-        {
+        if (!worldObj.isRemote) {
             TileEntity registered = EnergyNet.instance.getTileEntity(worldObj, xCoord, yCoord, zCoord);
 
-            if(registered != this)
-            {
-                if(registered instanceof IEnergyTile)
-                {
-                    MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile)registered));
-                }
-                else if(registered == null)
-                {
+            if (registered != this) {
+                if (registered instanceof IEnergyTile) {
+                    MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) registered));
+                } else if (registered == null) {
                     MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
                     ic2Registered = true;
                 }
@@ -139,30 +134,34 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     @Override
     @Optional.Method(modid = "IC2")
     public void deregister() {
-        if(!worldObj.isRemote)
-        {
+        if (!worldObj.isRemote) {
             TileEntity registered = EnergyNet.instance.getTileEntity(worldObj, xCoord, yCoord, zCoord);
 
-            if(registered instanceof IEnergyTile)
-            {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile)registered));
+            if (registered instanceof IEnergyTile) {
+                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile) registered));
             }
         }
     }
 
     @Override
     public void doUpdate() {
-        if(!ic2Registered && EnergyConfig.ic2Capability)
-        {
+        if (!ic2Registered && EnergyConfig.ic2Capability) {
             register();
         }
         super.doUpdate();
     }
 
     @Override
+    public void validate() {
+        super.validate();
+        if (!ic2Registered && EnergyConfig.ic2Capability) {
+            register();
+        }
+    }
+
+    @Override
     public void onChunkUnload() {
-        if(EnergyConfig.ic2Capability)
-        {
+        if (EnergyConfig.ic2Capability) {
             deregister();
         }
         super.onChunkUnload();
@@ -171,8 +170,7 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     @Override
     public void invalidate() {
         super.invalidate();
-        if(EnergyConfig.ic2Capability)
-        {
+        if (EnergyConfig.ic2Capability) {
             deregister();
         }
     }
