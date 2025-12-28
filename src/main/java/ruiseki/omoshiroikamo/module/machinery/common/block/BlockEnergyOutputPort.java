@@ -34,13 +34,8 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergy
  * Uses JSON model with base + overlay textures via GTNHLib.
  *
  * TODO List:
- * - Implement RF energy storage and transfer
- * - Add GUI for viewing energy level
- * - Support for different tiers with varying capacity/transfer rate
  * - Add visual indicator for energy level (texture animation or overlay)
  * - Implement BlockColor tinting for machine color customization
- * - Add comparator output for energy monitoring
- * - Support EU (IC2) input mode (configurable)
  * - Add Tesla coil-style wireless energy input
  */
 public class BlockEnergyOutputPort extends AbstractTieredBlock<TEEnergyOutputPort> {

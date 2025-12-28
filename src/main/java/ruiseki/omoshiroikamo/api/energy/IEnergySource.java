@@ -35,7 +35,7 @@ public interface IEnergySource extends IEnergyProvider, IEnergyTile, ic2.api.ene
     @Override
     @Optional.Method(modid = "IC2")
     default double getOfferedEnergy() {
-        return getEnergyStored() * EnergyConfig.rftToEU;
+        return (double) getEnergyStored() / EnergyConfig.rftToEU;
     }
 
     @Override

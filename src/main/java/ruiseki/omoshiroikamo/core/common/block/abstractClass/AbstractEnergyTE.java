@@ -9,8 +9,6 @@ import cpw.mods.fml.common.Optional;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
-import lombok.Getter;
-import lombok.Setter;
 import ruiseki.omoshiroikamo.api.energy.EnergyStorage;
 import ruiseki.omoshiroikamo.api.energy.IEnergyTile;
 import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
@@ -31,9 +29,6 @@ public abstract class AbstractEnergyTE extends AbstractTE implements IEnergyTile
     /** Internal energy storage instance. */
     protected EnergyStorage energyStorage;
 
-    @Getter
-    @Setter
-    public boolean useIC2Compat = false;
     public boolean ic2Registered = false;
 
     /** NBT tag name for energy-related data. */

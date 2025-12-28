@@ -34,11 +34,8 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.input.TEEnergyI
  * Uses JSON model with base + overlay textures via GTNHLib.
  *
  * TODO List:
- * - Add GUI for viewing energy level
  * - Add visual indicator for energy level (texture animation or overlay)
  * - Implement BlockColor tinting for machine color customization
- * - Add comparator output for energy monitoring
- * - Support EU (IC2) input mode (configurable)
  * - Add Tesla coil-style wireless energy input
  */
 public class BlockEnergyInputPort extends AbstractTieredBlock<TEEnergyInputPort> {
