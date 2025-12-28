@@ -15,6 +15,21 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.TEMachineController;
  * This block is mapped to the 'Q' symbol in structure definitions.
  * When right-clicked, it validates and forms the multiblock structure.
  * Uses JSON model with base + overlay textures via GTNHLib.
+ * 
+ * TODO List:
+ * - Implement GUI for machine management and status display
+ * - Add structure detection and validation logic
+ * - Load and parse JSON machine definitions
+ * - Recipe lookup and crafting progress management
+ * - State management (IDLE, WORKING, PAUSED, ERROR)
+ * - Redstone control modes (Ignore, Low, High, Pulse)
+ * - Working particles and sound effects
+ * - Completion effects (particles, sounds)
+ * - Block state visual changes based on status
+ * - NEI/JEI recipe integration
+ * - Implement BlockColor tinting for machine-wide color customization
+ * - Auto-build structure from blueprint item
+ * - Structure preview rendering (hologram-style)
  */
 public class BlockMachineController extends AbstractBlock<TEMachineController> {
 
@@ -40,7 +55,7 @@ public class BlockMachineController extends AbstractBlock<TEMachineController> {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-        float hitY, float hitZ) {
+            float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         }
@@ -55,6 +70,10 @@ public class BlockMachineController extends AbstractBlock<TEMachineController> {
 
     @Override
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-        // TODO: Add WAILA info for machine status
+        // TODO: Display machine name and type
+        // TODO: Show current state (Idle, Working, Error)
+        // TODO: Show crafting progress percentage
+        // TODO: Show energy consumption rate
+        // TODO: Display error message if in error state
     }
 }

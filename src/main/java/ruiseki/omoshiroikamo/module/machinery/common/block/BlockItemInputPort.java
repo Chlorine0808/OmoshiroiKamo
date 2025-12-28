@@ -14,6 +14,15 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.TEItemInputPort;
  * Item Input Port - accepts items for machine processing.
  * Can be placed at IO slot positions in machine structures.
  * Uses JSON model with base + overlay textures via GTNHLib.
+ * 
+ * TODO List:
+ * - Implement GUI for viewing/managing stored items
+ * - Add filter support for specific item types
+ * - Implement hopper-style auto-pull from adjacent inventories
+ * - Support for different tiers with varying slot counts
+ * - Add redstone control mode (ignore, high, low, pulse)
+ * - Implement BlockColor tinting for machine color customization
+ * - Add animation/particle effects when receiving items
  */
 public class BlockItemInputPort extends AbstractBlock<TEItemInputPort> {
 
@@ -39,6 +48,8 @@ public class BlockItemInputPort extends AbstractBlock<TEItemInputPort> {
 
     @Override
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-        // TODO: Add WAILA info for slot contents
+        // TODO: Display current item count and types in slots
+        // TODO: Show filter status if enabled
+        // TODO: Show connected machine name if part of structure
     }
 }

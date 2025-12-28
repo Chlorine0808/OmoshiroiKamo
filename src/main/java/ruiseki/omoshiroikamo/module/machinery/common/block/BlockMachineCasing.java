@@ -5,6 +5,14 @@ import ruiseki.omoshiroikamo.core.common.block.BlockOK;
 /**
  * Machine Casing - basic structural block for Modular Machinery.
  * Used as the main building block for machine structures.
+ * 
+ * TODO List:
+ * - Add JSON model + overlay texture support (like IO ports)
+ * - Implement BlockColor tinting for machine color customization
+ * - Add variant types (reinforced, vented, circuitry, etc.)
+ * - Support metadata-based color variants (16 colors)
+ * - Add crafting recipe
+ * - Consider adding TileEntity for dynamic color from controller
  */
 public class BlockMachineCasing extends BlockOK {
 

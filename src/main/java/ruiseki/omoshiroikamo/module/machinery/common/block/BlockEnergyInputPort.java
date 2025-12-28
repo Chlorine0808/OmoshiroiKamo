@@ -11,9 +11,19 @@ import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.TEEnergyInputPort;
 
 /**
- * Energy Input Port - accepts energy for machine processing.
+ * Energy Input Port - accepts energy (RF) for machine processing.
  * Can be placed at IO slot positions in machine structures.
  * Uses JSON model with base + overlay textures via GTNHLib.
+ * 
+ * TODO List:
+ * - Implement RF energy storage and transfer
+ * - Add GUI for viewing energy level
+ * - Support for different tiers with varying capacity/transfer rate
+ * - Add visual indicator for energy level (texture animation or overlay)
+ * - Implement BlockColor tinting for machine color customization
+ * - Add comparator output for energy monitoring
+ * - Support EU (IC2) input mode (configurable)
+ * - Add Tesla coil-style wireless energy input
  */
 public class BlockEnergyInputPort extends AbstractBlock<TEEnergyInputPort> {
 
@@ -39,6 +49,8 @@ public class BlockEnergyInputPort extends AbstractBlock<TEEnergyInputPort> {
 
     @Override
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-        // TODO: Add WAILA info for energy stored
+        // TODO: Display current RF stored / max capacity
+        // TODO: Show energy transfer rate
+        // TODO: Show connected machine name if part of structure
     }
 }
