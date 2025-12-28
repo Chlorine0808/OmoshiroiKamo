@@ -19,6 +19,11 @@ public final class GuiTextures {
         .imageSize(36, 36)
         .build();
 
+    public static final UITexture ENERGY_BAR = UITexture.builder()
+        .location(LibMisc.MOD_ID, "gui/progress_energy")
+        .imageSize(16, 128)
+        .build();
+
     public static final UITexture ROOST_SLOT = UITexture.builder()
         .location(LibMisc.MOD_ID, "gui/slot/roost_slot")
         .imageSize(18, 18)

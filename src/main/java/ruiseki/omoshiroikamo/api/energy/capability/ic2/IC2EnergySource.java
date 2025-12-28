@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import ic2.api.energy.tile.IEnergySource;
 import ruiseki.omoshiroikamo.api.energy.capability.EnergyIO;
+import ruiseki.omoshiroikamo.config.general.energy.EnergyConfig;
 
 public class IC2EnergySource implements EnergyIO {
 
@@ -25,12 +26,12 @@ public class IC2EnergySource implements EnergyIO {
             return 0;
         }
         double offeredEU = source.getOfferedEnergy();
-        int offeredRF = (int) Math.round(offeredEU * 4.0);
+        int offeredRF = (int) Math.round(offeredEU * EnergyConfig.rftToEU);
 
         int toExtract = Math.min(offeredRF, amount);
 
         if (!simulate) {
-            double drawEU = toExtract / 4.0;
+            double drawEU = (double) toExtract / EnergyConfig.rftToEU;
             source.drawEnergy(drawEU);
         }
 

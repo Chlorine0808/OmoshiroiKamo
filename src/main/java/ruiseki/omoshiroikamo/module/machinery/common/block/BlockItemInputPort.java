@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
+import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPortT1;
@@ -26,7 +27,6 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInput
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPortT4;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPortT5;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPortT6;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.item.input.TEItemInputPortT7;
 
 /**
  * Item Input Port - accepts items for machine processing.
@@ -47,8 +47,7 @@ public class BlockItemInputPort extends AbstractTieredBlock<TEItemInputPort> {
             TEItemInputPortT3.class,
             TEItemInputPortT4.class,
             TEItemInputPortT5.class,
-            TEItemInputPortT6.class,
-            TEItemInputPortT7.class);
+            TEItemInputPortT6.class);
         setHardness(5.0F);
         setResistance(10.0F);
     }
@@ -70,7 +69,7 @@ public class BlockItemInputPort extends AbstractTieredBlock<TEItemInputPort> {
 
     @Override
     public Class<? extends ItemBlock> getItemBlockClass() {
-        return ItemBlockInputPort.class;
+        return ItemBlockItemInputPort.class;
     }
 
     @Override
@@ -81,11 +80,19 @@ public class BlockItemInputPort extends AbstractTieredBlock<TEItemInputPort> {
         list.add(new ItemStack(itemIn, 1, 3));
         list.add(new ItemStack(itemIn, 1, 4));
         list.add(new ItemStack(itemIn, 1, 5));
-        list.add(new ItemStack(itemIn, 1, 6));
     }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {}
+
+    @Override
+    protected void processDrop(World world, int x, int y, int z, TileEntityOK te, ItemStack stack) {}
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        dropStacks(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
 
     @Override
     public int getRenderType() {
@@ -99,9 +106,9 @@ public class BlockItemInputPort extends AbstractTieredBlock<TEItemInputPort> {
         // TODO: Show connected machine name if part of structure
     }
 
-    public static class ItemBlockInputPort extends ItemBlockOK {
+    public static class ItemBlockItemInputPort extends ItemBlockOK {
 
-        public ItemBlockInputPort(Block block) {
+        public ItemBlockItemInputPort(Block block) {
             super(block, block);
         }
 

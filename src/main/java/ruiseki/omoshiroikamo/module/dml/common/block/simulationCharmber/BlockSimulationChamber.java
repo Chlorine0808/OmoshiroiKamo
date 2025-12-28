@@ -3,9 +3,7 @@ package ruiseki.omoshiroikamo.module.dml.common.block.simulationCharmber;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -56,35 +54,8 @@ public class BlockSimulationChamber extends AbstractBlock<TESimulationChamber> {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof ISidedInventory te) {
-            for (int i = 0; i < te.getSizeInventory(); i++) {
-                ItemStack stack = te.getStackInSlot(i);
-                if (stack != null) {
-                    dropStack(world, x, y, z, stack);
-                }
-            }
-        }
+        dropStacks(world, x, y, z);
         super.breakBlock(world, x, y, z, block, meta);
-    }
-
-    public static void dropStack(World world, int x, int y, int z, ItemStack stack) {
-        if (stack == null || stack.stackSize <= 0) {
-            return;
-        }
-
-        float dx = world.rand.nextFloat() * 0.8F + 0.1F;
-        float dy = world.rand.nextFloat() * 0.8F + 0.1F;
-        float dz = world.rand.nextFloat() * 0.8F + 0.1F;
-
-        EntityItem entityItem = new EntityItem(world, x + dx, y + dy, z + dz, stack.copy());
-
-        float motion = 0.05F;
-        entityItem.motionX = world.rand.nextGaussian() * motion;
-        entityItem.motionY = world.rand.nextGaussian() * motion + 0.2F;
-        entityItem.motionZ = world.rand.nextGaussian() * motion;
-
-        world.spawnEntityInWorld(entityItem);
     }
 
     @Override
