@@ -1,13 +1,21 @@
 package ruiseki.omoshiroikamo.module.multiblock.integration.nei;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.IUsageHandler;
 import ruiseki.omoshiroikamo.api.enums.EnumDye;
 import ruiseki.omoshiroikamo.api.item.ItemUtils;
@@ -24,10 +32,10 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     protected final int tier;
 
     /**
-     * Current dimension filter for NEI display. Uses NEI_DIMENSION_COMMON by
-     * default.
+     * Current dimension filter for NEI display. Uses DIMENSION_COMMON by default.
+     * Static so it persists across handler instances when GUI is reopened.
      */
-    protected int filterDimension = ruiseki.omoshiroikamo.module.multiblock.common.init.QuantumExtractorRecipes.NEI_DIMENSION_COMMON;
+    protected static int filterDimension = NEIDimensionConfig.DIMENSION_COMMON;
 
     /** Current text filter for ore name search */
     protected String filterText = "";
@@ -62,8 +70,92 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
     @Override
     public String getRecipeName() {
-        // Show tiered name so each NEI tab is unique and clear
-        return getMinerNameBase() + " Tier " + (tier + 1);
+        // Show tiered name + dimension filter so each NEI tab is unique and clear
+        String dimName = NEIDimensionConfig.getDisplayName(filterDimension);
+        return getMinerNameBase() + " T" + (tier + 1) + " [" + dimName + "]";
+    }
+
+    // --- Dimension Filter UI ---
+
+    /** Rectangle for dimension cycle button (relative to recipe area) */
+    private static final Rectangle DIM_BUTTON_RECT = new Rectangle(5, 0, 60, 12);
+
+    @Override
+    public void drawForeground(int recipe) {
+        super.drawForeground(recipe);
+        // Only draw on the first recipe (avoid duplicate buttons per recipe slot)
+        if (recipe != 0) return;
+
+        FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
+        // Draw dimension button background
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GuiDraw
+            .drawRect(DIM_BUTTON_RECT.x, DIM_BUTTON_RECT.y, DIM_BUTTON_RECT.width, DIM_BUTTON_RECT.height, 0xFF404040);
+        GuiDraw.drawRect(
+            DIM_BUTTON_RECT.x + 1,
+            DIM_BUTTON_RECT.y + 1,
+            DIM_BUTTON_RECT.width - 2,
+            DIM_BUTTON_RECT.height - 2,
+            0xFF808080);
+
+        // Draw dimension name
+        String dimName = NEIDimensionConfig.getDisplayName(filterDimension);
+        fr.drawString(dimName, DIM_BUTTON_RECT.x + 3, DIM_BUTTON_RECT.y + 2, 0xFFFFFF);
+
+        // Draw catalyst icon if available
+        ItemStack catalyst = NEIDimensionConfig.getCatalystStack(filterDimension);
+        if (catalyst != null) {
+            GuiContainerManager
+                .drawItem(DIM_BUTTON_RECT.x + DIM_BUTTON_RECT.width - 14, DIM_BUTTON_RECT.y - 2, catalyst);
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(GuiRecipe<?> gui, int button, int recipe) {
+        // Check if dimension button was clicked
+        java.awt.Point mouse = GuiDraw.getMousePosition();
+        java.awt.Point offset = gui.getRecipePosition(recipe);
+
+        if (offset != null && recipe == 0) {
+            // Calculate relative position within the recipe area
+            int recipeX = ((net.minecraft.client.gui.inventory.GuiContainer) gui).guiLeft + offset.x;
+            int recipeY = ((net.minecraft.client.gui.inventory.GuiContainer) gui).guiTop + offset.y;
+            int relX = mouse.x - recipeX;
+            int relY = mouse.y - recipeY;
+
+            if (DIM_BUTTON_RECT.contains(relX, relY)) {
+                cycleDimension(gui, button == 0);
+                return true;
+            }
+        }
+
+        return super.mouseClicked(gui, button, recipe);
+    }
+
+    /**
+     * Cycle to the next/previous dimension filter and reload recipes.
+     */
+    private void cycleDimension(GuiRecipe<?> gui, boolean forward) {
+        List<Integer> dimIds = NEIDimensionConfig.getDimensionIds();
+        int currentIndex = dimIds.indexOf(filterDimension);
+        if (currentIndex < 0) currentIndex = 0;
+
+        if (forward) {
+            currentIndex = (currentIndex + 1) % dimIds.size();
+        } else {
+            currentIndex = (currentIndex - 1 + dimIds.size()) % dimIds.size();
+        }
+
+        filterDimension = dimIds.get(currentIndex);
+
+        // Reload recipes with new filter
+        arecipes.clear();
+        loadAllRecipes();
+
+        // Reopen the NEI GUI to properly refresh the page
+        // This is the proper way to update recipes in NEI's architecture
+        codechicken.nei.recipe.GuiCraftingRecipe.openRecipeGui(getRecipeID());
     }
 
     @Override
@@ -119,11 +211,9 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     public void loadCraftingRecipes(ItemStack item) {
         arecipes.clear();
         super.loadCraftingRecipes(item);
-        // Use filtered registry for correct probability calculation
-        IFocusableRegistry registry = getRegistryForNEI(tier, filterDimension);
-        if (registry == null) {
-            registry = getRegistry();
-        }
+        // When searching for a specific item, use unfiltered registry
+        // to show the recipe regardless of current dimension filter
+        IFocusableRegistry registry = getRegistry();
         List<WeightedStackBase> unfocusedList = registry.getUnFocusedList();
 
         for (WeightedStackBase ws : unfocusedList) {

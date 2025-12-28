@@ -16,7 +16,8 @@ public class QuantumExtractorRecipes {
 
     public static final int MAX_TIER = 6;
 
-    // Legacy: kept for backward compatibility with existing code that references these directly
+    // Legacy: kept for backward compatibility with existing code
+    // that references these directly
     public static IFocusableRegistry[] oreRegistry = new IFocusableRegistry[MAX_TIER];
     public static IFocusableRegistry[] resRegistry = new IFocusableRegistry[MAX_TIER];
 
@@ -52,8 +53,9 @@ public class QuantumExtractorRecipes {
     /**
      * Special dimension ID for "Common" filter in NEI.
      * Shows only ores with dimensions == null (no dimension restriction).
+     * Must match NEIDimensionConfig.DIMENSION_COMMON
      */
-    public static final int NEI_DIMENSION_COMMON = Integer.MIN_VALUE + 1;
+    public static final int NEI_DIMENSION_COMMON = Integer.MIN_VALUE;
 
     // NEI-specific registries for "Common only" filter
     private static IFocusableRegistry[] neiCommonOreRegistry;
