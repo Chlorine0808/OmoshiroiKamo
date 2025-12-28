@@ -113,9 +113,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     /** Rectangle for header info area */
     private static final Rectangle HEADER_RECT = new Rectangle(5, 0, 150, 12);
 
-    /** Starting Y position for bottom icon row */
-    private static final int BOTTOM_ICON_Y = 45;
-
     @Override
     public void drawForeground(int recipe) {
         super.drawForeground(recipe);
@@ -132,8 +129,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     String itemName = detailItem.getDisplayName();
                     fr.drawString(itemName, HEADER_RECT.x, HEADER_RECT.y + 2, 0xFFFFFF);
                 }
-                // Draw dimension icons at bottom for quick reference
-                drawBottomDimensionIcons(fr);
                 break;
 
             case DIMENSION:
@@ -155,21 +150,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     fr.drawString(lensName, HEADER_RECT.x, HEADER_RECT.y + 2, 0xFFFFFF);
                 }
                 break;
-        }
-    }
-
-    /**
-     * Draw dimension catalyst icons at the bottom for ITEM_DETAIL mode.
-     */
-    private void drawBottomDimensionIcons(FontRenderer fr) {
-        List<Integer> dimIds = NEIDimensionConfig.getDimensionIds();
-        int x = 5;
-        for (int dimId : dimIds) {
-            ItemStack catalyst = NEIDimensionConfig.getCatalystStack(dimId);
-            if (catalyst != null) {
-                GuiContainerManager.drawItem(x, BOTTOM_ICON_Y, catalyst);
-                x += 18;
-            }
         }
     }
 
@@ -430,27 +410,26 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             this.dimensionId = dimId;
             ItemStack outputStack = ws.getMainStack();
 
-            // 1. Dimension Catalyst or Miner Icon (Far Left)
-            ItemStack leftIcon = NEIDimensionConfig.getCatalystStack(dimId);
-            if (leftIcon == null) {
-                leftIcon = new ItemStack(getMinerBlock(), 1, tier);
-            }
-            this.input.add(new PositionedStack(leftIcon, 4, 16));
+            // Layout: Left side for main icon, right side for compact recipe row
+            // Left area (0-35): Main icon
+            // Right area (36-160): [Catalyst][Lens+%][Item][BonusLens+%]
 
-            // 2. Clear Lens (Left Center) + Probability
-            PositionedStackAdv clearLensStack = new PositionedStackAdv(
-                MultiBlockBlocks.LENS.newItemStack(1, 0),
-                40,
-                16);
+            // 1. Dimension Catalyst (compact, right side start)
+            ItemStack catalystIcon = NEIDimensionConfig.getCatalystStack(dimId);
+            if (catalystIcon == null) {
+                catalystIcon = new ItemStack(getMinerBlock(), 1, tier);
+            }
+            this.input.add(new PositionedStack(catalystIcon, 40, 6));
+
+            // 2. Clear Lens + Probability
+            PositionedStackAdv clearLensStack = new PositionedStackAdv(MultiBlockBlocks.LENS.newItemStack(1, 0), 60, 6);
             clearLensStack.setChance((float) (ws.realWeight / 100.0f));
-            clearLensStack.setTextYOffset(10); // Draw below
+            clearLensStack.setTextYOffset(10);
             clearLensStack.setTextColor(0x000000);
-            clearLensStack.setLabel("Clear");
-            clearLensStack.setLabelColor(0x000000);
             this.input.add(clearLensStack);
 
-            // 3. Output Item (Center) skip percentage display
-            this.output = new PositionedStack(outputStack, 84, 16);
+            // 3. Output Item
+            this.output = new PositionedStack(outputStack, 90, 6);
 
             // 4. Bonus Lens (Right) + Probability
             EnumDye preferred = registry.getPrioritizedLens(outputStack);
@@ -473,15 +452,10 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     }
                 }
 
-                PositionedStackAdv bonusLensStack = new PositionedStackAdv(lensStack, 128, 16);
+                PositionedStackAdv bonusLensStack = new PositionedStackAdv(lensStack, 120, 6);
                 bonusLensStack.setChance((float) (focusedChance / 100.0f));
-                bonusLensStack.setTextYOffset(10); // Draw below
+                bonusLensStack.setTextYOffset(10);
                 bonusLensStack.setTextColor(0x000000);
-                // Set color label
-                String colorName = preferred.getName();
-                colorName = Character.toUpperCase(colorName.charAt(0)) + colorName.substring(1);
-                bonusLensStack.setLabel(colorName);
-                bonusLensStack.setLabelColor(0x000000);
                 this.input.add(bonusLensStack);
             }
         }
