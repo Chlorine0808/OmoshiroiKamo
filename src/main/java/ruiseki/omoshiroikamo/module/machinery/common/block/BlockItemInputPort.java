@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
@@ -57,8 +58,9 @@ public class BlockItemInputPort extends AbstractTieredBlock<AbstractItemInputPor
     }
 
     @Override
-    public void registerBlockColor() {
-        // TODO: Add Tier Color
+    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
+        // TODO: Add Tier Color / Auto Pull Mode
+        return super.colorMultiplier(worldIn, x, y, z);
     }
 
     @Override

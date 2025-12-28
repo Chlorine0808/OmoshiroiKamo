@@ -4,9 +4,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.client.model.color.IBlockColor;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public abstract class AbstractTieredBlock<T extends AbstractTE> extends AbstractBlock<T> {
+public abstract class AbstractTieredBlock<T extends AbstractTE> extends AbstractBlock<T> implements IBlockColor {
 
     private final Class<? extends TileEntity>[] teClasses;
 
@@ -26,11 +28,7 @@ public abstract class AbstractTieredBlock<T extends AbstractTE> extends Abstract
             // Example: "TEQuantumOreExtractorT1TileEntity"
             GameRegistry.registerTileEntity(teClass, teClass.getSimpleName() + "TileEntity");
         }
-
-        registerBlockColor();
     }
-
-    protected abstract void registerBlockColor();
 
     protected void registerBlock() {
         GameRegistry.registerBlock(this, getItemBlockClass(), name);
