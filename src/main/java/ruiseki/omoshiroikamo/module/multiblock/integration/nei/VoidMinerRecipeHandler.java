@@ -108,56 +108,88 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         return getMinerNameBase() + " T" + (tier + 1) + " [" + dimName + "]";
     }
 
-    // --- Dimension Filter UI ---
+    // --- UI Drawing ---
 
-    /** Rectangle for dimension cycle button (relative to recipe area) */
-    private static final Rectangle DIM_BUTTON_RECT = new Rectangle(5, 0, 60, 12);
+    /** Rectangle for header info area */
+    private static final Rectangle HEADER_RECT = new Rectangle(5, 0, 150, 12);
+
+    /** Starting Y position for bottom icon row */
+    private static final int BOTTOM_ICON_Y = 45;
 
     @Override
     public void drawForeground(int recipe) {
         super.drawForeground(recipe);
-        // Only draw on the first recipe (avoid duplicate buttons per recipe slot)
+        // Only draw on the first recipe
         if (recipe != 0) return;
 
         FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-
-        // Draw dimension button background
         GL11.glDisable(GL11.GL_LIGHTING);
-        GuiDraw
-            .drawRect(DIM_BUTTON_RECT.x, DIM_BUTTON_RECT.y, DIM_BUTTON_RECT.width, DIM_BUTTON_RECT.height, 0xFF404040);
-        GuiDraw.drawRect(
-            DIM_BUTTON_RECT.x + 1,
-            DIM_BUTTON_RECT.y + 1,
-            DIM_BUTTON_RECT.width - 2,
-            DIM_BUTTON_RECT.height - 2,
-            0xFF808080);
 
-        // Draw dimension name
-        String dimName = NEIDimensionConfig.getDisplayName(filterDimension);
-        fr.drawString(dimName, DIM_BUTTON_RECT.x + 3, DIM_BUTTON_RECT.y + 2, 0xFFFFFF);
+        switch (currentViewMode) {
+            case ITEM_DETAIL:
+                // Show item name in header
+                if (detailItem != null) {
+                    String itemName = detailItem.getDisplayName();
+                    fr.drawString(itemName, HEADER_RECT.x, HEADER_RECT.y + 2, 0xFFFFFF);
+                }
+                // Draw dimension icons at bottom for quick reference
+                drawBottomDimensionIcons(fr);
+                break;
 
-        // Draw catalyst icon if available
-        ItemStack catalyst = NEIDimensionConfig.getCatalystStack(filterDimension);
-        if (catalyst != null) {
-            GuiContainerManager
-                .drawItem(DIM_BUTTON_RECT.x + DIM_BUTTON_RECT.width - 14, DIM_BUTTON_RECT.y - 2, catalyst);
+            case DIMENSION:
+                // Show current dimension name in header
+                String dimName = NEIDimensionConfig.getDisplayName(filterDimension);
+                fr.drawString(dimName, HEADER_RECT.x, HEADER_RECT.y + 2, 0xFFFFFF);
+                // Draw catalyst icon
+                ItemStack catalyst = NEIDimensionConfig.getCatalystStack(filterDimension);
+                if (catalyst != null) {
+                    GuiContainerManager
+                        .drawItem(HEADER_RECT.x + fr.getStringWidth(dimName) + 4, HEADER_RECT.y - 2, catalyst);
+                }
+                break;
+
+            case LENS_BONUS:
+                // Show lens name in header
+                if (detailItem != null) {
+                    String lensName = detailItem.getDisplayName() + " Bonus";
+                    fr.drawString(lensName, HEADER_RECT.x, HEADER_RECT.y + 2, 0xFFFFFF);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Draw dimension catalyst icons at the bottom for ITEM_DETAIL mode.
+     */
+    private void drawBottomDimensionIcons(FontRenderer fr) {
+        List<Integer> dimIds = NEIDimensionConfig.getDimensionIds();
+        int x = 5;
+        for (int dimId : dimIds) {
+            ItemStack catalyst = NEIDimensionConfig.getCatalystStack(dimId);
+            if (catalyst != null) {
+                GuiContainerManager.drawItem(x, BOTTOM_ICON_Y, catalyst);
+                x += 18;
+            }
         }
     }
 
     @Override
     public boolean mouseClicked(GuiRecipe<?> gui, int button, int recipe) {
-        // Check if dimension button was clicked
+        // Only handle clicks in DIMENSION mode (for dimension cycling)
+        if (currentViewMode != ViewMode.DIMENSION) {
+            return super.mouseClicked(gui, button, recipe);
+        }
+
         java.awt.Point mouse = GuiDraw.getMousePosition();
         java.awt.Point offset = gui.getRecipePosition(recipe);
 
         if (offset != null && recipe == 0) {
-            // Calculate relative position within the recipe area
             int recipeX = ((GuiContainer) gui).guiLeft + offset.x;
             int recipeY = ((GuiContainer) gui).guiTop + offset.y;
             int relX = mouse.x - recipeX;
             int relY = mouse.y - recipeY;
 
-            if (DIM_BUTTON_RECT.contains(relX, relY)) {
+            if (HEADER_RECT.contains(relX, relY)) {
                 cycleDimension(gui, button == 0);
                 return true;
             }
@@ -181,14 +213,12 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         }
 
         filterDimension = dimIds.get(currentIndex);
-        // Set flag to prevent automatic dimension detection from overwriting
         manualDimensionChange = true;
 
-        // Reload recipes with new filter
+        // Reload recipes with new dimension
         arecipes.clear();
         loadAllRecipes();
 
-        // Reopen the NEI GUI to properly refresh the page
         GuiCraftingRecipe.openRecipeGui(getRecipeID());
     }
 
