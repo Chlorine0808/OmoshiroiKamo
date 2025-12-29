@@ -35,7 +35,7 @@ import ruiseki.omoshiroikamo.core.common.util.Logger;
  * 2. Periodically flushes internal slots to ME cache
  * 3. Then flushes ME cache to ME Network
  */
-public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyable {
+public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyable, IActionHost {
 
     private static final int BUFFER_SLOTS = 128;
     private static final long CACHE_CAPACITY = 1600;
@@ -48,6 +48,7 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
 
     private long lastOutputTick = 0;
     private long tickCounter = 0;
+    private boolean proxyReady = false;
 
     public TEItemOutputPortME() {
         super(BUFFER_SLOTS); // Has physical buffer slots for receiving items
@@ -69,14 +70,15 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
 
     @Override
     public AENetworkProxy getProxy() {
-        if (gridProxy == null) {
+        if (gridProxy == null && worldObj != null) {
             gridProxy = new AENetworkProxy(
                     this,
                     "proxy",
                     getVisualItemStack(),
                     true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+            // Use complementOf to exclude UNKNOWN
+            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         }
         return gridProxy;
     }
@@ -104,7 +106,16 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
 
     @Override
     public IGridNode getGridNode(ForgeDirection dir) {
-        return getProxy().getNode();
+        AENetworkProxy proxy = getProxy();
+        return proxy != null ? proxy.getNode() : null;
+    }
+
+    // ========== IActionHost Implementation ==========
+
+    @Override
+    public IGridNode getActionableNode() {
+        AENetworkProxy proxy = getProxy();
+        return proxy != null ? proxy.getNode() : null;
     }
 
     // ========== Item Handling ==========
@@ -113,12 +124,15 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
      * Returns an ItemStack for visual representation in AE2 interfaces.
      */
     protected ItemStack getVisualItemStack() {
-        return new ItemStack(getBlockType(), 1, getBlockMetadata());
+        if (getBlockType() != null) {
+            return new ItemStack(getBlockType(), 1, getBlockMetadata());
+        }
+        return new ItemStack(net.minecraft.init.Blocks.stone);
     }
 
     protected BaseActionSource getRequest() {
         if (requestSource == null) {
-            requestSource = new MachineSource((IActionHost) this);
+            requestSource = new MachineSource(this);
         }
         return requestSource;
     }
@@ -183,14 +197,31 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     }
 
     public boolean isActive() {
-        return getProxy() != null && getProxy().isActive();
+        AENetworkProxy proxy = getProxy();
+        return proxy != null && proxy.isActive();
     }
 
     public boolean isPowered() {
-        return getProxy() != null && getProxy().isPowered();
+        AENetworkProxy proxy = getProxy();
+        return proxy != null && proxy.isPowered();
     }
 
     // ========== Tick Processing ==========
+
+    @Override
+    public void doUpdate() {
+        super.doUpdate();
+
+        if (worldObj.isRemote)
+            return;
+
+        // Initialize proxy on first tick
+        if (!proxyReady && getProxy() != null) {
+            getProxy().onReady();
+            proxyReady = true;
+            Logger.info("ME Output Port: Proxy initialized");
+        }
+    }
 
     @Override
     public boolean processTasks(boolean redstoneChecksPassed) {
@@ -254,7 +285,9 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
         }
 
         // Load proxy state
-        getProxy().readFromNBT(root);
+        if (getProxy() != null) {
+            getProxy().readFromNBT(root);
+        }
     }
 
     // ========== Lifecycle ==========
@@ -262,8 +295,6 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     @Override
     public void validate() {
         super.validate();
-        // Initialize proxy when tile is validated
-        getProxy();
     }
 
     @Override
