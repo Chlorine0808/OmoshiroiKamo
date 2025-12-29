@@ -30,24 +30,20 @@ public class NEIConfig implements IConfigureNEI {
     public void loadConfig() {
         Logger.info("Loading NeiConfig: {}", getName());
         if (BackportConfigs.useMultiBlock) {
-            // Register Ore/Res Extractors - single class parameterized by tier
+            // Register Ore Extractors
             for (int i = 0; i < 6; i++) {
                 QuantumOreExtractorRecipeHandler ore = new QuantumOreExtractorRecipeHandler(i);
                 registerHandler(ore);
                 API.addRecipeCatalyst(MultiBlockBlocks.QUANTUM_ORE_EXTRACTOR.newItemStack(1, i), ore.getRecipeID());
+                registerDimensionCatalysts(ore.getRecipeID());
+            }
 
+            // Register Res Extractors
+            for (int i = 0; i < 6; i++) {
                 QuantumResExtractorRecipeHandler res = new QuantumResExtractorRecipeHandler(i);
                 registerHandler(res);
                 API.addRecipeCatalyst(MultiBlockBlocks.QUANTUM_RES_EXTRACTOR.newItemStack(1, i), res.getRecipeID());
-
-                // Register dimension catalysts to left tab for easy comparison
-                for (NEIDimensionConfig.DimensionEntry dim : NEIDimensionConfig.getDimensions()) {
-                    ItemStack catalyst = NEIDimensionConfig.getCatalystStack(dim.id);
-                    if (catalyst != null) {
-                        API.addRecipeCatalyst(catalyst, ore.getRecipeID());
-                        API.addRecipeCatalyst(catalyst, res.getRecipeID());
-                    }
-                }
+                registerDimensionCatalysts(res.getRecipeID());
             }
         }
         if (BackportConfigs.useChicken) {
@@ -77,6 +73,15 @@ public class NEIConfig implements IConfigureNEI {
         handler.prepare();
         API.registerRecipeHandler(handler);
         API.registerUsageHandler(handler);
+    }
+
+    private static void registerDimensionCatalysts(String recipeId) {
+        for (NEIDimensionConfig.DimensionEntry dim : NEIDimensionConfig.getDimensions()) {
+            ItemStack catalyst = NEIDimensionConfig.getCatalystStack(dim.id);
+            if (catalyst != null) {
+                API.addRecipeCatalyst(catalyst, recipeId);
+            }
+        }
     }
 
     @Override
