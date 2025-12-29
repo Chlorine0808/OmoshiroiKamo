@@ -24,6 +24,7 @@ import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.AbstractManaPortTE;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.input.TEManaInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.input.TEManaInputPortT1;
 import vazkii.botania.api.wand.IWandHUD;
 
@@ -34,10 +35,11 @@ import vazkii.botania.api.wand.IWandHUD;
  *
  * TODO List:
  * - Add visual indicator for mana level (texture animation or overlay)
+ * - Add model and textures
  * - Implement BlockColor tinting for machine color customization
  * - Add animation/particle effects when receiving mana
  */
-public class BlockManaInputPort extends AbstractTieredBlock<AbstractTE> implements IWandHUD {
+public class BlockManaInputPort extends AbstractTieredBlock<TEManaInputPort> implements IWandHUD {
 
     protected BlockManaInputPort() {
         super(ModObject.blockModularManaInput.unlocalisedName, TEManaInputPortT1.class);
