@@ -5,6 +5,8 @@ import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,11 +23,25 @@ import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.AbstractManaPortTE;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.input.TEManaInputPortT1;
+import vazkii.botania.api.wand.IWandHUD;
+import vazkii.botania.api.wand.IWandable;
 
-public class BlockManaInputPort extends AbstractTieredBlock<AbstractTE> {
+/**
+ * Mana Input Port - accepts mana for machine processing.
+ * Can be placed at IO slot positions in machine structures.
+ * Uses JSON model with base + overlay textures via GTNHLib.
+ *
+ * TODO List:
+ * - Add visual indicator for mana level (texture animation or overlay)
+ * - Implement BlockColor tinting for machine color customization
+ * - Add animation/particle effects when receiving mana
+ */
+public class BlockManaInputPort extends AbstractTieredBlock<AbstractTE> implements IWandHUD, IWandable {
 
     protected BlockManaInputPort() {
-        super(ModObject.blockModularManaInput.unlocalisedName, null);
+        super(ModObject.blockModularManaInput.unlocalisedName, TEManaInputPortT1.class);
         setHardness(5.0F);
         setResistance(10.0F);
     }
@@ -53,11 +69,6 @@ public class BlockManaInputPort extends AbstractTieredBlock<AbstractTE> {
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         list.add(new ItemStack(itemIn, 1, 0));
-        list.add(new ItemStack(itemIn, 1, 1));
-        list.add(new ItemStack(itemIn, 1, 2));
-        list.add(new ItemStack(itemIn, 1, 3));
-        list.add(new ItemStack(itemIn, 1, 4));
-        list.add(new ItemStack(itemIn, 1, 5));
     }
 
     @Override
@@ -75,6 +86,17 @@ public class BlockManaInputPort extends AbstractTieredBlock<AbstractTE> {
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
         // TODO: Display current Mana stored / max capacity
         // TODO: Show mana transfer rate
+    }
+
+    @Override
+    public void renderHUD(Minecraft mc, ScaledResolution res, World world, int x, int y, int z) {
+        ((AbstractManaPortTE) world.getTileEntity(x, y, z)).renderHUD(mc, res);
+    }
+
+    @Override
+    public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
+        ((AbstractManaPortTE) world.getTileEntity(x, y, z)).onWanded(player, stack);
+        return true;
     }
 
     public static class ItemBlockManaInputPort extends ItemBlockOK {

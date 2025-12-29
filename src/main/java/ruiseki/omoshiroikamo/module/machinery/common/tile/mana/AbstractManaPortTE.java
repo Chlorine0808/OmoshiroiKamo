@@ -1,27 +1,33 @@
 package ruiseki.omoshiroikamo.module.machinery.common.tile.mana;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 import ruiseki.omoshiroikamo.api.mana.ManaStorage;
 import ruiseki.omoshiroikamo.api.multiblock.IModularPort;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
+import ruiseki.omoshiroikamo.core.lib.LibMisc;
+import vazkii.botania.api.mana.ManaNetworkEvent;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
+import vazkii.botania.client.core.handler.HUDHandler;
+import vazkii.botania.common.core.handler.ManaNetworkHandler;
 
+// Mana Port doesn't have Side Config because mana will transfer directly
 public abstract class AbstractManaPortTE extends AbstractTE implements IModularPort, ISparkAttachable {
-
-    protected final IO[] sides = new IO[6];
 
     protected ManaStorage manaStorage;
 
-    private static final String MANA_TAG = "mana";
-    private static final String MAX_MANA_TAG = "mana";
-
-    protected ISparkEntity spark;
-
-    protected AbstractManaPortTE(int manaCapacity, int manaMaxReceive) {
+    public AbstractManaPortTE(int manaCapacity, int manaMaxReceive) {
         manaStorage = new ManaStorage(manaCapacity, manaMaxReceive) {
 
             @Override
@@ -30,9 +36,6 @@ public abstract class AbstractManaPortTE extends AbstractTE implements IModularP
                 markDirty();
             }
         };
-        for (int i = 0; i < 6; i++) {
-            sides[i] = IO.NONE;
-        }
     }
 
     @Override
@@ -61,33 +64,53 @@ public abstract class AbstractManaPortTE extends AbstractTE implements IModularP
     }
 
     @Override
-    public void attachSpark(ISparkEntity entity) {
-        this.spark = entity;
-    }
+    public void attachSpark(ISparkEntity entity) {}
 
     @Override
     public ISparkEntity getAttachedSpark() {
-        return spark;
+        List<ISparkEntity> sparks = worldObj.getEntitiesWithinAABB(
+            ISparkEntity.class,
+            AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+
+        return sparks.size() == 1 ? sparks.get(0) : null;
     }
 
     @Override
     public boolean areIncomingTranfersDone() {
-        return isFull();
+        return false;
     }
 
     @Override
     public abstract boolean canRecieveManaFromBursts();
 
-    @Override
-    public IO getSideIO(ForgeDirection side) {
-        return sides[side.ordinal()];
+    public void onWanded(EntityPlayer player, ItemStack wand) {
+        if (player == null) return;
+
+        worldObj.playSoundAtEntity(player, "botania:ding", 0.11F, 1F);
+    }
+
+    public void renderHUD(Minecraft mc, ScaledResolution res) {
+        String name = getLocalizedName();
+        int color = 0x4444FF;
+        HUDHandler.drawSimpleManaHUD(color, manaStorage.getManaStored(), manaStorage.getMaxManaStored(), name, res);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        mc.renderEngine.bindTexture(HUDHandler.manaBar);
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     @Override
-    public void setSideIO(ForgeDirection side, IO state) {
-        sides[side.ordinal()] = state;
-        requestRenderUpdate();
+    public IO getSideIO(ForgeDirection side) {
+        return IO.BOTH;
     }
+
+    @Override
+    public void setSideIO(ForgeDirection side, IO state) {}
 
     @Override
     public boolean isActive() {
@@ -108,31 +131,44 @@ public abstract class AbstractManaPortTE extends AbstractTE implements IModularP
 
     @Override
     public boolean processTasks(boolean redstoneCheckPassed) {
+        if (!worldObj.isRemote) {
+            if (!ManaNetworkHandler.instance.isPoolIn(this) && !isInvalid()) {
+                ManaNetworkEvent.addPool(this);
+                return true;
+            }
+        }
+
         return false;
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        ManaNetworkEvent.removePool(this);
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        ManaNetworkEvent.removePool(this);
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return LibMisc.LANG.localize(getUnlocalizedName() + ".tier_" + getTier() + ".name");
+    }
+
+    public abstract int getTier();
+
+    @Override
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
-
-        int[] sideData = new int[6];
-        for (int i = 0; i < 6; i++) {
-            sideData[i] = sides[i].ordinal();
-        }
-        root.setIntArray("sideIO", sideData);
         manaStorage.writeToNBT(root);
     }
 
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
-
-        if (root.hasKey("sideIO")) {
-            int[] sideData = root.getIntArray("sideIO");
-            for (int i = 0; i < 6 && i < sideData.length; i++) {
-                sides[i] = IO.values()[sideData[i]];
-            }
-        }
         manaStorage.readFromNBT(root);
     }
 }
