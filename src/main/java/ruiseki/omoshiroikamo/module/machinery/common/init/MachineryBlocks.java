@@ -8,6 +8,8 @@ import ruiseki.omoshiroikamo.core.common.util.Logger;
 import ruiseki.omoshiroikamo.core.lib.LibMods;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockEnergyInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockEnergyOutputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockFluidInputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockFluidOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineCasing;
@@ -27,6 +29,8 @@ public enum MachineryBlocks {
     MACHINE_CONTROLLER(BlockMachineController.create()),
     ITEM_INPUT_PORT(BlockItemInputPort.create()),
     ITEM_OUTPUT_PORT(BlockItemOutputPort.create()),
+    FLUID_INPUT_PORT(BlockFluidInputPort.create()),
+    FLUID_OUTPUT_PORT(BlockFluidOutputPort.create()),
     ENERGY_INPUT_PORT(BlockEnergyInputPort.create()),
     ENERGY_OUTPUT_PORT(BlockEnergyOutputPort.create()),
     MANA_INPUT_PORT(LibMods.Botania.isLoaded(), BlockManaInputPort.create()),
