@@ -148,6 +148,10 @@ public class SmartTank extends FluidTank {
         onContentsChanged();
     }
 
+    public void writeCommon(NBTTagCompound nbtRoot) {
+        writeCommon("tank", nbtRoot);
+    }
+
     public void writeCommon(String name, NBTTagCompound nbtRoot) {
         if (getFluidAmount() > 0 || restriction != null) {
             NBTTagCompound tankRoot = new NBTTagCompound();
@@ -159,6 +163,10 @@ public class SmartTank extends FluidTank {
         } else {
             nbtRoot.removeTag(name);
         }
+    }
+
+    public void readCommon(NBTTagCompound nbtRoot) {
+        readCommon("tank", nbtRoot);
     }
 
     public void readCommon(String name, NBTTagCompound nbtRoot) {

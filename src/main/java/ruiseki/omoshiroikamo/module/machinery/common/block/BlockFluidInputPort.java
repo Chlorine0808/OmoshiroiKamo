@@ -20,41 +20,42 @@ import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPort;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT1;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT2;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT3;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT4;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT5;
-import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.output.TEEnergyOutputPortT6;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT1;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT2;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT3;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT4;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT5;
+import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.input.TEFluidInputPortT6;
 
 /**
- * Energy Input Port - accepts energy (RF) for machine processing.
+ * Mana Input Port - accepts mana for machine processing.
  * Can be placed at IO slot positions in machine structures.
  * Uses JSON model with base + overlay textures via GTNHLib.
  *
  * TODO List:
- * - Add visual indicator for energy level (texture animation or overlay)
+ * - Add visual indicator for mana level (texture animation or overlay)
+ * - Add model and textures
  * - Implement BlockColor tinting for machine color customization
- * - Add Tesla coil-style wireless energy input
+ * - Add animation/particle effects when receiving mana
  */
-public class BlockEnergyOutputPort extends AbstractTieredBlock<TEEnergyOutputPort> {
+public class BlockFluidInputPort extends AbstractTieredBlock<TEFluidInputPort> {
 
-    protected BlockEnergyOutputPort() {
+    protected BlockFluidInputPort() {
         super(
-            ModObject.blockModularEnergyOutput.unlocalisedName,
-            TEEnergyOutputPortT1.class,
-            TEEnergyOutputPortT2.class,
-            TEEnergyOutputPortT3.class,
-            TEEnergyOutputPortT4.class,
-            TEEnergyOutputPortT5.class,
-            TEEnergyOutputPortT6.class);
+            ModObject.blockModularFluidInput.unlocalisedName,
+            TEFluidInputPortT1.class,
+            TEFluidInputPortT2.class,
+            TEFluidInputPortT3.class,
+            TEFluidInputPortT4.class,
+            TEFluidInputPortT5.class,
+            TEFluidInputPortT6.class);
         setHardness(5.0F);
         setResistance(10.0F);
     }
 
-    public static BlockEnergyOutputPort create() {
-        return new BlockEnergyOutputPort();
+    public static BlockFluidInputPort create() {
+        return new BlockFluidInputPort();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class BlockEnergyOutputPort extends AbstractTieredBlock<TEEnergyOutputPor
 
     @Override
     protected Class<? extends ItemBlock> getItemBlockClass() {
-        return ItemBlockEnergyInputPort.class;
+        return ItemBlockFluidInputPort.class;
     }
 
     @Override
@@ -96,13 +97,12 @@ public class BlockEnergyOutputPort extends AbstractTieredBlock<TEEnergyOutputPor
 
     @Override
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-        // TODO: Display current RF stored / max capacity
-        // TODO: Show energy transfer rate
+        // TODO: Display current Fluid stored / max capacity
     }
 
-    public static class ItemBlockEnergyInputPort extends ItemBlockOK {
+    public static class ItemBlockFluidInputPort extends ItemBlockOK {
 
-        public ItemBlockEnergyInputPort(Block block) {
+        public ItemBlockFluidInputPort(Block block) {
             super(block, block);
         }
 

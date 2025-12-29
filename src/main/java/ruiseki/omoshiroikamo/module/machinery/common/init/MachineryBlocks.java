@@ -8,11 +8,15 @@ import ruiseki.omoshiroikamo.core.common.util.Logger;
 import ruiseki.omoshiroikamo.core.lib.LibMods;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockEnergyInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockEnergyOutputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockFluidInputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockFluidOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPortME;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineCasing;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineController;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaInputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaOutputPort;
 
 /**
  * Block registration for the Machinery module.
@@ -26,6 +30,8 @@ public enum MachineryBlocks {
     MACHINE_CONTROLLER(BlockMachineController.create()),
     ITEM_INPUT_PORT(BlockItemInputPort.create()),
     ITEM_OUTPUT_PORT(BlockItemOutputPort.create()),
+    FLUID_INPUT_PORT(BlockFluidInputPort.create()),
+    FLUID_OUTPUT_PORT(BlockFluidOutputPort.create()),
     ENERGY_INPUT_PORT(BlockEnergyInputPort.create()),
     ENERGY_OUTPUT_PORT(BlockEnergyOutputPort.create()),
     /** ME Output Port - only registered when AE2 is loaded */
@@ -60,7 +66,17 @@ public enum MachineryBlocks {
     private BlockOK block;
 
     MachineryBlocks(BlockOK block) {
+        this.enabled = true;
         this.block = block;
+    }
+
+    MachineryBlocks(boolean enabled, BlockOK block) {
+        this.enabled = enabled;
+        this.block = block;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public BlockOK getBlock() {

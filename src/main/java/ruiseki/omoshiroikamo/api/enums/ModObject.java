@@ -57,8 +57,12 @@ public enum ModObject {
 
     blockModularItemInput,
     blockModularItemOutput,
-    blockModularEnergyOutput,
     blockModularEnergyInput,
+    blockModularEnergyOutput,
+    blockModularFluidInput,
+    blockModularFluidOutput,
+    blockModularManaInput,
+    blockModularManaOutput,
     blockModularItemOutputME,
 
     itemBackPack,
