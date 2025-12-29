@@ -4,10 +4,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import ruiseki.omoshiroikamo.api.fluid.FluidTransfer;
-import ruiseki.omoshiroikamo.api.modular.IInputPort;
+import ruiseki.omoshiroikamo.api.modular.IPortType;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.fluid.AbstractFluidPortTE;
 
-public abstract class TEFluidInputPort extends AbstractFluidPortTE implements IInputPort {
+public abstract class TEFluidInputPort extends AbstractFluidPortTE {
 
     public TEFluidInputPort(int fluidCapacity) {
         super(fluidCapacity);
@@ -33,5 +33,10 @@ public abstract class TEFluidInputPort extends AbstractFluidPortTE implements II
             }
         }
         return super.processTasks(redstoneCheckPassed);
+    }
+
+    @Override
+    public IPortType.Direction getPortDirection() {
+        return IPortType.Direction.INPUT;
     }
 }

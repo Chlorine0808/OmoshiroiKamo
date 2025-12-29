@@ -10,11 +10,8 @@ import net.minecraft.util.ChatComponentText;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import ruiseki.omoshiroikamo.api.block.BlockPos;
-import ruiseki.omoshiroikamo.api.modular.IEnergyPort;
-import ruiseki.omoshiroikamo.api.modular.IInputPort;
-import ruiseki.omoshiroikamo.api.modular.IItemPort;
-import ruiseki.omoshiroikamo.api.modular.IModularPort;
-import ruiseki.omoshiroikamo.api.modular.IOutputPort;
+import ruiseki.omoshiroikamo.api.modular.IModularBlock;
+import ruiseki.omoshiroikamo.api.modular.IPortType;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractMBModifierTE;
 import ruiseki.omoshiroikamo.module.machinery.common.init.MachineryBlocks;
 
@@ -87,26 +84,47 @@ public class TEMachineController extends AbstractMBModifierTE {
     protected boolean addToMachine(Block block, int meta, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z, worldObj);
 
-        if (block instanceof IItemPort && block instanceof IInputPort) {
-            if (!itemInputPorts.contains(pos)) {
-                itemInputPorts.add(pos);
-            }
-            return true;
-        } else if (block instanceof IItemPort && block instanceof IOutputPort) {
-            if (!itemOutputPorts.contains(pos)) {
-                itemOutputPorts.add(pos);
-            }
-            return true;
-        } else if (block instanceof IEnergyPort && block instanceof IInputPort) {
-            if (!energyInputPorts.contains(pos)) {
-                energyInputPorts.add(pos);
-            }
-            return true;
-        } else if (block instanceof IEnergyPort && block instanceof IOutputPort) {
-            if (!energyOutputPorts.contains(pos)) {
-                energyOutputPorts.add(pos);
-            }
-            return true;
+        if (!(block instanceof IModularBlock modular)) {
+            return false;
+        }
+
+        IPortType.Type type = modular.getPortType();
+        IPortType.Direction direction = modular.getPortDirection();
+
+        switch (type) {
+            case ITEM:
+                if (direction == IPortType.Direction.INPUT) {
+                    if (!itemInputPorts.contains(pos)) {
+                        itemInputPorts.add(pos);
+                    }
+                    return true;
+                }
+                if (direction == IPortType.Direction.OUTPUT) {
+                    if (!itemOutputPorts.contains(pos)) {
+                        itemOutputPorts.add(pos);
+                    }
+                    return true;
+                }
+                break;
+
+            case ENERGY:
+                if (direction == IPortType.Direction.INPUT) {
+                    if (!energyInputPorts.contains(pos)) {
+                        energyInputPorts.add(pos);
+                    }
+                    return true;
+                }
+                if (direction == IPortType.Direction.OUTPUT) {
+                    if (!energyOutputPorts.contains(pos)) {
+                        energyOutputPorts.add(pos);
+                    }
+                    return true;
+                }
+                break;
+
+            default:
+                // Other port types are currently ignored in the simple structure check.
+                break;
         }
 
         return false;
@@ -234,7 +252,7 @@ public class TEMachineController extends AbstractMBModifierTE {
 
                     if (block == MachineryBlocks.MACHINE_CASING.getBlock()) {
                         casingCount++;
-                    } else if (block instanceof IModularPort) {
+                    } else if (block instanceof IModularBlock) {
                         addToMachine(block, 0, checkX, checkY, checkZ);
                         casingCount++;
                     }

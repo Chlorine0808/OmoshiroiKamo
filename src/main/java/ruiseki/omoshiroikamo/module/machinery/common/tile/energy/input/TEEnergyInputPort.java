@@ -5,14 +5,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import ruiseki.omoshiroikamo.api.energy.EnergyTransfer;
 import ruiseki.omoshiroikamo.api.energy.IEnergySink;
-import ruiseki.omoshiroikamo.api.modular.IInputPort;
+import ruiseki.omoshiroikamo.api.modular.IPortType;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.energy.AbstractEnergyIOPortTE;
 
 /**
  * Energy Input Port TileEntity.
  * Accepts RF energy for machine processing.
  */
-public abstract class TEEnergyInputPort extends AbstractEnergyIOPortTE implements IEnergySink, IInputPort {
+public abstract class TEEnergyInputPort extends AbstractEnergyIOPortTE implements IEnergySink {
 
     public TEEnergyInputPort(int energyCapacity, int energyMaxReceive) {
         super(energyCapacity, energyMaxReceive);
@@ -47,6 +47,11 @@ public abstract class TEEnergyInputPort extends AbstractEnergyIOPortTE implement
         }
 
         return super.processTasks(redstoneChecksPassed);
+    }
+
+    @Override
+    public IPortType.Direction getPortDirection() {
+        return IPortType.Direction.INPUT;
     }
 
     @Override
