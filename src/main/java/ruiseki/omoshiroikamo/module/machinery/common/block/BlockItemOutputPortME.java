@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -87,11 +88,11 @@ public class BlockItemOutputPortME extends AbstractTieredBlock<TEItemOutputPortM
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TEItemOutputPortME meTile) {
             if (meTile.isActive()) {
-                tooltip.add("§aConnected to ME Network");
+                tooltip.add("§a" + StatCollector.translateToLocal("waila.me.online"));
             } else if (meTile.isPowered()) {
-                tooltip.add("§eNo Channel Available");
+                tooltip.add("§c" + StatCollector.translateToLocal("waila.me.no_channel"));
             } else {
-                tooltip.add("§cNot Connected");
+                tooltip.add("§c" + StatCollector.translateToLocal("waila.me.offline"));
             }
         }
     }
@@ -109,8 +110,7 @@ public class BlockItemOutputPortME extends AbstractTieredBlock<TEItemOutputPortM
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
-            list.add("§7Outputs items directly to ME Network");
-            list.add("§7Requires an ME channel");
+            list.add("§7" + StatCollector.translateToLocal("tooltip.me_output.desc"));
         }
     }
 }

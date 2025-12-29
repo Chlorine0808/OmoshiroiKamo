@@ -37,7 +37,7 @@ import ruiseki.omoshiroikamo.core.common.util.Logger;
  */
 public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyable, IActionHost {
 
-    private static final int BUFFER_SLOTS = 128;
+    private static final int BUFFER_SLOTS = 63;
     private static final long CACHE_CAPACITY = 1600;
 
     private AENetworkProxy gridProxy;
@@ -49,6 +49,10 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     private long lastOutputTick = 0;
     private long tickCounter = 0;
     private boolean proxyReady = false;
+
+    // Client-synced status for Waila
+    private boolean clientIsActive = false;
+    private boolean clientIsPowered = false;
 
     public TEItemOutputPortME() {
         super(BUFFER_SLOTS); // Has physical buffer slots for receiving items
@@ -123,7 +127,7 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
         if (getBlockType() != null) {
             return new ItemStack(getBlockType(), 1, getBlockMetadata());
         }
-        return new ItemStack(net.minecraft.init.Blocks.stone);
+        return new ItemStack(Blocks.stone);
     }
 
     protected BaseActionSource getRequest() {
@@ -188,11 +192,17 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     }
 
     public boolean isActive() {
+        if (worldObj != null && worldObj.isRemote) {
+            return clientIsActive; // Use synced value on client
+        }
         AENetworkProxy proxy = getProxy();
         return proxy != null && proxy.isActive();
     }
 
     public boolean isPowered() {
+        if (worldObj != null && worldObj.isRemote) {
+            return clientIsPowered; // Use synced value on client
+        }
         AENetworkProxy proxy = getProxy();
         return proxy != null && proxy.isPowered();
     }
@@ -234,6 +244,11 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     public void writeCommon(NBTTagCompound root) {
         super.writeCommon(root);
 
+        // Sync ME status to client (for Waila)
+        AENetworkProxy proxy = getProxy();
+        root.setBoolean("meActive", proxy != null && proxy.isActive());
+        root.setBoolean("mePowered", proxy != null && proxy.isPowered());
+
         // Save cached items
         NBTTagList items = new NBTTagList();
         for (IAEItemStack s : itemCache) {
@@ -255,6 +270,10 @@ public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyab
     @Override
     public void readCommon(NBTTagCompound root) {
         super.readCommon(root);
+
+        // Read synced ME status (for Waila on client)
+        clientIsActive = root.getBoolean("meActive");
+        clientIsPowered = root.getBoolean("mePowered");
 
         // Load cached items
         itemCache.resetStatus();
