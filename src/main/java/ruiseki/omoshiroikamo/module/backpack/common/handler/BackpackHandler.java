@@ -1,4 +1,4 @@
-package ruiseki.omoshiroikamo.module.backpack.common.block;
+package ruiseki.omoshiroikamo.module.backpack.common.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import ruiseki.omoshiroikamo.core.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 import ruiseki.omoshiroikamo.module.backpack.client.gui.handler.BackpackItemStackHandler;
 import ruiseki.omoshiroikamo.module.backpack.client.gui.handler.UpgradeItemStackHandler;
+import ruiseki.omoshiroikamo.module.backpack.common.block.BlockBackpack;
 import ruiseki.omoshiroikamo.module.backpack.common.item.ItemCraftingUpgrade;
 import ruiseki.omoshiroikamo.module.backpack.common.item.ItemEverlastingUpgrade;
 import ruiseki.omoshiroikamo.module.backpack.common.item.ItemInceptionUpgrade;
@@ -43,6 +44,7 @@ import ruiseki.omoshiroikamo.module.backpack.common.item.wrapper.IVoidUpgrade;
 import ruiseki.omoshiroikamo.module.backpack.common.item.wrapper.UpgradeWrapper;
 import ruiseki.omoshiroikamo.module.backpack.common.item.wrapper.UpgradeWrapperFactory;
 import ruiseki.omoshiroikamo.module.backpack.common.network.PacketBackpackNBT;
+import ruiseki.omoshiroikamo.module.backpack.common.util.BackpackItemStackUtils;
 
 public class BackpackHandler implements IItemHandlerModifiable {
 
@@ -579,7 +581,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
         tag.setTag(UPGRADE_INV, upgradeHandler.serializeNBT());
 
         NBTTagCompound memoryTag = new NBTTagCompound();
-        BackpackItemStackHelper.saveAllSlotsExtended(memoryTag, backpackHandler.memorizedSlotStack);
+        BackpackItemStackUtils.saveAllSlotsExtended(memoryTag, backpackHandler.memorizedSlotStack);
         tag.setTag(MEMORY_STACK_ITEMS_TAG, memoryTag);
 
         List<Boolean> respectList = backpackHandler.memorizedSlotRespectNbtList;
@@ -630,7 +632,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
         if (tag.hasKey(BACKPACK_INV)) {
             backpackHandler.deserializeNBT(tag.getCompoundTag(BACKPACK_INV));
 
-            BackpackItemStackHelper.loadAllItemsExtended(tag.getCompoundTag(BACKPACK_INV), backpackHandler.getStacks());
+            BackpackItemStackUtils.loadAllItemsExtended(tag.getCompoundTag(BACKPACK_INV), backpackHandler.getStacks());
             if (backpackHandler.getSlots() != backpackSlots) {
                 backpackHandler.resize(backpackSlots);
             }
@@ -643,7 +645,7 @@ public class BackpackHandler implements IItemHandlerModifiable {
         }
 
         if (tag.hasKey(MEMORY_STACK_ITEMS_TAG)) {
-            BackpackItemStackHelper
+            BackpackItemStackUtils
                 .loadAllItemsExtended(tag.getCompoundTag(MEMORY_STACK_ITEMS_TAG), backpackHandler.memorizedSlotStack);
         }
 

@@ -27,9 +27,9 @@ import ruiseki.omoshiroikamo.core.common.network.PacketHandler;
 import ruiseki.omoshiroikamo.core.lib.LibMisc;
 import ruiseki.omoshiroikamo.core.lib.LibMods;
 import ruiseki.omoshiroikamo.module.backpack.client.gui.MGuiFactories;
-import ruiseki.omoshiroikamo.module.backpack.common.block.BackpackInventoryHelper;
 import ruiseki.omoshiroikamo.module.backpack.common.block.BlockBackpack;
 import ruiseki.omoshiroikamo.module.backpack.common.network.PacketQuickDraw;
+import ruiseki.omoshiroikamo.module.backpack.common.util.BackpackInventoryUtils;
 
 public class KeyHandler {
 
@@ -132,11 +132,11 @@ public class KeyHandler {
         if (LibMods.Baubles.isLoaded()) {
             IInventory baublesInventory = BaublesUtils.instance()
                 .getBaubles(player);
-            result = BackpackInventoryHelper.getQuickDrawStack(baublesInventory, wanted, InventoryTypes.BAUBLES);
+            result = BackpackInventoryUtils.getQuickDrawStack(baublesInventory, wanted, InventoryTypes.BAUBLES);
         }
 
         if (result == null) {
-            result = BackpackInventoryHelper.getQuickDrawStack(player.inventory, wanted, InventoryTypes.PLAYER);
+            result = BackpackInventoryUtils.getQuickDrawStack(player.inventory, wanted, InventoryTypes.PLAYER);
         }
 
         if (result != null && mc.theWorld.isRemote) {
