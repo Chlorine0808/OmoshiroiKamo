@@ -19,6 +19,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import ruiseki.omoshiroikamo.api.enums.ModObject;
+import ruiseki.omoshiroikamo.api.modular.IModularBlock;
+import ruiseki.omoshiroikamo.api.modular.IPortType;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
@@ -29,7 +31,7 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.item.output.TEItemOutp
  * Requires Applied Energistics 2 to be loaded.
  * Uses JSON model with base + overlay textures via GTNHLib.
  */
-public class BlockItemOutputPortME extends AbstractTieredBlock<TEItemOutputPortME> {
+public class BlockItemOutputPortME extends AbstractTieredBlock<TEItemOutputPortME> implements IModularBlock {
 
     protected BlockItemOutputPortME() {
         super(ModObject.blockModularItemOutputME.unlocalisedName, TEItemOutputPortME.class);
@@ -112,5 +114,15 @@ public class BlockItemOutputPortME extends AbstractTieredBlock<TEItemOutputPortM
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
             list.add("§7" + StatCollector.translateToLocal("tooltip.me_output.desc"));
         }
+    }
+
+    @Override
+    public IPortType.Type getPortType() {
+        return IPortType.Type.ITEM;
+    }
+
+    @Override
+    public IPortType.Direction getPortDirection() {
+        return IPortType.Direction.OUTPUT;
     }
 }

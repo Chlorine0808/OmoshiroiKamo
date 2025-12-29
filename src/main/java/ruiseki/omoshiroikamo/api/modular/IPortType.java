@@ -6,7 +6,8 @@ public interface IPortType {
         ITEM,
         FLUID,
         ENERGY,
-        MANA
+        MANA,
+        NONE
     }
 
     enum Direction {
