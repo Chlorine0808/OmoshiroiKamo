@@ -1,5 +1,9 @@
 package ruiseki.omoshiroikamo.module.machinery.common.block;
 
+import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
+
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -11,7 +15,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.Nullable;
+
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
@@ -20,10 +26,6 @@ import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.AbstractManaPortT
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.output.TEManaOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.output.TEManaOutputPortT1;
 import vazkii.botania.api.wand.IWandHUD;
-
-import java.util.List;
-
-import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
 /**
  * Mana Output Port - accepts mana for machine processing.

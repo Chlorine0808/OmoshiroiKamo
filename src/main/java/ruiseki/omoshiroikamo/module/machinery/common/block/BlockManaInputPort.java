@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import ruiseki.omoshiroikamo.api.enums.ModObject;
 import ruiseki.omoshiroikamo.core.common.block.ItemBlockOK;
 import ruiseki.omoshiroikamo.core.common.block.TileEntityOK;
-import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTE;
 import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.AbstractManaPortTE;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.input.TEManaInputPort;
