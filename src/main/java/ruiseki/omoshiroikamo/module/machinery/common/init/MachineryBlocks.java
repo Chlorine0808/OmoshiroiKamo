@@ -11,6 +11,7 @@ import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineCasing;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineController;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaInputPort;
 
 /**
  * Block registration for the Machinery module.
@@ -26,6 +27,7 @@ public enum MachineryBlocks {
     ITEM_OUTPUT_PORT(BlockItemOutputPort.create()),
     ENERGY_INPUT_PORT(BlockEnergyInputPort.create()),
     ENERGY_OUTPUT_PORT(BlockEnergyOutputPort.create()),
+    MANA_INPUT_PORT(BlockManaInputPort.create()),
 
     ;
     // spotless: on
