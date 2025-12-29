@@ -10,7 +10,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.opengl.GL11;
 
@@ -139,13 +138,6 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
         // Draw mode-specific header on first recipe only
         if (recipe == 0) {
             switch (currentViewMode) {
-                case ITEM_DETAIL:
-                    // // Show item name in header
-                    // if (detailItem != null) {
-                    // String itemName = detailItem.getDisplayName();
-                    // fr.drawString(itemName, HEADER_RECT.x, HEADER_RECT.y + 2, 0x404040);
-                    // }
-                    break;
 
                 case LENS_BONUS:
                     // Show lens name in header
@@ -155,6 +147,7 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     }
                     break;
 
+                case ITEM_DETAIL:
                 case DIMENSION:
                 default:
                     // Dimension mode header is handled per-recipe above
@@ -232,24 +225,9 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
     public int recipiesPerPage() {
         // Lens bonus view shows compact item list, so more items per page
         if (currentViewMode == ViewMode.LENS_BONUS) {
-            return 12;
+            return 1;
         }
         return 6; // Default for detailed views
-    }
-
-    /**
-     * Set a custom display name for an ItemStack via NBT.
-     */
-    protected static void setDisplayName(ItemStack stack, String name) {
-        if (stack == null || name == null) return;
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        NBTTagCompound display = stack.getTagCompound()
-            .getCompoundTag("display");
-        display.setString("Name", name);
-        stack.getTagCompound()
-            .setTag("display", display);
     }
 
     @Override
@@ -269,14 +247,26 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             registry = getRegistry();
         }
 
-        // Get and sort by probability (highest first)
+        addSortedRecipes(registry, tier, filterDimension, true);
+    }
+
+    /**
+     * Add recipes from registry to arecipes list, sorted by probability (highest
+     * first).
+     *
+     * @param registry    The registry to get items from
+     * @param recipeTier  The tier for the CachedVoidRecipe
+     * @param dimId       The dimension ID for the CachedVoidRecipe
+     * @param applyFilter Whether to apply text filter matching
+     */
+    protected void addSortedRecipes(IFocusableRegistry registry, int recipeTier, int dimId, boolean applyFilter) {
         List<WeightedStackBase> unfocusedList = new ArrayList<>(registry.getUnFocusedList());
         unfocusedList.sort((a, b) -> Double.compare(b.realWeight, a.realWeight));
 
         for (WeightedStackBase ws : unfocusedList) {
             ItemStack output = ws.getMainStack();
-            if (output != null && matchesTextFilter(output)) {
-                arecipes.add(new CachedVoidRecipe(ws, registry, tier, filterDimension));
+            if (output != null && (!applyFilter || matchesTextFilter(output))) {
+                arecipes.add(new CachedVoidRecipe(ws, registry, recipeTier, dimId));
             }
         }
     }
@@ -341,14 +331,7 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             IFocusableRegistry tierRegistry = getRegistryForNEI(inputTier, filterDimension);
             if (tierRegistry == null) tierRegistry = getRegistry(inputTier);
             if (tierRegistry != null) {
-                List<WeightedStackBase> unfocusedList = new ArrayList<>(tierRegistry.getUnFocusedList());
-                unfocusedList.sort((a, b) -> Double.compare(b.realWeight, a.realWeight));
-                for (WeightedStackBase ws : unfocusedList) {
-                    ItemStack output = ws.getMainStack();
-                    if (output != null) {
-                        arecipes.add(new CachedVoidRecipe(ws, tierRegistry, inputTier, filterDimension));
-                    }
-                }
+                addSortedRecipes(tierRegistry, inputTier, filterDimension, false);
             }
         } else if (isLens) {
             // Lens Usage: Show items that benefit from this lens
@@ -388,12 +371,12 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             // Sort by probability (highest first)
             bonusItems.sort((a, b) -> Double.compare(b.realWeight, a.realWeight));
 
-            // Group items into grids (16 items per grid: 8 columns × 2 rows)
-            final int ITEMS_PER_GRID = 16;
-            for (int i = 0; i < bonusItems.size(); i += ITEMS_PER_GRID) {
-                int end = Math.min(i + ITEMS_PER_GRID, bonusItems.size());
-                List<WeightedStackBase> gridItems = bonusItems.subList(i, end);
-                arecipes.add(new CachedLensGridRecipe(new ArrayList<>(gridItems)));
+            // Group items into pages (80 items per page: 8 columns × 10 rows)
+            final int ITEMS_PER_PAGE = 80;
+            for (int i = 0; i < bonusItems.size(); i += ITEMS_PER_PAGE) {
+                int end = Math.min(i + ITEMS_PER_PAGE, bonusItems.size());
+                List<WeightedStackBase> pageItems = bonusItems.subList(i, end);
+                arecipes.add(new CachedLensGridRecipe(new ArrayList<>(pageItems)));
             }
         } else {
             // Check if this is a dimension catalyst
@@ -406,14 +389,7 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
 
                 IFocusableRegistry dimRegistry = getRegistryForNEI(tier, catalystDimension);
                 if (dimRegistry != null) {
-                    List<WeightedStackBase> unfocusedList = new ArrayList<>(dimRegistry.getUnFocusedList());
-                    unfocusedList.sort((a, b) -> Double.compare(b.realWeight, a.realWeight));
-                    for (WeightedStackBase ws : unfocusedList) {
-                        ItemStack output = ws.getMainStack();
-                        if (output != null) {
-                            arecipes.add(new CachedVoidRecipe(ws, dimRegistry, tier, catalystDimension));
-                        }
-                    }
+                    addSortedRecipes(dimRegistry, tier, catalystDimension, false);
                 }
             }
         }
@@ -488,51 +464,39 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
                     break;
 
                 case ITEM_DETAIL:
-                    // Item detail: Show [Catalyst][Lens+%][Item][BonusLens+%]
-                    // Centered layout (NEI recipe area is ~166px wide)
-                    ItemStack catalystIcon = NEIDimensionConfig.getCatalystStack(dimId);
-                    if (catalystIcon == null) {
-                        catalystIcon = new ItemStack(getMinerBlock(), 1, tier);
-                    }
-                    this.input.add(new PositionedStack(catalystIcon, 25, ITEM_Y));
-
-                    PositionedStackAdv clearLens = new PositionedStackAdv(
-                        MultiBlockBlocks.LENS.newItemStack(1, 0),
-                        50,
-                        ITEM_Y);
-                    clearLens.setChance((float) (ws.realWeight / 100.0f));
-                    clearLens.setTextYOffset(10);
-                    clearLens.setTextColor(0x000000);
-                    this.input.add(clearLens);
-
-                    this.output = new PositionedStack(outputStack, 80, ITEM_Y);
-
-                    addBonusLens(ws, registry, outputStack, 110, ITEM_Y);
-                    break;
-
                 case DIMENSION:
                 default:
-                    // Dimension view: [Catalyst][Lens+%][Item][BonusLens+%]
-                    ItemStack dimCatalyst = NEIDimensionConfig.getCatalystStack(dimId);
-                    if (dimCatalyst == null) {
-                        dimCatalyst = new ItemStack(getMinerBlock(), 1, tier);
-                    }
-                    this.input.add(new PositionedStack(dimCatalyst, 25, ITEM_Y));
-
-                    PositionedStackAdv dimLens = new PositionedStackAdv(
-                        MultiBlockBlocks.LENS.newItemStack(1, 0),
-                        50,
-                        ITEM_Y);
-                    dimLens.setChance((float) (ws.realWeight / 100.0f));
-                    dimLens.setTextYOffset(10);
-                    dimLens.setTextColor(0x000000);
-                    this.input.add(dimLens);
-
-                    this.output = new PositionedStack(outputStack, 80, ITEM_Y);
-
-                    addBonusLens(ws, registry, outputStack, 110, ITEM_Y);
+                    // Both views: [Catalyst][Lens+%][Item][BonusLens+%]
+                    setupCatalystLensLayout(ws, registry, tier, dimId, outputStack, ITEM_Y);
                     break;
             }
+        }
+
+        /**
+         * Setup the common layout for ITEM_DETAIL and DIMENSION view modes.
+         * Layout: [Catalyst][Lens+%][Item][BonusLens+%]
+         */
+        private void setupCatalystLensLayout(WeightedStackBase ws, IFocusableRegistry registry, int tier, int dimId,
+            ItemStack outputStack, int itemY) {
+            // Catalyst icon
+            ItemStack catalyst = NEIDimensionConfig.getCatalystStack(dimId);
+            if (catalyst == null) {
+                catalyst = new ItemStack(getMinerBlock(), 1, tier);
+            }
+            this.input.add(new PositionedStack(catalyst, 25, itemY));
+
+            // Clear lens with probability
+            PositionedStackAdv lens = new PositionedStackAdv(MultiBlockBlocks.LENS.newItemStack(1, 0), 50, itemY);
+            lens.setChance((float) (ws.realWeight / 100.0f));
+            lens.setTextYOffset(10);
+            lens.setTextColor(0x000000);
+            this.input.add(lens);
+
+            // Output item
+            this.output = new PositionedStack(outputStack, 80, itemY);
+
+            // Bonus lens if applicable
+            addBonusLens(ws, registry, outputStack, 110, itemY);
         }
 
         private void addBonusLens(WeightedStackBase ws, IFocusableRegistry registry, ItemStack outputStack, int x,
