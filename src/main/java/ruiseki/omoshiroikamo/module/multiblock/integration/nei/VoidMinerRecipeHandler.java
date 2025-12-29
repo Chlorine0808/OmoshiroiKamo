@@ -1,5 +1,6 @@
 package ruiseki.omoshiroikamo.module.multiblock.integration.nei;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,8 +164,8 @@ public abstract class VoidMinerRecipeHandler extends RecipeHandlerBase {
             return super.mouseClicked(gui, button, recipe);
         }
 
-        java.awt.Point mouse = GuiDraw.getMousePosition();
-        java.awt.Point offset = gui.getRecipePosition(recipe);
+        Point mouse = GuiDraw.getMousePosition();
+        Point offset = gui.getRecipePosition(recipe);
 
         if (offset != null && recipe == 0) {
             int recipeX = ((GuiContainer) gui).guiLeft + offset.x;
