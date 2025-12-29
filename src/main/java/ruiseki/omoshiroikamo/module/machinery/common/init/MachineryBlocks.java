@@ -15,6 +15,9 @@ import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockItemOutputPortME;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineCasing;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineController;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaInputPort;
+import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaOutputPort;
+
 
 /**
  * Block registration for the Machinery module.
