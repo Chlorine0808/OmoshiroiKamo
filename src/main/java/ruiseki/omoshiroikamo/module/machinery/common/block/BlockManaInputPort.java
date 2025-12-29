@@ -26,7 +26,6 @@ import ruiseki.omoshiroikamo.core.common.block.abstractClass.AbstractTieredBlock
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.AbstractManaPortTE;
 import ruiseki.omoshiroikamo.module.machinery.common.tile.mana.input.TEManaInputPortT1;
 import vazkii.botania.api.wand.IWandHUD;
-import vazkii.botania.api.wand.IWandable;
 
 /**
  * Mana Input Port - accepts mana for machine processing.
