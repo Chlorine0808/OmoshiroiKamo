@@ -2,6 +2,7 @@ package ruiseki.omoshiroikamo.module.machinery.common.tile.item.output;
 
 import java.util.EnumSet;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -34,6 +35,9 @@ import ruiseki.omoshiroikamo.core.common.util.Logger;
  * QuantumExtractor)
  * 2. Periodically flushes internal slots to ME cache
  * 3. Then flushes ME cache to ME Network
+ * 
+ * TODO: Prevent from opening GUI
+ * TODO: Drop cached items when break
  */
 public class TEItemOutputPortME extends TEItemOutputPort implements IGridProxyable, IActionHost {
 
