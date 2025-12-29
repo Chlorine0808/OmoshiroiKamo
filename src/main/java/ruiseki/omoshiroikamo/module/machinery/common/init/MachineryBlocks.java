@@ -18,7 +18,6 @@ import ruiseki.omoshiroikamo.module.machinery.common.block.BlockMachineControlle
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaInputPort;
 import ruiseki.omoshiroikamo.module.machinery.common.block.BlockManaOutputPort;
 
-
 /**
  * Block registration for the Machinery module.
  * Uses enum pattern consistent with other modules.
